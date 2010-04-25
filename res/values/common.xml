@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+	<string name="app_name">iRemember</string>
+	<string name="title">标题</string>
+	<string name="options">选项</string>
+	<string name="description">描述</string>
+	<string name="image">图片</string>
+
+	<string name="btn_back">返回</string>
+	<string name="btn_sure">确定</string>
+	<string name="btn_cancel">取消</string>
+	<string name="btn_exit">退出</string>
+	<string name="btn_yes">是</string>
+	<string name="btn_no">否</string>
+
+	<string name="btn_remember">记得</string>
+	<string name="btn_unremember">忘了</string>
+	<string name="btn_nextword">下一个单词</string>
+	<string name="btn_right">正确</string>
+	<string name="btn_wrong">错误</string>
+
+	<string name="text_word">单词</string>
+	<string name="text_phonetics">音标</string>
+	<string name="text_translation">解释</string>
+
+	<string name="dialog_title_tip">提示</string>
+	<string name="dialog_title_alert">警告</string>
+	<string name="dialog_title_loding_data">正在加载数据</string>
+	<string name="dialog_msg_wait">请稍等...</string>
+</resources>

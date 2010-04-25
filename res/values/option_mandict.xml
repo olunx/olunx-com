@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="tab_dictset_title">词库设置</string>
+	<string name="list_desc_each_lesson_word_count">每组：</string>
+	<string name="list_desc_total_word_count">总数：</string>
+	<string name="list_desc_lesson_count">组数：</string>
+	<string name="list_title_dict_dir">词库目录:</string>
+	<string name="list_title_dict_current_use">当前使用词库:</string>
+	<string name="list_title_each_lesson_word_count">每组单词数目:</string>
+	<string name="dialog_title_each_lesson_word_count">每组单词数目:</string>
+
+
+	<string name="tab_dictlist_title">词库列表</string>
+	<string name="list_desc_word_count">词数：</string>
+	<string name="list_desc_dict_type">类型：</string>
+	<string name="dialog_title_please_select_action">请选择操作</string>
+	<string name="dialog_item_refresh_dict_list">刷新词库[词库多速度慢]</string>
+	<string name="dialog_msg_refresh_dict_list">正在刷新列表</string>
+	<string name="dialog_item_do_not_refresh_dict_list">不刷新词库列表</string>
+	<string name="toast_msg_set_dict_using">长按选项：设置为默认词典。</string>
+	<string name="dialog_msg_is_set_current_dict">是否设置为要记忆的词库？</string>
+	<string name="dialog_item_set_current_dict">设置为要记忆的词库</string>
+	<string name="dialog_title_input_dict">正在加载词库</string>
+	<string name="toast_msg_set_success">设置成功！</string>
+
+
+	<string name="tab_dictbrowser_title">词库浏览</string>
+	<string name="toast_msg_set_dict_dir">长按目录：设置为词典目录。</string>
+	<string name="dialog_msg_is_set_dict_dir">是否将其设置为词典目录？</string>
+	<string name="toast_msg_no_rights_to_open">噢，你没有权限浏览该文件夹！</string>
+	<string name="toast_msg_can_not_open_file">噢，暂时不支持查看文件内容！</string>
+</resources>

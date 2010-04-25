@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<string name="text_lesson">课程</string>
+	<string name="text_remember_times">记忆次数</string>
+	<string name="dialog_title_please_select_lesson">请选择课程：</string>
+	<string name="dialog_msg_no_study_lesson">没有可学习的课程！</string>
+	
+	<string name="toast_msg_nothing_front">前面没有了！</string>
+	<string name="dialog_msg_is_goto_next_lesson">是否进入下一课的学习？</string>
+	<string name="toast_msg_no_next_study_lesson">没有可学习的下一个课程了！</string>
+	
+	<string name="toast_msg_init_texttospeech_fail">初始化TextToSpeech失败！</string>
+	<string name="toast_msg_load_texttospeech_fail">加载语音数据失败！</string>
+	
+	<string name="menu_item_turn_on_speech">打开发音</string>
+	<string name="menu_item_turn_off_speech">关闭发音</string>
+	
+</resources>

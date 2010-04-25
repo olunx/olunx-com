@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="option_preview_title">Getting Start</string>
+	<string name="option_preview_desc">Intelligent memory curve.</string>
+	<string name="option_review_title">Go Over</string>
+	<string name="option_review_desc">Review to obtain effective memory.</string>
+	<string name="option_search_title">Search</string>
+	<string name="option_search_desc">Search word by net.</string>
+	<string name="option_mandict_title">Dictionary</string>
+	<string name="option_mandict_desc">Manage your thesaurus.</string>
+	<string name="option_sync_title">Sync User</string>
+	<string name="option_sync_desc">Synchronize your state.</string>
+	<string name="option_manual_title">Manual</string>
+	<string name="option_manual_desc">Make better use of this software.</string>
+</resources>

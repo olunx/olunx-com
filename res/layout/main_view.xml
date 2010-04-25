@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/RelativeLayout01"
+	android:layout_width="fill_parent" android:layout_height="70sp"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+	<ImageView android:id="@+id/main_view_iv"
+		android:layout_height="48px" android:layout_width="48px" android:layout_marginRight="10sp" android:layout_marginLeft="10sp" android:layout_marginTop="12sp"></ImageView>
+	<TextView android:text="TextView01" android:layout_height="wrap_content"
+		android:id="@+id/main_view_tv_01" android:layout_width="wrap_content"
+		android:layout_toRightOf="@+id/main_view_iv" android:singleLine="true"
+		android:textSize="25sp" android:textStyle="bold" android:textColor="#ffffff" android:layout_marginTop="7sp"></TextView>
+	<TextView android:text="TextView02" android:layout_height="wrap_content"
+		android:id="@+id/main_view_tv_02" android:layout_width="wrap_content"
+		android:layout_below="@+id/main_view_tv_01" android:layout_toRightOf="@+id/main_view_iv" android:singleLine="true"></TextView>
+</RelativeLayout>
