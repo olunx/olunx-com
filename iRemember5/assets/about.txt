@@ -2,7 +2,7 @@
 	iRemember
 
 版本：
-	beta 3 fix 3
+	beta 3 fix 4
 	
 作者：
 	olunx
