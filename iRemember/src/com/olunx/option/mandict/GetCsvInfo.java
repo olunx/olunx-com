@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class GetCsvInfo implements GetDictInfo {
+public class GetCsvInfo{
 
 	String dictPath = null;
 
@@ -19,24 +19,24 @@ public class GetCsvInfo implements GetDictInfo {
 		this.dictPath = dictPath;
 	}
 
-	@Override
 	public String getDictName() {
 		String dictName = new File(dictPath).getName();
 		return dictName.substring(0, dictName.lastIndexOf("."));
 	}
 
-	@Override
 	public String getFileNameWithExtension() {
 		return new File(dictPath).getName();
 	}
 
-	@Override
 	public String getFileNameNoExtension() {
 		String dictName = new File(dictPath).getName();
 		return dictName.substring(0, dictName.lastIndexOf("."));
 	}
 
-	@Override
+	public String getFileSize() {
+		return String.valueOf(new File(dictPath).length() / 1000 + "KB");
+	}
+	
 	public String getWordCount() {
 		FileReader fr = null;
 		BufferedReader br = null;

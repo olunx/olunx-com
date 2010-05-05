@@ -89,8 +89,8 @@ public final class R {
         public static final int dialog_msg_refresh_dict_list=0x7f040032;
         public static final int dialog_msg_wait=0x7f040016;
         public static final int dialog_title_alert=0x7f040014;
+        public static final int dialog_title_count_words=0x7f040037;
         public static final int dialog_title_each_lesson_word_count=0x7f04002c;
-        public static final int dialog_title_input_dict=0x7f040037;
         public static final int dialog_title_loding_data=0x7f040015;
         public static final int dialog_title_please_select_action=0x7f040030;
         public static final int dialog_title_please_select_lesson=0x7f040040;

@@ -19,8 +19,6 @@ import java.util.TimeZone;
 import com.olunx.R;
 import com.olunx.db.RememberHelper;
 import com.olunx.option.mandict.GetCsvInfo;
-import com.olunx.option.mandict.GetDictInfo;
-import com.olunx.option.mandict.GetGdsInfo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -30,6 +28,8 @@ public class Config {
 
 	private static Config c = null;
 
+	public static final String DICTTYPE_CSV = "csv";
+	
 	public static Config getConfig() {
 		if (c == null) {
 			c = new Config();
@@ -93,7 +93,7 @@ public class Config {
 	}
 
 	/**
-	 * 设置组数
+	 * 设置课程数
 	 * 
 	 * @param context
 	 * @param lessonCount
@@ -140,26 +140,24 @@ public class Config {
 		// 保存数据
 		String dictsArray = "";// 保存词库名称
 
-		GetDictInfo gci = null;
+		GetCsvInfo gci = null;
 		int dictListSize = dictPathList.size();
 		Log.i("dictListSize", String.valueOf(dictListSize));
 		String path = null;
-		String wordCount = null;
+		String dictSize = null;
 		String dictName = null;
 		for (int i = 0; i < dictListSize; i++) {
 			path = dictPathList.get(i);
-			if (dictType.equalsIgnoreCase("csv")) {
-				gci = new GetCsvInfo(path);
-			} else if (dictType.equalsIgnoreCase("gds")) {
-				gci = new GetGdsInfo(path);
-			}
-			wordCount = gci.getWordCount();
+			gci = new GetCsvInfo(path);
+			dictSize = gci.getFileSize();
 			dictName = gci.getDictName();
 			dictsArray = dictsArray + dictName + "|";// 将词库名称作为数组，方便获取
+			
 			this.setDictPath(context, dictName, path);
-			this.setDictWordCount(context, dictName, wordCount);
+//			this.setDictWordCount(context, dictName, wordCount);
 			this.setDictType(context, dictName, dictType);
-			this.setDictDesc(context, dictName, "词数：" + wordCount + "   类型：" + dictType);
+			this.setDictDesc(context, dictName, "大小：" + dictSize + "   类型：" + dictType);
+			
 		}
 		this.setDictStringArray(context, dictsArray, dictType);
 	}
@@ -168,8 +166,7 @@ public class Config {
 
 		ArrayList<HashMap<String, Object>> resultItems = new ArrayList<HashMap<String, Object>>();
 		// 获取词典字符串
-		String dictListArray = Config.getConfig().getDictStringArray(context, "csv");
-		dictListArray = dictListArray + Config.getConfig().getDictStringArray(context, "gds");
+		String dictListArray = Config.getConfig().getDictStringArray(context, Config.DICTTYPE_CSV);
 		if (dictListArray != "" && dictListArray != null) {
 			String[] dictNameList = dictListArray.split("\\|");
 
@@ -203,20 +200,20 @@ public class Config {
 		return this.getCon(context, dictType + "_dicts_string_array", "");
 	}
 
-	/**
-	 * 设置词典单词数
-	 * 
-	 * @param context
-	 * @param dictName
-	 * @param wordCount
-	 */
-	public void setDictWordCount(Context context, String dictName, String wordCount) {
-		this.setCon(context, dictName + "_count", wordCount);
-	}
-
-	public String getDictWordCount(Context context, String dictName) {
-		return this.getCon(context, dictName + "_count", "0");
-	}
+//	/**
+//	 * 设置词典单词数
+//	 * 
+//	 * @param context
+//	 * @param dictName
+//	 * @param wordCount
+//	 */
+//	public void setDictWordCount(Context context, String dictName, String wordCount) {
+//		this.setCon(context, dictName + "_count", wordCount);
+//	}
+//
+//	public String getDictWordCount(Context context, String dictName) {
+//		return this.getCon(context, dictName + "_count", "0");
+//	}
 
 	/**
 	 * 设置词典路径
@@ -292,8 +289,12 @@ public class Config {
 	 * @param context
 	 * @return
 	 */
+	public void setCurrentUseDictWordCount(Context context, String wordCount) {
+		this.setCon(context, "current_dict_count", wordCount);
+	}
+	
 	public String getCurrentUseDictWordCount(Context context) {
-		return this.getDictWordCount(context, this.getCurrentUseDictName(context));
+		return this.getCon(context, "current_dict_count", "0");
 	}
 
 	/**
@@ -495,6 +496,12 @@ public class Config {
 		return this.getCon(context, "can_get_net_word", "false");
 	}
 
+	/**
+	 * 设置发音类型
+	 * 
+	 * @param context
+	 * @param which
+	 */
 	public void setSpeechType(Context context, int which) {
 		switch (which) {
 		case 0: {

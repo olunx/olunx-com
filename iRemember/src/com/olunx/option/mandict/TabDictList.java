@@ -39,29 +39,7 @@ public class TabDictList extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// 加载词典列表
-		final AlertDialog.Builder ad = new AlertDialog.Builder(this);
-		ad.setInverseBackgroundForced(true);// 翻转底色
-		ad.setIcon(android.R.drawable.ic_dialog_info);
-		ad.setTitle(this.getString(R.string.dialog_title_please_select_action));
-		ad.setCancelable(false);
-		ad.setItems(new String[] { this.getString(R.string.dialog_item_do_not_refresh_dict_list),
-				this.getString(R.string.dialog_item_refresh_dict_list) }, new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-				case 0:
-					items = Config.getConfig().getDictList(TabDictList.this);
-					setContent();// 设置界面内容
-					break;
-				case 1:
-					updateDictList();
-					break;
-				}
-			}
-		});
-		ad.show();
+		updateDictList();
 	}
 
 	// 更新词典列表
@@ -179,54 +157,48 @@ public class TabDictList extends Activity {
 
 	}
 
-	// 导入词库并完成相应处理
+	// 计算单词数并完成相应处理
 	private void setDictCurrentUse(final String dictName) {
-		//final String dictPath = Config.getConfig().getDictPath(this, dictName);
+		final String dictPath = Config.getConfig().getDictPath(this, dictName);
 
 		String dictType = Config.getConfig().getDictType(TabDictList.this, dictName);
 
-		if (dictType.equalsIgnoreCase("csv")) {
+		if (dictType.equalsIgnoreCase(Config.DICTTYPE_CSV)) {
 			
 			// 保存配置，当前使用的词库。
-			Config.getConfig().setCurrentUseDictName(TabDictList.this, dictName);
-			
-//			// 进度框
-//			final ProgressDialog pd = new ProgressDialog(TabDictList.this);
-//			pd.setIcon(android.R.drawable.ic_dialog_info);
-//			pd.setTitle(getString(R.string.dialog_title_input_dict));
-//			pd.setMessage(getString(R.string.dialog_msg_wait));
-//			pd.show();
-//			pd.setOnDismissListener(new OnDismissListener() {
-//
-//				@Override
-//				public void onDismiss(DialogInterface arg0) {
-//					setResult(RESULT_OK, new Intent());// 返回数据给上层
-//					// 保存配置，当前使用的词库。
-//					Config.getConfig().setCurrentUseDictName(TabDictList.this, dictName);
-//					finish();
-//				}
-//			});
-//
-//			// 从文件读取单词到数据库
-//			new Thread() {
-//				public void run() {
-//					new GetCsvInfo(dictPath).importCsvToDb(TabDictList.this);
-//					pd.dismiss();
-//				}
-//			}.start();
+			final ProgressDialog pd = new ProgressDialog(TabDictList.this);
+			pd.setIcon(android.R.drawable.ic_dialog_info);
+			pd.setTitle(getString(R.string.dialog_title_count_words));
+			pd.setMessage(getString(R.string.dialog_msg_wait));
+			pd.show();
+			pd.setOnDismissListener(new OnDismissListener() {
 
-		} else if(dictType.equalsIgnoreCase("gds")){
-			// 保存配置，当前使用的词库。
-			Config.getConfig().setCurrentUseDictName(TabDictList.this, dictName);
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					setResult(RESULT_OK, new Intent());// 返回数据给上层
+					// 保存配置，当前使用的词库。
+					Config.getConfig().setCurrentUseDictName(TabDictList.this, dictName);
+					
+					// 清空记忆曲线表
+					Config.getConfig().cleanRememberLine(TabDictList.this);
+					
+					Toast.makeText(TabDictList.this, TabDictList.this.getString(R.string.toast_msg_set_success), Toast.LENGTH_SHORT).show();
+					setResult(RESULT_OK, new Intent());// 返回数据给上层
+					
+					finish();
+				}
+			});
+
+			// 从文件计算单词数
+			new Thread() {
+				public void run() {
+					Config.getConfig().setCurrentUseDictWordCount(TabDictList.this, new GetCsvInfo(dictPath).getWordCount());
+					pd.dismiss();
+				}
+			}.start();
 
 		}
 
-		Toast.makeText(TabDictList.this, this.getString(R.string.toast_msg_set_success), Toast.LENGTH_SHORT).show();
-		setResult(RESULT_OK, new Intent());// 返回数据给上层
-		finish();
-		
-		// 清空记忆曲线表
-		Config.getConfig().cleanRememberLine(this);
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.Random;
 
 import com.olunx.R;
 import com.olunx.db.CsvHelper;
-import com.olunx.db.GdsHelper;
 import com.olunx.util.Config;
 import com.olunx.util.FetchWord;
 import com.olunx.util.Speech;
@@ -175,10 +174,6 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 					CsvHelper helper = new CsvHelper(ReviewRadioShow.this);
 					wordList = helper.getWords(index, eachLessonWordCount);
 					fontType = "KingSoft-Phonetic-Android.ttf";
-				} else if (dictType.equalsIgnoreCase("gds")) {
-					GdsHelper helper = new GdsHelper(ReviewRadioShow.this);
-					wordList = helper.getWords(index, eachLessonWordCount);
-					fontType = "PGY-Symbol-Android.ttf";
 				}
 				
 				// 初始化语音数据
