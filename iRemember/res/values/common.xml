@@ -16,8 +16,8 @@
 	<string name="btn_remember">记得</string>
 	<string name="btn_unremember">忘了</string>
 	<string name="btn_nextword">下一个单词</string>
-	<string name="btn_right">正确</string>
-	<string name="btn_wrong">错误</string>
+	<string name="btn_neverangain">不再记忆</string>
+	<string name="btn_studyangain">需要复习</string>
 
 	<string name="text_word">单词</string>
 	<string name="text_phonetics">音标</string>

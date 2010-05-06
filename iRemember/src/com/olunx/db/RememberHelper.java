@@ -45,7 +45,7 @@ public class RememberHelper implements HelperInterface {
 	@Override
 	public void createTable() {
 		this.getDB().execSQL(
-				"create table if not exists " + TABLE + "(id int,lesson_no int,study_time text,next_study_time text,times int);");
+				"create table if not exists " + TABLE + "(id int,lesson_no int,study_time text,next_study_time text,times int,ignore_words text);");
 	}
 
 	@Override
@@ -56,12 +56,13 @@ public class RememberHelper implements HelperInterface {
 	// 添加记录
 	private ContentValues row = null;
 
-	public void addRecord(long lessonNo, String studyTime, String nextStudyTime, int times) {
+	public void addRecord(long lessonNo, String studyTime, String nextStudyTime, int times, String ignoreWords) {
 		row = new ContentValues();
 		row.put("lesson_no", lessonNo);
 		row.put("study_time", studyTime);
 		row.put("next_study_time", nextStudyTime);
 		row.put("times", times);
+		row.put("ignore_words", ignoreWords);
 		createTable();
 		Log.i("addRecord", String.valueOf(lessonNo));
 		getDB().insert(TABLE, null, row);
@@ -99,6 +100,25 @@ public class RememberHelper implements HelperInterface {
 		}
 		result.close();
 		return records;
+	}
+	
+	//返回不需要再次记忆的单词编号
+	public String getIgnoreWords(int lessonNo) {
+		createTable();
+		
+		String ignoreWords = "";
+		Cursor result = getDB().query(TABLE, new String[] { "ignore_words" }, "lesson_no == '" + lessonNo + "'", null, null, null, null);
+		if (result != null) {
+			result.moveToFirst();
+			int ignoreWordsColumn = result.getColumnIndex("ignore_words");
+			while (!result.isAfterLast()) {
+				ignoreWords = result.getString(ignoreWordsColumn);
+				Log.i("ignoreWords", ignoreWords);
+				result.moveToNext();
+			}
+		}
+		
+		return ignoreWords;
 	}
 
 	// 获取学习次数

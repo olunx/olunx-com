@@ -70,13 +70,13 @@ public final class R {
         public static final int btn_back=0x7f040005;
         public static final int btn_cancel=0x7f040007;
         public static final int btn_exit=0x7f040008;
+        public static final int btn_neverangain=0x7f04000e;
         public static final int btn_nextword=0x7f04000d;
         public static final int btn_no=0x7f04000a;
         public static final int btn_remember=0x7f04000b;
-        public static final int btn_right=0x7f04000e;
+        public static final int btn_studyangain=0x7f04000f;
         public static final int btn_sure=0x7f040006;
         public static final int btn_unremember=0x7f04000c;
-        public static final int btn_wrong=0x7f04000f;
         public static final int btn_yes=0x7f040009;
         public static final int description=0x7f040003;
         public static final int dialog_item_do_not_refresh_dict_list=0x7f040033;

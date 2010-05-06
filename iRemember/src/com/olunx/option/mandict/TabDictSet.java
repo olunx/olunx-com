@@ -73,6 +73,13 @@ public class TabDictSet extends PreferenceActivity {
 		eachLesWCPref.setDialogIcon(android.R.drawable.ic_dialog_info);
 		eachLesWCPref.setTitle(R.string.list_title_each_lesson_word_count);
 		eachLesWCPref.getEditText().setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+		eachLesWCPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				eachLesWCPref.getEditText().setText(Config.getConfig().getEachLessonWordCount(TabDictSet.this));
+				return false;
+			}
+		});
 		eachLesWCPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {

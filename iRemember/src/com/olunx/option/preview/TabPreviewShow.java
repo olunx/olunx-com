@@ -7,7 +7,9 @@ package com.olunx.option.preview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import com.olunx.R;
 import com.olunx.db.CsvHelper;
@@ -21,7 +23,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -60,8 +61,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	private String thisTranslation = null;
 
 	// 按钮文字
-	private String RIGHT;
-	private String WRONG;
+	private String NEVERAGAIN;
+	private String STUDYAGAIN;
 	private String REMEMBER;
 	private String UNREMEMBER;
 	private String NEXTWORD;
@@ -92,8 +93,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		// 按钮字符串
-		RIGHT = this.getString(R.string.btn_right);
-		WRONG = this.getString(R.string.btn_wrong);
+		NEVERAGAIN = this.getString(R.string.btn_neverangain);
+		STUDYAGAIN = this.getString(R.string.btn_studyangain);
 		REMEMBER = this.getString(R.string.btn_remember);
 		UNREMEMBER = this.getString(R.string.btn_unremember);
 		NEXTWORD = this.getString(R.string.btn_nextword);
@@ -176,16 +177,35 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 					CsvHelper helper = new CsvHelper(TabPreviewShow.this);
 					wordList = helper.getWords(index, eachLessonWordCount);
 					fontType = "KingSoft-Phonetic-Android.ttf";
+
+					// 处理不再记忆的单词
+					String ignoreWords = Config.getConfig().getIgnoreWordsStr(TabPreviewShow.this, currentLessonNo);
+					if (ignoreWords != null && !ignoreWords.equals("")) {
+						int length = wordList.size();
+						String ignoreWord;
+						Log.i("ignoreWords", ignoreWords);
+						for (int i = 0; i < length; i++) {
+							ignoreWord = (String) wordList.get(i).get("单词");
+							Log.i("ignoreWord", ignoreWord);
+							if (ignoreWords.contains(ignoreWord.toLowerCase())) {
+								Log.i("remove", String.valueOf(i));
+								wordList.remove(i);
+								length = wordList.size();
+							}
+						}
+						totalWordCount = length;
+					}
+
 				}
 
 				// 初始化语音数据
 				if (speechType == null) {
 					speechType = Config.getConfig().getSpeechType(TabPreviewShow.this);
 					Log.i("speechType", speechType);
-				}
-				if (speechType.equalsIgnoreCase("tts")) {
-					if (speech == null) {
-						speech = new Speech(TabPreviewShow.this, Locale.US).getTts();
+					if (speechType.equalsIgnoreCase("tts")) {
+						if (speech == null) {
+							speech = new Speech(TabPreviewShow.this, Locale.US).getTts();
+						}
 					}
 				}
 
@@ -287,7 +307,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 
 			if (this.isCanUpdate) {
 				// 更新记忆曲线
-				Config.getConfig().setRememberLine(TabPreviewShow.this, TabPreviewShow.this.currentLessonNo);
+				Config.getConfig().setRememberLine(TabPreviewShow.this, TabPreviewShow.this.currentLessonNo, ignoreWords.toString());
 				this.isCanUpdate = false;
 
 				// 保存当前学习完的课程号数
@@ -296,14 +316,9 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 
 			Log.i("currentLessonNo", String.valueOf(currentLessonNo));
 
+			// 询问是否开始下一课的学习
 			AlertDialog ad = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle(R.string.dialog_title_tip)
 					.setMessage(R.string.dialog_msg_is_goto_next_lesson).create();
-			ad.setOnCancelListener(new OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface dialog) {
-
-				}
-			});
 			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
@@ -358,33 +373,39 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		totalWordCount = wordList.size();
 	}
 
+	private Set<String> ignoreWords = new HashSet<String>();
+
 	@Override
 	public void onClick(View v) {
 		Button btn = (Button) v;
 		String text = (String) btn.getText();
 		if (text.equals(REMEMBER)) {// 记得
-			yesBtn.setText(RIGHT);
-			noBtn.setText(WRONG);
+			yesBtn.setText(STUDYAGAIN);
+			noBtn.setText(NEVERAGAIN);
 			this.showAnswer();
 		} else if (text.equals(UNREMEMBER)) {// 忘了
 			noBtn.setText(NEXTWORD);
 			yesBtn.setVisibility(Button.INVISIBLE);
 			this.showAnswer();
 		}
+		if (text.equals(NEVERAGAIN)) {// 不再记忆
+			yesBtn.setText(REMEMBER);
+			noBtn.setText(UNREMEMBER);
+			ignoreWords.add(this.thisWord);// 当前单词不再记忆
+			this.showNext();
+		}
+		if (text.equals(STUDYAGAIN)) {// 继续学习
+			yesBtn.setText(REMEMBER);
+			noBtn.setText(UNREMEMBER);
+			yesBtn.setVisibility(Button.VISIBLE);
+			this.showNext();
+		}
 		if (text.equals(NEXTWORD)) {// 下一个
 			yesBtn.setText(REMEMBER);
 			noBtn.setText(UNREMEMBER);
 			yesBtn.setVisibility(Button.VISIBLE);
-			this.addRepeatWord();
+			this.addRepeatWord();//循环记忆
 			this.showNext();
-		}
-		if (text.equals(RIGHT)) {// 正确
-			yesBtn.setText(REMEMBER);
-			noBtn.setText(UNREMEMBER);
-			this.showNext();
-		} else if (text.equals(WRONG)) {// 错误
-			yesBtn.setVisibility(Button.INVISIBLE);
-			noBtn.setText(NEXTWORD);
 		}
 	}
 

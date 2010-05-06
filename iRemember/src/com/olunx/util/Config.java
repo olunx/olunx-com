@@ -363,7 +363,7 @@ public class Config {
 		Log.i("today", sdf.format(new Date()));
 		Log.i("studyDate", String.valueOf(Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00")).after(cal)));
 		return Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00")).after(cal);
-		// return true;
+		//return true;
 	}
 
 	/**
@@ -373,11 +373,10 @@ public class Config {
 	 */
 	public void setDefaultConfig(Context context) {
 		this.setDictDir(context, "/sdcard/");
-		this.setEachLessonWordCount(context, "100");
+		this.setEachLessonWordCount(context, "50");
 		this.setLessonCount(context, "0");
 		this.setCurrentUseDictName(context, "");
 		this.setDictStringArray(context, "", "csv");
-		this.setDictStringArray(context, "", "gds");
 
 		this.cleanRememberLine(context);
 	}
@@ -429,8 +428,9 @@ public class Config {
 	 * 
 	 * @param context
 	 * @param lessonNo
+	 * @param ignoreWords 不再记忆的单词编号
 	 */
-	public void setRememberLine(Context context, int lessonNo) {
+	public void setRememberLine(Context context, int lessonNo, String ignoreWords) {
 		RememberHelper helper = new RememberHelper(context);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));// 获取当前时间
@@ -468,7 +468,7 @@ public class Config {
 					break;
 				}
 				helper.deleteRecord(lessonNo);
-				helper.addRecord(lessonNo, sdf.format(oldTime.getTime()), sdf.format(cal.getTime()), ++times);
+				helper.addRecord(lessonNo, sdf.format(oldTime.getTime()), sdf.format(cal.getTime()), ++times, ignoreWords);
 
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -477,11 +477,42 @@ public class Config {
 		} else {// 不存在
 			String studyTime = sdf.format(cal.getTime());
 			cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 5);// 第一个记忆周期5分钟
-			helper.addRecord(lessonNo, studyTime, sdf.format(cal.getTime()), 1);
+			helper.addRecord(lessonNo, studyTime, sdf.format(cal.getTime()), 1, ignoreWords);
 		}
 		helper.close();
 	}
 
+	public void setRememberLine(Context context, int lessonNo) {
+		this.setRememberLine(context, lessonNo, this.getIgnoreWordsStr(context, lessonNo));
+	}
+	
+	//返回不需要再次记忆的单词编号
+	public String getIgnoreWordsStr(Context context, int lessonNo) {
+		RememberHelper helper = new RememberHelper(context);
+		String ignoreWordsStr = helper.getIgnoreWords(lessonNo);
+		helper.close();
+		Log.i("ignoreWordsStr", ignoreWordsStr);
+		return ignoreWordsStr.toLowerCase();
+	}
+	
+	
+//	public int[] getIgnoreWords(Context context, int lessonNo) {
+//		
+//		String ignoreWordsStr = this.getIgnoreWordsStr(context, lessonNo);
+//		
+//		if(ignoreWordsStr.equals("") || ignoreWordsStr == "") {
+//			return null;
+//		}
+//		
+//		String[] ignoreWords = ignoreWordsStr.split("\\,");
+//		int[] wordNos = new int[ignoreWords.length];
+//		for(int i=0;i<ignoreWords.length;i++) {
+//			wordNos[i] = Integer.parseInt(ignoreWords[i]);
+//		}
+//		
+//		return wordNos;
+//	}
+	
 	/**
 	 * 设置是否可以联网
 	 * 

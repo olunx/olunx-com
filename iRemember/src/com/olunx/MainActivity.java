@@ -32,7 +32,6 @@ public class MainActivity extends Activity {
 	private ArrayList<Map<String, Object>> list = null;
 	private ListView listview = null;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,7 +41,7 @@ public class MainActivity extends Activity {
 
 		// 初始化数据
 		if (Config.getConfig().getEachLessonWordCount(this).equalsIgnoreCase("0")) {
-			Config.getConfig().setEachLessonWordCount(this, "100");
+			Config.getConfig().setEachLessonWordCount(this, "50");
 		}
 	}
 

@@ -16,7 +16,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -133,7 +132,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 		initWords();
 	}
 
-	// 初始化单词
+	// 初始化单词学习界面
 	private void initWords() {
 
 		// 设置可更新记忆曲线
@@ -174,19 +173,39 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 					CsvHelper helper = new CsvHelper(ReviewRadioShow.this);
 					wordList = helper.getWords(index, eachLessonWordCount);
 					fontType = "KingSoft-Phonetic-Android.ttf";
+		
+					// 处理不再记忆的单词
+					String ignoreWords = Config.getConfig().getIgnoreWordsStr(ReviewRadioShow.this, currentLessonNo);
+					if (ignoreWords != null && !ignoreWords.equals("")) {
+						int length = wordList.size();
+						String ignoreWord;
+						Log.i("ignoreWords", ignoreWords);
+						for (int i = 0; i < length; i++) {
+							ignoreWord = (String) wordList.get(i).get("单词");
+							Log.i("ignoreWord", ignoreWord);
+							if (ignoreWords.contains(ignoreWord.toLowerCase())) {
+								Log.i("remove", String.valueOf(i));
+								wordList.remove(i);
+								length = wordList.size();
+							}
+						}
+						totalWordCount = length;
+					}
+
 				}
-				
+
 				// 初始化语音数据
 				if (speechType == null) {
 					speechType = Config.getConfig().getSpeechType(ReviewRadioShow.this);
 					Log.i("speechType", speechType);
-				}
-				if (speechType.equalsIgnoreCase("tts")) {
-					if (speech == null) {
-						speech = new Speech(ReviewRadioShow.this, Locale.US).getTts();
+					if (speechType.equalsIgnoreCase("tts")) {
+						if (speech == null) {
+							speech = new Speech(ReviewRadioShow.this, Locale.US).getTts();
+						}
 					}
 				}
 				
+
 				pd.dismiss();
 			}
 		}.start();
@@ -321,14 +340,9 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 
 			Log.i("currentLessonNo", String.valueOf(currentLessonNo));
 
+			//询问是否开始下一课的学习
 			AlertDialog ad = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle(R.string.dialog_title_tip)
 					.setMessage(R.string.dialog_msg_is_goto_next_lesson).create();
-			ad.setOnCancelListener(new OnCancelListener() {
-				@Override
-				public void onCancel(DialogInterface dialog) {
-
-				}
-			});
 			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
