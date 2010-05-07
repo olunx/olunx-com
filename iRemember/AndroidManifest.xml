@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.olunx" android:versionCode="1" android:versionName="1.0">
+	package="com.olunx" android:versionName="1.0 beta 4" android:versionCode="20100505">
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
 		<activity android:name=".MainActivity" android:label="@string/app_name">
 			<intent-filter>
@@ -18,6 +18,8 @@
 		
 		<activity android:name="com.olunx.option.search.TabSearch"></activity>
 		
+		<activity android:name="com.olunx.option.sync.TabSync"></activity>
+		
 		<activity android:name="com.olunx.option.mandict.OptionManDict"></activity>
 		<activity android:name="com.olunx.option.mandict.TabDictBrowser"></activity>
 		<activity android:name="com.olunx.option.mandict.TabDictList"></activity>
@@ -29,5 +31,8 @@
 	</application>
 	<uses-sdk android:minSdkVersion="4" />
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_OWNER_DATA" />
+	<uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
 
 </manifest> 

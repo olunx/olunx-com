@@ -28,6 +28,8 @@ public class RememberHelper implements HelperInterface {
 		try {
 			if (sqlite == null || !sqlite.isOpen()) {
 				sqlite = new DBHelper(context).getWritableDatabase();
+				
+				Log.i("sqlite.getPath() ",sqlite.getPath());
 			}
 			return sqlite;
 		} catch (SQLException e) {

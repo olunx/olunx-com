@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<string name="tab_base_config_title">基本设置</string>
-	
-	<string name="tab_voice_config_title">发音设置</string>
-
-</resources>

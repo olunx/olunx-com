@@ -29,6 +29,19 @@ public class Config {
 	private static Config c = null;
 
 	public static final String DICTTYPE_CSV = "csv";
+	public static final String FILENAME_CONFIG = "config";
+	public static final String FILENAME_DATABASE = "data.db";
+	
+	private static final String SYSTEM_PATH = "/data/data/com.olunx/";
+	private static final String SDCARD_PATH = "/sdcard/iremember/";
+	
+	public static final String DATABASE_FILE = FILENAME_DATABASE;
+	public static final String FILE_SYSTEM_DATABASE = SYSTEM_PATH + "databases/" + DATABASE_FILE;
+	public static final String FILE_SDCARD_DATABASE = SDCARD_PATH + DATABASE_FILE;
+	
+	public static final String CONFIG_FILE = Config.FILENAME_CONFIG + ".xml";
+	public static final String FILE_SYSTEM_CONFIG = SYSTEM_PATH + "shared_prefs/" + CONFIG_FILE;
+	public static final String FILE_SDCARD_CONFIG = SDCARD_PATH + CONFIG_FILE;
 	
 	public static Config getConfig() {
 		if (c == null) {
@@ -47,7 +60,7 @@ public class Config {
 	 * @param value
 	 */
 	public void setCon(Context context, String key, String value) {
-		sp = context.getSharedPreferences("config_data", 0);
+		sp = context.getSharedPreferences(FILENAME_CONFIG, 0);
 		sp.edit().putString(key, value).commit();
 	}
 
@@ -60,7 +73,7 @@ public class Config {
 	 * @return
 	 */
 	public String getCon(Context context, String key, String defValue) {
-		sp = context.getSharedPreferences("config_data", 0);
+		sp = context.getSharedPreferences(FILENAME_CONFIG, 0);
 		return sp.getString(key, defValue);
 	}
 
@@ -89,7 +102,7 @@ public class Config {
 	}
 
 	public String getEachLessonWordCount(Context context) {
-		return this.getCon(context, "config_each_lesson_word_count", "0");
+		return this.getCon(context, "config_each_lesson_word_count", "25");
 	}
 
 	/**
@@ -117,9 +130,9 @@ public class Config {
 				int intEachLessonWordCount = Integer.parseInt(eachLessonWordCount);
 				if (intEachLessonWordCount > 0) {
 					lessonCount = intWordCount / intEachLessonWordCount;
-				}
-				if (intWordCount % intEachLessonWordCount > 0) {
-					lessonCount++;
+					if (intWordCount % intEachLessonWordCount > 0) {
+						lessonCount++;
+					}
 				}
 			}
 		}

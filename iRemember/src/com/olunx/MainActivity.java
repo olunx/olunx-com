@@ -14,7 +14,7 @@ import com.olunx.option.manual.OptionManual;
 import com.olunx.option.preview.TabPreviewInit;
 import com.olunx.option.review.OptionReview;
 import com.olunx.option.search.TabSearch;
-import com.olunx.util.Config;
+import com.olunx.option.sync.TabSync;
 
 import android.app.Activity;
 import android.content.Context;
@@ -39,10 +39,6 @@ public class MainActivity extends Activity {
 		// 显示内容
 		showContent();
 
-		// 初始化数据
-		if (Config.getConfig().getEachLessonWordCount(this).equalsIgnoreCase("0")) {
-			Config.getConfig().setEachLessonWordCount(this, "50");
-		}
 	}
 
 	public void showContent() {
@@ -128,6 +124,12 @@ public class MainActivity extends Activity {
 			case 3: {
 				Intent i = new Intent();
 				i.setClass(context, OptionManDict.class);
+				context.startActivity(i);
+				break;
+			}
+			case 4: {
+				Intent i = new Intent();
+				i.setClass(context, TabSync.class);
 				context.startActivity(i);
 				break;
 			}
