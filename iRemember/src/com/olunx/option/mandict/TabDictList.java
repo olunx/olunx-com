@@ -47,7 +47,7 @@ public class TabDictList extends Activity {
 
 		// 进度框
 		final ProgressDialog pd = new ProgressDialog(this);
-		pd.setIcon(android.R.drawable.ic_dialog_alert);
+		pd.setIcon(android.R.drawable.ic_dialog_info);
 		pd.setTitle(getString(R.string.dialog_msg_refresh_dict_list));
 		pd.setMessage(getString(R.string.dialog_msg_wait));
 		pd.show();

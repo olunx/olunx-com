@@ -17,9 +17,13 @@ import com.olunx.option.search.TabSearch;
 import com.olunx.option.sync.TabSync;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Process;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -41,6 +45,38 @@ public class MainActivity extends Activity {
 
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Process.killProcess(android.os.Process.myPid());
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setTitle(R.string.dialog_title_alert)
+			.setMessage("是否真的要关闭程序？")
+			.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			})
+			.setPositiveButton(R.string.btn_sure, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					finish();
+				}
+			}).show();
+			
+			return true;
+			
+		}else {
+			return super.onKeyDown(keyCode, event);
+		}
+		
+	}
+
 	public void showContent() {
 		list = new ArrayList<Map<String, Object>>();
 
@@ -50,7 +86,7 @@ public class MainActivity extends Activity {
 		map.put(getString(R.string.description), getString(R.string.option_preview_desc));
 		map.put(getString(R.string.image), R.drawable.option_preview);
 		list.add(map);
-		
+
 		map = new HashMap<String, Object>();
 		map.put(getString(R.string.options), getString(R.string.option_review_title));
 		map.put(getString(R.string.description), getString(R.string.option_review_desc));
@@ -86,8 +122,8 @@ public class MainActivity extends Activity {
 				R.id.main_view_iv });
 
 		listview = new ListView(this);
-//		listview.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg));
-//		listview.setDivider(this.getResources().getDrawable(android.R.drawable.divider_horizontal_textfield));
+		// listview.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg));
+		// listview.setDivider(this.getResources().getDrawable(android.R.drawable.divider_horizontal_textfield));
 		listview.setAdapter(adapter);
 		listview.setOnItemClickListener(new MainOptionClickListener());
 

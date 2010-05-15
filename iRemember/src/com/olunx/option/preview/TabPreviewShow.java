@@ -404,7 +404,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			yesBtn.setText(REMEMBER);
 			noBtn.setText(UNREMEMBER);
 			yesBtn.setVisibility(Button.VISIBLE);
-			this.addRepeatWord();//循环记忆
+			this.addRepeatWord();// 循环记忆
 			this.showNext();
 		}
 	}
@@ -418,6 +418,17 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 			showNext();
 			break;
+		case KeyEvent.KEYCODE_BACK: {
+			if (speak != null) {
+				speak.release();
+			}
+			if (speech != null) {
+				speech.stop();
+				speech.shutdown();
+			}
+			finish();
+			break;
+		}
 		}
 		return super.onKeyDown(keyCode, event);
 	}
