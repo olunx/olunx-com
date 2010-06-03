@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main" android:layout_width="fill_parent"
+	android:layout_height="wrap_content" android:scrollbars="none"
+	android:background="#FFF5F5F5">
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_gravity="center_horizontal" android:padding="10dip">
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_height="fill_parent" android:background="@drawable/content_bg"
+			android:id="@+id/section1">
+			<TextView android:id="@+id/l_section1" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_marginBottom="6dip"
+				android:text="Post Content" android:textSize="18dip"/>
+			<TextView android:id="@+id/l_title" android:layout_below="@id/l_section1"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:text="post_title" android:textColor="#444444" />
+
+			<EditText android:id="@+id/title" android:minHeight="40dip"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:background="@android:drawable/editbox_background"
+				android:autoText="true" android:capitalize="sentences"
+				android:layout_below="@id/l_title" />
+
+			<TextView android:id="@+id/l_content" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="post_content"
+				android:layout_below="@id/title" android:textColor="#444444" />
+
+			<EditText android:id="@+id/content" android:gravity="top"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:background="@android:drawable/editbox_background"
+				android:minLines="5" android:maxLines="20" android:autoText="true"
+				android:capitalize="sentences" android:layout_below="@id/l_content" />
+              
+           
+
+        
+  
+            
+          
+              </RelativeLayout>
+
+<RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:background="@drawable/content_bg"
+                android:id="@+id/section3"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip" android:layout_below="@id/section1"> 
+                <TextView android:id="@+id/l_tags_categories"
+    		  android:layout_marginBottom="6dip"
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="Tags &amp; Categories"/>              
+                   <TextView android:id="@+id/l_tags" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:layout_below="@id/l_tags_categories" 
+              android:text="tags_separate_with_commas"/>
+              
+    <EditText android:id="@+id/tags" 
+    		  android:minHeight="40dip"
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:background="@android:drawable/editbox_background"
+              android:autoText="true"
+              android:layout_below="@id/l_tags"/>
+              
+    <TextView android:id="@+id/l_category" 
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content" 
+              android:text="categories"
+              android:layout_below="@id/tags"
+              android:textColor="#444444"
+              android:layout_marginTop="10dip"/>
+              
+  <Button
+			android:id="@+id/selectCategories"
+			android:background="@drawable/wp_button_small"
+     	    android:layout_below="@id/l_category"
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:text="select_categories" />
+       
+     <TextView android:id="@+id/selectedCategories" 
+              android:layout_width="wrap_content" 
+              android:layout_height="wrap_content"
+              android:text="selected_categories"
+              android:layout_below="@id/selectCategories"
+              android:textColor="#444444"/>
+	</RelativeLayout> 
+ <RelativeLayout android:id="@+id/location_wrapper"
+ 			   android:layout_width="wrap_content"
+ 			   android:layout_height="fill_parent"
+                android:layout_below="@id/section3"
+                android:layout_marginTop="-10dip">
+ <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:background="@drawable/content_bg"
+                android:id="@+id/section4"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:layout_below="@id/section3"
+                android:visibility="gone"> 
+                <TextView android:id="@+id/l_location"
+    		  android:layout_marginBottom="6dip"
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="location"/>
+              <TextView android:id="@+id/locationText"
+    		  android:layout_marginBottom="6dip"
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="loading"
+              android:layout_below="@id/l_location"/> 
+              <Button
+			android:id="@+id/viewMap"
+			android:background="@drawable/wp_button_small"
+     	    android:layout_below="@id/locationText"
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"
+            android:textSize="18dip"
+            android:text="View Map" />     
+            <Button
+			android:id="@+id/updateLocation"
+			android:background="@drawable/wp_button_small"
+     	    android:layout_toRightOf="@id/viewMap"
+     	    android:layout_alignTop="@id/viewMap"
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"
+            android:textSize="18dip"
+            android:text="Update Location" />                                
+ </RelativeLayout> 
+ </RelativeLayout>
+ <RelativeLayout android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:background="@drawable/content_bg"
+                android:id="@+id/section5"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="10dip"
+                android:layout_below="@id/location_wrapper"> 
+                <TextView android:id="@+id/l_status"
+    		  android:layout_marginBottom="6dip"
+              android:layout_width="fill_parent" 
+              android:layout_height="wrap_content"
+              android:text="Status"/>                                       
+    <CheckBox android:id="@+id/publish"
+     		android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_below="@id/l_status"
+            android:text="publish"
+            android:button="@drawable/wp_checkbox"
+            /> 
+ </RelativeLayout>   
+    		  
+<Button
+			android:id="@+id/post" 
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content" 
+            android:layout_below="@id/section5"
+            android:background="@drawable/wp_button_small"
+            android:layout_alignParentRight="true"
+            android:textSize="20dip"
+            android:text="save" /> 
+            
+<Button
+			android:id="@+id/cancel" 
+            android:layout_alignTop="@id/post"
+            android:layout_toLeftOf="@id/post" 
+            android:background="@drawable/wp_button_small"
+            android:layout_width="wrap_content"  
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:text="cancel" />
+</RelativeLayout>
+</ScrollView>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/settings" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:scrollbars="none"
+	android:background="#FFF5F5F5">
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:padding="10dip" android:background="#FFF5F5F5">
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_height="fill_parent" android:background="@drawable/content_bg"
+			android:id="@+id/section1">
+			<TextView android:id="@+id/l_section1" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:textSize="18dip"
+				android:text="Account" />
+			<TextView android:id="@+id/l_url" android:textColor="#444444"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:layout_below="@id/l_section1" android:layout_marginTop="10dip"
+				android:text="blog url:" />
+
+			<EditText android:id="@+id/url" android:inputType="textUri"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:minHeight="40dip" android:background="@android:drawable/editbox_background"
+				android:layout_below="@id/l_url" />
+
+			<TextView android:id="@+id/l_username" android:textColor="#444444"
+				android:layout_marginTop="10dip" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="username"
+				android:layout_below="@id/url" />
+
+			<EditText android:id="@+id/username" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:singleLine="true"
+				android:minHeight="40dip" android:background="@android:drawable/editbox_background"
+				android:layout_below="@id/l_username" />
+
+			<TextView android:id="@+id/l_password" android:textColor="#444444"
+				android:layout_marginTop="10dip" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:text="password"
+				android:layout_below="@id/username" />
+
+			<EditText android:id="@+id/password" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:singleLine="true"
+				android:minHeight="40dip" android:layout_marginBottom="10dip"
+				android:password="true" android:background="@android:drawable/editbox_background"
+				android:layout_below="@id/l_password" />
+
+			<Spinner android:layout_below="@+id/password"
+				android:layout_height="wrap_content" android:id="@+id/Spinner01"
+				android:layout_width="fill_parent"></Spinner>
+			<Button android:id="@+id/save" android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:layout_marginLeft="10dip"
+				android:text="save" android:shadowColor="#FFFFFF" android:shadowDx="0"
+				android:shadowDy="1" android:shadowRadius="1"
+				android:background="@drawable/wp_button_small"
+				android:layout_below="@+id/Spinner01" android:textSize="20dip"/>
+
+			<Button android:id="@+id/cancel" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_alignTop="@id/save"
+				android:layout_toLeftOf="@id/save" android:text="cancel"
+				android:background="@drawable/wp_button_small" android:textSize="20dip"/>
+            
+
+</RelativeLayout>
+
+
+		</RelativeLayout>
+</ScrollView>

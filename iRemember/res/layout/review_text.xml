@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<LinearLayout android:id="@+id/LinearLayout01"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical">
+		<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="0sp" android:orientation="vertical" android:isScrollContainer="true"><EditText android:text="@+id/EditText01" android:id="@+id/EditText01" android:layout_height="wrap_content" android:minHeight="55sp" android:layout_width="fill_parent" android:textSize="30sp" android:layout_marginTop="5sp" android:singleLine="true"></EditText><TextView android:id="@+id/TextView01" android:layout_width="fill_parent" android:gravity="center" android:textSize="30sp" android:textColor="#fff" android:layout_height="wrap_content"></TextView><TextView android:id="@+id/TextView02" android:layout_width="fill_parent" android:gravity="center" android:textSize="20sp" android:textColor="#fff666" android:minHeight="35sp" android:layout_height="wrap_content"></TextView><ScrollView android:id="@+id/ScrollView02" android:layout_width="fill_parent" android:layout_height="fill_parent"><LinearLayout android:id="@+id/LinearLayout04" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"><TextView android:id="@+id/TextView03" android:layout_width="fill_parent" android:padding="10sp" android:textSize="20sp" android:textColor="#fff" android:layout_height="wrap_content" android:minHeight="66sp"></TextView><TextView android:id="@+id/TextView04" android:layout_width="fill_parent" android:paddingBottom="5sp" android:paddingLeft="10sp" android:paddingRight="10sp" android:paddingTop="5sp" android:layout_height="wrap_content" android:textSize="18sp"></TextView></LinearLayout>
+			
+		
+</ScrollView>
+</LinearLayout>
+		
+		
+		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" style="@android:style/ButtonBar" android:layout_width="fill_parent" android:orientation="horizontal" android:background="#999">
+			<ImageButton android:id="@+id/ImageButton01" android:layout_height="wrap_content" android:adjustViewBounds="true" android:layout_gravity="center" android:src="@drawable/volume" android:layout_width="50px"></ImageButton><Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="0dip" android:gravity="center" android:layout_gravity="center_horizontal"></Button>
+			
+			
+		</LinearLayout>
+		
+	
+</LinearLayout>
