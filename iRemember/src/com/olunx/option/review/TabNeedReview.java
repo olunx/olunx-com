@@ -111,7 +111,7 @@ public class TabNeedReview extends Activity {
 				ad.setIcon(android.R.drawable.ic_dialog_info);
 				ad.setTitle("请选择记忆方式");
 				ad.setCancelable(false);
-				ad.setItems(new String[] { "浏览记忆[看单词想中文]", "词义记忆[看单词选词义]" }, new OnClickListener() {
+				ad.setItems(new String[] { "浏览记忆[看单词想中文]", "词义记忆[看单词选词义]", "拼写记忆[看词义写单词]" }, new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -125,6 +125,11 @@ public class TabNeedReview extends Activity {
 							break;
 						case 1:
 							i.setClass(TabNeedReview.this, ReviewRadioShow.class);
+							i.putExtra("currentLessonNo", lessonNo);
+							TabNeedReview.this.startActivity(i);
+							break;
+						case 2:
+							i.setClass(TabNeedReview.this, ReviewTextShow.class);
 							i.putExtra("currentLessonNo", lessonNo);
 							TabNeedReview.this.startActivity(i);
 							break;

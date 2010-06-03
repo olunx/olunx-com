@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 import com.olunx.R;
+import com.olunx.db.CsvHelper;
 import com.olunx.db.RememberHelper;
 import com.olunx.option.mandict.GetCsvInfo;
 
@@ -31,18 +32,18 @@ public class Config {
 	public static final String DICTTYPE_CSV = "csv";
 	public static final String FILENAME_CONFIG = "config";
 	public static final String FILENAME_DATABASE = "data.db";
-	
+
 	private static final String SYSTEM_PATH = "/data/data/com.olunx/";
 	private static final String SDCARD_PATH = "/sdcard/iremember/";
-	
+
 	public static final String DATABASE_FILE = FILENAME_DATABASE;
 	public static final String FILE_SYSTEM_DATABASE = SYSTEM_PATH + "databases/" + DATABASE_FILE;
 	public static final String FILE_SDCARD_DATABASE = SDCARD_PATH + DATABASE_FILE;
-	
+
 	public static final String CONFIG_FILE = Config.FILENAME_CONFIG + ".xml";
 	public static final String FILE_SYSTEM_CONFIG = SYSTEM_PATH + "shared_prefs/" + CONFIG_FILE;
 	public static final String FILE_SDCARD_CONFIG = SDCARD_PATH + CONFIG_FILE;
-	
+
 	public static Config getConfig() {
 		if (c == null) {
 			c = new Config();
@@ -61,7 +62,7 @@ public class Config {
 	 */
 	public void setCon(Context context, String key, String value) {
 		sp = context.getSharedPreferences(FILENAME_CONFIG, 0);
-		sp.edit().putString(key, value).commit();
+		sp.edit().putString(key, String.valueOf(value)).commit();
 	}
 
 	/**
@@ -165,12 +166,12 @@ public class Config {
 			dictSize = gci.getFileSize();
 			dictName = gci.getDictName();
 			dictsArray = dictsArray + dictName + "|";// 将词库名称作为数组，方便获取
-			
+
 			this.setDictPath(context, dictName, path);
-//			this.setDictWordCount(context, dictName, wordCount);
+			// this.setDictWordCount(context, dictName, wordCount);
 			this.setDictType(context, dictName, dictType);
 			this.setDictDesc(context, dictName, "大小：" + dictSize + "   类型：" + dictType);
-			
+
 		}
 		this.setDictStringArray(context, dictsArray, dictType);
 	}
@@ -213,20 +214,21 @@ public class Config {
 		return this.getCon(context, dictType + "_dicts_string_array", "");
 	}
 
-//	/**
-//	 * 设置词典单词数
-//	 * 
-//	 * @param context
-//	 * @param dictName
-//	 * @param wordCount
-//	 */
-//	public void setDictWordCount(Context context, String dictName, String wordCount) {
-//		this.setCon(context, dictName + "_count", wordCount);
-//	}
-//
-//	public String getDictWordCount(Context context, String dictName) {
-//		return this.getCon(context, dictName + "_count", "0");
-//	}
+	// /**
+	// * 设置词典单词数
+	// *
+	// * @param context
+	// * @param dictName
+	// * @param wordCount
+	// */
+	// public void setDictWordCount(Context context, String dictName, String
+	// wordCount) {
+	// this.setCon(context, dictName + "_count", wordCount);
+	// }
+	//
+	// public String getDictWordCount(Context context, String dictName) {
+	// return this.getCon(context, dictName + "_count", "0");
+	// }
 
 	/**
 	 * 设置词典路径
@@ -305,7 +307,7 @@ public class Config {
 	public void setCurrentUseDictWordCount(Context context, String wordCount) {
 		this.setCon(context, "current_dict_count", wordCount);
 	}
-	
+
 	public String getCurrentUseDictWordCount(Context context) {
 		return this.getCon(context, "current_dict_count", "0");
 	}
@@ -376,7 +378,7 @@ public class Config {
 		Log.i("today", sdf.format(new Date()));
 		Log.i("studyDate", String.valueOf(Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00")).after(cal)));
 		return Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00")).after(cal);
-		//return true;
+		// return true;
 	}
 
 	/**
@@ -441,7 +443,8 @@ public class Config {
 	 * 
 	 * @param context
 	 * @param lessonNo
-	 * @param ignoreWords 不再记忆的单词编号
+	 * @param ignoreWords
+	 *            不再记忆的单词编号
 	 */
 	public void setRememberLine(Context context, int lessonNo, String ignoreWords) {
 		RememberHelper helper = new RememberHelper(context);
@@ -498,8 +501,8 @@ public class Config {
 	public void setRememberLine(Context context, int lessonNo) {
 		this.setRememberLine(context, lessonNo, this.getIgnoreWordsStr(context, lessonNo));
 	}
-	
-	//返回不需要再次记忆的单词编号
+
+	// 返回不需要再次记忆的单词编号
 	public String getIgnoreWordsStr(Context context, int lessonNo) {
 		RememberHelper helper = new RememberHelper(context);
 		String ignoreWordsStr = helper.getIgnoreWords(lessonNo);
@@ -507,37 +510,36 @@ public class Config {
 		Log.i("ignoreWordsStr", ignoreWordsStr);
 		return ignoreWordsStr.toLowerCase();
 	}
-	
-	
-//	public int[] getIgnoreWords(Context context, int lessonNo) {
-//		
-//		String ignoreWordsStr = this.getIgnoreWordsStr(context, lessonNo);
-//		
-//		if(ignoreWordsStr.equals("") || ignoreWordsStr == "") {
-//			return null;
-//		}
-//		
-//		String[] ignoreWords = ignoreWordsStr.split("\\,");
-//		int[] wordNos = new int[ignoreWords.length];
-//		for(int i=0;i<ignoreWords.length;i++) {
-//			wordNos[i] = Integer.parseInt(ignoreWords[i]);
-//		}
-//		
-//		return wordNos;
-//	}
-	
+
+	// public int[] getIgnoreWords(Context context, int lessonNo) {
+	//		
+	// String ignoreWordsStr = this.getIgnoreWordsStr(context, lessonNo);
+	//		
+	// if(ignoreWordsStr.equals("") || ignoreWordsStr == "") {
+	// return null;
+	// }
+	//		
+	// String[] ignoreWords = ignoreWordsStr.split("\\,");
+	// int[] wordNos = new int[ignoreWords.length];
+	// for(int i=0;i<ignoreWords.length;i++) {
+	// wordNos[i] = Integer.parseInt(ignoreWords[i]);
+	// }
+	//		
+	// return wordNos;
+	// }
+
 	/**
 	 * 设置是否可以联网
 	 * 
 	 * @param context
 	 * @param value
 	 */
-	public void setCanConNetWord(Context context, String value) {
-		this.setCon(context, "can_get_net_word", value);
+	public void setCanConNetWord(Context context, Boolean value) {
+		this.setCon(context, "can_get_net_word", String.valueOf(value));
 	}
 
-	public String getCanConNetWord(Context context) {
-		return this.getCon(context, "can_get_net_word", "false");
+	public boolean getCanConNetWord(Context context) {
+		return Boolean.parseBoolean(this.getCon(context, "can_get_net_word", "false"));
 	}
 
 	/**
@@ -565,6 +567,77 @@ public class Config {
 	}
 
 	public String getSpeechType(Context context) {
-		return this.getCon(context, "speech_type", "false");
+		return this.getCon(context, "speech_type", "null");
+	}
+
+	/**
+	 * 是否可发音
+	 * @param context
+	 * @param flag
+	 */
+	public void setCanSpeech(Context context, boolean flag) {
+		this.setCon(context, "is_can_speech", String.valueOf(flag));
+	}
+	
+	public boolean isCanSpeech(Context context) {
+		return Boolean.parseBoolean(this.getCon(context, "is_can_speech", "false"));
+	}
+
+	/**
+	 * 读取词库数据
+	 * 
+	 * @param context
+	 * @param currentLessonNo
+	 * @return
+	 */
+	public ArrayList<HashMap<String, Object>> getWordsFromFileByLessonNo(Context context, int currentLessonNo) {
+		ArrayList<HashMap<String, Object>> wordList = null;
+
+		// 计算偏移量和单词数
+		String strEachLessonWordCount = Config.getConfig().getEachLessonWordCount(context);
+		int eachLessonWordCount = 0;// 每课单词数
+		if (strEachLessonWordCount != null && !strEachLessonWordCount.equals("")) {
+			eachLessonWordCount = Integer.parseInt(strEachLessonWordCount);
+		}
+		int index = currentLessonNo * eachLessonWordCount;// 偏移量
+		String dictType = Config.getConfig().getCurrentUseDictType(context);
+		if (dictType.equalsIgnoreCase("csv")) {
+			CsvHelper helper = new CsvHelper(context);
+			wordList = helper.getWords(index, eachLessonWordCount);
+		}
+
+		// 处理不再记忆的单词
+		String ignoreWords = Config.getConfig().getIgnoreWordsStr(context, currentLessonNo);
+		if (ignoreWords != null && !ignoreWords.equals("")) {
+			int length = wordList.size();
+			String ignoreWord;
+			ignoreWords = ignoreWords.toLowerCase();
+			Log.i("ignoreWords", ignoreWords);
+			for (int i = 0; i < length; i++) {
+				ignoreWord = (String) wordList.get(i).get("单词");
+//				Log.i("ignoreWord", ignoreWord);
+				if (ignoreWords.contains(ignoreWord.toLowerCase())) {
+					Log.i("remove", String.valueOf(i));
+					wordList.remove(i);
+					length = wordList.size();
+				}
+			}
+		}
+
+		return wordList;
+	}
+
+	/**
+	 * 设置词库文件编码
+	 * 
+	 * @param context
+	 * @param charset
+	 */
+	public void setDictCharset(Context context, String charset) {
+		this.setCon(context, "config_dict_charset", charset);
+	}
+
+	public String getDictCharset(Context context) {
+		return getCon(context, "config_dict_charset", "GBK");
 	}
 }

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
@@ -27,6 +28,7 @@ public class TabDictSet extends PreferenceActivity {
 	private PreferenceScreen dictPathPref = null;// 词典路径
 	private PreferenceScreen defaultDictPref = null;// 默认使用词典
 	private EditTextPreference eachLesWCPref = null;// 每课单词数
+	private ListPreference chasetPref = null;// 词库文件编码
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +93,29 @@ public class TabDictSet extends PreferenceActivity {
 		});
 		root.addPreference(eachLesWCPref);
 
+		chasetPref = new ListPreference(this);
+		chasetPref.setKey("config_dict_charset");
+		chasetPref.setTitle("词库文件编码：");
+		chasetPref.setEntries(new String[]{"GBK","GB2312","Big5","UTF-8"});
+		chasetPref.setEntryValues(new String[]{"GBK","GB2312","Big5","UTF-8"});
+		chasetPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				Log.i("newValue", String.valueOf(newValue));
+				Config.getConfig().setDictCharset(TabDictSet.this, String.valueOf(newValue));
+				chasetPref.setSummary(Config.getConfig().getDictCharset(TabDictSet.this));
+				chasetPref.setValue(String.valueOf(newValue));
+				return false;
+			}});
+		root.addPreference(chasetPref);
+		
 		// 其它设置
 		PreferenceCategory otherSetPrefCat = new PreferenceCategory(this);
 		otherSetPrefCat.setTitle("其它设置");
 		root.addPreference(otherSetPrefCat);
 
 		//真人发音
-		final CheckBoxPreference speechPref = new CheckBoxPreference(this);
+//		final CheckBoxPreference speechPref = new CheckBoxPreference(this);
 		
 		// 发音功能
 		final CheckBoxPreference ttsPref = new CheckBoxPreference(this);
@@ -108,12 +126,13 @@ public class TabDictSet extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				if(ttsPref.isChecked()) {
-					if(speechPref.isChecked()) {
-						speechPref.setChecked(false);
-					}
 					//设置发音类型
 					Config.getConfig().setSpeechType(TabDictSet.this, 1);
+					Config.getConfig().setCanSpeech(TabDictSet.this, true);
 					Log.i("flag()", Config.getConfig().getSpeechType(TabDictSet.this));
+				}else {
+					Config.getConfig().setSpeechType(TabDictSet.this, 0);
+					Config.getConfig().setCanSpeech(TabDictSet.this, false);
 				}
 				return false;
 			}
@@ -137,48 +156,48 @@ public class TabDictSet extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				boolean flag = sentsPref.isChecked();
-				Config.getConfig().setCanConNetWord(TabDictSet.this, String.valueOf(flag));
+				Config.getConfig().setCanConNetWord(TabDictSet.this, flag);
 				if(!flag) {
 					Config.getConfig().setSpeechType(TabDictSet.this, 0);
 				}
-				Log.i("flag()", Config.getConfig().getCanConNetWord(TabDictSet.this));
 				Log.i("flag()", Config.getConfig().getSpeechType(TabDictSet.this));
 				return false;
 			}
 		});
 		netScrPref.addPreference(sentsPref);
 
-		// 真人发音
-		speechPref.setKey("realpeople_function");
-		speechPref.setTitle("真人发音");
-		speechPref.setSummary("来自dict.cn的真人发音库数据。");
-		speechPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				if(speechPref.isChecked()) {
-					if(ttsPref.isChecked()) {
-						ttsPref.setChecked(false);
-					}
-					//设置发音类型
-					Config.getConfig().setSpeechType(TabDictSet.this, 2);
-					Log.i("flag()", Config.getConfig().getSpeechType(TabDictSet.this));
-				}
-				return false;
-			}
-		});
-		netScrPref.addPreference(speechPref);
+//		// 真人发音
+//		speechPref.setKey("realpeople_function");
+//		speechPref.setTitle("真人发音");
+//		speechPref.setSummary("来自dict.cn的真人发音库数据。");
+//		speechPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//			@Override
+//			public boolean onPreferenceClick(Preference preference) {
+//				if(speechPref.isChecked()) {
+//					if(ttsPref.isChecked()) {
+//						ttsPref.setChecked(false);
+//					}
+//					//设置发音类型
+//					Config.getConfig().setSpeechType(TabDictSet.this, 2);
+//					Log.i("flag()", Config.getConfig().getSpeechType(TabDictSet.this));
+//				}
+//				return false;
+//			}
+//		});
+//		netScrPref.addPreference(speechPref);
 		
 		refreshPref();
 		setPreferenceScreen(root);
 
-		// 貌似是sdk的bug，要用代码定义依赖，就要这样做，在setPreferenceScreen方法后。
-		getPreferenceManager().findPreference("realpeople_function").setDependency("sents_function");
+//		// 貌似是sdk的bug，要用代码定义依赖，就要这样做，在setPreferenceScreen方法后。
+//		getPreferenceManager().findPreference("realpeople_function").setDependency("sents_function");
 	}
 
 	//显示配置信息
 	private void refreshPref() {
 		Log.i("refresh", Config.getConfig().getDictDir(this));
 		dictPathPref.setSummary(Config.getConfig().getDictDir(this));
+		chasetPref.setSummary(Config.getConfig().getDictCharset(this));
 		defaultDictPref.setSummary(Config.getConfig().getCurrentUseDictName(this));
 		eachLesWCPref.setSummary(Config.getConfig().getEachLessonWordCountDes(this));
 	}

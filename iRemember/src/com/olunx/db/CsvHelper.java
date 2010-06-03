@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.olunx.util.CharsetDetector;
 import com.olunx.util.Config;
 
 import android.content.Context;
@@ -27,23 +26,23 @@ public class CsvHelper {
 		String dictPath = Config.getConfig().getCurrentUseDictPath(context);
 		
 		// 检测文件编码
-		String fileCharset = "GBK";
+		String fileCharset = Config.getConfig().getDictCharset(context);
 		
-		CharsetDetector charDect = new CharsetDetector();
-		String[] probableSet = null;
-		try {
-			FileInputStream fis = new FileInputStream(dictPath);
-			probableSet = charDect.detectChineseCharset(fis);
-			fis.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		for (String charset : probableSet) {
-			System.out.println(charset);
-			fileCharset = charset;
-		}
+//		CharsetDetector charDect = new CharsetDetector();
+//		String[] probableSet = null;
+//		try {
+//			FileInputStream fis = new FileInputStream(dictPath);
+//			probableSet = charDect.detectChineseCharset(fis);
+//			fis.close();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		for (String charset : probableSet) {
+//			System.out.println(charset);
+//			fileCharset = charset;
+//		}
 		
 		
 		BufferedReader br;

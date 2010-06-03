@@ -15,6 +15,7 @@
 		<activity android:name="com.olunx.option.review.TabNeedReview"></activity>
 		<activity android:name="com.olunx.option.review.TabNoReview"></activity>
 		<activity android:name="com.olunx.option.review.ReviewRadioShow"></activity>
+		<activity android:name="com.olunx.option.review.ReviewTextShow"></activity>
 		
 		<activity android:name="com.olunx.option.search.TabSearch"></activity>
 		
