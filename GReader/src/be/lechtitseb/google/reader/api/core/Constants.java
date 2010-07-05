@@ -2,12 +2,10 @@ package be.lechtitseb.google.reader.api.core;
 
 //FIXME these constants should be place in a configuration file
 public final class Constants {
-	public static final String HTTP_CHARSET_PARAMETER =
-			"http.protocol.content-charset";
+	public static final String HTTP_CHARSET_PARAMETER = "http.protocol.content-charset";
 	public static final String HTTP_CHARSET_VALUE = "UTF-8";
 	public static final String USER_AGENT_PARAMETER = "http.useragent";
-	public static final String USER_AGENT_VALUE =
-			"Lechtitseb Google Reader Unofficial API/0.1";
+	public static final String USER_AGENT_VALUE = "Lechtitseb Google Reader Unofficial API/0.1";
 	public static final String PARAMETER_LOGIN_USERNAME = "Email";
 	public static final String PARAMETER_LOGIN_PASSWORD = "Passwd";
 	public static final String COOKIE_DOMAIN = ".google.com";
@@ -30,6 +28,8 @@ public final class Constants {
 	public static final String PARAMETER_TOKEN = "T";
 	public static final String PARAMETER_SHUFFLE_TOKEN = "t";
 	public static final String PARAMETER_NUMBER_OF_RESULTS = "n";
+	public static final String PATAMETER_ORDER = "r";
+	public static final String PARAMETER_START_TIME = "ot";
 	public static final String PARAMETER_OUTPUT_FORMAT = "output";
 	public static final String PARAMETER_SEARCH_NUMBER_OF_ELEMENTS = "num";
 	public static final String PARAMETER_SEARCH_SOURCE_FEED = "s";
@@ -44,12 +44,9 @@ public final class Constants {
 	public static final String URL_LABELS = URL_API + "/tag/list";
 	public static final String URL_TOKEN = URL_API + "/token";
 	public static final String URL_SEARCH_IDS = URL_API + "/search/items/ids";
-	public static final String URL_SEARCH_CONTENTS =
-			URL_API + "/stream/items/contents";
-	public static final String URL_SUBSCRIPTION_LIST =
-			URL_API + "/subscription/list";
-	public static final String URL_PREFERENCE_LIST =
-			URL_API + "/preference/list";
+	public static final String URL_SEARCH_CONTENTS = URL_API + "/stream/items/contents";
+	public static final String URL_SUBSCRIPTION_LIST = URL_API + "/subscription/list";
+	public static final String URL_PREFERENCE_LIST = URL_API + "/preference/list";
 	public static final String URL_FEED = URL_READER + "/atom/";
 	public static final String URL_FEED_JSON = URL_READER + "/api/0/stream/contents/";
 	public static final String URL_UNREAD_COUNT = URL_API + "/unread-count";
@@ -59,48 +56,35 @@ public final class Constants {
 	public static final String ITEM_STATE_READ = ITEM_STATE + "/read";
 	public static final String ITEM_STATE_STARRED = ITEM_STATE + "/starred";
 	public static final String ITEM_STATE_SHARED = ITEM_STATE + "/broadcast";
-	public static final String ITEM_STATE_READING_LIST =
-			ITEM_STATE + "/reading-list";
+	public static final String ITEM_STATE_READING_LIST = ITEM_STATE + "/reading-list";
 	public static final String ITEM_STATE_FRESH = ITEM_STATE + "/fresh";
 	public static final String CURRENT_USER = "user/-/";
-	public static final String FILTER_CURRENT_USER_UNREAD =
-			CURRENT_USER + ITEM_STATE_UNREAD;
-	public static final String FILTER_CURRENT_USER_READ =
-			CURRENT_USER + ITEM_STATE_READ;
-	public static final String FILTER_CURRENT_USER_STARRED =
-			CURRENT_USER + ITEM_STATE_STARRED;
-	public static final String URL_ITEMS_READ =
-			URL_READER + "/atom/user/-" + ITEM_STATE_READ;
-	public static final String URL_ITEMS_STARRED =
-			URL_READER + "/atom/user/-" + ITEM_STATE_STARRED;
-	public static final String URL_ITEMS_SHARED =
-			URL_READER + "/atom/user/-" + ITEM_STATE_SHARED;
+	public static final String FILTER_CURRENT_USER_UNREAD = CURRENT_USER + ITEM_STATE_UNREAD;
+	public static final String FILTER_CURRENT_USER_READ = CURRENT_USER + ITEM_STATE_READ;
+	public static final String FILTER_CURRENT_USER_STARRED = CURRENT_USER + ITEM_STATE_STARRED;
+	public static final String URL_ITEMS_READ = URL_READER + "/atom/user/-" + ITEM_STATE_READ;
+	public static final String URL_ITEMS_STARRED = URL_READER + "/atom/user/-" + ITEM_STATE_STARRED;
+	public static final String URL_ITEMS_SHARED = URL_READER + "/atom/user/-" + ITEM_STATE_SHARED;
 	public static final String URL_USER_TOKEN = "%%%USER_ID%%%";
-	public static final String URL_ITEMS_SHARED_BY_SOMEONE_ELSE =
-			URL_READER + "/public/atom/user/" + URL_USER_TOKEN
-					+ ITEM_STATE_SHARED;
-	public static final String URL_OPML_EXPORT =
-			URL_READER + "/subscriptions/export";
-	public static final String URL_ITEMS_READING_LIST =
-			URL_READER + "/atom/user/-" + ITEM_STATE_READING_LIST;
+	public static final String URL_ITEMS_SHARED_BY_SOMEONE_ELSE = URL_READER + "/public/atom/user/" + URL_USER_TOKEN + ITEM_STATE_SHARED;
+	public static final String URL_OPML_EXPORT = URL_READER + "/subscriptions/export";
+	public static final String URL_ITEMS_READING_LIST = URL_READER + "/atom/user/-" + ITEM_STATE_READING_LIST;
 
-	
-	
 	public static final String URL_EDIT_SUSCRIPTION = URL_API + "/subscription/edit";
-	
+
 	public static final String EDIT_SUBSCRIPTION_SUBSCRIBE = "subscribe";
 	public static final String EDIT_SUBSCRIPTION_UNSUBSCRIBE = "unsubscribe";
 	public static final String EDIT_SUBSCRIPTION_ACTION = "ac";
 	public static final String EDIT_SUBSCRIPTION_FEED = "s";
-        // Add Subscription to a label
+	// Add Subscription to a label
 	public static final String EDIT_SUBSCRIPTION_FEED_ADD = "a";
-        // Remove Subscription from a label
+	// Remove Subscription from a label
 	public static final String EDIT_SUBSCRIPTION_FEED_REMOVE = "r";
 	public static final String EDIT_SUBSCRIPTION_EDIT_ACTION = "edit";
-	
+
 	public static final String URL_MARK_ALL_AS_READ = URL_API + "/mark-all-as-read";
 	public static final String URL_MARK_ITEM_AS_READ = URL_API + "/edit-tag";
-	
+
 	public static final String URL_USER_INFO = URL_READER + "/user-info";
 
 	// PREFERENCE_STREAM_URL = READER_URL +

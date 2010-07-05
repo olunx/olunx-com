@@ -1,4 +1,3 @@
-
 package be.lechtitseb.google.reader.api.core;
 
 import java.util.ArrayList;
@@ -27,10 +26,8 @@ import be.lechtitseb.google.reader.api.util.GoogleReaderUtil;
  * feeds, get unread/starred/... items, add new subscriptions, create new tags
  * for feeds, ...
  */
-public final class GoogleReader implements
-		AuthenticationManager<GoogleCredentials> {
-	private static final Logger LOG =
-			Logger.getLogger(GoogleReader.class.getName());
+public final class GoogleReader implements AuthenticationManager<GoogleCredentials> {
+	private static final Logger LOG = Logger.getLogger(GoogleReader.class.getName());
 	private GoogleReaderDataProvider api;
 
 	public GoogleReader() {
@@ -49,94 +46,133 @@ public final class GoogleReader implements
 		api.clearCredentials();
 	}
 
-	/* (non-Javadoc)
-	 * @see be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager#getCredentials()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager
+	 * #getCredentials()
 	 */
 	public GoogleCredentials getCredentials() {
 		return api.getCredentials();
 	}
 
-	/* (non-Javadoc)
-	 * @see be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager#hasCredentials()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager
+	 * #hasCredentials()
 	 */
 	public boolean hasCredentials() {
 		return api.hasCredentials();
 	}
 
-	/* (non-Javadoc)
-	 * @see be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager#isAuthenticated()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager
+	 * #isAuthenticated()
 	 */
 	public boolean isAuthenticated() {
 		return api.isAuthenticated();
 	}
 
-	/* (non-Javadoc)
-	 * @see be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager#login()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager
+	 * #login()
 	 */
 	public boolean login() throws AuthenticationException {
 		return api.login();
 	}
 
-	/* (non-Javadoc)
-	 * @see be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager#logout()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager
+	 * #logout()
 	 */
 	public void logout() {
 		api.logout();
 	}
 
-	/* (non-Javadoc)
-	 * @see be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager#setCredentials(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager
+	 * #setCredentials(java.lang.Object)
 	 */
 	public void setCredentials(GoogleCredentials credentials) {
 		api.setCredentials(credentials);
 	}
-	
+
 	/**
 	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
+	 * 
+	 * @param searchTerm
+	 *            The term to search for
 	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public List<Item> search(String searchTerm) throws GoogleReaderException{
-		return search(searchTerm,null,null);
+	public List<Item> search(String searchTerm) throws GoogleReaderException {
+		return search(searchTerm, null, null);
 	}
-	
+
 	/**
 	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
-	 * @param numberOfElements How many items to retrieve
+	 * 
+	 * @param searchTerm
+	 *            The term to search for
+	 * @param numberOfElements
+	 *            How many items to retrieve
 	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public List<Item> search(String searchTerm, Integer numberOfElements) throws GoogleReaderException{
-		return search(searchTerm,null,numberOfElements);
+	public List<Item> search(String searchTerm, Integer numberOfElements) throws GoogleReaderException {
+		return search(searchTerm, null, numberOfElements);
 	}
-	
+
 	/**
 	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
-	 * @param feedDescriptor The feed in which to look for the search term
+	 * 
+	 * @param searchTerm
+	 *            The term to search for
+	 * @param feedDescriptor
+	 *            The feed in which to look for the search term
 	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public List<Item> search(String searchTerm, FeedDescriptor feedDescriptor) throws GoogleReaderException{
-		return search(searchTerm,feedDescriptor,null);
+	public List<Item> search(String searchTerm, FeedDescriptor feedDescriptor) throws GoogleReaderException {
+		return search(searchTerm, feedDescriptor, null);
 	}
-	
+
 	/**
 	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
-	 * @param feedDescriptor The feed in which to look for the search term
-	 * @param numberOfElements How many items to retrieve
+	 * 
+	 * @param searchTerm
+	 *            The term to search for
+	 * @param feedDescriptor
+	 *            The feed in which to look for the search term
+	 * @param numberOfElements
+	 *            How many items to retrieve
 	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public List<Item> search(String searchTerm, FeedDescriptor feedDescriptor, Integer numberOfElements) throws GoogleReaderException{
+	public List<Item> search(String searchTerm, FeedDescriptor feedDescriptor, Integer numberOfElements) throws GoogleReaderException {
 		List<Item> returnValue = new ArrayList<Item>();
 
-		String searchResults = api.search(searchTerm,feedDescriptor, numberOfElements, OutputFormat.JSON);
-		List<String> resultsIds =
-				GoogleReaderUtil.getItemIdsFromJson(searchResults);
+		String searchResults = api.search(searchTerm, feedDescriptor, numberOfElements, OutputFormat.JSON);
+		List<String> resultsIds = GoogleReaderUtil.getItemIdsFromJson(searchResults);
 		for (String result : resultsIds) {
 			String itemContent = api.getItem(result);
 			returnValue.add(GoogleReaderUtil.getItemFromJson(itemContent));
@@ -146,91 +182,114 @@ public final class GoogleReader implements
 
 	/**
 	 * Get your current labels (tags)
+	 * 
 	 * @return The list of labels
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public List<Label> getLabels() throws GoogleReaderException{
+	public List<Label> getLabels() throws GoogleReaderException {
 		String labelsContent = api.getLabels(OutputFormat.JSON);
 		return GoogleReaderUtil.getLabelsFromJSON(labelsContent);
 	}
-	
+
 	/**
 	 * Export your subscription list to OPML
+	 * 
 	 * @return The OPML String
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public String exportSubscriptionsToOPML() throws GoogleReaderException{
+	public String exportSubscriptionsToOPML() throws GoogleReaderException {
 		return api.exportSubscriptionsToOPML();
 	}
-	
+
 	/**
 	 * Get the user preferences
+	 * 
 	 * @return The user preferences
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public UserPreferences getUserPreferences() throws GoogleReaderException{
+	public UserPreferences getUserPreferences() throws GoogleReaderException {
 		String raw = api.getUserPreferences();
 		return GoogleReaderUtil.getUserPreferencesFromJson(raw);
 	}
-	
+
 	/**
 	 * Get the user information
+	 * 
 	 * @return The user information
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public UserInformation getUserInformation() throws GoogleReaderException{
+	public UserInformation getUserInformation() throws GoogleReaderException {
 		String raw = api.getUserInformation();
 		return GoogleReaderUtil.getUserInformationFromJson(raw);
 	}
-	
+
 	/**
 	 * Get an unread item (also marks it as READ!)
+	 * 
 	 * @return The next unread item (HTML page!)
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public String getNextUnreadItem() throws GoogleReaderException{
+	public String getNextUnreadItem() throws GoogleReaderException {
 		return api.getNextUnreadItem(this.getUserPreferences().getShuffleToken());
 	}
-	
+
 	/**
 	 * Get an unread item (also marks it as READ!)
-	 * @param token The shuffle token found in the user preferences (@see UserPreferences class)
+	 * 
+	 * @param token
+	 *            The shuffle token found in the user preferences (@see
+	 *            UserPreferences class)
 	 * @return The next unread item (HTML page!)
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public String getNextUnreadItem(String shuffleToken) throws GoogleReaderException{
+	public String getNextUnreadItem(String shuffleToken) throws GoogleReaderException {
 		return api.getNextUnreadItem(shuffleToken);
 	}
-	
+
 	/**
 	 * Mark all the items from a feed as read
-	 * @param feedId The feed to mark as read
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * 
+	 * @param feedId
+	 *            The feed to mark as read
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public void markFeedAsRead(String feedId) throws GoogleReaderException{
+	public void markFeedAsRead(String feedId) throws GoogleReaderException {
 		api.markFeedAsRead(feedId);
 	}
-	
+
 	/**
 	 * Mark all the items from a feed as read
-	 * @param feed The feed to mark as read
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * 
+	 * @param feed
+	 *            The feed to mark as read
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public void markFeedAsRead(FeedDescriptor feed) throws GoogleReaderException{
+	public void markFeedAsRead(FeedDescriptor feed) throws GoogleReaderException {
 		api.markFeedAsRead(feed);
 	}
-	
+
 	/**
 	 * Mark the item from a feed as read
-	 * @param feed The feed to mark as read
-	 * @throws GoogleReaderException If the user is not authenticated
+	 * 
+	 * @param feed
+	 *            The feed to mark as read
+	 * @throws GoogleReaderException
+	 *             If the user is not authenticated
 	 */
-	public void markItemAsRead(ItemDescriptor item,FeedDescriptor feed) throws GoogleReaderException{
-		api.markItemAsRead(item,feed);
+	public void markItemAsRead(ItemDescriptor item, FeedDescriptor feed) throws GoogleReaderException {
+		api.markItemAsRead(item, feed);
 	}
-	
-        public GoogleReaderDataProvider getApi () {
-                return api;
-        }
-	//public void addSubscription()
+
+	public GoogleReaderDataProvider getApi() {
+		return api;
+	}
+	// public void addSubscription()
 }

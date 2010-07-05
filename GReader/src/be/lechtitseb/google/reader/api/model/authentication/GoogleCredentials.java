@@ -1,6 +1,5 @@
 package be.lechtitseb.google.reader.api.model.authentication;
 
-
 /**
  * Google specific credentials
  */
@@ -21,7 +20,7 @@ public class GoogleCredentials extends BasicCredentials {
 		setLSid(null);
 		setAuth(null);
 	}
-	
+
 	@Override
 	public void clearCredentials() {
 		super.clearCredentials();

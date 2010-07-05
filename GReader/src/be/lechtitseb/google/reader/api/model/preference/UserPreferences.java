@@ -20,7 +20,7 @@ public class UserPreferences {
 	public String getDisplayLanguage() {
 		return displayLanguage;
 	}
-	
+
 	/**
 	 * Do the user want to confirm when marking (a feed) as read?
 	 */
@@ -57,7 +57,7 @@ public class UserPreferences {
 			this.shuffleToken = shuffleToken;
 		}
 	}
-	
+
 	public boolean isConfirmMarkAsRead() {
 		return confirmMarkAsRead;
 	}
@@ -67,96 +67,95 @@ public class UserPreferences {
 	}
 }
 
+// FIXME there are more preferences, here's a complete example:
 
-//FIXME there are more preferences, here's a complete example:
-
-//{"prefs": [
-//           {
-//              "id": "animations-disabled",
-//              "value": "false"
-//           },
-//           {
-//              "id": "confirm-mark-as-read",
-//              "value": "true"
-//           },
-//           {
-//              "id": "shuffle-token",
-//              "value": "-1111111111111111111"
-//           },
-//           {
-//              "id": "scroll-tracking-enabled",
-//              "value": "true"
-//           },
-//           {
-//              "id": "show-scour-help-go-on",
-//              "value": "false"
-//           },
-//           {
-//              "id": "show-scroll-help",
-//              "value": "false"
-//           },
-//           {
-//              "id": "display-lang",
-//              "value": "en"
-//           },
-//           {
-//              "id": "is-card-view",
-//              "value": "false"
-//           },
-//           {
-//              "id": "mobile-use-transcoder",
-//              "value": null
-//           },
-//           {
-//              "id": "start-page",
-//              "value": "user/11111111111111111111/label/things that matter"
-//           },
-//           {
-//              "id": "show-minimized-navigation",
-//              "value": "false"
-//           },
-//           {
-//              "id": "show-oldest-interrupt",
-//              "value": "true"
-//           },
-//           {
-//              "id": "queue-sorting",
-//              "value": "date"
-//           },
-//           {
-//              "id": "friends-opt-in",
-//              "value": "true"
-//           },
-//           {
-//              "id": "read-items-visible",
-//              "value": "false"
-//           },
-//           {
-//              "id": "is-in-scour-mode",
-//              "value": "false"
-//           },
-//           {
-//              "id": "shared-design",
-//              "value": null
-//           },
-//           {
-//              "id": "show-min-navigation-help",
-//              "value": "false"
-//           },
-//           {
-//              "id": "design",
-//              "value": "scroll"
-//           },
-//           {
-//              "id": "mobile-num-entries",
-//              "value": "9"
-//           },
-//           {
-//              "id": "show-scour-help-go-off",
-//              "value": "false"
-//           },
-//           {
-//              "id": "show-all-tree-items",
-//              "value": "false"
-//           }
-//        ]}
+// {"prefs": [
+// {
+// "id": "animations-disabled",
+// "value": "false"
+// },
+// {
+// "id": "confirm-mark-as-read",
+// "value": "true"
+// },
+// {
+// "id": "shuffle-token",
+// "value": "-1111111111111111111"
+// },
+// {
+// "id": "scroll-tracking-enabled",
+// "value": "true"
+// },
+// {
+// "id": "show-scour-help-go-on",
+// "value": "false"
+// },
+// {
+// "id": "show-scroll-help",
+// "value": "false"
+// },
+// {
+// "id": "display-lang",
+// "value": "en"
+// },
+// {
+// "id": "is-card-view",
+// "value": "false"
+// },
+// {
+// "id": "mobile-use-transcoder",
+// "value": null
+// },
+// {
+// "id": "start-page",
+// "value": "user/11111111111111111111/label/things that matter"
+// },
+// {
+// "id": "show-minimized-navigation",
+// "value": "false"
+// },
+// {
+// "id": "show-oldest-interrupt",
+// "value": "true"
+// },
+// {
+// "id": "queue-sorting",
+// "value": "date"
+// },
+// {
+// "id": "friends-opt-in",
+// "value": "true"
+// },
+// {
+// "id": "read-items-visible",
+// "value": "false"
+// },
+// {
+// "id": "is-in-scour-mode",
+// "value": "false"
+// },
+// {
+// "id": "shared-design",
+// "value": null
+// },
+// {
+// "id": "show-min-navigation-help",
+// "value": "false"
+// },
+// {
+// "id": "design",
+// "value": "scroll"
+// },
+// {
+// "id": "mobile-num-entries",
+// "value": "9"
+// },
+// {
+// "id": "show-scour-help-go-off",
+// "value": "false"
+// },
+// {
+// "id": "show-all-tree-items",
+// "value": "false"
+// }
+// ]}

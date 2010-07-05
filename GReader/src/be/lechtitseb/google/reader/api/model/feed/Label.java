@@ -16,7 +16,7 @@ public class Label {
 	 * Whether the label is shared or not
 	 */
 	private boolean shared;
-	
+
 	public Label() {
 	}
 
@@ -25,7 +25,6 @@ public class Label {
 		this.id = id;
 		name = label;
 	}
-
 
 	public String getId() {
 		return id;
@@ -53,10 +52,8 @@ public class Label {
 
 	@Override
 	public String toString() {
-		//FIXME mhh maybe not good, name could be null?
+		// FIXME mhh maybe not good, name could be null?
 		return name.toString();
 	}
-	
-	
-	
+
 }

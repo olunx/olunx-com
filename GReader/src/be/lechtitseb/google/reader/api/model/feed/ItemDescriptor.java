@@ -1,10 +1,10 @@
 package be.lechtitseb.google.reader.api.model.feed;
 
 /**
- * Item Description
- * parsed by ROMO
+ * Item Description parsed by ROMO
+ * 
  * @author maratische
- *
+ * 
  */
 public class ItemDescriptor {
 	private String uri;
@@ -23,34 +23,43 @@ public class ItemDescriptor {
 		sb.append("description:").append(description).append("]\n");
 		return sb.toString();
 	}
-	
+
 	public String getUri() {
 		return uri;
 	}
+
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getLink() {
 		return link;
 	}
+
 	public void setLink(String link) {
 		this.link = link;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public String getDescriptionType() {
 		return descriptionType;
 	}
+
 	public void setDescriptionType(String descriptionType) {
 		this.descriptionType = descriptionType;
 	}

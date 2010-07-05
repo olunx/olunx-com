@@ -16,23 +16,27 @@ import com.sun.syndication.io.SyndFeedInput;
 public class AtomUtil {
 	/**
 	 * Read an Atom feed from its XML String representation
-	 * @param xmlContent The xml content
+	 * 
+	 * @param xmlContent
+	 *            The xml content
 	 * @return The ROME representation of this Atom feed
 	 * @throws GoogleReaderException
 	 */
 	public static SyndFeed getAtomFeed(String xmlContent) throws GoogleReaderException {
-		 try {
+		try {
 			return new SyndFeedInput().build(new StringReader(xmlContent));
 		} catch (IllegalArgumentException e) {
-			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!",e);
+			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!", e);
 		} catch (FeedException e) {
-			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!",e);
+			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!", e);
 		}
 	}
-	
+
 	/**
 	 * Read an Atom feed from a JDOM Document
-	 * @param xmlContent The JDOM document representing the Atom feed
+	 * 
+	 * @param xmlContent
+	 *            The JDOM document representing the Atom feed
 	 * @return The ROME feed representation of this Atom content
 	 * @throws GoogleReaderException
 	 */
@@ -40,10 +44,10 @@ public class AtomUtil {
 		try {
 			return new SyndFeedInput().build(doc);
 		} catch (IllegalArgumentException e) {
-			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!",e);
+			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!", e);
 		} catch (FeedException e) {
-			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!",e);
+			throw new GoogleReaderException("The provided xml content is not a valid Atom feed!", e);
 		}
 	}
-	
+
 }

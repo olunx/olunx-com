@@ -18,7 +18,7 @@ public interface AuthenticationManager<T> {
 	 * credentials to use (login is NOT automatic)
 	 * 
 	 * @param credentials
-	 *        The new credentials
+	 *            The new credentials
 	 */
 	public void setCredentials(T credentials);
 
@@ -43,7 +43,7 @@ public interface AuthenticationManager<T> {
 	 * 
 	 * @return true if authentication succeeded or if already authenticated
 	 * @throws AuthenticationException
-	 *         If the authentication fails
+	 *             If the authentication fails
 	 */
 	public boolean login() throws AuthenticationException;
 
