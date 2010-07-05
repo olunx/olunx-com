@@ -3,8 +3,6 @@ package be.lechtitseb.google.reader.api.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager;
 import be.lechtitseb.google.reader.api.model.authentication.GoogleCredentials;
 import be.lechtitseb.google.reader.api.model.exception.AuthenticationException;
@@ -27,7 +25,6 @@ import be.lechtitseb.google.reader.api.util.GoogleReaderUtil;
  * for feeds, ...
  */
 public final class GoogleReader implements AuthenticationManager<GoogleCredentials> {
-	private static final Logger LOG = Logger.getLogger(GoogleReader.class.getName());
 	private GoogleReaderDataProvider api;
 
 	public GoogleReader() {

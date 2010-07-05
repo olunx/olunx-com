@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -14,7 +14,7 @@ import org.jdom.output.XMLOutputter;
  * XML Writer helper class based on JDOM
  */
 public class XMLWriter {
-	private static final Logger logger = Logger.getLogger(XMLWriter.class.getName());
+//	private static final Logger logger = Logger.getLogger(XMLWriter.class.getName());
 
 	/**
 	 * Write an XML document to a file
@@ -52,7 +52,7 @@ public class XMLWriter {
 				try {
 					oStream.close();
 				} catch (IOException e1) {
-					logger.debug("Error while closing the output stream after writing the xml file: " + e1);
+//					logger.debug("Error while closing the output stream after writing the xml file: " + e1);
 				}
 			}
 		}

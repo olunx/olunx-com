@@ -22,7 +22,6 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.log4j.Logger;
 
 import be.lechtitseb.google.reader.api.core.Constants;
 import be.lechtitseb.google.reader.api.model.exception.GoogleReaderException;
@@ -32,7 +31,7 @@ import be.lechtitseb.google.reader.api.model.exception.GoogleReaderException;
  * HttpClient
  */
 public class SimpleHttpManager implements HttpManager {
-	private static final Logger LOG = Logger.getLogger(SimpleHttpManager.class.getName());
+//	private static final Logger LOG = Logger.getLogger(SimpleHttpManager.class.getName());
 	private List<Cookie> cookies = null;
 	private HttpMethodRetryHandler retryHandler = null;
 	private HttpClient httpClient = null;
@@ -54,7 +53,7 @@ public class SimpleHttpManager implements HttpManager {
 		if (cookie != null) {
 			cookies.add(cookie);
 		} else {
-			LOG.debug("Some psycho tried to add a null cookie to the list");
+//			LOG.debug("Some psycho tried to add a null cookie to the list");
 		}
 	}
 

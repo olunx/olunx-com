@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Main!</string>
     <string name="app_name">iRss</string>
+    
+    <!-- Account Input Dialog -->
+    <string name="tv_username">Username</string>
+    <string name="tv_password">Password</string>
+    <string name="et_username">Google Username</string>
+    <string name="et_password">Google Password</string>
 </resources>

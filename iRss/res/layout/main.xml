@@ -4,9 +4,5 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
+<GridView android:id="@+id/GridView01" android:layout_height="fill_parent" android:layout_width="fill_parent" android:numColumns="auto_fit" android:horizontalSpacing="10dip" android:verticalSpacing="10dip" android:columnWidth="60dip" android:paddingTop="10dip" android:paddingBottom="10dip"></GridView>
 </LinearLayout>

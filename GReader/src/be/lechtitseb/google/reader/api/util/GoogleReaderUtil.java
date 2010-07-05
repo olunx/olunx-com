@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -40,12 +40,12 @@ import be.lechtitseb.google.reader.api.util.xml.XMLReader;
  * Permits to easily manipulate feeds (Atom) provided by the Google Reader API
  */
 public final class GoogleReaderUtil {
-	private static final Logger LOG = Logger.getLogger(GoogleReaderUtil.class.getName());
+//	private static final Logger LOG = Logger.getLogger(GoogleReaderUtil.class.getName());
 
 	// FIXME maybe XPath would be better here
 	@SuppressWarnings("unchecked")
 	private static FeedDescriptor getFeedDescriptor(Element e) {
-		LOG.trace("Getting feed descriptor for an element");
+//		LOG.trace("Getting feed descriptor for an element");
 		FeedDescriptor returnValue = new FeedDescriptor();
 		// Get string properties
 		for (Element o : (List<Element>) e.getChildren("string")) {
@@ -56,7 +56,7 @@ public final class GoogleReaderUtil {
 			} else if (o.getAttributeValue("name").equals("sortid")) {
 				// we don't need it I think, it's internal to google
 			} else {
-				LOG.debug("Unknown string property: " + o.getAttributeValue("name"));
+//				LOG.debug("Unknown string property: " + o.getAttributeValue("name"));
 			}
 		}
 		// Get the labels and other properties
@@ -72,13 +72,13 @@ public final class GoogleReaderUtil {
 						} else if (it.getAttributeValue("name").equals("label")) {
 							label.setName(it.getValue());
 						} else {
-							LOG.debug("Unknown category property: " + it.getAttributeValue("name"));
+//							LOG.debug("Unknown category property: " + it.getAttributeValue("name"));
 						}
 					}
 					returnValue.getCategories().add(label);
 				}
 			} else {
-				LOG.debug("Unknown list property: " + o.getAttributeValue("name"));
+//				LOG.debug("Unknown list property: " + o.getAttributeValue("name"));
 			}
 		}
 		// Get number properties
@@ -91,7 +91,7 @@ public final class GoogleReaderUtil {
 			} else if (o.getAttributeValue("name").equals("firstitemmsec")) {
 				// FIXME what to do for this one?
 			} else {
-				LOG.debug("Unknown number property: " + o.getAttributeValue("name"));
+//				LOG.debug("Unknown number property: " + o.getAttributeValue("name"));
 			}
 		}
 		return returnValue;
@@ -108,16 +108,16 @@ public final class GoogleReaderUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<FeedDescriptor> getFeedDescriptorsFromXml(String xmlContent) throws GoogleReaderException {
-		LOG.trace("Getting Feed Descriptors from XML");
+//		LOG.trace("Getting Feed Descriptors from XML");
 		List<FeedDescriptor> returnValue = new ArrayList<FeedDescriptor>();
 		if (xmlContent == null) {
-			LOG.warn("The XML content parameter was null!");
+//			LOG.warn("The XML content parameter was null!");
 			return returnValue;
 		}
 		try {
 			Document xmlDocument = new XMLReader().read(xmlContent);
 			if (xmlDocument.getRootElement().getChild("list") == null) {
-				LOG.debug("The list element is not present as it should be in:\n" + xmlContent);
+//				LOG.debug("The list element is not present as it should be in:\n" + xmlContent);
 			} else {
 				for (Element e : (List<Element>) xmlDocument.getRootElement().getChild("list").getChildren()) {
 					returnValue.add(getFeedDescriptor(e));
@@ -190,10 +190,10 @@ public final class GoogleReaderUtil {
 	 *             If a problem occurs while parsing the JSON content
 	 */
 	public static List<FeedDescriptor> getFeedDescriptorsFromFeedsWithUnreadItemsJson(String jsonContent) throws GoogleReaderException {
-		LOG.trace("Getting Feed Descriptors for feeds with unread items (JSON)");
+//		LOG.trace("Getting Feed Descriptors for feeds with unread items (JSON)");
 		List<FeedDescriptor> returnValue = new ArrayList<FeedDescriptor>();
 		if (jsonContent == null) {
-			LOG.warn("The JSON content parameter was null!");
+//			LOG.warn("The JSON content parameter was null!");
 			return returnValue;
 		}
 		try {
@@ -228,7 +228,7 @@ public final class GoogleReaderUtil {
 	// FIXME the content is encoded (i.e., &amp; instead of &), should it be
 	// cleaned here?
 	public static Item getItemFromJson(String content) throws GoogleReaderException {
-		LOG.trace("Getting Item from JSON");
+//		LOG.trace("Getting Item from JSON");
 		if (content == null) {
 			throw new IllegalArgumentException("The content cannot be null!");
 		}
@@ -306,7 +306,7 @@ public final class GoogleReaderUtil {
 			returnValue.setCrawledAt(new Date(items.getLong("crawlTimeMsec")));
 			if (!items.isNull("mediaGroup")) {
 				JSONObject mediaGroup = items.getJSONObject("mediaGroup");
-				LOG.debug("Media group content url: " + mediaGroup.getJSONArray("content").getJSONObject(0).getString("url"));
+//				LOG.debug("Media group content url: " + mediaGroup.getJSONArray("content").getJSONObject(0).getString("url"));
 				returnValue.setMediaGroupContentUrl(mediaGroup.getJSONArray("content").getJSONObject(0).getString("url"));
 			}
 			// FIXME Again the update time?
@@ -338,7 +338,7 @@ public final class GoogleReaderUtil {
 	 *             If a problem occurs while parsing the JSON content
 	 */
 	public static List<String> getItemIdsFromJson(String content) throws GoogleReaderException {
-		LOG.trace("Getting Item Ids from JSON");
+//		LOG.trace("Getting Item Ids from JSON");
 		List<String> returnValue = new ArrayList<String>();
 		if (content == null) {
 			return returnValue;
@@ -370,7 +370,7 @@ public final class GoogleReaderUtil {
 	 *             If a problem occurs while parsing the JSON content
 	 */
 	public static List<Label> getLabelsFromJSON(String content) throws GoogleReaderException {
-		LOG.trace("Getting labels from JSON");
+//		LOG.trace("Getting labels from JSON");
 		List<Label> returnValue = new ArrayList<Label>();
 		if (content == null) {
 			return returnValue;
@@ -397,7 +397,7 @@ public final class GoogleReaderUtil {
 					} else if (id.indexOf("/label/") > 0) {
 						tmp.setName(id.substring(id.indexOf("/label/") + "/label/".length()));
 					} else {
-						LOG.warn("Unknown label type: " + id);
+//						LOG.warn("Unknown label type: " + id);
 					}
 					if ("all".equals(shared)) {
 						// FIXME shared could be something else I think, like
@@ -423,7 +423,7 @@ public final class GoogleReaderUtil {
 	 *             If a problem occurs while parsing the JSON content
 	 */
 	public static UserPreferences getUserPreferencesFromJson(String content) throws GoogleReaderException {
-		LOG.trace("Getting user preferences from JSON");
+//		LOG.trace("Getting user preferences from JSON");
 		if (content == null) {
 			throw new IllegalArgumentException("The content is null!");
 		}
@@ -449,7 +449,7 @@ public final class GoogleReaderUtil {
 						// FIXME there are other preferences, unused for now,
 						// @see UserPreferences class
 					} else {
-						LOG.warn("Null element(s) in the user preferences (should not happen)");
+//						LOG.warn("Null element(s) in the user preferences (should not happen)");
 					}
 				}
 			}
@@ -469,7 +469,7 @@ public final class GoogleReaderUtil {
 	 *             If a problem occurs while parsing the JSON content
 	 */
 	public static UserInformation getUserInformationFromJson(String content) throws GoogleReaderException {
-		LOG.trace("Getting user preferences from JSON");
+//		LOG.trace("Getting user preferences from JSON");
 		if (content == null) {
 			throw new IllegalArgumentException("The content is null!");
 		}
@@ -504,17 +504,17 @@ public final class GoogleReaderUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<FeedDescriptor> getFeedDescriptorsFromFeedsWithUnreadItemsXml(String xmlContent) throws GoogleReaderException {
-		LOG.trace("Getting Feed Descriptors for feeds with unread items (XML)");
+//		LOG.trace("Getting Feed Descriptors for feeds with unread items (XML)");
 		// LOG.debug(xmlContent);
 		List<FeedDescriptor> returnValue = new ArrayList<FeedDescriptor>();
 		if (xmlContent == null) {
-			LOG.warn("The XML content parameter was null!");
+//			LOG.warn("The XML content parameter was null!");
 			return returnValue;
 		}
 		try {
 			Document xmlDocument = new XMLReader().read(xmlContent);
 			if (xmlDocument.getRootElement().getChild("list") == null) {
-				LOG.debug("The list element is not present as it should be in:\n" + xmlContent);
+//				LOG.debug("The list element is not present as it should be in:\n" + xmlContent);
 				return returnValue;
 			}
 			FeedDescriptor descriptor = null;
