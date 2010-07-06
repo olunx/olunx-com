@@ -1,15 +1,16 @@
 package com.olunx;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.olunx.activity.FeedList;
 import com.olunx.db.CategoryHelper;
-import com.olunx.reader.Rss;
+import com.olunx.db.FeedsHelper;
+import com.olunx.reader.Update;
 import com.olunx.util.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.os.Process;
 import android.view.KeyEvent;
@@ -22,11 +23,14 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class Main extends Activity {
+
+	CategoryHelper helper = new CategoryHelper();
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,41 +84,23 @@ public class Main extends Activity {
 	private void createView() {
 		GridView gridview = (GridView) findViewById(R.id.GridView01);
 
-		// 生成动态数组，并且转入数据
-		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
-		for (int i = 0; i < 20; i++) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("ItemImage", R.drawable.icon);// 添加图像资源的ID
-			map.put("ItemText", "NO." + String.valueOf(i));// 按序号做ItemText
-			lstImageItem.add(map);
-		}
-		// 生成适配器的ImageItem <====> 动态数组的元素，两者一一对应
-		SimpleAdapter saImageItems = new SimpleAdapter(this, // 没什么解释
-				lstImageItem,// 数据来源
-				R.layout.main_item,// night_item的XML实现
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.main_item, helper.getAllRecords(), new String[] {
+				CategoryHelper.c_icon, CategoryHelper.c_title, CategoryHelper.c_feedCount }, new int[] { R.id.ItemImage, R.id.ItemText,
+				R.id.ItemNum });
 
-				// 动态数组与ImageItem对应的子项
-				new String[] { "ItemImage", "ItemText" },
-
-				// ImageItem的XML文件里面的一个ImageView,两个TextView ID
-				new int[] { R.id.ItemImage, R.id.ItemText });
-		// 添加并且显示
-		gridview.setAdapter(saImageItems);
-		// 添加消息处理
-		gridview.setOnItemClickListener(new ItemClickListener());
-	}
-
-	// 当AdapterView被单击(触摸屏或者键盘)，则返回的Item单击事件
-	class ItemClickListener implements OnItemClickListener {
-		@SuppressWarnings("unchecked")
-		public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
-			// 在本例中arg2=arg3
-			HashMap<String, Object> item = (HashMap<String, Object>) arg0.getItemAtPosition(position);
-			// 显示所选Item的ItemText
-			setTitle((String) item.get("ItemText"));
-			new CategoryHelper().getDB();
-		}
-
+		gridview.setAdapter(adapter);
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
+				SQLiteCursor cursor = (SQLiteCursor)arg0.getItemAtPosition(position);
+				String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
+				System.out.println(title);//打印
+				Intent i = new Intent();
+				i.putExtra(CategoryHelper.c_title, title);
+				i.setClass(Main.this, FeedList.class);
+				cursor.close();
+				Main.this.startActivity(i);
+			}
+		});
 	}
 
 	@Override
@@ -144,18 +130,20 @@ public class Main extends Activity {
 			break;
 		}
 		case 5: {
-			break;
-		}
-		case 6: {
 			Toast.makeText(this, "开始连接...", Toast.LENGTH_SHORT).show();
 			new Thread() {
 				public void run() {
-					Rss rss = new Rss();
-					rss.login("olunxs@gmail.com", "646895472");
-					rss.getCategory();
+					new Update().updateFeeds();
+					System.out.println("finished!");
 				}
 			}.start();
 			Toast.makeText(this, "链接完成。", Toast.LENGTH_SHORT).show();
+			break;
+		}
+		case 6: {
+			new CategoryHelper().dropTable();
+			new FeedsHelper().dropTable();
+			Toast.makeText(this, "删除数据!", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		}
@@ -183,6 +171,9 @@ public class Main extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		if (helper != null) {
+			helper.close();
+		}
 		Process.killProcess(android.os.Process.myPid());
 	}
 

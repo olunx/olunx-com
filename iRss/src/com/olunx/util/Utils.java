@@ -8,8 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import android.util.Log;
-
 public class Utils {
 
 	/**
@@ -26,6 +24,7 @@ public class Utils {
 		System.out.println(u.getTimestampFromDaysAgo(5));
 	}
 
+	public static final String CST_TIME_FORMATE = "";
 	public static Utils utils;
 
 	public static Utils init() {
@@ -35,6 +34,17 @@ public class Utils {
 		return utils;
 	}
 
+	/**
+	 * 格式化为统一的日期
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public String getCstTime(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+		return sdf.format(date);
+	}
+	
 	/**
 	 * 将日期转换为时间戳
 	 * 
@@ -100,7 +110,7 @@ public class Utils {
 	public File createFileIfNotExist(String path) {
 		File file = new File(path);
 		if (!file.exists()) {
-			Log.i("srcFile file exists", String.valueOf(file.exists()));
+//			Log.i("srcFile file exists", String.valueOf(file.exists()));
 			try {
 				new File(path.substring(0, path.lastIndexOf("/"))).mkdirs();
 				file.createNewFile();
@@ -108,7 +118,7 @@ public class Utils {
 				e.printStackTrace();
 			}
 		}
-		Log.i("file create finished", String.valueOf(file.exists()));
+//		Log.i("file create finished", String.valueOf(file.exists()));
 		return file;
 	}
 }

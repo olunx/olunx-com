@@ -2,7 +2,6 @@ package com.olunx.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class Config {
 
@@ -73,8 +72,6 @@ public class Config {
 	 * @param password
 	 */
 	public void setAccount(String username, String password) {
-		Log.i("username", username);
-		Log.i("password", password);
 		this.setCon("uaername", username);
 		this.setCon("password", password);
 		this.setCon("account_inputted", true);
@@ -93,7 +90,6 @@ public class Config {
 	 * @return
 	 */
 	public boolean isAccountInputted() {
-		Log.i("account_inputted", String.valueOf(this.getCon("account_inputted", false)));
 		return this.getCon("account_inputted", false);
 	}
 
