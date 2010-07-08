@@ -89,7 +89,7 @@ public class FeedsHelper implements IHelper {
 		try {
 			row.put(c_title, object.getString(c_title));
 			row.put(c_text, object.getString(c_text));
-			// row.put(c_icon, object.getString(c_icon));
+			row.put(c_icon, String.valueOf(R.drawable.icon));
 			// row.put(c_sortId, object.getInt(c_sortId));
 			row.put(c_catTitle, object.getString(c_catTitle));
 			row.put(c_xmlUrl, object.getString(c_xmlUrl));
@@ -119,7 +119,7 @@ public class FeedsHelper implements IHelper {
 			row.put(c_title, object.getString(c_title));
 			row.put(c_text, object.getString(c_text));
 			// row.put(c_icon, object.getString(c_icon));
-			row.put(c_icon, R.drawable.icon);
+			// row.put(c_icon, String.valueOf(R.drawable.icon));
 			// row.put(c_sortId, object.getInt(c_sortId));
 			row.put(c_catTitle, object.getString(c_catTitle));
 			where = object.getString(c_xmlUrl);
@@ -127,7 +127,7 @@ public class FeedsHelper implements IHelper {
 			row.put(c_htmlUrl, object.getString(c_htmlUrl));
 			// row.put(c_googleFeedId, object.getString(c_googleFeedId));
 			// row.put(c_updateTime, object.getString(c_updateTime));
-			// row.put(c_charset, object.getString(c_charset));
+			row.put(c_charset, "utf-8");
 			// row.put(c_rssType, object.getString(c_rssType));
 			row.put(c_articleCount, 0);
 			// row.put(c_articles, object.getString(c_articles));
@@ -149,6 +149,19 @@ public class FeedsHelper implements IHelper {
 		row.put(c_articleCount, articleCount);
 		row.put(c_updateTime, Utils.init().getCstTime(new Date()));
 		System.out.println("updateArticleCount:" + feedXmlUrl);
+		getDB().update(TABLE, row, c_xmlUrl + "== ? ", new String[] { feedXmlUrl });
+	}
+
+	/**
+	 * 更新Feed的内容编码
+	 * 
+	 * @param feedXmlUrl
+	 * @param charset
+	 */
+	public void updateFeedCharset(String feedXmlUrl, String charset) {
+		row = new ContentValues();
+		row.put(c_charset, charset);
+		System.out.println("updateFeedCharset charset:" + charset);
 		getDB().update(TABLE, row, c_xmlUrl + "== ? ", new String[] { feedXmlUrl });
 	}
 
@@ -194,8 +207,8 @@ public class FeedsHelper implements IHelper {
 	 * @return
 	 */
 	public Cursor getFeedsByCategory(String catTitle) {
-		return getDB().query(TABLE, new String[] { c_id, c_title, c_icon, c_articleCount }, c_catTitle + "== ?", new String[] { catTitle },
-				null, null, null);
+		return getDB().query(TABLE, new String[] { c_id, c_icon, c_title, c_articleCount, c_xmlUrl, c_charset }, c_catTitle + "== ?",
+				new String[] { catTitle }, null, null, null);
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package com.olunx;
 
 import com.olunx.activity.FeedList;
+import com.olunx.db.ArticlesHelper;
 import com.olunx.db.CategoryHelper;
 import com.olunx.db.FeedsHelper;
 import com.olunx.reader.Update;
@@ -10,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.os.Process;
@@ -29,14 +31,59 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class Main extends Activity {
 
-	CategoryHelper helper = new CategoryHelper();
-
+	private Cursor cursor;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		initCOnfig();
+		//
+		createView();
+	}
 
+	private void createView() {
+
+		CategoryHelper helper = new CategoryHelper();
+		cursor = helper.getAllRecords();
+		
+		GridView gridview = (GridView) findViewById(R.id.GridView01);
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.main_item, cursor, new String[] { CategoryHelper.c_icon,
+				CategoryHelper.c_title, CategoryHelper.c_feedCount }, new int[] { R.id.ItemImage, R.id.ItemText, R.id.ItemNum });
+		gridview.setAdapter(adapter);
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
+				SQLiteCursor cursor = (SQLiteCursor) arg0.getItemAtPosition(position);
+				String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
+				System.out.println(title);// 打印
+				Intent i = new Intent();
+				i.putExtra(CategoryHelper.c_title, title);//分类标题
+				i.setClass(Main.this, FeedList.class);
+				cursor.close();
+				Main.this.startActivity(i);
+			}
+		});
+
+		helper.close();
+	}
+
+	@Override
+	protected void onResume() {
+		createView();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		if(cursor != null) {
+			cursor.close();
+		}
+		super.onPause();
+	}
+
+	private void initCOnfig() {
 		Config config = Config.init(this);
 
 		if (!config.isAccountInputted()) {
@@ -78,29 +125,6 @@ public class Main extends Activity {
 					}).show();
 
 		}
-		createView();
-	}
-
-	private void createView() {
-		GridView gridview = (GridView) findViewById(R.id.GridView01);
-
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.main_item, helper.getAllRecords(), new String[] {
-				CategoryHelper.c_icon, CategoryHelper.c_title, CategoryHelper.c_feedCount }, new int[] { R.id.ItemImage, R.id.ItemText,
-				R.id.ItemNum });
-
-		gridview.setAdapter(adapter);
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
-				SQLiteCursor cursor = (SQLiteCursor)arg0.getItemAtPosition(position);
-				String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
-				System.out.println(title);//打印
-				Intent i = new Intent();
-				i.putExtra(CategoryHelper.c_title, title);
-				i.setClass(Main.this, FeedList.class);
-				cursor.close();
-				Main.this.startActivity(i);
-			}
-		});
 	}
 
 	@Override
@@ -141,8 +165,15 @@ public class Main extends Activity {
 			break;
 		}
 		case 6: {
-			new CategoryHelper().dropTable();
-			new FeedsHelper().dropTable();
+			CategoryHelper cHelper = new CategoryHelper();
+			cHelper.dropTable();
+			cHelper.close();
+			FeedsHelper fHelper = new FeedsHelper();
+			fHelper.dropTable();
+			fHelper.close();
+			ArticlesHelper aHelper = new ArticlesHelper();
+			aHelper.dropTable();
+			aHelper.close();
 			Toast.makeText(this, "删除数据!", Toast.LENGTH_SHORT).show();
 			break;
 		}
@@ -171,9 +202,9 @@ public class Main extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (helper != null) {
-			helper.close();
-		}
+		// if (helper != null) {
+		// helper.close();
+		// }
 		Process.killProcess(android.os.Process.myPid());
 	}
 

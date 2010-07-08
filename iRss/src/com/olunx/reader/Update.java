@@ -1,8 +1,12 @@
 package com.olunx.reader;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.content.ContentValues;
 
 import com.olunx.db.ArticlesHelper;
 import com.olunx.db.FeedsHelper;
@@ -53,6 +57,7 @@ public class Update {
 		helper.updateCategory();// 添加完Feed后，为Category表重新统计Feed条数。
 		helper.close();
 
+		// new ArticlesHelper().updateFeeds();
 		updateAllArticles();
 	}
 
@@ -67,37 +72,47 @@ public class Update {
 		ArticlesHelper aHelper = new ArticlesHelper();
 		// helper.getRecords(catTitle);
 		String articleTitle = null;
-		JSONArray articles = null;
-		JSONObject article = null;
+		ContentValues[] articles = null;
+		ContentValues article = null;
 		JSONArray feeds = fHelper.getAllFeedsXmlUrl();
 
 		int length = feeds.length();
 		System.out.println("update feed number " + length);
 
+		HashMap<String, Object> data = null;
+		String charset;
+		String feedXmlUrl = null;
 		for (int i = 0; i < length; i++) {
 
 			System.out.println("updating feed NO." + i);
 
+			//获取数据
 			try {
-				articles = (JSONArray) rss.getFeedContent(feeds.get(i).toString(), null).get(FeedsHelper.c_articles);
+				feedXmlUrl = feeds.get(i).toString();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 
-			for (int j = 0; j < articles.length(); j++) {
-				try {
-					article = (JSONObject) articles.get(i);
-					articleTitle = article.getString(ArticlesHelper.c_title);
+			data = rss.getFeedContent(feedXmlUrl, null);
+			
+			//更新Feed的编码
+			charset = (String)data.get(FeedsHelper.c_charset);
+			fHelper.updateFeedCharset(feedXmlUrl, charset);
+			
+			//更新文章
+			articles = (ContentValues[]) data.get(FeedsHelper.c_articles);
+			System.out.println("articles: " + articles);
+			System.out.println("articles.length(): " + articles.length);
+			for (int j = 0; j < articles.length; j++) {
+				article = articles[j];
 
-					// 如果文章不存在则添加
-					if (!aHelper.isExistsArticle(articleTitle)) {
-						aHelper.addRecord(article);
-						System.out.println("add article...");
-					}
+				System.out.println("article title: " + articleTitle);
+				articleTitle = (String) article.get(ArticlesHelper.c_title);
 
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				// 如果文章不存在则添加
+				if (!aHelper.isExistsArticle(articleTitle)) {
+					aHelper.addRecord(article);
+					System.out.println("add article...");
 				}
 
 			}

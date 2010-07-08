@@ -12,6 +12,7 @@
         </activity>
         <activity android:name=".activity.FeedList"></activity>
         <activity android:name=".activity.ArticleList"></activity>
+        <activity android:name=".activity.ArticleShow"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

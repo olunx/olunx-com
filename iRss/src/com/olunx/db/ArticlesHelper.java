@@ -1,9 +1,7 @@
 package com.olunx.db;
 
 import java.io.File;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
 
 import com.olunx.util.Config;
 import com.olunx.util.Utils;
@@ -60,14 +58,16 @@ public class ArticlesHelper implements IHelper {
 
 	@Override
 	public void createTable() {
+		System.out.println("create article table");
 		this.getDB().execSQL(
 				"create table if not exists " + TABLE + "(" + c_id + " int primary key," + c_title + " text," + c_desc + " text,"
-						+ c_content + " text," + c_publishTime + " text," + c_link + " text," + c_type + " text," + c_unread + " text,"
-						+ c_stared + " text," + c_tags + " text," + c_feedXmlUrl + " text);");
+						+ c_content + " text," + c_author + " text," + c_publishTime + " text," + c_link + " text," + c_type + " text,"
+						+ c_unread + " text," + c_stared + " text," + c_tags + " text," + c_feedXmlUrl + " text);");
 	}
 
 	@Override
 	public void dropTable() {
+		System.out.println("drop article table");
 		this.getDB().execSQL("drop table if exists " + TABLE + ";");
 	}
 
@@ -78,24 +78,9 @@ public class ArticlesHelper implements IHelper {
 	 * 
 	 * @param object
 	 */
-	public void addRecord(JSONObject object) {
-		row = new ContentValues();
-		try {
-			row.put(c_title, object.getString(c_title));
-			row.put(c_desc, object.getString(c_desc));
-			row.put(c_content, object.getString(c_content));
-			row.put(c_publishTime, object.getString(c_publishTime));
-			row.put(c_link, object.getString(c_link));
-			row.put(c_type, object.getString(c_type));
-			row.put(c_unread, object.getString(c_unread));
-			row.put(c_stared, object.getString(c_stared));
-			row.put(c_tags, object.getString(c_tags));
-			row.put(c_feedXmlUrl, object.getString(c_feedXmlUrl));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+	public void addRecord(ContentValues values) {
 		System.out.println("feedAdd");
-		getDB().insert(TABLE, null, row);
+		getDB().insert(TABLE, null, values);
 	}
 
 	/**
@@ -130,9 +115,10 @@ public class ArticlesHelper implements IHelper {
 			while (!result.isAfterLast()) {
 				url = result.getString(urlColumn);
 				count = result.getString(countColumn);
-				if (helper.isExistsFeed(url)) {
+				System.out.println("isExistsFeed " + url);
+//				if (helper.isExistsFeed(url)) {
 					helper.updateArticleCount(url, count);
-				}
+//				}
 
 				result.moveToNext();
 			}
@@ -141,27 +127,40 @@ public class ArticlesHelper implements IHelper {
 		helper.close();
 	}
 
-//	/**
-//	 * 获取Feed文章列表
-//	 * 
-//	 * @param feedXmlUrl
-//	 * @return
-//	 */
-//	public Cursor getRecords(String feedXmlUrl) {
-//		return getDB().query(TABLE, new String[] { c_id, c_title }, c_feedXmlUrl + "== ?", new String[] { feedXmlUrl }, null, null, null);
-//	}
-
 	/**
-	 * 获取文章内容
+	 * 获取分类下的文章列表
 	 * 
 	 * @param articleTitle
 	 * @return
 	 */
-	public Cursor getArticleByTitle(String articleTitle) {
-		return getDB().query(TABLE, new String[] { c_id, c_title, c_link}, c_title + "== ?", new String[] { articleTitle },
-				null, null, null);
+	public Cursor getArticlesByXmlUrl(String feedXmlUrl) {
+		return getDB().query(TABLE, new String[] { c_id, c_title, c_link }, c_feedXmlUrl + "== ?", new String[] { feedXmlUrl }, null, null,
+				null);
 	}
 
+	/**
+	 * 获取文章
+	 * @param title
+	 * @return
+	 */
+	public HashMap<String, String> getArticleByTitle(String title) {
+		HashMap<String, String> article = new HashMap<String, String>();
+		
+		Cursor result =  getDB().query(TABLE, new String[] { c_id, c_content }, c_title + "== ?", new String[] { title }, null, null,
+				null);
+		
+		if (result != null) {
+			result.moveToFirst();
+			int contentIndex = result.getColumnIndex(c_content);
+			while (!result.isAfterLast()) {
+				article.put(c_content, result.getString(contentIndex));
+				result.moveToNext();
+			}
+		}
+		result.close();
+		
+		return article;
+	}
 	/**
 	 * 判断文章是否存在
 	 * 

@@ -3,6 +3,7 @@ package com.olunx.reader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
+import android.content.ContentValues;
 import be.lechtitseb.google.reader.api.core.GoogleReader;
 import be.lechtitseb.google.reader.api.core.GoogleReaderDataProvider;
 import be.lechtitseb.google.reader.api.model.exception.AuthenticationException;
@@ -152,7 +154,7 @@ public class Rss {
 	 * @param feedUrl
 	 * @param fromDate
 	 */
-	public JSONObject getFeedContent(String feedUrl, String fromDate) {
+	public HashMap<String, Object> getFeedContent(String feedUrl, String fromDate) {
 
 		String feed = "feed/" + feedUrl;
 		String content = "";
@@ -160,7 +162,7 @@ public class Rss {
 		if (dataProvider != null) {
 			try {
 				if (fromDate == null) {
-					content = dataProvider.getFeedItems(feed, 5);
+					content = dataProvider.getFeedItems(feed, 2);
 				} else {
 					content = dataProvider.getFeedItemsFromDate(feed, String.valueOf(Utils.init().getTimestamp(fromDate)));
 				}
@@ -169,7 +171,7 @@ public class Rss {
 			}
 
 			System.out.println("parseRss： " + feed);
-			return parseRss(content);// 解析rss内容
+			return parseRss(content, feedUrl);// 解析rss内容
 		}
 
 		return null;
@@ -182,9 +184,9 @@ public class Rss {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public JSONObject parseRss(String source) {
+	public HashMap<String, Object> parseRss(String source, String feedUrl) {
 
-		JSONObject singleFeed = new JSONObject();
+		HashMap<String, Object> singleFeed = new HashMap<String, Object>();
 
 		XmlReader reader = null;
 		try {
@@ -202,18 +204,11 @@ public class Rss {
 			e1.printStackTrace();
 		}
 
-		try {
-			singleFeed.put(FeedsHelper.c_charset, reader.getEncoding());
-			singleFeed.put(FeedsHelper.c_rssType, feed.getFeedType());
-		} catch (JSONException e2) {
-			e2.printStackTrace();
-		}
-		// System.out.println("Rss源的编码格式为：" + reader.getEncoding());
-		// System.out.println("Rss源类型：" + feed.getFeedType());
-		// feed.getCategories();
+		singleFeed.put(FeedsHelper.c_charset, reader.getEncoding());
+		singleFeed.put(FeedsHelper.c_rssType, feed.getFeedType());
 
-		JSONArray articles = new JSONArray();// 文章数组
-		JSONObject article;// 单篇文章
+		ContentValues[] articles;// 文章数组
+		ContentValues article;// 单篇文章
 		// 得到Rss新闻中子项列表
 		List entries = feed.getEntries();
 
@@ -224,72 +219,68 @@ public class Rss {
 		SyndContent description;
 		List<SyndContent> contents;
 		System.out.println("entries.size() " + entries.size());
-		for (int i = 0; i < entries.size(); i++) {
+		int entriesSize = entries.size();
+		articles = new ContentValues[entriesSize];
+		for (int i = 0; i < entriesSize; i++) {
 			entry = (SyndEntry) entries.get(i);
-			article = new JSONObject();
+			article = new ContentValues();
 
-			try {
-				// 标题
-				title = entry.getTitle();
-				if (title != null) {
-					article.put(ArticlesHelper.c_title, title.trim());
-				}else {
-					article.put(ArticlesHelper.c_title, "无标题");
+			article.put(ArticlesHelper.c_feedXmlUrl, feedUrl);
+			// 标题
+			title = entry.getTitle();
+			if (title != null) {
+				article.put(ArticlesHelper.c_title, title.trim());
+			} else {
+				article.put(ArticlesHelper.c_title, "无标题");
+			}
+			System.out.println("article title put : " + title);
+			// // URI
+			// uri = entry.getUri();
+			// if (uri != null) {
+			// uri.trim();
+			// }
+			// link
+			link = entry.getLink();
+			if (link != null) {
+				article.put(ArticlesHelper.c_link, link.trim());
+			}
+			// 描述
+			description = entry.getDescription();
+			if (description != null) {
+				desc = description.getValue();
+				if (desc != null) {
+					article.put(ArticlesHelper.c_desc, desc.trim());
 				}
-				// // URI
-				// uri = entry.getUri();
-				// if (uri != null) {
-				// uri.trim();
-				// }
-				// link
-				link = entry.getLink();
-				if (link != null) {
-					article.put(ArticlesHelper.c_link, link.trim());
-				}
-				// 描述
-				description = entry.getDescription();
-				if (description != null) {
-					desc = description.getValue();
-					if (desc != null) {
-						article.put(ArticlesHelper.c_desc, desc.trim());
-					}
-				}
-				// 发表日期
-				date = entry.getPublishedDate();
-				if (date != null) {
-					article.put(ArticlesHelper.c_publishTime, Utils.init().getCstTime(date));
-				}
-				// // 目录
-				// category = new StringBuilder();
-				// for (Object e : entry.getCategories()) {
-				// category.append(((SyndCategory) e).getName());
-				// }
-				// 内容
-				content = new StringBuilder();
-				contents = entry.getContents();
-				for (SyndContent c : contents) {
-					c.getType();
-					content.append(c.getValue());
-				}
-				article.put(ArticlesHelper.c_content, content.toString().trim());
-				// 作者
-				author = entry.getAuthor();
-				if (author != null) {
-					article.put(ArticlesHelper.c_author, author.trim());
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			}
+			// 发表日期
+			date = entry.getPublishedDate();
+			if (date != null) {
+				article.put(ArticlesHelper.c_publishTime, Utils.init().getCstTime(date));
+			}
+			// // 目录
+			// category = new StringBuilder();
+			// for (Object e : entry.getCategories()) {
+			// category.append(((SyndCategory) e).getName());
+			// }
+			// 内容
+			content = new StringBuilder();
+			contents = entry.getContents();
+			for (SyndContent c : contents) {
+				c.getType();
+				content.append(c.getValue());
+			}
+			article.put(ArticlesHelper.c_content, content.toString().trim());
+			// 作者
+			author = entry.getAuthor();
+			if (author != null) {
+				article.put(ArticlesHelper.c_author, author.trim());
 			}
 
-			articles.put(article);
-			System.out.println("put article " + i);
+			articles[i] = article;
+			System.out.println("add article " + i);
 		}
 
-		try {
-			singleFeed.put(FeedsHelper.c_articles, articles);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		singleFeed.put(FeedsHelper.c_articles, articles);
 
 		return singleFeed;
 	}
