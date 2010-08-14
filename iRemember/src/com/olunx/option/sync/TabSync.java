@@ -138,7 +138,6 @@ public class TabSync extends PreferenceActivity {
 						@Override
 						public void run() {
 							Utils.init().copyFile(Config.FILE_SYSTEM_CONFIG, Config.FILE_SDCARD_CONFIG);
-							Utils.init().copyFile(Config.FILE_SYSTEM_DATABASE, Config.FILE_SDCARD_DATABASE);
 							pd.dismiss();
 						}
 					}.start();
@@ -155,7 +154,6 @@ public class TabSync extends PreferenceActivity {
 						@Override
 						public void run() {
 							Utils.init().copyFile(Config.FILE_SDCARD_CONFIG, Config.FILE_SYSTEM_CONFIG);
-							Utils.init().copyFile(Config.FILE_SDCARD_DATABASE, Config.FILE_SYSTEM_DATABASE);
 							pd.dismiss();
 						}
 					}.start();
@@ -176,7 +174,7 @@ public class TabSync extends PreferenceActivity {
 						}
 					});
 					
-					Config.init(context).setDefaultConfig();
+					Config.init().setDefaultConfig();
 					pd.dismiss();
 
 				}

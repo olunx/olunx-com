@@ -25,11 +25,11 @@ public class GetDictList{
 	// 获取词典目录下的所有csv文件
 	public void getList() {
 		csvPathList = new ArrayList<String>();
-		String dictDir =  Config.init(context).getDictDir();
+		String dictDir =  Config.init().getDictDir();
 		if (dictDir != null && dictDir != "/") {
 			getDictsList(new File(dictDir));
 		}
-		Config.init(context).setDictList( csvPathList, Config.DICTTYPE_CSV);
+		Config.init().setDictList( csvPathList, Config.DICTTYPE_CSV);
 	}
 
 	// 列出所csv文件

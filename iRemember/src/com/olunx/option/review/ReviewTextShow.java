@@ -125,12 +125,12 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 				speakWord();
 			}
 		});
-		if (!Config.init(this).isCanSpeech()) {
+		if (!Config.init().isCanSpeech()) {
 			speakBtn.setEnabled(false);
 		}
 
 		// 是否可以读取网络单词数据
-		this.isCanGetNetWord = Config.init(this).getCanConNetWord();
+		this.isCanGetNetWord = Config.init().getCanConNetWord();
 		Log.i("idCanConWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
@@ -224,7 +224,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 			@Override
 			public void run() {
 
-				thisWordList = Config.init(context).getWordsFromFileByLessonNo( currentLessonNo);
+				thisWordList = Config.init().getWordsFromFileByLessonNo( currentLessonNo);
 				totalWordCount = thisWordList.size();
 
 				// 复制出候选的翻译答案
@@ -238,7 +238,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 
 				// 初始化语音数据
 				if (speechType == null) {
-					speechType = Config.init(context).getSpeechType();
+					speechType = Config.init().getSpeechType();
 					Log.i("speechType", speechType);
 					if (speechType.equalsIgnoreCase("tts")) {
 						if (speech == null) {
@@ -338,11 +338,11 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 
 			if (this.isCanUpdate) {
 				// 更新记忆曲线
-				Config.init(this).setRememberLine( this.currentLessonNo, "");
+				Config.init().setRememberLine( this.currentLessonNo, "");
 				this.isCanUpdate = false;
 
 				// 保存当前学习完的课程号数
-				Config.init(this).setNextStudyLesson( this.currentLessonNo + 1);
+				Config.init().setNextStudyLesson( this.currentLessonNo + 1);
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
@@ -353,7 +353,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
-					String lessonCount = Config.init(context).getLessonCount();
+					String lessonCount = Config.init().getLessonCount();
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();

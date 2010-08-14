@@ -5,7 +5,11 @@
 
 package com.olunx.util;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -14,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.TimeZone;
 
 import com.olunx.MainActivity;
@@ -27,7 +32,7 @@ import android.util.Log;
 
 public class Config {
 
-	private static Config c = null;
+	private static Config config = null;
 
 	public static final String DICTTYPE_CSV = "csv";
 	public static final String FILENAME_CONFIG = "config";
@@ -46,34 +51,34 @@ public class Config {
 
 	private static SharedPreferences sp;
 
-	private static Context context;
+	private static Context context = MainActivity.context;
 	
-	public static Config init(Context con) {
-		context = con;
-		if (c == null) {
-			c = new Config();
+	public static Config init() {
+		if (config == null) {
+			config = new Config();
 		}
 		if (sp == null) {
-			sp = MainActivity.context.getSharedPreferences(FILENAME_CONFIG, 0);
+			sp = context.getSharedPreferences(FILENAME_CONFIG, 0);
 		}
-		return c;
+		return config;
 	}
 
 	/**
 	 * 设置配置
 	 * 
-	 * @param context
 	 * @param key
 	 * @param value
 	 */
 	public void setCon(String key, String value) {
 		sp.edit().putString(key, String.valueOf(value)).commit();
 	}
+	public void setCon(String key, boolean value) {
+		sp.edit().putBoolean(key, value).commit();
+	}
 
 	/**
 	 * 获取配置
 	 * 
-	 * @param context
 	 * @param key
 	 * @param defValue
 	 * @return
@@ -81,13 +86,57 @@ public class Config {
 	public String getCon(String key, String defValue) {
 		return sp.getString(key, defValue);
 	}
-
-	public void firstRun() {
-
+	public boolean getCon(String key, boolean defValue){
+		return sp.getBoolean(key, defValue);
 	}
 
 	/**
-	 * 初始化配置文件
+	 * 返回系统设置
+	 * @param key
+	 * @return
+	 */
+	public static String getProperty(String key) {
+		Properties p = new Properties();
+		try {
+			p.load(new BufferedInputStream(new FileInputStream(new File(""))));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return p.getProperty(key);
+	}
+	
+	/**
+	 * 第一次运行，初始化数据。
+	 */
+	public void initInstall() {
+		if(getCon("first_run", true)) {
+			String cet4File = "/sdcard/iremember/大学英语四级.csv";
+			String cet6File = "/sdcard/iremember/大学英语六级.csv";
+			String gaokaoFile = "/sdcard/iremember/高考英语词汇.csv";
+			try {
+				Utils.init().copyFile(context.getAssets().open("dicts/cet4.csv"), cet4File);
+				Utils.init().copyFile(context.getAssets().open("dicts/cet6.csv"), cet6File);
+				Utils.init().copyFile(context.getAssets().open("dicts/gaokao.csv"), gaokaoFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			this.setDefaultConfig();
+			this.setFirstRun(false);
+		}
+	}
+	
+	/**
+	 * 设置是否第一次运行
+	 */
+	public void setFirstRun(boolean value) {
+		this.setCon("first_run", value);
+	}
+
+	/**
+	 * 复位配置文件
 	 * 
 	 * @param context
 	 */
@@ -237,22 +286,6 @@ public class Config {
 		return this.getCon(dictType + "_dicts_string_array", "");
 	}
 
-	// /**
-	// * 设置词典单词数
-	// *
-	// * @param context
-	// * @param dictName
-	// * @param wordCount
-	// */
-	// public void setDictWordCount(Context context, String dictName, String
-	// wordCount) {
-	// this.setCon(context, dictName + "_count", wordCount);
-	// }
-	//
-	// public String getDictWordCount(Context context, String dictName) {
-	// return this.getCon(context, dictName + "_count", "0");
-	// }
-
 	/**
 	 * 设置词典路径
 	 * 
@@ -298,14 +331,6 @@ public class Config {
 		return this.getCon(dictName + "_type", "");
 	}
 
-	// // 当前使用词典文件名
-	// public void setCurrentUseDictFileName(Context context, String fileName) {
-	// this.setCon(context, "current_use_dict_file_name", fileName);
-	// }
-	//
-	// public String getCurrentUseDictFileName(Context context) {
-	// return this.getCon(context, "current_use_dict_file_name", "");
-	// }
 
 	/**
 	 * 设置当前使用词典名称
@@ -519,22 +544,6 @@ public class Config {
 		return ignoreWordsStr.toLowerCase();
 	}
 
-	// public int[] getIgnoreWords(Context context, int lessonNo) {
-	//		
-	// String ignoreWordsStr = this.getIgnoreWordsStr(context, lessonNo);
-	//		
-	// if(ignoreWordsStr.equals("") || ignoreWordsStr == "") {
-	// return null;
-	// }
-	//		
-	// String[] ignoreWords = ignoreWordsStr.split("\\,");
-	// int[] wordNos = new int[ignoreWords.length];
-	// for(int i=0;i<ignoreWords.length;i++) {
-	// wordNos[i] = Integer.parseInt(ignoreWords[i]);
-	// }
-	//		
-	// return wordNos;
-	// }
 
 	/**
 	 * 设置是否可以联网

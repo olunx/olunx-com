@@ -16,7 +16,7 @@ public class TabHelp extends Activity {
 		this.setContentView(R.layout.textview_full);
 
 		TextView tv = (TextView) this.findViewById(R.id.TextView01);
-		tv.setText(Config.init(this).getDataFromAssets( getString(R.string.help_file_path)));
+		tv.setText(Config.init().getDataFromAssets( getString(R.string.help_file_path)));
 	}
 
 }

@@ -15,6 +15,7 @@ import com.olunx.option.preview.TabPreviewInit;
 import com.olunx.option.review.OptionReview;
 import com.olunx.option.search.TabSearch;
 import com.olunx.option.sync.TabSync;
+import com.olunx.util.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,9 +47,10 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Config.init().initInstall();//初始化软件
+		
 		// 显示内容
 		showContent();
-
 	}
 
 	@Override

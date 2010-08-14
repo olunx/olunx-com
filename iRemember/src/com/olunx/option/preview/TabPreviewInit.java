@@ -22,7 +22,7 @@ public class TabPreviewInit extends Activity {
 		this.setTitle(getString(R.string.option_preview_title));
 
 		// 获取组数
-		String strLessonCount = Config.init(this).getLessonCount();
+		String strLessonCount = Config.init().getLessonCount();
 		int intLessonCount = 0;
 		if (strLessonCount != null && !strLessonCount.equals("") && !strLessonCount.equals("0")) {
 			intLessonCount = Integer.parseInt(strLessonCount);
@@ -39,7 +39,7 @@ public class TabPreviewInit extends Activity {
 			spinner.setAdapter(list);
 
 			// 选择准备记忆的课程
-			int selection = Config.init(this).getNextStudyLesson();
+			int selection = Config.init().getNextStudyLesson();
 			if (selection < intLessonCount && selection != 0) {
 				spinner.setSelection(selection);
 			}

@@ -80,7 +80,7 @@ public class TabNeedReview extends Activity {
 		try {
 			for (HashMap<String, String> record : records) {
 				// Log.i("desc", String.valueOf(record.get(desc)));
-				if (Config.init(this).isStudyTimeInToday(record.get("复习时间"))) {
+				if (Config.init().isStudyTimeInToday(record.get("复习时间"))) {
 					tempMap = new HashMap<String, String>();
 					tempMap.put(title, "第 " + (Integer.parseInt(String.valueOf(record.get(title))) + 1) + " 组");
 					tempMap.put(desc, record.get(desc));
