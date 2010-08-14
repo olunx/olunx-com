@@ -5,6 +5,11 @@
 
 package com.olunx;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +60,15 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
+		//保存配置文件
+		try {
+			Config.p.store(new BufferedOutputStream(new FileOutputStream(new File(Config.FILE_SDCARD_CONFIG))), "");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		super.onDestroy();
 		Process.killProcess(android.os.Process.myPid());
 	}

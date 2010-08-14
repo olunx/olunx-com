@@ -27,7 +27,6 @@ import com.olunx.db.RememberHelper;
 import com.olunx.option.mandict.GetCsvInfo;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 public class Config {
@@ -35,30 +34,33 @@ public class Config {
 	private static Config config = null;
 
 	public static final String DICTTYPE_CSV = "csv";
-	public static final String FILENAME_CONFIG = "config";
-	public static final String FILENAME_DATABASE = "data.db";
 
-	private static final String SYSTEM_PATH = "/data/data/com.olunx/";
 	private static final String SDCARD_PATH = "/sdcard/iremember/";
 
-	public static final String DATABASE_FILE = FILENAME_DATABASE;
-	public static final String FILE_SYSTEM_DATABASE = SYSTEM_PATH + "databases/" + DATABASE_FILE;
+	public static final String DATABASE_FILE = "data.db";
 	public static final String FILE_SDCARD_DATABASE = SDCARD_PATH + DATABASE_FILE;
 
-	public static final String CONFIG_FILE = Config.FILENAME_CONFIG + ".xml";
-	public static final String FILE_SYSTEM_CONFIG = SYSTEM_PATH + "shared_prefs/" + CONFIG_FILE;
+	public static final String CONFIG_FILE = "config.propertites";
 	public static final String FILE_SDCARD_CONFIG = SDCARD_PATH + CONFIG_FILE;
 
-	private static SharedPreferences sp;
-
+	public static Properties p;
+	
 	private static Context context = MainActivity.context;
 	
 	public static Config init() {
 		if (config == null) {
 			config = new Config();
 		}
-		if (sp == null) {
-			sp = context.getSharedPreferences(FILENAME_CONFIG, 0);
+		if(p == null) {
+			Utils.init().createFileIfNotExist(FILE_SDCARD_CONFIG);
+			p = new Properties();
+			try {
+				p.load(new BufferedInputStream(new FileInputStream(new File(FILE_SDCARD_CONFIG))));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return config;
 	}
@@ -70,10 +72,7 @@ public class Config {
 	 * @param value
 	 */
 	public void setCon(String key, String value) {
-		sp.edit().putString(key, String.valueOf(value)).commit();
-	}
-	public void setCon(String key, boolean value) {
-		sp.edit().putBoolean(key, value).commit();
+		p.setProperty(key, value);
 	}
 
 	/**
@@ -84,34 +83,19 @@ public class Config {
 	 * @return
 	 */
 	public String getCon(String key, String defValue) {
-		return sp.getString(key, defValue);
-	}
-	public boolean getCon(String key, boolean defValue){
-		return sp.getBoolean(key, defValue);
-	}
-
-	/**
-	 * 返回系统设置
-	 * @param key
-	 * @return
-	 */
-	public static String getProperty(String key) {
-		Properties p = new Properties();
-		try {
-			p.load(new BufferedInputStream(new FileInputStream(new File(""))));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		String value =  p.getProperty(key);
+		if(value == null) {
+			return  defValue;
 		}
-		return p.getProperty(key);
+		return value;
 	}
 	
 	/**
 	 * 第一次运行，初始化数据。
 	 */
 	public void initInstall() {
-		if(getCon("first_run", true)) {
+		if(getCon("first_run", "true").equals("true")) {
+			//安装词库
 			String cet4File = "/sdcard/iremember/大学英语四级.csv";
 			String cet6File = "/sdcard/iremember/大学英语六级.csv";
 			String gaokaoFile = "/sdcard/iremember/高考英语词汇.csv";
@@ -124,14 +108,14 @@ public class Config {
 			}
 			
 			this.setDefaultConfig();
-			this.setFirstRun(false);
+			this.setFirstRun("false");
 		}
 	}
 	
 	/**
 	 * 设置是否第一次运行
 	 */
-	public void setFirstRun(boolean value) {
+	public void setFirstRun(String value) {
 		this.setCon("first_run", value);
 	}
 

@@ -2,18 +2,21 @@ package com.olunx.option.sync;
 
 import com.olunx.R;
 import com.olunx.util.Config;
-import com.olunx.util.Utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.DialogPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.Toast;
 
 public class TabSync extends PreferenceActivity {
@@ -30,27 +33,59 @@ public class TabSync extends PreferenceActivity {
 
 	private void createPreScreen() {
 
-		// 本地备份
-		PreferenceCategory backupPrefCat = new PreferenceCategory(this);
-		backupPrefCat.setTitle("本地备份");
-		root.addPreference(backupPrefCat);
+		// 
+		PreferenceCategory otherSetPrefCat = new PreferenceCategory(this);
+		otherSetPrefCat.setTitle("发音、例句");
+		root.addPreference(otherSetPrefCat);
 
-		final DialogPre backup = new DialogPre(this, null);
-		backup.setDialogIcon(android.R.drawable.ic_dialog_info);
-		backup.setTitle(R.string.local_backup);
-		backup.setSummary("手动备份数据到本地文件夹");
-		backup.setDialogTitle("备份");
-		backup.setDialogMessage("备份到/sdcard/iremember/");
-		root.addPreference(backup);
-
-		DialogPre undo = new DialogPre(this, null);
-		undo.setDialogIcon(android.R.drawable.ic_dialog_info);
-		undo.setTitle(R.string.local_undo);
-		undo.setSummary("手动还原历史数据到软件");
-		undo.setDialogTitle("备份");
-		undo.setDialogMessage("从/sdcard/iremember/还原");
-		root.addPreference(undo);
-
+		// 发音功能
+		final CheckBoxPreference ttsPref = new CheckBoxPreference(this);
+		ttsPref.setKey("tts_function");
+		ttsPref.setTitle("单词发音");
+		ttsPref.setSummary("利用系统自带的文本发音功能。");
+		ttsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				if(ttsPref.isChecked()) {
+					//设置发音类型
+					Config.init().setSpeechType( 1);
+					Config.init().setCanSpeech(true);
+					Log.i("flag()", Config.init().getSpeechType());
+				}else {
+					Config.init().setSpeechType( 0);
+					Config.init().setCanSpeech(false);
+				}
+				return false;
+			}
+		});
+		otherSetPrefCat.addPreference(ttsPref);
+		
+		//新的设置界面
+        PreferenceScreen netScrPref = getPreferenceManager().createPreferenceScreen(this);
+        netScrPref.setKey("screen_preference");
+        netScrPref.setTitle("网络例句");
+        netScrPref.setSummary("这些都是需要连接到网络的功能。");
+        otherSetPrefCat.addPreference(netScrPref);
+        
+		// 例句功能
+		final CheckBoxPreference sentsPref = new CheckBoxPreference(this);
+		sentsPref.setKey("sents_function");
+		sentsPref.setTitle("例句功能");
+		sentsPref.setSummary("开启此功能需要连接到网络。");
+		sentsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				boolean flag = sentsPref.isChecked();
+				Config.init().setCanConNetWord( flag);
+				if(!flag) {
+					Config.init().setSpeechType( 0);
+				}
+				Log.i("flag()", Config.init().getSpeechType());
+				return false;
+			}
+		});
+		netScrPref.addPreference(sentsPref);
+		
 		// 网络备份
 		PreferenceCategory manualSyncPrefCat = new PreferenceCategory(this);
 		manualSyncPrefCat.setTitle("网络备份");
@@ -63,7 +98,7 @@ public class TabSync extends PreferenceActivity {
 		upload.setDialogTitle("提示");
 		upload.setDialogMessage("是否上传数据到服务器？");
 		upload.setEnabled(false);
-		root.addPreference(upload);
+		manualSyncPrefCat.addPreference(upload);
 
 		DialogPre download = new DialogPre(this, null);
 		download.setDialogIcon(android.R.drawable.ic_dialog_info);
@@ -72,17 +107,7 @@ public class TabSync extends PreferenceActivity {
 		download.setDialogTitle("提示");
 		download.setDialogMessage("是否下载数据到本地？");
 		download.setEnabled(false);
-		root.addPreference(download);
-
-		// 自动同步
-		// PreferenceCategory autoSyncPrefCat = new PreferenceCategory(this);
-		// autoSyncPrefCat.setTitle("自动同步");
-		// root.addPreference(autoSyncPrefCat);
-		//
-		// final CheckBoxPreference autoSyncPref = new CheckBoxPreference(this);
-		// autoSyncPref.setTitle("自动同步");
-		// autoSyncPref.setSummary("请确保你的Google账户可用");
-		// root.addPreference(autoSyncPref);
+		manualSyncPrefCat.addPreference(download);
 
 		// 其它设置
 		PreferenceCategory clearPrefCat = new PreferenceCategory(this);
@@ -137,7 +162,7 @@ public class TabSync extends PreferenceActivity {
 					new Thread() {
 						@Override
 						public void run() {
-							Utils.init().copyFile(Config.FILE_SYSTEM_CONFIG, Config.FILE_SDCARD_CONFIG);
+//							Utils.init().copyFile(Config.FILE_SYSTEM_CONFIG, Config.FILE_SDCARD_CONFIG);
 							pd.dismiss();
 						}
 					}.start();
@@ -153,7 +178,7 @@ public class TabSync extends PreferenceActivity {
 					new Thread() {
 						@Override
 						public void run() {
-							Utils.init().copyFile(Config.FILE_SDCARD_CONFIG, Config.FILE_SYSTEM_CONFIG);
+//							Utils.init().copyFile(Config.FILE_SDCARD_CONFIG, Config.FILE_SYSTEM_CONFIG);
 							pd.dismiss();
 						}
 					}.start();

@@ -10,7 +10,6 @@ import com.olunx.util.Config;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -114,78 +113,6 @@ public class TabDictSet extends PreferenceActivity {
 		otherSetPrefCat.setTitle("其它设置");
 		root.addPreference(otherSetPrefCat);
 
-		//真人发音
-//		final CheckBoxPreference speechPref = new CheckBoxPreference(this);
-		
-		// 发音功能
-		final CheckBoxPreference ttsPref = new CheckBoxPreference(this);
-		ttsPref.setKey("tts_function");
-		ttsPref.setTitle("单词发音");
-		ttsPref.setSummary("利用系统自带的文本发音功能。");
-		ttsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				if(ttsPref.isChecked()) {
-					//设置发音类型
-					Config.init().setSpeechType( 1);
-					Config.init().setCanSpeech(true);
-					Log.i("flag()", Config.init().getSpeechType());
-				}else {
-					Config.init().setSpeechType( 0);
-					Config.init().setCanSpeech(false);
-				}
-				return false;
-			}
-		});
-		otherSetPrefCat.addPreference(ttsPref);
-
-		
-		//新的设置界面
-        PreferenceScreen netScrPref = getPreferenceManager().createPreferenceScreen(this);
-        netScrPref.setKey("screen_preference");
-        netScrPref.setTitle("例句、真人发音");
-        netScrPref.setSummary("这些都是需要连接到网络的功能。");
-        otherSetPrefCat.addPreference(netScrPref);
-        
-		// 例句功能
-		final CheckBoxPreference sentsPref = new CheckBoxPreference(this);
-		sentsPref.setKey("sents_function");
-		sentsPref.setTitle("例句功能");
-		sentsPref.setSummary("开启此功能需要连接到网络。");
-		sentsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				boolean flag = sentsPref.isChecked();
-				Config.init().setCanConNetWord( flag);
-				if(!flag) {
-					Config.init().setSpeechType( 0);
-				}
-				Log.i("flag()", Config.init().getSpeechType());
-				return false;
-			}
-		});
-		netScrPref.addPreference(sentsPref);
-
-//		// 真人发音
-//		speechPref.setKey("realpeople_function");
-//		speechPref.setTitle("真人发音");
-//		speechPref.setSummary("来自dict.cn的真人发音库数据。");
-//		speechPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-//			@Override
-//			public boolean onPreferenceClick(Preference preference) {
-//				if(speechPref.isChecked()) {
-//					if(ttsPref.isChecked()) {
-//						ttsPref.setChecked(false);
-//					}
-//					//设置发音类型
-//					Config.getConfig().setSpeechType(TabDictSet.this, 2);
-//					Log.i("flag()", Config.getConfig().getSpeechType(TabDictSet.this));
-//				}
-//				return false;
-//			}
-//		});
-//		netScrPref.addPreference(speechPref);
-		
 		refreshPref();
 		setPreferenceScreen(root);
 
