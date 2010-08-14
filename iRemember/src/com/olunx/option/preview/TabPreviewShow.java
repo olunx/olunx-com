@@ -123,12 +123,12 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 				speakWord();
 			}
 		});
-		if(!Config.getConfig().isCanSpeech(this)) {
+		if(!Config.init(this).isCanSpeech()) {
 			speakBtn.setEnabled(false);
 		}
 		
 		// 是否可以读取网络单词数据
-		this.isCanGetNetWord = Config.getConfig().getCanConNetWord(this);
+		this.isCanGetNetWord = Config.init(this).getCanConNetWord();
 		Log.i("isCanGetNetWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
@@ -171,7 +171,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		if (text.equals(UNREMEMBER) || text.equals(WRONG)) {// 忘了或者不正确
 			isNeedAddRepeat = true;
 			noBtn.setText(NEXTWORD);
-			yesBtn.setVisibility(Button.INVISIBLE);
+			yesBtn.setVisibility(View.INVISIBLE);
 			this.showAnswer();
 		}
 		if (text.equals(RIGHT)) {// 正确
@@ -188,7 +188,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		if (text.equals(NEXTWORD)) {// 下一个
 			yesBtn.setText(REMEMBER);
 			noBtn.setText(UNREMEMBER);
-			yesBtn.setVisibility(Button.VISIBLE);
+			yesBtn.setVisibility(View.VISIBLE);
 			if (isNeedAddRepeat) {
 				this.addRepeatWord();// 循环记忆
 			}
@@ -232,14 +232,15 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 
 		pd.show();
 		new Thread() {
+			@Override
 			public void run() {
 
-				thisWordList = Config.getConfig().getWordsFromFileByLessonNo(context, currentLessonNo);
+				thisWordList = Config.init(context).getWordsFromFileByLessonNo(currentLessonNo);
 				totalWordCount = thisWordList.size();
 
 				// 初始化语音数据
 				if (speechType == null) {
-					speechType = Config.getConfig().getSpeechType(context);
+					speechType = Config.init(context).getSpeechType();
 					Log.i("speechType", speechType);
 					if (speechType.equalsIgnoreCase("tts")) {
 						if (speech == null) {
@@ -304,6 +305,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	private void getNetTrans() {
 		if (this.isCanGetNetWord) {
 			new Thread() {
+				@Override
 				public void run() {
 					FetchWord fetch = new FetchWord();
 					netWord = fetch.getWord(thisWord);
@@ -339,11 +341,11 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			if (this.isCanUpdate) {
 				Log.i("ignoreWords.toString()",ignoreWords.toString());
 				// 更新记忆曲线
-				Config.getConfig().setRememberLine(this, this.currentLessonNo, ignoreWords.toString());
+				Config.init(this).setRememberLine( this.currentLessonNo, ignoreWords.toString());
 				this.isCanUpdate = false;
 
 				// 保存当前学习完的课程号数
-				Config.getConfig().setNextStudyLesson(this, this.currentLessonNo + 1);
+				Config.init(this).setNextStudyLesson( this.currentLessonNo + 1);
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
@@ -354,7 +356,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
-					String lessonCount = Config.getConfig().getLessonCount(context);
+					String lessonCount = Config.init(context).getLessonCount();
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();

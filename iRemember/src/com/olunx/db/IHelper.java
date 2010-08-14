@@ -2,7 +2,7 @@ package com.olunx.db;
 
 import android.database.sqlite.SQLiteDatabase;
 
-public interface HelperInterface {
+public interface IHelper {
 	
 	SQLiteDatabase getDB();
 	

@@ -125,12 +125,12 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 				speakWord();
 			}
 		});
-		if (!Config.getConfig().isCanSpeech(this)) {
+		if (!Config.init(this).isCanSpeech()) {
 			speakBtn.setEnabled(false);
 		}
 
 		// 是否可以读取网络单词数据
-		this.isCanGetNetWord = Config.getConfig().getCanConNetWord(this);
+		this.isCanGetNetWord = Config.init(this).getCanConNetWord();
 		Log.i("idCanConWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
@@ -221,9 +221,10 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 
 		pd.show();
 		new Thread() {
+			@Override
 			public void run() {
 
-				thisWordList = Config.getConfig().getWordsFromFileByLessonNo(context, currentLessonNo);
+				thisWordList = Config.init(context).getWordsFromFileByLessonNo( currentLessonNo);
 				totalWordCount = thisWordList.size();
 
 				// 复制出候选的翻译答案
@@ -237,7 +238,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 
 				// 初始化语音数据
 				if (speechType == null) {
-					speechType = Config.getConfig().getSpeechType(context);
+					speechType = Config.init(context).getSpeechType();
 					Log.i("speechType", speechType);
 					if (speechType.equalsIgnoreCase("tts")) {
 						if (speech == null) {
@@ -302,6 +303,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 	private void getNetTrans() {
 		if (this.isCanGetNetWord) {
 			new Thread() {
+				@Override
 				public void run() {
 					FetchWord fetch = new FetchWord();
 					netWord = fetch.getWord(thisWord);
@@ -336,11 +338,11 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 
 			if (this.isCanUpdate) {
 				// 更新记忆曲线
-				Config.getConfig().setRememberLine(this, this.currentLessonNo, "");
+				Config.init(this).setRememberLine( this.currentLessonNo, "");
 				this.isCanUpdate = false;
 
 				// 保存当前学习完的课程号数
-				Config.getConfig().setNextStudyLesson(this, this.currentLessonNo + 1);
+				Config.init(this).setNextStudyLesson( this.currentLessonNo + 1);
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
@@ -351,7 +353,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
-					String lessonCount = Config.getConfig().getLessonCount(context);
+					String lessonCount = Config.init(context).getLessonCount();
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();

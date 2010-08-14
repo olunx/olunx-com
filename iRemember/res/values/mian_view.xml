@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="option_preview_title">Getting Start</string>
-	<string name="option_preview_desc">Intelligent memory curve.</string>
-	<string name="option_review_title">Go Over</string>
-	<string name="option_review_desc">Review to obtain effective memory.</string>
-	<string name="option_search_title">Search</string>
-	<string name="option_search_desc">Search word by net.</string>
-	<string name="option_mandict_title">Dictionary</string>
-	<string name="option_mandict_desc">Manage your thesaurus.</string>
-	<string name="option_sync_title">Sync User</string>
-	<string name="option_sync_desc">Synchronize your state.</string>
-	<string name="option_manual_title">Manual</string>
-	<string name="option_manual_desc">Make better use of this software.</string>
+	<string name="option_preview_title">开始学习</string>
+	<string name="option_preview_desc">智能化的记忆曲线，更有效的记忆。</string>
+	<string name="option_review_title">复习记忆</string>
+	<string name="option_review_desc">多种复习方式，获得高效的复习记忆。</string>
+	<string name="option_search_title">在线查词</string>
+	<string name="option_search_desc">在线查询单词，获取最新的解释信息。</string>
+	<string name="option_mandict_title">词库管理</string>
+	<string name="option_mandict_desc">词库数据转换、导入导出、修改和更新。</string>
+	<string name="option_sync_title">同步管理</string>
+	<string name="option_sync_desc">同步用户的词库和背诵状态。</string>
+	<string name="option_manual_title">使用帮助</string>
+	<string name="option_manual_desc">帮助你更好的使用本软件。</string>
 </resources>

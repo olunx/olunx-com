@@ -1,36 +1,33 @@
 package com.olunx.db;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.olunx.R;
+import com.olunx.util.Config;
+import com.olunx.util.Utils;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class RememberHelper implements HelperInterface {
+public class RememberHelper implements IHelper {
 
 	private static String TABLE = "t_remember";
 
 	private static SQLiteDatabase sqlite = null;
-	private Context context;
-
-	public RememberHelper(Context context) {
-		this.context = context;
-	}
 
 	@Override
 	public SQLiteDatabase getDB() {
 		try {
 			if (sqlite == null || !sqlite.isOpen()) {
-				sqlite = new DBHelper(context).getWritableDatabase();
-				
-				Log.i("sqlite.getPath() ",sqlite.getPath());
+				File file = Utils.init().createFileIfNotExist(Config.FILE_SDCARD_DATABASE);
+				sqlite = SQLiteDatabase.openOrCreateDatabase(file, null);
 			}
+
+			Log.i("sqlite.getPath() ", sqlite.getPath());
 			return sqlite;
 		} catch (SQLException e) {
 			return null;
@@ -47,7 +44,8 @@ public class RememberHelper implements HelperInterface {
 	@Override
 	public void createTable() {
 		this.getDB().execSQL(
-				"create table if not exists " + TABLE + "(id int,lesson_no int,study_time text,next_study_time text,times int,ignore_words text);");
+				"create table if not exists " + TABLE
+						+ "(id int,lesson_no int,study_time text,next_study_time text,times int,ignore_words text);");
 	}
 
 	@Override
@@ -89,8 +87,8 @@ public class RememberHelper implements HelperInterface {
 
 			result.moveToFirst();
 
-			String title = context.getString(R.string.title);
-			String desc = context.getString(R.string.description);
+			String title = "标题";
+			String desc = "描述";
 			while (!result.isAfterLast()) {
 				map = new HashMap<String, String>();
 				map.put(title, result.getString(lessonNoColumn));
@@ -103,11 +101,11 @@ public class RememberHelper implements HelperInterface {
 		result.close();
 		return records;
 	}
-	
-	//返回不需要再次记忆的单词编号
+
+	// 返回不需要再次记忆的单词编号
 	public String getIgnoreWords(int lessonNo) {
 		createTable();
-		
+
 		String ignoreWords = "";
 		Cursor result = getDB().query(TABLE, new String[] { "ignore_words" }, "lesson_no == '" + lessonNo + "'", null, null, null, null);
 		if (result != null) {
@@ -119,7 +117,7 @@ public class RememberHelper implements HelperInterface {
 				result.moveToNext();
 			}
 		}
-		
+
 		return ignoreWords;
 	}
 

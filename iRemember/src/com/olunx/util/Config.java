@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-import com.olunx.R;
+import com.olunx.MainActivity;
 import com.olunx.db.CsvHelper;
 import com.olunx.db.RememberHelper;
 import com.olunx.option.mandict.GetCsvInfo;
@@ -44,14 +44,20 @@ public class Config {
 	public static final String FILE_SYSTEM_CONFIG = SYSTEM_PATH + "shared_prefs/" + CONFIG_FILE;
 	public static final String FILE_SDCARD_CONFIG = SDCARD_PATH + CONFIG_FILE;
 
-	public static Config getConfig() {
+	private static SharedPreferences sp;
+
+	private static Context context;
+	
+	public static Config init(Context con) {
+		context = con;
 		if (c == null) {
 			c = new Config();
 		}
+		if (sp == null) {
+			sp = MainActivity.context.getSharedPreferences(FILENAME_CONFIG, 0);
+		}
 		return c;
 	}
-
-	private SharedPreferences sp;
 
 	/**
 	 * 设置配置
@@ -60,8 +66,7 @@ public class Config {
 	 * @param key
 	 * @param value
 	 */
-	public void setCon(Context context, String key, String value) {
-		sp = context.getSharedPreferences(FILENAME_CONFIG, 0);
+	public void setCon(String key, String value) {
 		sp.edit().putString(key, String.valueOf(value)).commit();
 	}
 
@@ -73,9 +78,27 @@ public class Config {
 	 * @param defValue
 	 * @return
 	 */
-	public String getCon(Context context, String key, String defValue) {
-		sp = context.getSharedPreferences(FILENAME_CONFIG, 0);
+	public String getCon(String key, String defValue) {
 		return sp.getString(key, defValue);
+	}
+
+	public void firstRun() {
+
+	}
+
+	/**
+	 * 初始化配置文件
+	 * 
+	 * @param context
+	 */
+	public void setDefaultConfig() {
+		this.setDictDir(SDCARD_PATH);
+		this.setEachLessonWordCount("25");
+		this.setLessonCount("0");
+		this.setCurrentUseDictName("");
+		this.setDictStringArray("", "csv");
+
+		this.cleanRememberLine();
 	}
 
 	/**
@@ -84,12 +107,12 @@ public class Config {
 	 * @param context
 	 * @param dictDir
 	 */
-	public void setDictDir(Context context, String dictDir) {
-		this.setCon(context, "config_dict_dir", dictDir);
+	public void setDictDir(String dictDir) {
+		this.setCon("config_dict_dir", dictDir);
 	}
 
-	public String getDictDir(Context context) {
-		return getCon(context, "config_dict_dir", "/sdcard/");
+	public String getDictDir() {
+		return getCon("config_dict_dir", SDCARD_PATH);
 	}
 
 	/**
@@ -98,12 +121,12 @@ public class Config {
 	 * @param context
 	 * @param wordCount
 	 */
-	public void setEachLessonWordCount(Context context, String wordCount) {
-		this.setCon(context, "config_each_lesson_word_count", wordCount);
+	public void setEachLessonWordCount(String wordCount) {
+		this.setCon("config_each_lesson_word_count", wordCount);
 	}
 
-	public String getEachLessonWordCount(Context context) {
-		return this.getCon(context, "config_each_lesson_word_count", "25");
+	public String getEachLessonWordCount() {
+		return this.getCon("config_each_lesson_word_count", "25");
 	}
 
 	/**
@@ -112,14 +135,14 @@ public class Config {
 	 * @param context
 	 * @param lessonCount
 	 */
-	public void setLessonCount(Context context, String lessonCount) {
-		this.setCon(context, "config_lesson_count", lessonCount);
+	public void setLessonCount(String lessonCount) {
+		this.setCon("config_lesson_count", lessonCount);
 	}
 
-	public String getLessonCount(Context context) {
+	public String getLessonCount() {
 
-		String wordCount = this.getCurrentUseDictWordCount(context);
-		String eachLessonWordCount = this.getEachLessonWordCount(context);
+		String wordCount = this.getCurrentUseDictWordCount();
+		String eachLessonWordCount = this.getEachLessonWordCount();
 
 		int lessonCount = 0;
 		int temp;
@@ -138,7 +161,7 @@ public class Config {
 			}
 		}
 		String strLessonCount = String.valueOf(lessonCount);
-		this.setLessonCount(context, strLessonCount);
+		this.setLessonCount(strLessonCount);
 
 		return strLessonCount;
 	}
@@ -150,7 +173,7 @@ public class Config {
 	 * @param dictPathList
 	 * @param dictType
 	 */
-	public void setDictList(Context context, ArrayList<String> dictPathList, String dictType) {
+	public void setDictList(ArrayList<String> dictPathList, String dictType) {
 		// 保存数据
 		String dictsArray = "";// 保存词库名称
 
@@ -167,31 +190,31 @@ public class Config {
 			dictName = gci.getDictName();
 			dictsArray = dictsArray + dictName + "|";// 将词库名称作为数组，方便获取
 
-			this.setDictPath(context, dictName, path);
+			this.setDictPath(dictName, path);
 			// this.setDictWordCount(context, dictName, wordCount);
-			this.setDictType(context, dictName, dictType);
-			this.setDictDesc(context, dictName, "大小：" + dictSize + "   类型：" + dictType);
+			this.setDictType(dictName, dictType);
+			this.setDictDesc(dictName, "大小：" + dictSize + "   类型：" + dictType);
 
 		}
-		this.setDictStringArray(context, dictsArray, dictType);
+		this.setDictStringArray(dictsArray, dictType);
 	}
 
-	public ArrayList<HashMap<String, Object>> getDictList(Context context) {
+	public ArrayList<HashMap<String, Object>> getDictList() {
 
 		ArrayList<HashMap<String, Object>> resultItems = new ArrayList<HashMap<String, Object>>();
 		// 获取词典字符串
-		String dictListArray = Config.getConfig().getDictStringArray(context, Config.DICTTYPE_CSV);
+		String dictListArray = getDictStringArray(Config.DICTTYPE_CSV);
 		if (dictListArray != "" && dictListArray != null) {
 			String[] dictNameList = dictListArray.split("\\|");
 
 			HashMap<String, Object> result = null;
-			String title = context.getString(R.string.title);
-			String des = context.getString(R.string.description);
+			String title = "标题";
+			String des = "描述";
 			for (int i = 0; i < dictNameList.length; i++) {
 				Log.i("split", dictNameList[i]);
 				result = new HashMap<String, Object>();
 				result.put(title, dictNameList[i]);
-				result.put(des, Config.getConfig().getDictDesc(context, dictNameList[i]));
+				result.put(des, getDictDesc(dictNameList[i]));
 				resultItems.add(result);
 			}
 			Log.i("dictList.length", String.valueOf(dictNameList.length));
@@ -206,12 +229,12 @@ public class Config {
 	 * @param dictsArray
 	 * @param dictType
 	 */
-	public void setDictStringArray(Context context, String dictsArray, String dictType) {
-		this.setCon(context, dictType + "_dicts_string_array", dictsArray);
+	public void setDictStringArray(String dictsArray, String dictType) {
+		this.setCon(dictType + "_dicts_string_array", dictsArray);
 	}
 
-	public String getDictStringArray(Context context, String dictType) {
-		return this.getCon(context, dictType + "_dicts_string_array", "");
+	public String getDictStringArray(String dictType) {
+		return this.getCon(dictType + "_dicts_string_array", "");
 	}
 
 	// /**
@@ -237,12 +260,12 @@ public class Config {
 	 * @param dictName
 	 * @param dictPath
 	 */
-	public void setDictPath(Context context, String dictName, String dictPath) {
-		this.setCon(context, dictName + "_path", dictPath);
+	public void setDictPath(String dictName, String dictPath) {
+		this.setCon(dictName + "_path", dictPath);
 	}
 
-	public String getDictPath(Context context, String dictPath) {
-		return this.getCon(context, dictPath + "_path", "");
+	public String getDictPath(String dictPath) {
+		return this.getCon(dictPath + "_path", "");
 	}
 
 	/**
@@ -252,12 +275,12 @@ public class Config {
 	 * @param dictFileName
 	 * @param dictDesc
 	 */
-	public void setDictDesc(Context context, String dictFileName, String dictDesc) {
-		this.setCon(context, dictFileName + "_desc", dictDesc);
+	public void setDictDesc(String dictFileName, String dictDesc) {
+		this.setCon(dictFileName + "_desc", dictDesc);
 	}
 
-	public String getDictDesc(Context context, String dictFileName) {
-		return this.getCon(context, dictFileName + "_desc", "");
+	public String getDictDesc(String dictFileName) {
+		return this.getCon(dictFileName + "_desc", "");
 	}
 
 	/**
@@ -267,12 +290,12 @@ public class Config {
 	 * @param dictName
 	 * @param dictType
 	 */
-	public void setDictType(Context context, String dictName, String dictType) {
-		this.setCon(context, dictName + "_type", dictType);
+	public void setDictType(String dictName, String dictType) {
+		this.setCon(dictName + "_type", dictType);
 	}
 
-	public String getDictType(Context context, String dictName) {
-		return this.getCon(context, dictName + "_type", "");
+	public String getDictType(String dictName) {
+		return this.getCon(dictName + "_type", "");
 	}
 
 	// // 当前使用词典文件名
@@ -290,12 +313,12 @@ public class Config {
 	 * @param context
 	 * @param dictName
 	 */
-	public void setCurrentUseDictName(Context context, String dictName) {
-		this.setCon(context, "current_use_dict_name", dictName);
+	public void setCurrentUseDictName(String dictName) {
+		this.setCon("current_use_dict_name", dictName);
 	}
 
-	public String getCurrentUseDictName(Context context) {
-		return this.getCon(context, "current_use_dict_name", "");
+	public String getCurrentUseDictName() {
+		return this.getCon("current_use_dict_name", "");
 	}
 
 	/**
@@ -304,12 +327,12 @@ public class Config {
 	 * @param context
 	 * @return
 	 */
-	public void setCurrentUseDictWordCount(Context context, String wordCount) {
-		this.setCon(context, "current_dict_count", wordCount);
+	public void setCurrentUseDictWordCount(String wordCount) {
+		this.setCon("current_dict_count", wordCount);
 	}
 
-	public String getCurrentUseDictWordCount(Context context) {
-		return this.getCon(context, "current_dict_count", "0");
+	public String getCurrentUseDictWordCount() {
+		return this.getCon("current_dict_count", "0");
 	}
 
 	/**
@@ -318,8 +341,8 @@ public class Config {
 	 * @param context
 	 * @return
 	 */
-	public String getCurrentUseDictPath(Context context) {
-		return this.getDictPath(context, this.getCurrentUseDictName(context));
+	public String getCurrentUseDictPath() {
+		return this.getDictPath(this.getCurrentUseDictName());
 	}
 
 	/**
@@ -328,8 +351,8 @@ public class Config {
 	 * @param context
 	 * @return
 	 */
-	public String getCurrentUseDictType(Context context) {
-		return this.getDictType(context, this.getCurrentUseDictName(context));
+	public String getCurrentUseDictType() {
+		return this.getDictType(this.getCurrentUseDictName());
 	}
 
 	/**
@@ -338,12 +361,12 @@ public class Config {
 	 * @param context
 	 * @param lessonNo
 	 */
-	public void setNextStudyLesson(Context context, int lessonNo) {
-		this.setCon(context, "next_study_lesson", String.valueOf(lessonNo));
+	public void setNextStudyLesson(int lessonNo) {
+		this.setCon("next_study_lesson", String.valueOf(lessonNo));
 	}
 
-	public int getNextStudyLesson(Context context) {
-		return Integer.parseInt(this.getCon(context, "next_study_lesson", "0"));
+	public int getNextStudyLesson() {
+		return Integer.parseInt(this.getCon("next_study_lesson", "0"));
 	}
 
 	/**
@@ -352,9 +375,9 @@ public class Config {
 	 * @param context
 	 * @return
 	 */
-	public String getEachLessonWordCountDes(Context context) {
-		return "每组: " + this.getEachLessonWordCount(context) + "   共词数: " + this.getCurrentUseDictWordCount(context) + "，组数: "
-				+ this.getLessonCount(context) + " ";
+	public String getEachLessonWordCountDes() {
+		return "每组: " + this.getEachLessonWordCount() + "   共词数: " + this.getCurrentUseDictWordCount() + "，组数: " + this.getLessonCount()
+				+ " ";
 	}
 
 	private SimpleDateFormat sdf = null;
@@ -382,29 +405,14 @@ public class Config {
 	}
 
 	/**
-	 * 初始化配置文件
-	 * 
-	 * @param context
-	 */
-	public void setDefaultConfig(Context context) {
-		this.setDictDir(context, "/sdcard/");
-		this.setEachLessonWordCount(context, "50");
-		this.setLessonCount(context, "0");
-		this.setCurrentUseDictName(context, "");
-		this.setDictStringArray(context, "", "csv");
-
-		this.cleanRememberLine(context);
-	}
-
-	/**
 	 * 清空记忆曲线的相关数据
 	 * 
 	 * @param context
 	 */
-	public void cleanRememberLine(Context context) {
-		this.setNextStudyLesson(context, 0);
+	public void cleanRememberLine() {
+		this.setNextStudyLesson(0);
 
-		RememberHelper helper = new RememberHelper(context);
+		RememberHelper helper = new RememberHelper();
 		helper.dropTable();
 		helper.close();
 	}
@@ -416,7 +424,7 @@ public class Config {
 	 * @param filePath
 	 * @return
 	 */
-	public String getDataFromAssets(Context context, String filePath) {
+	public String getDataFromAssets(String filePath) {
 		BufferedReader br = null;
 		StringBuffer sb = new StringBuffer();
 		try {
@@ -446,8 +454,8 @@ public class Config {
 	 * @param ignoreWords
 	 *            不再记忆的单词编号
 	 */
-	public void setRememberLine(Context context, int lessonNo, String ignoreWords) {
-		RememberHelper helper = new RememberHelper(context);
+	public void setRememberLine(int lessonNo, String ignoreWords) {
+		RememberHelper helper = new RememberHelper();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));// 获取当前时间
 		// 判断此课程是否存在
@@ -498,13 +506,13 @@ public class Config {
 		helper.close();
 	}
 
-	public void setRememberLine(Context context, int lessonNo) {
-		this.setRememberLine(context, lessonNo, this.getIgnoreWordsStr(context, lessonNo));
+	public void setRememberLine(int lessonNo) {
+		this.setRememberLine(lessonNo, this.getIgnoreWordsStr(lessonNo));
 	}
 
 	// 返回不需要再次记忆的单词编号
-	public String getIgnoreWordsStr(Context context, int lessonNo) {
-		RememberHelper helper = new RememberHelper(context);
+	public String getIgnoreWordsStr(int lessonNo) {
+		RememberHelper helper = new RememberHelper();
 		String ignoreWordsStr = helper.getIgnoreWords(lessonNo);
 		helper.close();
 		Log.i("ignoreWordsStr", ignoreWordsStr);
@@ -534,12 +542,12 @@ public class Config {
 	 * @param context
 	 * @param value
 	 */
-	public void setCanConNetWord(Context context, Boolean value) {
-		this.setCon(context, "can_get_net_word", String.valueOf(value));
+	public void setCanConNetWord(Boolean value) {
+		this.setCon("can_get_net_word", String.valueOf(value));
 	}
 
-	public boolean getCanConNetWord(Context context) {
-		return Boolean.parseBoolean(this.getCon(context, "can_get_net_word", "false"));
+	public boolean getCanConNetWord() {
+		return Boolean.parseBoolean(this.getCon("can_get_net_word", "false"));
 	}
 
 	/**
@@ -548,39 +556,40 @@ public class Config {
 	 * @param context
 	 * @param which
 	 */
-	public void setSpeechType(Context context, int which) {
+	public void setSpeechType(int which) {
 		switch (which) {
 		case 0: {
-			this.setCon(context, "speech_type", "null");
+			this.setCon("speech_type", "null");
 			break;
 		}
 		case 1: {
-			this.setCon(context, "speech_type", "tts");
+			this.setCon("speech_type", "tts");
 			break;
 		}
 		case 2: {
-			this.setCon(context, "speech_type", "real");
+			this.setCon("speech_type", "real");
 			break;
 		}
 		}
 
 	}
 
-	public String getSpeechType(Context context) {
-		return this.getCon(context, "speech_type", "null");
+	public String getSpeechType() {
+		return this.getCon("speech_type", "null");
 	}
 
 	/**
 	 * 是否可发音
+	 * 
 	 * @param context
 	 * @param flag
 	 */
-	public void setCanSpeech(Context context, boolean flag) {
-		this.setCon(context, "is_can_speech", String.valueOf(flag));
+	public void setCanSpeech(boolean flag) {
+		this.setCon("is_can_speech", String.valueOf(flag));
 	}
-	
-	public boolean isCanSpeech(Context context) {
-		return Boolean.parseBoolean(this.getCon(context, "is_can_speech", "false"));
+
+	public boolean isCanSpeech() {
+		return Boolean.parseBoolean(this.getCon("is_can_speech", "false"));
 	}
 
 	/**
@@ -590,24 +599,24 @@ public class Config {
 	 * @param currentLessonNo
 	 * @return
 	 */
-	public ArrayList<HashMap<String, Object>> getWordsFromFileByLessonNo(Context context, int currentLessonNo) {
+	public ArrayList<HashMap<String, Object>> getWordsFromFileByLessonNo(int currentLessonNo) {
 		ArrayList<HashMap<String, Object>> wordList = null;
 
 		// 计算偏移量和单词数
-		String strEachLessonWordCount = Config.getConfig().getEachLessonWordCount(context);
+		String strEachLessonWordCount = getEachLessonWordCount();
 		int eachLessonWordCount = 0;// 每课单词数
 		if (strEachLessonWordCount != null && !strEachLessonWordCount.equals("")) {
 			eachLessonWordCount = Integer.parseInt(strEachLessonWordCount);
 		}
 		int index = currentLessonNo * eachLessonWordCount;// 偏移量
-		String dictType = Config.getConfig().getCurrentUseDictType(context);
+		String dictType = getCurrentUseDictType();
 		if (dictType.equalsIgnoreCase("csv")) {
-			CsvHelper helper = new CsvHelper(context);
-			wordList = helper.getWords(index, eachLessonWordCount);
+			CsvHelper helper = new CsvHelper();
+			wordList = helper.getWords(getCurrentUseDictPath(), getDictCharset(), index, eachLessonWordCount);
 		}
 
 		// 处理不再记忆的单词
-		String ignoreWords = Config.getConfig().getIgnoreWordsStr(context, currentLessonNo);
+		String ignoreWords = getIgnoreWordsStr(currentLessonNo);
 		if (ignoreWords != null && !ignoreWords.equals("")) {
 			int length = wordList.size();
 			String ignoreWord;
@@ -615,7 +624,7 @@ public class Config {
 			Log.i("ignoreWords", ignoreWords);
 			for (int i = 0; i < length; i++) {
 				ignoreWord = (String) wordList.get(i).get("单词");
-//				Log.i("ignoreWord", ignoreWord);
+				// Log.i("ignoreWord", ignoreWord);
 				if (ignoreWords.contains(ignoreWord.toLowerCase())) {
 					Log.i("remove", String.valueOf(i));
 					wordList.remove(i);
@@ -633,11 +642,11 @@ public class Config {
 	 * @param context
 	 * @param charset
 	 */
-	public void setDictCharset(Context context, String charset) {
-		this.setCon(context, "config_dict_charset", charset);
+	public void setDictCharset(String charset) {
+		this.setCon("config_dict_charset", charset);
 	}
 
-	public String getDictCharset(Context context) {
-		return getCon(context, "config_dict_charset", "GBK");
+	public String getDictCharset() {
+		return getCon("config_dict_charset", "GBK");
 	}
 }

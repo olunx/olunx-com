@@ -62,7 +62,7 @@ public class TabSearch extends Activity {
 		translationTv = (TextView) this.findViewById(R.id.TextView03);
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
 		speakBtn = (ImageButton) this.findViewById(R.id.ImageButton01);
-		speakBtn.setVisibility(Button.INVISIBLE);
+		speakBtn.setVisibility(View.INVISIBLE);
 		speakBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -92,6 +92,7 @@ public class TabSearch extends Activity {
 		});
 		pd.show();
 		new Thread() {
+			@Override
 			public void run() {
 				FetchWord fetch = new FetchWord();
 				netWord = fetch.getWord(thisWord);

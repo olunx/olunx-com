@@ -55,6 +55,7 @@ public class TabNeedReview extends Activity {
 		pd.show();
 
 		new Thread() {
+			@Override
 			public void run() {
 				getData();
 				pd.dismiss();
@@ -67,7 +68,7 @@ public class TabNeedReview extends Activity {
 	private void getData() {
 
 		// 获取数据
-		RememberHelper helper = new RememberHelper(this);
+		RememberHelper helper = new RememberHelper();
 		records = helper.getRecords();
 
 		// 创建对象
@@ -79,7 +80,7 @@ public class TabNeedReview extends Activity {
 		try {
 			for (HashMap<String, String> record : records) {
 				// Log.i("desc", String.valueOf(record.get(desc)));
-				if (Config.getConfig().isStudyTimeInToday(record.get("复习时间"))) {
+				if (Config.init(this).isStudyTimeInToday(record.get("复习时间"))) {
 					tempMap = new HashMap<String, String>();
 					tempMap.put(title, "第 " + (Integer.parseInt(String.valueOf(record.get(title))) + 1) + " 组");
 					tempMap.put(desc, record.get(desc));

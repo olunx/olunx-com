@@ -2,6 +2,7 @@ package com.olunx.option.sync;
 
 import com.olunx.R;
 import com.olunx.util.Config;
+import com.olunx.util.Utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -134,10 +135,10 @@ public class TabSync extends PreferenceActivity {
 					});
 					
 					new Thread() {
+						@Override
 						public void run() {
-							Backup backup = new Backup();
-							backup.copyFile(Config.FILE_SYSTEM_CONFIG, Config.FILE_SDCARD_CONFIG);
-							backup.copyFile(Config.FILE_SYSTEM_DATABASE, Config.FILE_SDCARD_DATABASE);
+							Utils.init().copyFile(Config.FILE_SYSTEM_CONFIG, Config.FILE_SDCARD_CONFIG);
+							Utils.init().copyFile(Config.FILE_SYSTEM_DATABASE, Config.FILE_SDCARD_DATABASE);
 							pd.dismiss();
 						}
 					}.start();
@@ -151,10 +152,10 @@ public class TabSync extends PreferenceActivity {
 					});
 					
 					new Thread() {
+						@Override
 						public void run() {
-							Backup backup = new Backup();
-							backup.copyFile(Config.FILE_SDCARD_CONFIG, Config.FILE_SYSTEM_CONFIG);
-							backup.copyFile(Config.FILE_SDCARD_DATABASE, Config.FILE_SYSTEM_DATABASE);
+							Utils.init().copyFile(Config.FILE_SDCARD_CONFIG, Config.FILE_SYSTEM_CONFIG);
+							Utils.init().copyFile(Config.FILE_SDCARD_DATABASE, Config.FILE_SYSTEM_DATABASE);
 							pd.dismiss();
 						}
 					}.start();
@@ -175,7 +176,7 @@ public class TabSync extends PreferenceActivity {
 						}
 					});
 					
-					Config.getConfig().setDefaultConfig(context);
+					Config.init(context).setDefaultConfig();
 					pd.dismiss();
 
 				}

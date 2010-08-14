@@ -119,7 +119,7 @@ public class TabDictBrowser extends Activity {
 							public void onClick(DialogInterface dialog, int which) {
 								Intent i = new Intent();
 								setResult(RESULT_OK, i);// 返回数据给上层
-								Config.getConfig().setDictDir(TabDictBrowser.this, path);
+								Config.init(TabDictBrowser.this).setDictDir( path);
 								Log.i("path", path);
 								finish();
 							}

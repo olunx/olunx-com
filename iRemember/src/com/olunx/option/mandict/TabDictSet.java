@@ -19,8 +19,8 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.text.InputType;
 import android.util.Log;
-import android.view.inputmethod.EditorInfo;
 
 public class TabDictSet extends PreferenceActivity {
 
@@ -74,11 +74,11 @@ public class TabDictSet extends PreferenceActivity {
 		eachLesWCPref.setDialogTitle(R.string.dialog_title_each_lesson_word_count);
 		eachLesWCPref.setDialogIcon(android.R.drawable.ic_dialog_info);
 		eachLesWCPref.setTitle(R.string.list_title_each_lesson_word_count);
-		eachLesWCPref.getEditText().setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+		eachLesWCPref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
 		eachLesWCPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				eachLesWCPref.getEditText().setText(Config.getConfig().getEachLessonWordCount(TabDictSet.this));
+				eachLesWCPref.getEditText().setText(Config.init(TabDictSet.this).getEachLessonWordCount());
 				return false;
 			}
 		});
@@ -86,8 +86,8 @@ public class TabDictSet extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				Log.i("editor", eachLesWCPref.getEditText().getText().toString());
-				Config.getConfig().setEachLessonWordCount(TabDictSet.this, eachLesWCPref.getEditText().getText().toString());
-				eachLesWCPref.setSummary(Config.getConfig().getEachLessonWordCountDes(TabDictSet.this));
+				Config.init(TabDictSet.this).setEachLessonWordCount(eachLesWCPref.getEditText().getText().toString());
+				eachLesWCPref.setSummary(Config.init(TabDictSet.this).getEachLessonWordCountDes());
 				return false;
 			}
 		});
@@ -102,8 +102,8 @@ public class TabDictSet extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				Log.i("newValue", String.valueOf(newValue));
-				Config.getConfig().setDictCharset(TabDictSet.this, String.valueOf(newValue));
-				chasetPref.setSummary(Config.getConfig().getDictCharset(TabDictSet.this));
+				Config.init(TabDictSet.this).setDictCharset( String.valueOf(newValue));
+				chasetPref.setSummary(Config.init(TabDictSet.this).getDictCharset());
 				chasetPref.setValue(String.valueOf(newValue));
 				return false;
 			}});
@@ -127,12 +127,12 @@ public class TabDictSet extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				if(ttsPref.isChecked()) {
 					//设置发音类型
-					Config.getConfig().setSpeechType(TabDictSet.this, 1);
-					Config.getConfig().setCanSpeech(TabDictSet.this, true);
-					Log.i("flag()", Config.getConfig().getSpeechType(TabDictSet.this));
+					Config.init(TabDictSet.this).setSpeechType( 1);
+					Config.init(TabDictSet.this).setCanSpeech(true);
+					Log.i("flag()", Config.init(TabDictSet.this).getSpeechType());
 				}else {
-					Config.getConfig().setSpeechType(TabDictSet.this, 0);
-					Config.getConfig().setCanSpeech(TabDictSet.this, false);
+					Config.init(TabDictSet.this).setSpeechType( 0);
+					Config.init(TabDictSet.this).setCanSpeech(false);
 				}
 				return false;
 			}
@@ -156,11 +156,11 @@ public class TabDictSet extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				boolean flag = sentsPref.isChecked();
-				Config.getConfig().setCanConNetWord(TabDictSet.this, flag);
+				Config.init(TabDictSet.this).setCanConNetWord( flag);
 				if(!flag) {
-					Config.getConfig().setSpeechType(TabDictSet.this, 0);
+					Config.init(TabDictSet.this).setSpeechType( 0);
 				}
-				Log.i("flag()", Config.getConfig().getSpeechType(TabDictSet.this));
+				Log.i("flag()", Config.init(TabDictSet.this).getSpeechType());
 				return false;
 			}
 		});
@@ -195,13 +195,14 @@ public class TabDictSet extends PreferenceActivity {
 
 	//显示配置信息
 	private void refreshPref() {
-		Log.i("refresh", Config.getConfig().getDictDir(this));
-		dictPathPref.setSummary(Config.getConfig().getDictDir(this));
-		chasetPref.setSummary(Config.getConfig().getDictCharset(this));
-		defaultDictPref.setSummary(Config.getConfig().getCurrentUseDictName(this));
-		eachLesWCPref.setSummary(Config.getConfig().getEachLessonWordCountDes(this));
+		Log.i("refresh", Config.init(this).getDictDir());
+		dictPathPref.setSummary(Config.init(this).getDictDir());
+		chasetPref.setSummary(Config.init(this).getDictCharset());
+		defaultDictPref.setSummary(Config.init(this).getCurrentUseDictName());
+		eachLesWCPref.setSummary(Config.init(this).getEachLessonWordCountDes());
 	}
 
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {

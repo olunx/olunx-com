@@ -16,7 +16,7 @@ public class TabAbout extends Activity {
 		this.setContentView(R.layout.manual_about);
 		
 		TextView tv = (TextView) this.findViewById(R.id.TextView02);
-		tv.setText(Config.getConfig().getDataFromAssets(this, "about.txt"));
+		tv.setText(Config.init(this).getDataFromAssets( getString(R.string.about_file_path)));
 	}
 
 }

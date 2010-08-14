@@ -46,6 +46,7 @@ public class TabNoReview extends Activity {
 		pd.show();
 
 		new Thread() {
+			@Override
 			public void run() {
 				getData();
 				pd.dismiss();
@@ -57,7 +58,7 @@ public class TabNoReview extends Activity {
 	private void getData() {
 
 		// 获取数据
-		RememberHelper helper = new RememberHelper(this);
+		RememberHelper helper = new RememberHelper();
 		records = helper.getRecords();
 
 		// 创建对象

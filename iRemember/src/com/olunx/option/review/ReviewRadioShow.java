@@ -122,12 +122,12 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 				speakWord();
 			}
 		});
-		if (!Config.getConfig().isCanSpeech(this)) {
+		if (!Config.init(context).isCanSpeech()) {
 			speakBtn.setEnabled(false);
 		}
 
 		// 是否可以读取网络单词数据
-		this.isCanGetNetWord = Config.getConfig().getCanConNetWord(this);
+		this.isCanGetNetWord = Config.init(context).getCanConNetWord();
 		Log.i("idCanConWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
@@ -150,7 +150,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 		this.phoneticsTv.setText(this.thisPhonetics);
 		this.translationTv.setPadding(0, 0, 0, 0);
 		this.translationTv.setText("");
-		this.radioGroup.setVisibility(RadioGroup.VISIBLE);
+		this.radioGroup.setVisibility(View.VISIBLE);
 
 		// 随机出选择的词条
 		Random random = new Random();
@@ -228,7 +228,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 				this.translationTv.setPadding(10, 10, 10, 10);
 				this.translationTv.setText(this.thisTranslation + "\n\n" + this.netWord.getSentences());
 				btn.setText(this.NEXTWORD);
-				this.radioGroup.setVisibility(RadioGroup.INVISIBLE);
+				this.radioGroup.setVisibility(View.INVISIBLE);
 			}
 		} else if (text.equals(this.NEXTWORD)) {
 			this.addRepeatWord();
@@ -267,9 +267,10 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 
 		pd.show();
 		new Thread() {
+			@Override
 			public void run() {
 
-				thisWordList = Config.getConfig().getWordsFromFileByLessonNo(context, currentLessonNo);
+				thisWordList = Config.init(context).getWordsFromFileByLessonNo( currentLessonNo);
 				totalWordCount = thisWordList.size();
 
 				// 复制出候选的翻译答案
@@ -283,7 +284,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 
 				// 初始化语音数据
 				if (speechType == null) {
-					speechType = Config.getConfig().getSpeechType(context);
+					speechType = Config.init(context).getSpeechType();
 					Log.i("speechType", speechType);
 					if (speechType.equalsIgnoreCase("tts")) {
 						if (speech == null) {
@@ -348,6 +349,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 	private void getNetTrans() {
 		if (this.isCanGetNetWord) {
 			new Thread() {
+				@Override
 				public void run() {
 					FetchWord fetch = new FetchWord();
 					netWord = fetch.getWord(thisWord);
@@ -382,11 +384,11 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 
 			if (this.isCanUpdate) {
 				// 更新记忆曲线
-				Config.getConfig().setRememberLine(this, this.currentLessonNo, "");
+				Config.init(this).setRememberLine( this.currentLessonNo, "");
 				this.isCanUpdate = false;
 
 				// 保存当前学习完的课程号数
-				Config.getConfig().setNextStudyLesson(this, this.currentLessonNo + 1);
+				Config.init(this).setNextStudyLesson( this.currentLessonNo + 1);
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
@@ -397,7 +399,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
-					String lessonCount = Config.getConfig().getLessonCount(context);
+					String lessonCount = Config.init(context).getLessonCount();
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();

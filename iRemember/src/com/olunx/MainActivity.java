@@ -33,6 +33,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity {
 
+	public static Context context;
+	
+	public MainActivity(){
+		context = this;
+	}
+	
 	private ArrayList<Map<String, Object>> list = null;
 	private ListView listview = null;
 

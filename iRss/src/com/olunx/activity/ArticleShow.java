@@ -43,7 +43,7 @@ public class ArticleShow extends Activity {
 //		mWebView = (WebView) findViewById(R.id.webview);
 //		mWebView.loadUrl("http://t.qq.com");
 		try {
-			mWebView.loadData(URLEncoder.encode(content, charset), "text/html", charset);
+			mWebView.loadData(URLEncoder.encode(content, "utf-8"), "text/html", charset);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

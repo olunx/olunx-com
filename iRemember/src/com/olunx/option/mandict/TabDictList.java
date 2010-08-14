@@ -60,9 +60,10 @@ public class TabDictList extends Activity {
 		});
 
 		new Thread() {
+			@Override
 			public void run() {
 				new GetDictList(TabDictList.this).getList();
-				items = Config.getConfig().getDictList(TabDictList.this);
+				items = Config.init(TabDictList.this).getDictList();
 				pd.dismiss();
 			}
 		}.start();
@@ -159,9 +160,9 @@ public class TabDictList extends Activity {
 
 	// 计算单词数并完成相应处理
 	private void setDictCurrentUse(final String dictName) {
-		final String dictPath = Config.getConfig().getDictPath(this, dictName);
+		final String dictPath = Config.init(this).getDictPath( dictName);
 
-		String dictType = Config.getConfig().getDictType(TabDictList.this, dictName);
+		String dictType = Config.init(this).getDictType( dictName);
 
 		if (dictType.equalsIgnoreCase(Config.DICTTYPE_CSV)) {
 			
@@ -177,10 +178,10 @@ public class TabDictList extends Activity {
 				public void onDismiss(DialogInterface arg0) {
 					setResult(RESULT_OK, new Intent());// 返回数据给上层
 					// 保存配置，当前使用的词库。
-					Config.getConfig().setCurrentUseDictName(TabDictList.this, dictName);
+					Config.init(TabDictList.this).setCurrentUseDictName( dictName);
 					
 					// 清空记忆曲线表
-					Config.getConfig().cleanRememberLine(TabDictList.this);
+					Config.init(TabDictList.this).cleanRememberLine();
 					
 					Toast.makeText(TabDictList.this, TabDictList.this.getString(R.string.toast_msg_set_success), Toast.LENGTH_SHORT).show();
 					setResult(RESULT_OK, new Intent());// 返回数据给上层
@@ -191,8 +192,9 @@ public class TabDictList extends Activity {
 
 			// 从文件计算单词数
 			new Thread() {
+				@Override
 				public void run() {
-					Config.getConfig().setCurrentUseDictWordCount(TabDictList.this, new GetCsvInfo(dictPath).getWordCount());
+					Config.init(TabDictList.this).setCurrentUseDictWordCount(new GetCsvInfo(dictPath).getWordCount());
 					pd.dismiss();
 				}
 			}.start();

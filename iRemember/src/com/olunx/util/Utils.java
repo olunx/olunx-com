@@ -1,4 +1,4 @@
-package com.olunx.option.sync;
+package com.olunx.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -10,39 +10,38 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.util.Log;
+public class Utils {
+	
+	public static Utils utils;
+	
+	public static Utils init() {
+		if(utils == null) {
+			utils = new Utils();
+		}
+		return utils;
+	}
 
-public class Backup {
-
+	/**
+	 * 复制文件
+	 * 
+	 * @param fileFromPath
+	 * @param fileToPath
+	 */
 	public void copyFile(String fileFromPath, String fileToPath) {
-		File srcFile = new File(fileFromPath);
+		//如果文件不存在则创建它
+		createFileIfNotExist(fileFromPath);
+		createFileIfNotExist(fileToPath);
+
+		//删除已有的目标文件
 		File targetFile = new File(fileToPath);
-		if (!srcFile.exists()) {
-			Log.i("srcFile file exists", String.valueOf(srcFile.exists()));
-			try {
-				new File(fileFromPath.substring(0, fileFromPath.lastIndexOf("/"))).mkdirs();
-				srcFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if (!targetFile.exists()) {
-			Log.i("targetFile file exists", String.valueOf(targetFile.exists()));
-			try {
-				new File(fileToPath.substring(0, fileToPath.lastIndexOf("/"))).mkdirs();
-				targetFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			targetFile.delete();
-			try {
-				targetFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		targetFile.delete();
+		try {
+			targetFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
+		//开始复制文件
 		InputStream inBuffer = null;
 		OutputStream outBuffer = null;
 		try {
@@ -81,5 +80,25 @@ public class Backup {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * 如果文件不存在则创建它
+	 * @param path
+	 * @return
+	 */
+	public File createFileIfNotExist(String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+//			Log.i("srcFile file exists", String.valueOf(file.exists()));
+			try {
+				new File(path.substring(0, path.lastIndexOf("/"))).mkdirs();
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+//		Log.i("file create finished", String.valueOf(file.exists()));
+		return file;
 	}
 }

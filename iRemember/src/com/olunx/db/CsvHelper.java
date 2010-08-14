@@ -9,41 +9,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.olunx.util.Config;
-
-import android.content.Context;
 
 public class CsvHelper {
-	Context context = null;
 	
-	public CsvHelper(Context context) {
-		this.context = context;
-	}
-	
-	public ArrayList<HashMap<String, Object>> getWords(int index, int count) {
+	public ArrayList<HashMap<String, Object>> getWords(String dictPath, String fileCharset, int index, int count) {
 		ArrayList<HashMap<String, Object>> words = new ArrayList<HashMap<String, Object>>();
-		
-		String dictPath = Config.getConfig().getCurrentUseDictPath(context);
-		
-		// 检测文件编码
-		String fileCharset = Config.getConfig().getDictCharset(context);
-		
-//		CharsetDetector charDect = new CharsetDetector();
-//		String[] probableSet = null;
-//		try {
-//			FileInputStream fis = new FileInputStream(dictPath);
-//			probableSet = charDect.detectChineseCharset(fis);
-//			fis.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		for (String charset : probableSet) {
-//			System.out.println(charset);
-//			fileCharset = charset;
-//		}
-		
 		
 		BufferedReader br;
 		FileInputStream fis = null;
