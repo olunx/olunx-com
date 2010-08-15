@@ -41,7 +41,7 @@ public class TabDictBrowser extends Activity {
 		super.onCreate(savedInstanceState);
 		lastPath = new String("/");
 		fill(new File("/").listFiles());
-		Toast.makeText(TabDictBrowser.this, R.string.toast_msg_set_dict_dir, Toast.LENGTH_LONG).show();
+		Toast.makeText(TabDictBrowser.this, R.string.toast_msg_set_dict_dir, Toast.LENGTH_SHORT).show();
 	}
 
 	// 列出目录

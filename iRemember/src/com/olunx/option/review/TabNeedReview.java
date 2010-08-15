@@ -1,13 +1,10 @@
 package com.olunx.option.review;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.olunx.R;
 import com.olunx.db.RememberHelper;
-import com.olunx.option.preview.TabPreviewShow;
-import com.olunx.util.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,6 +37,16 @@ public class TabNeedReview extends Activity {
 		title = getString(R.string.title);
 		desc = getString(R.string.description);
 
+		init();
+	}
+
+	@Override
+	protected void onRestart() {
+		 init();
+		super.onRestart();
+	}
+
+	private void init() {
 		final ProgressDialog pd = new ProgressDialog(this);
 		pd.setTitle("正在加载数据");
 		pd.setMessage("请稍等...");
@@ -61,7 +68,6 @@ public class TabNeedReview extends Activity {
 				pd.dismiss();
 			}
 		}.start();
-
 	}
 
 	// 获取数据
@@ -69,7 +75,8 @@ public class TabNeedReview extends Activity {
 
 		// 获取数据
 		RememberHelper helper = new RememberHelper();
-		records = helper.getRecords();
+		records = helper.getRecords(true);
+		helper.close();
 
 		// 创建对象
 		items = new ArrayList<HashMap<String, String>>();
@@ -77,18 +84,11 @@ public class TabNeedReview extends Activity {
 		// 临时存储对象
 		HashMap<String, String> tempMap;
 
-		try {
-			for (HashMap<String, String> record : records) {
-				// Log.i("desc", String.valueOf(record.get(desc)));
-				if (Config.init().isStudyTimeInToday(record.get("复习时间"))) {
-					tempMap = new HashMap<String, String>();
-					tempMap.put(title, "第 " + (Integer.parseInt(String.valueOf(record.get(title))) + 1) + " 组");
-					tempMap.put(desc, record.get(desc));
-					items.add(tempMap);
-				}
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
+		for (HashMap<String, String> record : records) {
+			tempMap = new HashMap<String, String>();
+			tempMap.put(title, "第 " + (Integer.parseInt(String.valueOf(record.get(title))) + 1) + " 组");
+			tempMap.put(desc, record.get(desc));
+			items.add(tempMap);
 		}
 	}
 
@@ -106,7 +106,8 @@ public class TabNeedReview extends Activity {
 				HashMap<String, String> map = new HashMap<String, String>();
 				map = records.get(position);
 				final int lessonNo = Integer.parseInt(map.get(title));
-
+				// listview.getItemAtPosition(position);
+				// arg1.setEnabled(false);
 				final AlertDialog.Builder ad = new AlertDialog.Builder(TabNeedReview.this);
 				ad.setInverseBackgroundForced(true);// 翻转底色
 				ad.setIcon(android.R.drawable.ic_dialog_info);
@@ -120,7 +121,7 @@ public class TabNeedReview extends Activity {
 						switch (which) {
 						case 0:
 							// 选定的组数，传值到下个界面。
-							i.setClass(TabNeedReview.this, TabPreviewShow.class);
+							i.setClass(TabNeedReview.this, ReviewAnwserShow.class);
 							i.putExtra("currentLessonNo", lessonNo);
 							TabNeedReview.this.startActivity(i);
 							break;

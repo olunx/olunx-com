@@ -6,17 +6,18 @@
 package com.olunx.util;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -44,14 +45,14 @@ public class Config {
 	public static final String FILE_SDCARD_CONFIG = SDCARD_PATH + CONFIG_FILE;
 
 	public static Properties p;
-	
+
 	private static Context context = MainActivity.context;
-	
+
 	public static Config init() {
 		if (config == null) {
 			config = new Config();
 		}
-		if(p == null) {
+		if (p == null) {
 			Utils.init().createFileIfNotExist(FILE_SDCARD_CONFIG);
 			p = new Properties();
 			try {
@@ -73,6 +74,14 @@ public class Config {
 	 */
 	public void setCon(String key, String value) {
 		p.setProperty(key, value);
+		//保存配置文件
+		try {
+			p.store(new BufferedOutputStream(new FileOutputStream(new File(Config.FILE_SDCARD_CONFIG))), "");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -83,19 +92,19 @@ public class Config {
 	 * @return
 	 */
 	public String getCon(String key, String defValue) {
-		String value =  p.getProperty(key);
-		if(value == null) {
-			return  defValue;
+		String value = p.getProperty(key);
+		if (value == null) {
+			return defValue;
 		}
 		return value;
 	}
-	
+
 	/**
 	 * 第一次运行，初始化数据。
 	 */
 	public void initInstall() {
-		if(getCon("first_run", "true").equals("true")) {
-			//安装词库
+		if (getCon("first_run", "true").equals("true")) {
+			// 安装词库
 			String cet4File = "/sdcard/iremember/大学英语四级.csv";
 			String cet6File = "/sdcard/iremember/大学英语六级.csv";
 			String gaokaoFile = "/sdcard/iremember/高考英语词汇.csv";
@@ -106,12 +115,12 @@ public class Config {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			this.setDefaultConfig();
 			this.setFirstRun("false");
 		}
 	}
-	
+
 	/**
 	 * 设置是否第一次运行
 	 */
@@ -315,7 +324,6 @@ public class Config {
 		return this.getCon(dictName + "_type", "");
 	}
 
-
 	/**
 	 * 设置当前使用词典名称
 	 * 
@@ -389,29 +397,6 @@ public class Config {
 				+ " ";
 	}
 
-	private SimpleDateFormat sdf = null;
-	private Calendar cal = null;
-
-	/**
-	 * 判断复习时间是否在今天内
-	 * 
-	 * @param date
-	 * @return
-	 * @throws ParseException
-	 */
-	public boolean isStudyTimeInToday(String date) throws ParseException {
-		if (sdf == null) {
-			sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		}
-		if (cal == null) {
-			cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
-		}
-		cal.setTime(sdf.parse(date));
-		Log.i("today", sdf.format(new Date()));
-		Log.i("studyDate", String.valueOf(Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00")).after(cal)));
-		return Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00")).after(cal);
-		// return true;
-	}
 
 	/**
 	 * 清空记忆曲线的相关数据
@@ -458,23 +443,39 @@ public class Config {
 	/**
 	 * 更新记忆曲线
 	 * 
-	 * @param context
 	 * @param lessonNo
-	 * @param ignoreWords
-	 *            不再记忆的单词编号
+	 * @param ignoreWords  不再记忆的单词编号
+	 * @param start 是否从头开始记忆
+	 * 
 	 */
 	public void setRememberLine(int lessonNo, String ignoreWords) {
+		setRememberLine(lessonNo, ignoreWords, false);
+	}
+
+	public void setRememberLine(int lessonNo, String ignoreWords, boolean start) {
 		RememberHelper helper = new RememberHelper();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));// 获取当前时间
 		// 判断此课程是否存在
 		if (helper.isExistsLessonNo(lessonNo)) {// 存在
+			
+			//重新开始学习
+			if(start) {
+				String studyTime = sdf.format(cal.getTime());
+				helper.deleteRecord(lessonNo);
+				helper.addRecord(lessonNo, studyTime, studyTime, 0, ignoreWords);
+				return;
+			}
+			
 			try {
 				Calendar oldTime = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
 				oldTime.setTime(sdf.parse(helper.getStudyTimeByLessonNo(lessonNo)));
 
-				int times;
-				switch (times = helper.getTimesByLessonNo(lessonNo)) {
+				int times = helper.getTimesByLessonNo(lessonNo);
+				switch (times) {
+				case 0:
+					cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 5);// 第一个记忆周期5分钟
+					break;
 				case 1:
 					cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 30);// 第二个记忆周期30分钟
 					break;
@@ -509,8 +510,7 @@ public class Config {
 
 		} else {// 不存在
 			String studyTime = sdf.format(cal.getTime());
-			cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 5);// 第一个记忆周期5分钟
-			helper.addRecord(lessonNo, studyTime, sdf.format(cal.getTime()), 1, ignoreWords);
+			helper.addRecord(lessonNo, studyTime, studyTime, 0, ignoreWords);
 		}
 		helper.close();
 	}
@@ -527,7 +527,6 @@ public class Config {
 		Log.i("ignoreWordsStr", ignoreWordsStr);
 		return ignoreWordsStr.toLowerCase();
 	}
-
 
 	/**
 	 * 设置是否可以联网

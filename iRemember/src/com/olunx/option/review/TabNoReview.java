@@ -31,6 +31,16 @@ public class TabNoReview extends Activity {
 		title = getString(R.string.title);
 		desc = getString(R.string.description);
 
+		init();
+	}
+	
+	@Override
+	protected void onRestart() {
+		init();
+		super.onRestart();
+	}
+	
+	private void init() {
 		final ProgressDialog pd = new ProgressDialog(this);
 		pd.setTitle("正在加载数据");
 		pd.setMessage("请稍等...");
@@ -59,7 +69,7 @@ public class TabNoReview extends Activity {
 
 		// 获取数据
 		RememberHelper helper = new RememberHelper();
-		records = helper.getRecords();
+		records = helper.getRecords(false);
 
 		// 创建对象
 		items = new ArrayList<HashMap<String, String>>();

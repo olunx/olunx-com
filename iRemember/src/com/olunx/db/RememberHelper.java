@@ -1,7 +1,9 @@
 package com.olunx.db;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.olunx.util.Config;
@@ -69,10 +71,16 @@ public class RememberHelper implements IHelper {
 	}
 
 	// 返回记录
-	public ArrayList<HashMap<String, String>> getRecords() {
+	public ArrayList<HashMap<String, String>> getRecords(boolean isNeedStudy) {
 		createTable();
 
-		Cursor result = getDB().query(TABLE, new String[] { "lesson_no", "study_time", "next_study_time", "times" }, null, null, null,
+		//获取需要复习的课程，isNeedStudy为true时就要。
+		String select = null;
+		if(isNeedStudy) {
+			select = "next_study_time <= '" + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()) + "'";
+		}
+		
+		Cursor result = getDB().query(TABLE, new String[] { "lesson_no", "study_time", "next_study_time", "times" }, select, null, null,
 				null, "lesson_no");
 		Log.i("Cursor Count", String.valueOf(result.getCount()));
 		ArrayList<HashMap<String, String>> records = new ArrayList<HashMap<String, String>>();

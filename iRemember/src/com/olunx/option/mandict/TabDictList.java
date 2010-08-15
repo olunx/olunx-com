@@ -79,7 +79,7 @@ public class TabDictList extends Activity {
 
 		setContentView(listview);
 
-		Toast.makeText(TabDictList.this, R.string.toast_msg_set_dict_using, Toast.LENGTH_LONG).show();
+		Toast.makeText(TabDictList.this, R.string.toast_msg_set_dict_using, Toast.LENGTH_SHORT).show();
 
 		// 单击事件。
 		listview.setOnItemClickListener(new OnItemClickListener() {

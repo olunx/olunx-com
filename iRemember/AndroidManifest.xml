@@ -14,12 +14,13 @@
 		<activity android:name="com.olunx.option.review.OptionReview"></activity>
 		<activity android:name="com.olunx.option.review.TabNeedReview"></activity>
 		<activity android:name="com.olunx.option.review.TabNoReview"></activity>
+		<activity android:name="com.olunx.option.review.ReviewAnwserShow"></activity>
 		<activity android:name="com.olunx.option.review.ReviewRadioShow"></activity>
 		<activity android:name="com.olunx.option.review.ReviewTextShow"></activity>
 		
 		<activity android:name="com.olunx.option.search.TabSearch"></activity>
 		
-		<activity android:name="com.olunx.option.sync.TabSync"></activity>
+		<activity android:name="com.olunx.option.settings.TabSettings"></activity>
 		
 		<activity android:name="com.olunx.option.mandict.OptionManDict"></activity>
 		<activity android:name="com.olunx.option.mandict.TabDictBrowser"></activity>

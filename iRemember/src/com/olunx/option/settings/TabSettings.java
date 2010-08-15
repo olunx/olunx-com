@@ -1,4 +1,4 @@
-package com.olunx.option.sync;
+package com.olunx.option.settings;
 
 import com.olunx.R;
 import com.olunx.util.Config;
@@ -19,7 +19,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Toast;
 
-public class TabSync extends PreferenceActivity {
+public class TabSettings extends PreferenceActivity {
 
 	private PreferenceScreen root = null;
 
@@ -48,11 +48,11 @@ public class TabSync extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				if(ttsPref.isChecked()) {
 					//设置发音类型
-					Config.init().setSpeechType( 1);
+					Config.init().setSpeechType(1);
 					Config.init().setCanSpeech(true);
 					Log.i("flag()", Config.init().getSpeechType());
 				}else {
-					Config.init().setSpeechType( 0);
+					Config.init().setSpeechType(0);
 					Config.init().setCanSpeech(false);
 				}
 				return false;

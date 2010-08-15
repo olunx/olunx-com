@@ -3,11 +3,12 @@
  *date:2009-10-14
  */
 
-package com.olunx.option.preview;
+package com.olunx.option.review;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TabPreviewShow extends Activity implements OnClickListener {
+public class ReviewAnwserShow extends Activity implements OnClickListener {
 
 	private Context context = this;
 	
@@ -43,8 +44,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	private TextView phoneticsTv;
 	private TextView translationTv;
 	private TextView sentsTv;
-	private Button neverBtn;
-	private Button nextBtn;
+	private Button leftBtn;
+	private Button rightBtn;
 	private ImageButton speakBtn;
 	private ArrayList<HashMap<String, Object>> thisWordList;
 	private int currentLessonNo = 0;
@@ -58,7 +59,10 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	private String thisTranslation = null;
 
 	// 按钮文字
-	private String NEVERAGAIN;
+	private String REMEMBER;
+	private String RIGHT;
+	private String WRONG;
+	private String UNREMEMBER;
 	private String NEXTWORD;
 	private String WORD;
 	private String PHONETICS;
@@ -84,7 +88,10 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		// 按钮字符串
-		NEVERAGAIN = this.getString(R.string.btn_neverangain);
+		REMEMBER = this.getString(R.string.btn_remember);
+		RIGHT = this.getString(R.string.btn_right);
+		WRONG = this.getString(R.string.btn_wrong);
+		UNREMEMBER = this.getString(R.string.btn_unremember);
 		NEXTWORD = this.getString(R.string.btn_nextword);
 		WORD = this.getString(R.string.text_word);
 		PHONETICS = this.getString(R.string.text_phonetics);
@@ -101,12 +108,12 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		phoneticsTv.setTypeface(font);
 		translationTv = (TextView) this.findViewById(R.id.TextView03);
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
-		neverBtn = (Button) this.findViewById(R.id.Button01);
-		neverBtn.setText(NEVERAGAIN);
-		neverBtn.setOnClickListener(this);
-		nextBtn = (Button) this.findViewById(R.id.Button02);
-		nextBtn.setText(NEXTWORD);
-		nextBtn.setOnClickListener(this);
+		leftBtn = (Button) this.findViewById(R.id.Button01);
+		leftBtn.setText(REMEMBER);
+		leftBtn.setOnClickListener(this);
+		rightBtn = (Button) this.findViewById(R.id.Button02);
+		rightBtn.setText(UNREMEMBER);
+		rightBtn.setOnClickListener(this);
 		speakBtn = (ImageButton) this.findViewById(R.id.ImageButton01);
 		speakBtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -123,7 +130,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		Log.i("isCanGetNetWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
-		Bundle i = TabPreviewShow.this.getIntent().getExtras();
+		Bundle i = ReviewAnwserShow.this.getIntent().getExtras();
 		currentLessonNo = i.getInt("currentLessonNo");
 		initWords();
 	}
@@ -139,7 +146,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		thisTranslation = (String) currentWord.get(this.TRANSLATION);
 		nameTv.setText(this.thisWord);
 		phoneticsTv.setText(this.thisPhonetics);
-		translationTv.setText(this.thisTranslation);
+		translationTv.setText("");
 		sentsTv.setText("");
 
 		// 获取网络单词数据
@@ -152,22 +159,46 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		Button btn = (Button) v;
 		String text = (String) btn.getText();
-		if (text.equals(NEVERAGAIN)) {// 不再记忆
-			ignoreWords.add(this.thisWord);// 当前单词不再记忆
+		if (text.equals(REMEMBER)) {// 记得
+			leftBtn.setText(RIGHT);
+			rightBtn.setText(WRONG);
+			this.showAnswer();
+			return;
+		}
+		if (text.equals(UNREMEMBER)) {// 忘了
+			this.addRepeatWord();// 循环记忆
+			leftBtn.setVisibility(View.INVISIBLE);
+			rightBtn.setText(NEXTWORD);
+			this.showAnswer();
+			return;
+		}
+		if (text.equals(RIGHT)) {// 正确
+			leftBtn.setText(REMEMBER);
+			rightBtn.setText(UNREMEMBER);
 			this.showNext();
+			return;
+		}
+		if (text.equals(WRONG)) {// 错误
+			leftBtn.setText(REMEMBER);
+			rightBtn.setText(UNREMEMBER);
+			this.addRepeatWord();// 循环记忆
+			this.showNext();
+			return;
 		}
 		if (text.equals(NEXTWORD)) {// 下一个
-			neverBtn.setVisibility(View.VISIBLE);
+			leftBtn.setText(REMEMBER);
+			rightBtn.setText(UNREMEMBER);
+			leftBtn.setVisibility(View.VISIBLE);
 			this.showNext();
 		}
 	}
 
-//	// 显示答案
-//	private void showAnswer() {
-//		translationTv.setText(this.thisTranslation);
-//		sentsTv.setText(netWord.getSentences());
-//		netWord.setSentences("");
-//	}
+	// 显示答案
+	private void showAnswer() {
+		translationTv.setText(this.thisTranslation);
+		sentsTv.setText(netWord.getSentences());
+		netWord.setSentences("");
+	}
 	
 	
 	/**
@@ -220,6 +251,44 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		}.start();
 	}
 	
+	private int FIRSTINS;
+	private int SECONDINS;
+	private int THIRDINS;
+	private int FORTHINS;
+	private List<String> alreadyRepeat = new ArrayList<String>();
+
+	// 加入重复记忆单词
+	private void addRepeatWord() {
+		String wordString = (String) currentWord.get(this.WORD);
+		int length = alreadyRepeat.size();
+		for (int i = 0; i < length; i++) {
+			if (alreadyRepeat.get(i).equals(wordString)) {
+				return;
+			}
+		}
+		alreadyRepeat.add(wordString);
+		
+		FIRSTINS = this.currentWordNo + 2;
+		SECONDINS = this.currentWordNo + 5;
+		THIRDINS = this.currentWordNo + 14;
+		FORTHINS = this.currentWordNo + 80;
+		if (this.totalWordCount > FIRSTINS) {
+			thisWordList.add(FIRSTINS, this.currentWord);
+		}
+		if (this.totalWordCount > SECONDINS) {
+			thisWordList.add(SECONDINS, this.currentWord);
+		}
+		if (this.totalWordCount > THIRDINS) {
+			thisWordList.add(THIRDINS, this.currentWord);
+		}
+		if (this.totalWordCount > FORTHINS) {
+			thisWordList.add(FORTHINS, this.currentWord);
+		}
+
+		// 重新计算总词数，因为加入了重复记忆的单词
+		totalWordCount = thisWordList.size();
+	}
+	
 	// 发音
 	private void speakWord() {
 		if (speechType.equalsIgnoreCase("tts")) {
@@ -265,17 +334,14 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			currentWordNo++;
 			showWord();
 		} else {
-			neverBtn.setEnabled(false);
-			nextBtn.setEnabled(false);
+			leftBtn.setEnabled(false);
+			rightBtn.setEnabled(false);
 			
 			if (this.isCanUpdate) {
 				Log.i("ignoreWords.toString()",ignoreWords.toString());
 				// 更新记忆曲线
-				Config.init().setRememberLine( this.currentLessonNo, ignoreWords.toString(), true);
+				Config.init().setRememberLine( this.currentLessonNo, ignoreWords.toString());
 				this.isCanUpdate = false;
-
-				// 保存当前学习完的课程号数
-				Config.init().setNextStudyLesson( this.currentLessonNo + 1);
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
@@ -290,8 +356,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();
-						neverBtn.setEnabled(false);
-						nextBtn.setEnabled(false);
+						leftBtn.setEnabled(true);
+						rightBtn.setEnabled(true);
 					} else {
 						Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
 						finish();

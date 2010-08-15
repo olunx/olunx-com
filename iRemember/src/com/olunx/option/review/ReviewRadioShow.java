@@ -381,14 +381,12 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 			currentWordNo++;
 			showWord();
 		} else {
-
+			sureBtn.setEnabled(false);
+			
 			if (this.isCanUpdate) {
 				// 更新记忆曲线
 				Config.init().setRememberLine( this.currentLessonNo, "");
 				this.isCanUpdate = false;
-
-				// 保存当前学习完的课程号数
-				Config.init().setNextStudyLesson( this.currentLessonNo + 1);
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
@@ -403,6 +401,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();
+						sureBtn.setEnabled(true);
 					} else {
 						Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
 						finish();

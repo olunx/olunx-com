@@ -44,7 +44,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 	private ImageButton speakBtn;
 
 	private ArrayList<HashMap<String, Object>> thisWordList;
-	private ArrayList<String> originWordTranslation = null;
+//	private ArrayList<String> originWordTranslation = null;
 	private int currentLessonNo = 0;
 	private int currentWordNo = 0;
 	private int totalWordCount = 0;
@@ -96,7 +96,6 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 		wordEt = (EditText) this.findViewById(R.id.EditText01);
 		wordTv = (TextView) this.findViewById(R.id.TextView01);
 		wordEt.setOnEditorActionListener(new OnEditorActionListener() {
-
 			@Override
 			public boolean onEditorAction(TextView arg0, int keyCode, KeyEvent keyEvent) {
 				Log.d("keycode", String.valueOf(keyCode));
@@ -105,11 +104,9 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 					sureAction();
 					break;
 				}
-
 				}
 				return false;
 			}
-
 		});
 		phoneticsTv = (TextView) this.findViewById(R.id.TextView02);
 		Typeface font = Typeface.createFromAsset(getAssets(), "KingSoft-Phonetic-Android.ttf");
@@ -131,7 +128,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 
 		// 是否可以读取网络单词数据
 		this.isCanGetNetWord = Config.init().getCanConNetWord();
-		Log.i("idCanConWord", String.valueOf(isCanGetNetWord));
+		Log.i("isCanConWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
 		Bundle i = this.getIntent().getExtras();
@@ -227,14 +224,14 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 				thisWordList = Config.init().getWordsFromFileByLessonNo( currentLessonNo);
 				totalWordCount = thisWordList.size();
 
-				// 复制出候选的翻译答案
-				if (originWordTranslation == null) {
-					originWordTranslation = new ArrayList<String>();
-					int length = thisWordList.size();
-					for (int i = 0; i < length; i++) {
-						originWordTranslation.add((String) thisWordList.get(i).get(TRANSLATION));
-					}
-				}
+//				// 复制出候选的翻译答案
+//				if (originWordTranslation == null) {
+//					originWordTranslation = new ArrayList<String>();
+//					int length = thisWordList.size();
+//					for (int i = 0; i < length; i++) {
+//						originWordTranslation.add((String) thisWordList.get(i).get(TRANSLATION));
+//					}
+//				}
 
 				// 初始化语音数据
 				if (speechType == null) {
@@ -335,14 +332,12 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 			currentWordNo++;
 			showWord();
 		} else {
-
+			sureBtn.setEnabled(false);
+			
 			if (this.isCanUpdate) {
 				// 更新记忆曲线
 				Config.init().setRememberLine( this.currentLessonNo, "");
 				this.isCanUpdate = false;
-
-				// 保存当前学习完的课程号数
-				Config.init().setNextStudyLesson( this.currentLessonNo + 1);
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
@@ -357,6 +352,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();
+						sureBtn.setEnabled(true);
 					} else {
 						Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
 						finish();
