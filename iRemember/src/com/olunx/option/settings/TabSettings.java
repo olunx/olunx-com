@@ -91,7 +91,7 @@ public class TabSettings extends PreferenceActivity {
 		DialogPre restore = new DialogPre(this, null);
 		restore.setDialogIcon(android.R.drawable.ic_dialog_info);
 		restore.setTitle(R.string.local_restore);
-		restore.setSummary("从SDCard中还原最近备份的数据！");
+		restore.setSummary("从SDCard中还原最近备份的数据。");
 		restore.setDialogTitle("提示");
 		restore.setDialogMessage("此操作会覆盖现有的记忆数据和软件设置！");
 		manualSyncPrefCat.addPreference(restore);
