@@ -5,7 +5,7 @@
 	<string name="option_review_title">复习记忆</string>
 	<string name="option_review_desc">多种复习方式，获得高效的复习记忆。</string>
 	<string name="option_search_title">单词查词</string>
-	<string name="option_search_desc">使用本地词典查询或网络词典查询。</string>
+	<string name="option_search_desc">使用StarDict词典来查询单词。</string>
 	<string name="option_mandict_title">词库管理</string>
 	<string name="option_mandict_desc">记忆词库的设置和查询、下载词库。</string>
 	<string name="option_sync_title">软件管理</string>
