@@ -99,7 +99,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 		this.setContentView(R.layout.review_radio);
 		nameTv = (TextView) this.findViewById(R.id.TextView01);
 		phoneticsTv = (TextView) this.findViewById(R.id.TextView02);
-		Typeface font = Typeface.createFromAsset(getAssets(), "KingSoft-Phonetic-Android.ttf");
+		Typeface font = Typeface.createFromAsset(getAssets(), Config.FONT_KINGSOFT_PATH);
 		phoneticsTv.setTypeface(font);
 		translationTv = (TextView) this.findViewById(R.id.TextView03);
 		radioGroup = (RadioGroup) this.findViewById(R.id.RadioGroup01);
@@ -357,44 +357,44 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 		} else {
 			sureBtn.setEnabled(false);
 			
-			if (this.isCanUpdate) {
+			if (isCanUpdate) {
 				// 更新记忆曲线
-				Config.init().setRememberLine( this.currentLessonNo, "");
-				this.isCanUpdate = false;
+				Config.init().setRememberLine(currentLessonNo, "");
+				isCanUpdate = false;
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
 
 			// 是否开始下一课的学习
-			RememberHelper helper = new RememberHelper();
-			final int needStudyLesson = helper.getOneNeedStudyLesson();
-			helper.close();
-			if(needStudyLesson != -1) {
-				new AlertDialog.Builder(this)
-				.setIcon(android.R.drawable.ic_dialog_info)
-				.setTitle(R.string.dialog_title_tip)
-				.setMessage(R.string.dialog_msg_is_goto_need_lesson)
-				.setPositiveButton(getString(R.string.btn_yes),	new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int arg1) {
+			new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setTitle(R.string.dialog_title_tip)
+			.setMessage(R.string.dialog_msg_is_goto_need_lesson)
+			.setPositiveButton(getString(R.string.btn_yes),	new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int arg1) {
+					RememberHelper helper = new RememberHelper();
+					final int needStudyLesson = helper.getOneNeedStudyLesson();
+					helper.close();
+					if(needStudyLesson != -1) {
 						currentLessonNo = needStudyLesson;
 						initWords();
 						sureBtn.setEnabled(true);
 						dialog.cancel();
-					}
-				})
-				.setNegativeButton(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
+					}else {
+						Toast.makeText(context, R.string.toast_msg_no_need_study_lesson, Toast.LENGTH_LONG).show();
 						finish();
 					}
-				})
-				.show();
-			}else {
-				Toast.makeText(context, R.string.toast_msg_no_need_study_lesson, Toast.LENGTH_LONG).show();
-				finish();
-			}
+				}
+			})
+			.setNegativeButton(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+					finish();
+				}
+			})
+			.show();
 		}
 	}
 
@@ -421,6 +421,12 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 		return true;
 	}
 
+	@Override
+	protected void onStop() {
+		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
+		super.onStop();
+	}
+	
 	@Override
 	protected void onDestroy() {
 		Config.init().setReviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置

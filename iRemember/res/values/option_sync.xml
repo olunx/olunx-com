@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	
-<string name="local_backup">备份数据到本地</string>
-<string name="local_undo">从本地还原数据</string>
-<string name="upload_data">上传数据</string>
-<string name="download_data">下载数据</string>
-<string name="clear_data">清除所有数据</string>
-</resources>

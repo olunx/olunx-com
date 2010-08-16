@@ -5,6 +5,11 @@
 
 package com.olunx.option.search;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.olunx.R;
 import com.olunx.stardict.SeekWord;
 import com.olunx.util.Config;
@@ -30,9 +35,10 @@ public class TabSearch extends Activity {
 	private Button queryBtn;
 	private TextView nameTv;
 	private TextView phoneticsTv;
-	private TextView translationTv;
 	private TextView sentsTv;
 	private ImageButton speakBtn;
+	
+	private Map<String, String> word;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +61,8 @@ public class TabSearch extends Activity {
 		});
 		nameTv = (TextView) this.findViewById(R.id.TextView01);
 		phoneticsTv = (TextView) this.findViewById(R.id.TextView02);
-		Typeface font = Typeface.createFromAsset(getAssets(), "KingSoft-Phonetic-Android.ttf");
+		Typeface font = Typeface.createFromAsset(getAssets(), Config.FONT_KINGSOFT_PATH);
 		phoneticsTv.setTypeface(font);
-		translationTv = (TextView) this.findViewById(R.id.TextView03);
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
 		speakBtn = (ImageButton) this.findViewById(R.id.ImageButton01);
 		speakBtn.setVisibility(View.INVISIBLE);
@@ -77,15 +82,13 @@ public class TabSearch extends Activity {
 		pd.setOnDismissListener(new OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface arg0) {
-//				if (netWord == null) {
-//					Toast.makeText(TabSearch.this, "没有数据！", Toast.LENGTH_SHORT).show();
-//				}else {
-//					nameTv.setText(netWord.getWord());
-//					phoneticsTv.setText(netWord.getPhonetic());
-//					Log.i("phonetics",netWord.getPhonetic());
-//					translationTv.setText(netWord.getTranslation());
-//					sentsTv.setText(netWord.getSentences());
-//				}
+				if (word == null) {
+					Toast.makeText(TabSearch.this, "没有数据！", Toast.LENGTH_SHORT).show();
+				}else {
+					nameTv.setText(thisWord);
+					phoneticsTv.setText(word.get("音标"));
+					sentsTv.setText(word.get("解释"));
+				}
 			}
 		});
 		pd.show();
@@ -93,6 +96,22 @@ public class TabSearch extends Activity {
 			@Override
 			public void run() {
 				SeekWord seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
+				word = new HashMap<String, String>();
+				word.put("单词", thisWord);
+				String result = seek.getTrans(thisWord);
+				
+				Pattern p = Pattern.compile("/(.*?)/");
+				Matcher m = p.matcher(result);
+				
+				if(m.find()) {
+					String phonetic = m.group();
+					word.put("音标", phonetic.replace("/", ""));
+					
+					word.put("解释", result.replace(phonetic, ""));
+				}else {
+					word.put("解释", result);
+				}
+				
 				
 				pd.dismiss();
 			}

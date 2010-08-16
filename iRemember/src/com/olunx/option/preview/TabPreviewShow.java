@@ -95,7 +95,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		this.setContentView(R.layout.preview);
 		nameTv = (TextView) this.findViewById(R.id.TextView01);
 		phoneticsTv = (TextView) this.findViewById(R.id.TextView02);
-		Typeface font = Typeface.createFromAsset(getAssets(), "KingSoft-Phonetic-Android.ttf");
+		Typeface font = Typeface.createFromAsset(getAssets(), Config.FONT_KINGSOFT_PATH);
 		phoneticsTv.setTypeface(font);
 		translationTv = (TextView) this.findViewById(R.id.TextView03);
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
@@ -268,15 +268,20 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			neverBtn.setEnabled(false);
 			nextBtn.setEnabled(false);
 			
-			if (this.isCanUpdate) {
-				Log.i("ignoreWords.toString()",ignoreWords.toString());
-				// 更新记忆曲线
-				Config.init().setRememberLine( this.currentLessonNo, ignoreWords.toString(), true);
-				this.isCanUpdate = false;
+			new Thread(){
+				public void run() {
+					if (isCanUpdate) {
+						Log.i("ignoreWords.toString()",ignoreWords.toString());
+						// 更新记忆曲线
+						Config.init().setRememberLine( currentLessonNo, ignoreWords.toString(), true);
+						isCanUpdate = false;
 
-				Config.init().setPreviewWordIndex(currentLessonNo, 0);//清除本次记忆的单词位置
-				Config.init().setNextStudyLesson( this.currentLessonNo + 1);// 保存当前学习完的课程号数
-			}
+						Config.init().setPreviewWordIndex(currentLessonNo, 0);//清除本次记忆的单词位置
+						Config.init().setNextStudyLesson( currentLessonNo + 1);// 保存当前学习完的课程号数
+					}
+				}
+			}.run();
+
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
 
@@ -284,7 +289,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_info)
 			.setTitle(R.string.dialog_title_tip)
-			.setMessage(R.string.dialog_msg_is_goto_next_lesson)
+			.setMessage(getString(R.string.dialog_msg_is_goto_next_lesson))
 			.setPositiveButton(getString(R.string.btn_yes),	new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
@@ -333,6 +338,12 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		}
 		}
 		return true;
+	}
+
+	@Override
+	protected void onStop() {
+		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
+		super.onStop();
 	}
 
 	@Override

@@ -34,8 +34,8 @@ public class SeekWord {
 		}
 		
 		if(result != null) {
-			System.out.println(result.definition);
-			return result.definition;
+//			System.out.println(result.definition);
+			return result.definition.replaceAll("\\*", "\n*");
 		}
 		return "";
 	}

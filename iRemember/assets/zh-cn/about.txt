@@ -2,19 +2,19 @@
 	iRemember
 
 版本：
-	beta 6
+	beta 7
 	
 作者：
 	olunx
 
 邮箱：
-	me@olunx.com
+	olunx@qq.com
 
 网址：
 	http://olunx.com/
 
 发布日期：
-	2010年6月3日
+	2010年8月15日
 	
 版权声明：
 	如果你发现该软件中有任何涉嫌侵犯到您或贵公司的权益的地方，请及时与作者联系。

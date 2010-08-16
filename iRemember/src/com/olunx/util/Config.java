@@ -40,13 +40,18 @@ public class Config {
 	public static final String DICTTYPE_STARDICT = "ifo";
 
 	private static final String SDCARD_PATH = "/sdcard/iremember/";
+	private static final String SDCARD_BACKUP_PATH = "/sdcard/iremember/backup/";
 
 	public static final String DATABASE_FILE = "data.db";
 	public static final String FILE_SDCARD_DATABASE = SDCARD_PATH + DATABASE_FILE;
+	public static final String BACKUP_FILE_SDCARD_DATABASE = SDCARD_BACKUP_PATH + DATABASE_FILE;
 
 	public static final String CONFIG_FILE = "config.propertites";
 	public static final String FILE_SDCARD_CONFIG = SDCARD_PATH + CONFIG_FILE;
+	public static final String BACKUP_FILE_SDCARD_CONFIG = SDCARD_BACKUP_PATH + CONFIG_FILE;
 
+	public static String FONT_KINGSOFT_PATH = "font/KingSoft-Phonetic-Android.ttf";
+	
 	public static Properties p;
 
 	private static Context context = MainActivity.context;
@@ -106,7 +111,7 @@ public class Config {
 	 * 第一次运行，初始化数据。
 	 */
 	public void initInstall() {
-		if (getCon("first_run", "true").equals("true")) {
+		if (isFirstRun()) {
 			// 安装词库
 			String cet4File = "/sdcard/iremember/大学英语四级.csv";
 			String cet6File = "/sdcard/iremember/大学英语六级.csv";
@@ -135,6 +140,9 @@ public class Config {
 		this.setCon("first_run", value);
 	}
 
+	public boolean isFirstRun() {
+		return Boolean.valueOf(getCon("first_run", "true"));
+	}
 	/**
 	 * 复位配置文件
 	 * 

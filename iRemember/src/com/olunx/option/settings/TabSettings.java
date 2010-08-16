@@ -2,6 +2,7 @@ package com.olunx.option.settings;
 
 import com.olunx.R;
 import com.olunx.util.Config;
+import com.olunx.util.Utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -46,12 +47,12 @@ public class TabSettings extends PreferenceActivity {
 		ttsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				if(ttsPref.isChecked()) {
-					//设置发音类型
+				if (ttsPref.isChecked()) {
+					// 设置发音类型
 					Config.init().setSpeechType(1);
 					Config.init().setCanSpeech(true);
 					Log.i("flag()", Config.init().getSpeechType());
-				}else {
+				} else {
 					Config.init().setSpeechType(0);
 					Config.init().setCanSpeech(false);
 				}
@@ -59,7 +60,7 @@ public class TabSettings extends PreferenceActivity {
 			}
 		});
 		otherSetPrefCat.addPreference(ttsPref);
-		
+
 		// 例句功能
 		final CheckBoxPreference sentsPref = new CheckBoxPreference(this);
 		sentsPref.setKey("sents_function");
@@ -68,34 +69,32 @@ public class TabSettings extends PreferenceActivity {
 		sentsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-//				boolean flag = sentsPref.isChecked();
+				// boolean flag = sentsPref.isChecked();
 				return false;
 			}
 		});
 		otherSetPrefCat.addPreference(sentsPref);
-		
-		// 网络备份
+
+		// 数据备份
 		PreferenceCategory manualSyncPrefCat = new PreferenceCategory(this);
-		manualSyncPrefCat.setTitle("网络备份");
+		manualSyncPrefCat.setTitle("数据备份");
 		root.addPreference(manualSyncPrefCat);
 
-		DialogPre upload = new DialogPre(this, null);
-		upload.setDialogIcon(android.R.drawable.ic_dialog_info);
-		upload.setTitle(R.string.upload_data);
-		upload.setSummary("上传本地数据到Google Doc服务器");
-		upload.setDialogTitle("提示");
-		upload.setDialogMessage("是否上传数据到服务器？");
-		upload.setEnabled(false);
-		manualSyncPrefCat.addPreference(upload);
+		DialogPre backup = new DialogPre(this, null);
+		backup.setDialogIcon(android.R.drawable.ic_dialog_info);
+		backup.setTitle(R.string.local_backup);
+		backup.setSummary("备份个人记忆数据和软件设置。");
+		backup.setDialogTitle("提示");
+		backup.setDialogMessage("此操作会覆盖原有的备份数据！");
+		manualSyncPrefCat.addPreference(backup);
 
-		DialogPre download = new DialogPre(this, null);
-		download.setDialogIcon(android.R.drawable.ic_dialog_info);
-		download.setTitle(R.string.download_data);
-		download.setSummary("从Google Doc服务器获取备份数据");
-		download.setDialogTitle("提示");
-		download.setDialogMessage("是否下载数据到本地？");
-		download.setEnabled(false);
-		manualSyncPrefCat.addPreference(download);
+		DialogPre restore = new DialogPre(this, null);
+		restore.setDialogIcon(android.R.drawable.ic_dialog_info);
+		restore.setTitle(R.string.local_restore);
+		restore.setSummary("从SDCard中还原最近备份的数据！");
+		restore.setDialogTitle("提示");
+		restore.setDialogMessage("此操作会覆盖现有的记忆数据和软件设置！");
+		manualSyncPrefCat.addPreference(restore);
 
 		// 其它设置
 		PreferenceCategory clearPrefCat = new PreferenceCategory(this);
@@ -132,13 +131,13 @@ public class TabSettings extends PreferenceActivity {
 			System.out.println(which);
 			if (which == -1) {
 				String title = (String) this.getTitle();
-				
+
 				final ProgressDialog pd = new ProgressDialog(context);
 				pd.setIcon(android.R.drawable.ic_dialog_alert);
 				pd.setTitle("正在处理数据");
 				pd.setMessage(getString(R.string.dialog_msg_wait));
 				pd.show();
-				
+
 				if (title.equalsIgnoreCase(getString(R.string.local_backup))) {
 					pd.setOnDismissListener(new OnDismissListener() {
 						@Override
@@ -146,38 +145,32 @@ public class TabSettings extends PreferenceActivity {
 							Toast.makeText(context, "备份成功", Toast.LENGTH_LONG).show();
 						}
 					});
-					
+
 					new Thread() {
 						@Override
 						public void run() {
-//							Utils.init().copyFile(Config.FILE_SYSTEM_CONFIG, Config.FILE_SDCARD_CONFIG);
+							Utils.init().copyBinFile(Config.FILE_SDCARD_CONFIG, Config.BACKUP_FILE_SDCARD_CONFIG);
+							Utils.init().copyBinFile(Config.FILE_SDCARD_DATABASE, Config.BACKUP_FILE_SDCARD_DATABASE);
 							pd.dismiss();
 						}
 					}.start();
 
-				} else if (title.equalsIgnoreCase(getString(R.string.local_undo))) {
+				} else if (title.equalsIgnoreCase(getString(R.string.local_restore))) {
 					pd.setOnDismissListener(new OnDismissListener() {
 						@Override
 						public void onDismiss(DialogInterface arg0) {
 							Toast.makeText(context, "还原成功", Toast.LENGTH_LONG).show();
 						}
 					});
-					
+
 					new Thread() {
 						@Override
 						public void run() {
-//							Utils.init().copyFile(Config.FILE_SDCARD_CONFIG, Config.FILE_SYSTEM_CONFIG);
+							Utils.init().copyBinFile(Config.BACKUP_FILE_SDCARD_CONFIG, Config.FILE_SDCARD_CONFIG);
+							Utils.init().copyBinFile(Config.BACKUP_FILE_SDCARD_DATABASE, Config.FILE_SDCARD_DATABASE);
 							pd.dismiss();
 						}
 					}.start();
-					
-				} else if (title.equalsIgnoreCase(getString(R.string.upload_data))) {
-					
-					pd.dismiss();
-
-				} else if (title.equalsIgnoreCase(getString(R.string.download_data))) {
-					
-					pd.dismiss();
 
 				} else if (title.equalsIgnoreCase(getString(R.string.clear_data))) {
 					pd.setOnDismissListener(new OnDismissListener() {
@@ -186,7 +179,7 @@ public class TabSettings extends PreferenceActivity {
 							Toast.makeText(context, "清除数据成功。", Toast.LENGTH_LONG).show();
 						}
 					});
-					
+
 					Config.init().setDefaultConfig();
 					pd.dismiss();
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+<string name="local_backup">备份数据</string>
+<string name="local_restore">还原数据</string>
+<string name="clear_data">清除所有数据</string>
+</resources>

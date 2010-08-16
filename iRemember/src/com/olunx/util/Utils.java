@@ -1,5 +1,7 @@
 package com.olunx.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,12 +27,12 @@ public class Utils {
 	}
 
 	/**
-	 * 复制文件
+	 * 复制二进制文件
 	 * 
 	 * @param fileFromPath
 	 * @param fileToPath
 	 */
-	public void copyFile(String fileFromPath, String fileToPath) {
+	public void copyBinFile(String fileFromPath, String fileToPath) {
 		// 如果文件不存在则创建它
 		createFileIfNotExist(fileFromPath);
 		createNewFile(fileToPath);
@@ -45,12 +47,48 @@ public class Utils {
 			e.printStackTrace();
 		}
 
-		this.copyFile(in, out);
+		this.copyBinFile(in, out);
 	}
 
+	public void copyBinFile(InputStream in, OutputStream out) {
+		// 开始复制文件
+		InputStream inBuffer = null;
+		OutputStream outBuffer = null;
+
+		inBuffer = new BufferedInputStream(in);
+		outBuffer = new BufferedOutputStream(out);
+
+		int byteData = 0;
+		try {
+			while (true) {
+				byteData = inBuffer.read();
+				if (byteData == -1)
+					break;
+				out.write(byteData);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (inBuffer != null)
+					inBuffer.close();
+				if (outBuffer != null)
+					outBuffer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 复制文本文件
+	 * 
+	 * @param in
+	 * @param targetFilePath
+	 */
 	public void copyFile(InputStream in, String targetFilePath) {
 		createNewFile(targetFilePath);
-		
+
 		OutputStream out = null;
 
 		try {
@@ -61,35 +99,9 @@ public class Utils {
 
 		this.copyFile(in, out);
 	}
-	
+
 	public void copyFile(InputStream in, OutputStream out) {
-//		// 开始复制文件
-//		InputStream inBuffer = null;
-//		OutputStream outBuffer = null;
-//
-//		inBuffer = new BufferedInputStream(in);
-//		outBuffer = new BufferedOutputStream(out);
-//
-//		int byteData = 0;
-//		try {
-//			while (true) {
-//				byteData = inBuffer.read();
-//				if (byteData == -1)
-//					break;
-//				out.write(byteData);
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if (inBuffer != null)
-//					inBuffer.close();
-//				if (outBuffer != null)
-//					outBuffer.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
+
 		BufferedReader br = null;
 		BufferedWriter bw = null;
 		try {
@@ -99,15 +111,15 @@ public class Utils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		String data = null;
 		try {
-			while((data = br.readLine())!= null) {
+			while ((data = br.readLine()) != null) {
 				bw.write(data + "\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				br.close();
 				bw.close();
@@ -119,6 +131,7 @@ public class Utils {
 
 	/**
 	 * 删除旧的文件，创建新的空白的文件。
+	 * 
 	 * @param targetFilePath
 	 */
 	public void createNewFile(String targetFilePath) {
@@ -133,7 +146,7 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 如果文件不存在则创建它
 	 * 
@@ -145,7 +158,7 @@ public class Utils {
 		if (!file.exists()) {
 			// Log.i("srcFile file exists", String.valueOf(file.exists()));
 			try {
-				new File(path.substring(0, path.lastIndexOf("/"))).mkdirs();
+				new File(path.substring(0, path.lastIndexOf(File.separator))).mkdirs();
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();

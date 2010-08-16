@@ -79,7 +79,7 @@ public final class R {
         public static final int btn_unremember=0x7f04000e;
         public static final int btn_wrong=0x7f04000d;
         public static final int btn_yes=0x7f040009;
-        public static final int clear_data=0x7f040050;
+        public static final int clear_data=0x7f04004e;
         public static final int description=0x7f040003;
         public static final int dialog_item_do_not_refresh_dict_list=0x7f040032;
         public static final int dialog_item_refresh_dict_list=0x7f040030;
@@ -98,7 +98,6 @@ public final class R {
         public static final int dialog_title_please_select_action=0x7f04002f;
         public static final int dialog_title_please_select_lesson=0x7f040041;
         public static final int dialog_title_tip=0x7f040014;
-        public static final int download_data=0x7f04004f;
         public static final int help_file_path=0x7f04003e;
         public static final int image=0x7f040004;
         public static final int list_desc_dict_type=0x7f04002e;
@@ -110,7 +109,7 @@ public final class R {
         public static final int list_title_dict_dir=0x7f040028;
         public static final int list_title_each_lesson_word_count=0x7f04002a;
         public static final int local_backup=0x7f04004c;
-        public static final int local_undo=0x7f04004d;
+        public static final int local_restore=0x7f04004d;
         public static final int menu_item_turn_off_speech=0x7f04004b;
         public static final int menu_item_turn_on_speech=0x7f04004a;
         public static final int option_mandict_desc=0x7f04001f;
@@ -145,6 +144,5 @@ public final class R {
         public static final int toast_msg_set_dict_dir=0x7f040039;
         public static final int toast_msg_set_dict_using=0x7f040033;
         public static final int toast_msg_set_success=0x7f040037;
-        public static final int upload_data=0x7f04004e;
     }
 }
