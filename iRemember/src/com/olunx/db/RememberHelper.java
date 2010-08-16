@@ -82,7 +82,6 @@ public class RememberHelper implements IHelper {
 		
 		Cursor result = getDB().query(TABLE, new String[] { "lesson_no", "study_time", "next_study_time", "times" }, select, null, null,
 				null, "lesson_no");
-		Log.i("Cursor Count", String.valueOf(result.getCount()));
 		ArrayList<HashMap<String, String>> records = new ArrayList<HashMap<String, String>>();
 
 		int lessonNoColumn = result.getColumnIndex("lesson_no");
@@ -91,6 +90,8 @@ public class RememberHelper implements IHelper {
 		int timesColumn = result.getColumnIndex("times");
 
 		if (result != null) {
+			Log.i("Cursor Count", String.valueOf(result.getCount()));
+			
 			HashMap<String, String> map = null;
 
 			result.moveToFirst();
@@ -107,7 +108,33 @@ public class RememberHelper implements IHelper {
 			}
 		}
 		result.close();
+		
 		return records;
+	}
+	
+	// 返回一个需要复习的课程号
+	public int getOneNeedStudyLesson() {
+		createTable();
+
+		int resultLessonNo = -1;
+		
+		String select = "next_study_time <= '" + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()) + "'";
+		
+		Cursor result = getDB().query(TABLE, new String[] { "lesson_no" }, select, null, null,
+				null, "lesson_no");
+		
+		int lessonNoColumn = result.getColumnIndex("lesson_no");
+
+		if (result != null) {
+			result.moveToFirst();
+			if(result.getCount() > 0) {
+				Log.i("result.getString(lessonNoColumn)", result.getString(lessonNoColumn));
+				resultLessonNo = Integer.parseInt(result.getString(lessonNoColumn));
+			}
+		}
+		result.close();
+		
+		return resultLessonNo;
 	}
 
 	// 返回不需要再次记忆的单词编号
@@ -125,7 +152,8 @@ public class RememberHelper implements IHelper {
 				result.moveToNext();
 			}
 		}
-
+		result.close();
+		
 		return ignoreWords;
 	}
 
@@ -145,7 +173,7 @@ public class RememberHelper implements IHelper {
 			}
 		}
 		result.close();
-
+		
 		return Integer.parseInt(times);
 	}
 

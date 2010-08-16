@@ -47,12 +47,17 @@ public class CsvHelper {
 					lineNo++;
 					continue;
 				}
-				firSep = line.indexOf(",[");
-				secSep = line.indexOf("],");
+//				firSep = line.indexOf(",[");
+//				secSep = line.indexOf("],");
+				
+				
+				firSep = line.indexOf(",");
+				secSep = line.indexOf(",", firSep + 1);
+				
 				word = new HashMap<String, Object>();
 				word.put("单词", line.substring(0, firSep));
-				word.put("音标", line.substring(firSep + 2, secSep));
-				word.put("解释", line.substring(secSep + 2).replaceAll("//", "\n"));
+				word.put("音标", line.substring(firSep + 1, secSep).replaceAll("\\[", "").replaceAll("\\]", ""));
+				word.put("解释", line.substring(secSep + 1).replaceAll("//", "\n"));
 				words.add(word);
 //				Log.i("count", String.valueOf(no));
 				if(++no > count) {

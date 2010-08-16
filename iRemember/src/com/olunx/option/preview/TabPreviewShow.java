@@ -13,9 +13,7 @@ import java.util.Set;
 
 import com.olunx.R;
 import com.olunx.util.Config;
-import com.olunx.util.FetchWord;
 import com.olunx.util.Speech;
-import com.olunx.util.Word;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -72,8 +70,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	private boolean isCanUpdate = false;
 
 	// 网络单词数据
-	private Word netWord = new Word();
-	private boolean isCanGetNetWord = false;
+//	private Word netWord = new Word();
+//	private boolean isCanGetNetWord = false;
 
 	// 发音设置
 	private TextToSpeech speech;
@@ -119,12 +117,13 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		}
 		
 		// 是否可以读取网络单词数据
-		this.isCanGetNetWord = Config.init().getCanConNetWord();
-		Log.i("isCanGetNetWord", String.valueOf(isCanGetNetWord));
+//		this.isCanGetNetWord = Config.init().getCanConNetWord();
+//		Log.i("isCanGetNetWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
 		Bundle i = TabPreviewShow.this.getIntent().getExtras();
 		currentLessonNo = i.getInt("currentLessonNo");
+		
 		initWords();
 	}
 
@@ -143,7 +142,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		sentsTv.setText("");
 
 		// 获取网络单词数据
-		this.getNetTrans();
+//		this.getNetTrans();
 	}
 
 	private Set<String> ignoreWords = new HashSet<String>();
@@ -190,7 +189,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			public void onDismiss(DialogInterface dialog) {
 				if (thisWordList != null && thisWordList.size() > 0) {
 					totalWordCount = thisWordList.size();
-					currentWordNo = 0;
+//					currentWordNo = 0;
+					currentWordNo = Config.init().getPreviewWordIndex(currentLessonNo);//获取上次记忆的单词位置
 					showWord();
 				}
 			}
@@ -229,23 +229,23 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		} 
 	}
 
-	// 获取单词内容
-	private void getNetTrans() {
-		if (this.isCanGetNetWord) {
-			new Thread() {
-				@Override
-				public void run() {
-					FetchWord fetch = new FetchWord();
-					netWord = fetch.getWord(thisWord);
-					if (netWord == null) {
-						netWord = new Word();
-						netWord.setSentences("没有数据！");
-						isCanGetNetWord = false;
-					}
-				}
-			}.start();
-		}
-	}
+//	// 获取单词内容
+//	private void getNetTrans() {
+//		if (this.isCanGetNetWord) {
+//			new Thread() {
+//				@Override
+//				public void run() {
+//					FetchWord fetch = new FetchWord();
+//					netWord = fetch.getWord(thisWord);
+//					if (netWord == null) {
+//						netWord = new Word();
+//						netWord.setSentences("没有数据！");
+//						isCanGetNetWord = false;
+//					}
+//				}
+//			}.start();
+//		}
+//	}
 
 	// 显示上一个
 	private void showPre() {
@@ -274,42 +274,45 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 				Config.init().setRememberLine( this.currentLessonNo, ignoreWords.toString(), true);
 				this.isCanUpdate = false;
 
-				// 保存当前学习完的课程号数
-				Config.init().setNextStudyLesson( this.currentLessonNo + 1);
+				Config.init().setPreviewWordIndex(currentLessonNo, 0);//清除本次记忆的单词位置
+				Config.init().setNextStudyLesson( this.currentLessonNo + 1);// 保存当前学习完的课程号数
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
 
 			// 询问是否开始下一课的学习
-			AlertDialog ad = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle(R.string.dialog_title_tip)
-					.setMessage(R.string.dialog_msg_is_goto_next_lesson).create();
-			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setTitle(R.string.dialog_title_tip)
+			.setMessage(R.string.dialog_msg_is_goto_next_lesson)
+			.setPositiveButton(getString(R.string.btn_yes),	new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int arg1) {
 					String lessonCount = Config.init().getLessonCount();
 					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
 						currentLessonNo++;
 						initWords();
-						neverBtn.setEnabled(false);
-						nextBtn.setEnabled(false);
+						neverBtn.setEnabled(true);
+						nextBtn.setEnabled(true);
 					} else {
 						Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
 						finish();
 					}
 					dialog.cancel();
 				}
-			});
-			ad.setButton2(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
+			})
+			.setNegativeButton(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.cancel();
 					finish();
 				}
-			});
-			ad.show();
+			})
+			.show();
 		}
 	}
 
+	private boolean isQuit = false;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
@@ -320,19 +323,21 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			showNext();
 			break;
 		case KeyEvent.KEYCODE_BACK: {
-			if (speech != null) {
-				speech.stop();
-				speech.shutdown();
+			if(!isQuit) {
+				Toast.makeText(this, "再按一次退出！", Toast.LENGTH_SHORT).show();
+				isQuit = true;
+			}else {
+				finish();
 			}
-			finish();
 			break;
 		}
 		}
-		return super.onKeyDown(keyCode, event);
+		return true;
 	}
 
 	@Override
 	protected void onDestroy() {
+		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
 		if (speech != null) {
 			speech.stop();
 			speech.shutdown();

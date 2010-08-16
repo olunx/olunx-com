@@ -19,6 +19,7 @@ import com.olunx.util.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,8 +48,20 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Config.init().initInstall();//初始化软件
-		
+		final ProgressDialog pd = new ProgressDialog(context);
+		pd.setTitle("正在初始化词库");
+		pd.setMessage(getString(R.string.dialog_msg_wait));
+		pd.setIcon(android.R.drawable.ic_dialog_info);
+
+		pd.show();
+		new Thread() {
+			@Override
+			public void run() {
+				Config.init().initInstall();//初始化软件
+				pd.dismiss();
+			}
+		}.start();
+	
 		// 显示内容
 		showContent();
 	}

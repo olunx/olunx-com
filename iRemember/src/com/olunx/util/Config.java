@@ -26,6 +26,7 @@ import com.olunx.MainActivity;
 import com.olunx.db.CsvHelper;
 import com.olunx.db.RememberHelper;
 import com.olunx.option.mandict.GetCsvInfo;
+import com.olunx.option.mandict.GetStarDictInfo;
 
 import android.content.Context;
 import android.util.Log;
@@ -34,7 +35,9 @@ public class Config {
 
 	private static Config config = null;
 
+	public static final String DICTTYPE = "dicttype";
 	public static final String DICTTYPE_CSV = "csv";
+	public static final String DICTTYPE_STARDICT = "ifo";
 
 	private static final String SDCARD_PATH = "/sdcard/iremember/";
 
@@ -108,10 +111,14 @@ public class Config {
 			String cet4File = "/sdcard/iremember/大学英语四级.csv";
 			String cet6File = "/sdcard/iremember/大学英语六级.csv";
 			String gaokaoFile = "/sdcard/iremember/高考英语词汇.csv";
+			String tuofuFile = "/sdcard/iremember/托福词汇.csv";
+			String yasiFile = "/sdcard/iremember/雅思词汇.csv";
 			try {
 				Utils.init().copyFile(context.getAssets().open("dicts/cet4.csv"), cet4File);
 				Utils.init().copyFile(context.getAssets().open("dicts/cet6.csv"), cet6File);
 				Utils.init().copyFile(context.getAssets().open("dicts/gaokao.csv"), gaokaoFile);
+				Utils.init().copyFile(context.getAssets().open("dicts/tofel.csv"), tuofuFile);
+				Utils.init().copyFile(context.getAssets().open("dicts/yasi.csv"), yasiFile);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -135,14 +142,42 @@ public class Config {
 	 */
 	public void setDefaultConfig() {
 		this.setDictDir(SDCARD_PATH);
-		this.setEachLessonWordCount("25");
-		this.setLessonCount("0");
-		this.setCurrentUseDictName("");
-		this.setDictStringArray("", "csv");
-
+		this.setEachLessonWordCount("25");//每课单词数
+		this.setLessonCount("0");//课程数
+		this.setCurrentUseDictName("");//记忆词库
+		this.setCurrentUseTransDictName("");//例句词典
+		this.setCanGetTransDict(false);//是否可用例句词典
+		this.setDictStringArray("", Config.DICTTYPE_CSV);
+		this.setDictStringArray("", Config.DICTTYPE_STARDICT);
+		this.setFirstRun("true");
 		this.cleanRememberLine();
 	}
 
+	
+	/**
+	 * 初记单词位置
+	 * @param lesson
+	 * @param value
+	 */
+	public void setPreviewWordIndex(int lesson, int value) {
+		this.setCon(getCurrentUseDictName() + "_preview_word_index_" + lesson, String.valueOf(value));
+	}
+	public int getPreviewWordIndex(int lesson) {
+		return Integer.parseInt(getCon(getCurrentUseDictName() + "_preview_word_index_" + lesson, String.valueOf(0)));
+	}
+	
+	/**
+	 * 复习单词位置
+	 * @param lesson
+	 * @param value
+	 */
+	public void setReviewWordIndex(int lesson, int value) {
+		this.setCon(getCurrentUseDictName() + "_review_word_index_" + lesson, String.valueOf(value));
+	}
+	public int getReviewWordIndex(int lesson) {
+		return Integer.parseInt(getCon(getCurrentUseDictName() + "_review_word_index_" + lesson, String.valueOf(0)));
+	}
+	
 	/**
 	 * 设置词典路径
 	 * 
@@ -211,7 +246,6 @@ public class Config {
 	/**
 	 * 设置词典列表
 	 * 
-	 * @param context
 	 * @param dictPathList
 	 * @param dictType
 	 */
@@ -219,33 +253,54 @@ public class Config {
 		// 保存数据
 		String dictsArray = "";// 保存词库名称
 
-		GetCsvInfo gci = null;
 		int dictListSize = dictPathList.size();
 		Log.i("dictListSize", String.valueOf(dictListSize));
-		String path = null;
+		String dictPath = null;
 		String dictSize = null;
 		String dictName = null;
-		for (int i = 0; i < dictListSize; i++) {
-			path = dictPathList.get(i);
-			gci = new GetCsvInfo(path);
-			dictSize = gci.getFileSize();
-			dictName = gci.getDictName();
-			dictsArray = dictsArray + dictName + "|";// 将词库名称作为数组，方便获取
+		
+		if(dictType.equalsIgnoreCase(Config.DICTTYPE_CSV)) {
+			GetCsvInfo gci = null;
+			for (int i = 0; i < dictListSize; i++) {
+				dictPath = dictPathList.get(i);
+				gci = new GetCsvInfo(dictPath);
+				dictSize = gci.getFileSize();
+				dictName = gci.getDictName();
+				dictsArray = dictsArray + dictName + "|";// 将词库名称作为数组，方便获取
 
-			this.setDictPath(dictName, path);
-			// this.setDictWordCount(context, dictName, wordCount);
-			this.setDictType(dictName, dictType);
-			this.setDictDesc(dictName, "大小：" + dictSize + "   类型：" + dictType);
-
+				this.setDictPath(dictName, dictPath);
+				this.setDictType(dictName, dictType);
+				this.setDictDesc(dictName, "大小：" + dictSize + "   类型：csv");
+			}
+		}else if(dictType.equalsIgnoreCase(Config.DICTTYPE_STARDICT)) {
+			GetStarDictInfo gsi = null;
+			for (int i = 0; i < dictListSize; i++) {
+				dictPath = dictPathList.get(i);
+				gsi = new GetStarDictInfo(dictPath);
+				
+				dictName = gsi.getDictName();
+				dictsArray = dictsArray + dictName + "|";// 将词库名称作为数组，方便获取
+				
+				this.setDictPath(dictName, dictPath);
+				this.setDictType(dictName, dictType);
+				this.setDictDesc(dictName, "词数：" + gsi.getWordCount() + "   类型：StarDict");
+			}
 		}
+		
 		this.setDictStringArray(dictsArray, dictType);
 	}
 
-	public ArrayList<HashMap<String, Object>> getDictList() {
-
+	public ArrayList<HashMap<String, Object>> getDictList(String dictType) {
+		String dictListArray = "";
+		if(dictType == null)  {//如果类型为空，则获取所有词典列表。
+			dictType = Config.DICTTYPE_CSV;
+			dictListArray = getDictStringArray(Config.DICTTYPE_STARDICT);
+		}
+		
 		ArrayList<HashMap<String, Object>> resultItems = new ArrayList<HashMap<String, Object>>();
 		// 获取词典字符串
-		String dictListArray = getDictStringArray(Config.DICTTYPE_CSV);
+		dictListArray += getDictStringArray(dictType);
+		
 		if (dictListArray != "" && dictListArray != null) {
 			String[] dictNameList = dictListArray.split("\\|");
 
@@ -267,7 +322,6 @@ public class Config {
 	/**
 	 * 设置词典字符串数组
 	 * 
-	 * @param context
 	 * @param dictsArray
 	 * @param dictType
 	 */
@@ -282,52 +336,62 @@ public class Config {
 	/**
 	 * 设置词典路径
 	 * 
-	 * @param context
 	 * @param dictName
 	 * @param dictPath
 	 */
 	public void setDictPath(String dictName, String dictPath) {
-		this.setCon(dictName + "_path", dictPath);
+		this.setCon(dictName + "_dict_path", dictPath);
 	}
 
 	public String getDictPath(String dictPath) {
-		return this.getCon(dictPath + "_path", "");
+		return this.getCon(dictPath + "_dict_path", "");
 	}
 
 	/**
 	 * 设置词典描述
 	 * 
-	 * @param context
 	 * @param dictFileName
 	 * @param dictDesc
 	 */
 	public void setDictDesc(String dictFileName, String dictDesc) {
-		this.setCon(dictFileName + "_desc", dictDesc);
+		this.setCon(dictFileName + "_dict_desc", dictDesc);
 	}
 
 	public String getDictDesc(String dictFileName) {
-		return this.getCon(dictFileName + "_desc", "");
+		return this.getCon(dictFileName + "_dict_desc", "");
 	}
 
 	/**
 	 * 设置词典类型
 	 * 
-	 * @param context
 	 * @param dictName
 	 * @param dictType
 	 */
 	public void setDictType(String dictName, String dictType) {
-		this.setCon(dictName + "_type", dictType);
+		this.setCon(dictName + "_dict_type", dictType);
 	}
 
 	public String getDictType(String dictName) {
-		return this.getCon(dictName + "_type", "");
+		return this.getCon(dictName + "_dict_type", "");
 	}
 
+//	/**
+//	 * 设置词典文件名
+//	 * 
+//	 * @param dictName
+//	 * @param dictFileName
+//	 */
+//	public void setDictFileName(String dictName, String dictFileName) {
+//		this.setCon(dictName + "_dict_file_name", dictFileName);
+//	}
+//
+//	public String getDictFileName(String dictPath) {
+//		return this.getCon(dictPath + "_dict_file_name", "");
+//	}
+	
 	/**
-	 * 设置当前使用词典名称
+	 * 设置当前记忆词典名称
 	 * 
-	 * @param context
 	 * @param dictName
 	 */
 	public void setCurrentUseDictName(String dictName) {
@@ -339,9 +403,35 @@ public class Config {
 	}
 
 	/**
+	 * 设置当前使用的例句词典
+	 * 
+	 * @param dictName
+	 */
+	public void setCurrentUseTransDictName(String dictName) {
+		this.setCon("current_use_trans_dict_name", dictName);
+	}
+
+	public String getCurrentUseTransDictName() {
+		return this.getCon("current_use_trans_dict_name", "");
+	}
+	
+	/**
+	 * 设置是否可以使用例句词典
+	 * 
+	 * @param value
+	 */
+	public void setCanGetTransDict(Boolean value) {
+		this.setCon("can_get_trans_dict", String.valueOf(value));
+	}
+
+	public boolean isCanGetTransDict() {
+		return Boolean.parseBoolean(this.getCon("can_get_trans_dict", "false"));
+	}
+
+	
+	/**
 	 * 当前使用词典单词数
 	 * 
-	 * @param context
 	 * @return
 	 */
 	public void setCurrentUseDictWordCount(String wordCount) {
@@ -355,7 +445,6 @@ public class Config {
 	/**
 	 * 当前使用词典文件路径
 	 * 
-	 * @param context
 	 * @return
 	 */
 	public String getCurrentUseDictPath() {
@@ -365,7 +454,6 @@ public class Config {
 	/**
 	 * 当前使用词典文件类型
 	 * 
-	 * @param context
 	 * @return
 	 */
 	public String getCurrentUseDictType() {
@@ -389,7 +477,6 @@ public class Config {
 	/**
 	 * 分组信息描述
 	 * 
-	 * @param context
 	 * @return
 	 */
 	public String getEachLessonWordCountDes() {
@@ -401,7 +488,6 @@ public class Config {
 	/**
 	 * 清空记忆曲线的相关数据
 	 * 
-	 * @param context
 	 */
 	public void cleanRememberLine() {
 		this.setNextStudyLesson(0);
@@ -414,7 +500,6 @@ public class Config {
 	/**
 	 * 读取assets的文件内容
 	 * 
-	 * @param context
 	 * @param filePath
 	 * @return
 	 */
@@ -528,19 +613,6 @@ public class Config {
 		return ignoreWordsStr.toLowerCase();
 	}
 
-	/**
-	 * 设置是否可以联网
-	 * 
-	 * @param context
-	 * @param value
-	 */
-	public void setCanConNetWord(Boolean value) {
-		this.setCon("can_get_net_word", String.valueOf(value));
-	}
-
-	public boolean getCanConNetWord() {
-		return Boolean.parseBoolean(this.getCon("can_get_net_word", "false"));
-	}
 
 	/**
 	 * 设置发音类型
@@ -573,7 +645,6 @@ public class Config {
 	/**
 	 * 是否可发音
 	 * 
-	 * @param context
 	 * @param flag
 	 */
 	public void setCanSpeech(boolean flag) {
@@ -587,7 +658,6 @@ public class Config {
 	/**
 	 * 读取词库数据
 	 * 
-	 * @param context
 	 * @param currentLessonNo
 	 * @return
 	 */
@@ -631,7 +701,6 @@ public class Config {
 	/**
 	 * 设置词库文件编码
 	 * 
-	 * @param context
 	 * @param charset
 	 */
 	public void setDictCharset(String charset) {

@@ -13,10 +13,9 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.olunx.R;
+import com.olunx.db.RememberHelper;
 import com.olunx.util.Config;
-import com.olunx.util.FetchWord;
 import com.olunx.util.Speech;
-import com.olunx.util.Word;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,7 +38,7 @@ import android.widget.Toast;
 public class ReviewAnwserShow extends Activity implements OnClickListener {
 
 	private Context context = this;
-	
+
 	private TextView nameTv;
 	private TextView phoneticsTv;
 	private TextView translationTv;
@@ -74,10 +73,6 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 
 	// 更新记忆曲线
 	private boolean isCanUpdate = false;
-
-	// 网络单词数据
-	private Word netWord = new Word();
-	private boolean isCanGetNetWord = false;
 
 	// 发音设置
 	private TextToSpeech speech;
@@ -121,13 +116,9 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 				speakWord();
 			}
 		});
-		if(!Config.init().isCanSpeech()) {
+		if (!Config.init().isCanSpeech()) {
 			speakBtn.setEnabled(false);
 		}
-		
-		// 是否可以读取网络单词数据
-		this.isCanGetNetWord = Config.init().getCanConNetWord();
-		Log.i("isCanGetNetWord", String.valueOf(isCanGetNetWord));
 
 		// 获取课程数据
 		Bundle i = ReviewAnwserShow.this.getIntent().getExtras();
@@ -149,8 +140,6 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 		translationTv.setText("");
 		sentsTv.setText("");
 
-		// 获取网络单词数据
-		this.getNetTrans();
 	}
 
 	private Set<String> ignoreWords = new HashSet<String>();
@@ -196,15 +185,12 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 	// 显示答案
 	private void showAnswer() {
 		translationTv.setText(this.thisTranslation);
-		sentsTv.setText(netWord.getSentences());
-		netWord.setSentences("");
 	}
-	
-	
+
 	/**
 	 * 以下为相同逻辑代码
 	 * */
-		
+
 	// 初始化单词学习界面
 	private void initWords() {
 
@@ -221,7 +207,10 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 			public void onDismiss(DialogInterface dialog) {
 				if (thisWordList != null && thisWordList.size() > 0) {
 					totalWordCount = thisWordList.size();
-					currentWordNo = 0;
+//					currentWordNo = 0;
+					currentWordNo = Config.init().getReviewWordIndex(currentLessonNo);//获取上次记忆的单词位置
+					if(currentWordNo > totalWordCount) {currentWordNo = 0;}//处理越界情况
+					
 					showWord();
 				}
 			}
@@ -250,7 +239,7 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 			}
 		}.start();
 	}
-	
+
 	private int FIRSTINS;
 	private int SECONDINS;
 	private int THIRDINS;
@@ -267,7 +256,7 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 			}
 		}
 		alreadyRepeat.add(wordString);
-		
+
 		FIRSTINS = this.currentWordNo + 2;
 		SECONDINS = this.currentWordNo + 5;
 		THIRDINS = this.currentWordNo + 14;
@@ -288,31 +277,13 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 		// 重新计算总词数，因为加入了重复记忆的单词
 		totalWordCount = thisWordList.size();
 	}
-	
+
 	// 发音
 	private void speakWord() {
 		if (speechType.equalsIgnoreCase("tts")) {
 			if (speech != null) {
 				speech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
 			}
-		} 
-	}
-
-	// 获取单词内容
-	private void getNetTrans() {
-		if (this.isCanGetNetWord) {
-			new Thread() {
-				@Override
-				public void run() {
-					FetchWord fetch = new FetchWord();
-					netWord = fetch.getWord(thisWord);
-					if (netWord == null) {
-						netWord = new Word();
-						netWord.setSentences("没有数据！");
-						isCanGetNetWord = false;
-					}
-				}
-			}.start();
 		}
 	}
 
@@ -336,45 +307,52 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 		} else {
 			leftBtn.setEnabled(false);
 			rightBtn.setEnabled(false);
-			
+
 			if (this.isCanUpdate) {
-				Log.i("ignoreWords.toString()",ignoreWords.toString());
+				Log.i("ignoreWords.toString()", ignoreWords.toString());
 				// 更新记忆曲线
-				Config.init().setRememberLine( this.currentLessonNo, ignoreWords.toString());
+				Config.init().setRememberLine(this.currentLessonNo, ignoreWords.toString());
 				this.isCanUpdate = false;
 			}
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
-
-			// 询问是否开始下一课的学习
-			AlertDialog ad = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle(R.string.dialog_title_tip)
-					.setMessage(R.string.dialog_msg_is_goto_next_lesson).create();
-			ad.setButton(getString(R.string.btn_yes), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int arg1) {
-					String lessonCount = Config.init().getLessonCount();
-					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
-						currentLessonNo++;
+			
+			// 是否开始下一课的学习
+			RememberHelper helper = new RememberHelper();
+			final int needStudyLesson = helper.getOneNeedStudyLesson();
+			helper.close();
+			if(needStudyLesson != -1) {
+				new AlertDialog.Builder(this)
+				.setIcon(android.R.drawable.ic_dialog_info)
+				.setTitle(R.string.dialog_title_tip)
+				.setMessage(R.string.dialog_msg_is_goto_need_lesson)
+				.setPositiveButton(getString(R.string.btn_yes),	new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
+						currentLessonNo = needStudyLesson;
 						initWords();
 						leftBtn.setEnabled(true);
 						rightBtn.setEnabled(true);
-					} else {
-						Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
+						dialog.cancel();
+					}
+				})
+				.setNegativeButton(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
 						finish();
 					}
-					dialog.cancel();
-				}
-			});
-			ad.setButton2(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.cancel();
-					finish();
-				}
-			});
-			ad.show();
+				})
+				.show();
+			}else {
+				Toast.makeText(context, R.string.toast_msg_no_need_study_lesson, Toast.LENGTH_LONG).show();
+				finish();
+			}
+
 		}
 	}
+
+	private boolean isQuit = false;
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -386,19 +364,21 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 			showNext();
 			break;
 		case KeyEvent.KEYCODE_BACK: {
-			if (speech != null) {
-				speech.stop();
-				speech.shutdown();
+			if (!isQuit) {
+				Toast.makeText(this, "再按一次退出！", Toast.LENGTH_SHORT).show();
+				isQuit = true;
+			} else {
+				finish();
 			}
-			finish();
 			break;
 		}
 		}
-		return super.onKeyDown(keyCode, event);
+		return true;
 	}
 
 	@Override
 	protected void onDestroy() {
+		Config.init().setReviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
 		if (speech != null) {
 			speech.stop();
 			speech.shutdown();

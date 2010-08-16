@@ -5,8 +5,8 @@
 	<string name="list_desc_each_lesson_word_count">每组：</string>
 	<string name="list_desc_total_word_count">总数：</string>
 	<string name="list_desc_lesson_count">组数：</string>
-	<string name="list_title_dict_dir">词库目录:</string>
-	<string name="list_title_dict_current_use">当前使用词库:</string>
+	<string name="list_title_dict_dir">词库数据目录:</string>
+	<string name="list_title_dict_current_use">当前记忆词库:</string>
 	<string name="list_title_each_lesson_word_count">每组单词数目:</string>
 	<string name="dialog_title_each_lesson_word_count">每组单词数目:</string>
 
@@ -19,8 +19,8 @@
 	<string name="dialog_msg_refresh_dict_list">正在刷新列表</string>
 	<string name="dialog_item_do_not_refresh_dict_list">不刷新词库列表</string>
 	<string name="toast_msg_set_dict_using">长按选项：设置为默认词典。</string>
-	<string name="dialog_msg_is_set_current_dict">是否设置为要记忆的词库？</string>
-	<string name="dialog_item_set_current_dict">设置为要记忆的词库</string>
+	<string name="dialog_msg_is_set_current_remember_dict">设置为要记忆的词库</string>
+	<string name="dialog_msg_is_set_current_trans_dict">设置为例句使用的词库</string>
 	<string name="dialog_title_count_words">正在计算单词数</string>
 	<string name="toast_msg_set_success">设置成功！</string>
 

@@ -8,7 +8,9 @@
 	
 	<string name="toast_msg_nothing_front">前面没有了！</string>
 	<string name="dialog_msg_is_goto_next_lesson">是否进入下一课的学习？</string>
-	<string name="toast_msg_no_next_study_lesson">没有可学习的下一个课程了！</string>
+	<string name="dialog_msg_is_goto_need_lesson">是否继续复习下一课？</string>
+	<string name="toast_msg_no_next_study_lesson">没有可以学习的课程了！</string>
+	<string name="toast_msg_no_need_study_lesson">没有需要复习的课程了！</string>
 	
 	<string name="toast_msg_init_texttospeech_fail">初始化TextToSpeech失败！</string>
 	<string name="toast_msg_load_texttospeech_fail">加载语音数据失败！</string>

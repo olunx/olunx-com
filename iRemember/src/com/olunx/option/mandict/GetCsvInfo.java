@@ -13,22 +13,13 @@ import java.io.IOException;
 
 public class GetCsvInfo{
 
-	String dictPath = null;
+	private String dictPath = null;
 
 	public GetCsvInfo(String dictPath) {
 		this.dictPath = dictPath;
 	}
 
 	public String getDictName() {
-		String dictName = new File(dictPath).getName();
-		return dictName.substring(0, dictName.lastIndexOf("."));
-	}
-
-	public String getFileNameWithExtension() {
-		return new File(dictPath).getName();
-	}
-
-	public String getFileNameNoExtension() {
 		String dictName = new File(dictPath).getName();
 		return dictName.substring(0, dictName.lastIndexOf("."));
 	}

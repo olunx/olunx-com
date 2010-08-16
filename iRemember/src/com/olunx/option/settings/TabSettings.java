@@ -60,31 +60,19 @@ public class TabSettings extends PreferenceActivity {
 		});
 		otherSetPrefCat.addPreference(ttsPref);
 		
-		//新的设置界面
-        PreferenceScreen netScrPref = getPreferenceManager().createPreferenceScreen(this);
-        netScrPref.setKey("screen_preference");
-        netScrPref.setTitle("网络例句");
-        netScrPref.setSummary("这些都是需要连接到网络的功能。");
-        otherSetPrefCat.addPreference(netScrPref);
-        
 		// 例句功能
 		final CheckBoxPreference sentsPref = new CheckBoxPreference(this);
 		sentsPref.setKey("sents_function");
 		sentsPref.setTitle("例句功能");
-		sentsPref.setSummary("开启此功能需要连接到网络。");
+		sentsPref.setSummary("开启此功能需要设置例句词典。");
 		sentsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				boolean flag = sentsPref.isChecked();
-				Config.init().setCanConNetWord( flag);
-				if(!flag) {
-					Config.init().setSpeechType( 0);
-				}
-				Log.i("flag()", Config.init().getSpeechType());
+//				boolean flag = sentsPref.isChecked();
 				return false;
 			}
 		});
-		netScrPref.addPreference(sentsPref);
+		otherSetPrefCat.addPreference(sentsPref);
 		
 		// 网络备份
 		PreferenceCategory manualSyncPrefCat = new PreferenceCategory(this);

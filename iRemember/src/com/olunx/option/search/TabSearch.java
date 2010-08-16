@@ -6,8 +6,8 @@
 package com.olunx.option.search;
 
 import com.olunx.R;
-import com.olunx.util.FetchWord;
-import com.olunx.util.Word;
+import com.olunx.stardict.SeekWord;
+import com.olunx.util.Config;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -33,8 +33,6 @@ public class TabSearch extends Activity {
 	private TextView translationTv;
 	private TextView sentsTv;
 	private ImageButton speakBtn;
-
-	Word netWord = new Word();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,23 +77,23 @@ public class TabSearch extends Activity {
 		pd.setOnDismissListener(new OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface arg0) {
-				if (netWord == null) {
-					Toast.makeText(TabSearch.this, "没有数据！", Toast.LENGTH_SHORT).show();
-				}else {
-					nameTv.setText(netWord.getWord());
-					phoneticsTv.setText(netWord.getPhonetic());
-					Log.i("phonetics",netWord.getPhonetic());
-					translationTv.setText(netWord.getTranslation());
-					sentsTv.setText(netWord.getSentences());
-				}
+//				if (netWord == null) {
+//					Toast.makeText(TabSearch.this, "没有数据！", Toast.LENGTH_SHORT).show();
+//				}else {
+//					nameTv.setText(netWord.getWord());
+//					phoneticsTv.setText(netWord.getPhonetic());
+//					Log.i("phonetics",netWord.getPhonetic());
+//					translationTv.setText(netWord.getTranslation());
+//					sentsTv.setText(netWord.getSentences());
+//				}
 			}
 		});
 		pd.show();
 		new Thread() {
 			@Override
 			public void run() {
-				FetchWord fetch = new FetchWord();
-				netWord = fetch.getWord(thisWord);
+				SeekWord seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
+				
 				pd.dismiss();
 			}
 		}.start();

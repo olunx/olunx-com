@@ -39,11 +39,12 @@ public class TabDictList extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		updateDictList();
+		String dictType = this.getIntent().getStringExtra(Config.DICTTYPE);
+		updateDictList(dictType);
 	}
 
 	// 更新词典列表
-	private void updateDictList() {
+	private void updateDictList(final String dictType) {
 
 		// 进度框
 		final ProgressDialog pd = new ProgressDialog(this);
@@ -62,8 +63,8 @@ public class TabDictList extends Activity {
 		new Thread() {
 			@Override
 			public void run() {
-				new GetDictList(TabDictList.this).getList();
-				items = Config.init().getDictList();
+				new GetDictList().getList();
+				items = Config.init().getDictList(dictType);
 				pd.dismiss();
 			}
 		}.start();
@@ -89,34 +90,7 @@ public class TabDictList extends Activity {
 			public void onItemClick(AdapterView<?> av, View v, int position, long arg3) {
 
 				Map map = (Map) av.getItemAtPosition(position);
-				final String dictName = (String) map.get(getString(R.string.title));
-
-				AlertDialog.Builder ad = new AlertDialog.Builder(av.getContext());
-				ad.setInverseBackgroundForced(true);// 翻转底色
-				ad.setIcon(android.R.drawable.ic_dialog_info);
-				ad.setTitle(dictName);
-
-				ad.setItems(new String[] { getString(R.string.dialog_item_set_current_dict) }, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						// 设置该词库为默认使用
-						case 0: {
-							setDictCurrentUse(dictName);
-						}
-						}
-					}
-				});
-
-				// 取消按钮
-				ad.setNegativeButton(getString(R.string.btn_cancel), new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				});
-
-				ad.show();
+				dialogProcess((String)map.get(getString(R.string.title)));
 			}
 		});
 
@@ -128,42 +102,51 @@ public class TabDictList extends Activity {
 			public boolean onItemLongClick(AdapterView<?> av, View v, int position, long arg3) {
 
 				Map map = (Map) av.getItemAtPosition(position);
-				final String dictName = (String) map.get(getString(R.string.title));
-
-				AlertDialog.Builder ad = new AlertDialog.Builder(av.getContext());
-				ad.setIcon(android.R.drawable.ic_dialog_alert);
-				ad.setTitle(dictName);
-				ad.setMessage(getString(R.string.dialog_msg_is_set_current_dict));
-
-				// 确定按钮
-				ad.setPositiveButton(getString(R.string.btn_sure), new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						setDictCurrentUse(dictName);
-					}
-				});
-
-				// 取消按钮
-				ad.setNegativeButton(getString(R.string.btn_cancel), new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				});
-
-				ad.show();
+				dialogProcess((String)map.get(getString(R.string.title)));
 				return false;
 			}
 		});
 
 	}
 
-	// 计算单词数并完成相应处理
-	private void setDictCurrentUse(final String dictName) {
-		final String dictPath = Config.init().getDictPath( dictName);
-
+	private void dialogProcess(final String dictName) {
+		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setIcon(android.R.drawable.ic_dialog_alert);
+		ad.setTitle(dictName);
 		String dictType = Config.init().getDictType( dictName);
 
+		//csv类型词库
+		if (dictType.equalsIgnoreCase(Config.DICTTYPE_CSV)) {
+			ad.setMessage(getString(R.string.dialog_msg_is_set_current_remember_dict));
+		}else if(dictType.equalsIgnoreCase(Config.DICTTYPE_STARDICT)){
+			ad.setMessage(getString(R.string.dialog_msg_is_set_current_trans_dict));
+		}
+		
+
+		// 确定按钮
+		ad.setPositiveButton(getString(R.string.btn_sure), new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				setDictCurrentUse(dictName);
+			}
+		});
+
+		// 取消按钮
+		ad.setNegativeButton(getString(R.string.btn_cancel), new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+
+		ad.show();	
+	}
+	
+	// 计算单词数并完成相应处理
+	private void setDictCurrentUse(final String dictName) {
+		String dictType = Config.init().getDictType( dictName);
+
+		//csv类型词库
 		if (dictType.equalsIgnoreCase(Config.DICTTYPE_CSV)) {
 			
 			// 保存配置，当前使用的词库。
@@ -176,7 +159,6 @@ public class TabDictList extends Activity {
 
 				@Override
 				public void onDismiss(DialogInterface arg0) {
-					setResult(RESULT_OK, new Intent());// 返回数据给上层
 					// 保存配置，当前使用的词库。
 					Config.init().setCurrentUseDictName( dictName);
 					
@@ -185,7 +167,6 @@ public class TabDictList extends Activity {
 					
 					Toast.makeText(TabDictList.this, TabDictList.this.getString(R.string.toast_msg_set_success), Toast.LENGTH_SHORT).show();
 					setResult(RESULT_OK, new Intent());// 返回数据给上层
-					
 					finish();
 				}
 			});
@@ -194,11 +175,18 @@ public class TabDictList extends Activity {
 			new Thread() {
 				@Override
 				public void run() {
-					Config.init().setCurrentUseDictWordCount(new GetCsvInfo(dictPath).getWordCount());
+					Config.init().setCurrentUseDictWordCount(new GetCsvInfo(Config.init().getDictPath( dictName)).getWordCount());
 					pd.dismiss();
 				}
 			}.start();
 
+		
+		}else if(dictType.equalsIgnoreCase(Config.DICTTYPE_STARDICT)){
+			//StarDict类型词典
+			Config.init().setCurrentUseTransDictName(dictName);
+			Toast.makeText(this, this.getString(R.string.toast_msg_set_success), Toast.LENGTH_SHORT).show();
+			setResult(RESULT_OK, new Intent());// 返回数据给上层
+			finish();
 		}
 
 	}

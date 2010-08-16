@@ -10,26 +10,22 @@ import java.util.ArrayList;
 
 import com.olunx.util.Config;
 
-import android.content.Context;
+public class GetDictList {
 
-public class GetDictList{
+	private ArrayList<String> csvPathList = null;// 保存csv词库的绝对路径
+	private ArrayList<String> stardictPathList = null;// 保存stardict词典的绝对路径
 
-	Context context = null;
-
-	public GetDictList(Context context) {
-		this.context = context;
-	}
-
-	private ArrayList<String> csvPathList = null;//保存csv词库的绝对路径
-
-	// 获取词典目录下的所有csv文件
+	// 获取词典目录下的所有词库和词典文件
 	public void getList() {
 		csvPathList = new ArrayList<String>();
-		String dictDir =  Config.init().getDictDir();
+		stardictPathList = new ArrayList<String>();
+
+		String dictDir = Config.init().getDictDir();
 		if (dictDir != null && dictDir != "/") {
 			getDictsList(new File(dictDir));
 		}
-		Config.init().setDictList( csvPathList, Config.DICTTYPE_CSV);
+		Config.init().setDictList(csvPathList, Config.DICTTYPE_CSV);
+		Config.init().setDictList(stardictPathList, Config.DICTTYPE_STARDICT);
 	}
 
 	// 列出所csv文件
@@ -43,6 +39,9 @@ public class GetDictList{
 			fileName = file.getName().toLowerCase();
 			if (fileName.endsWith("." + Config.DICTTYPE_CSV)) {
 				csvPathList.add(file.getAbsolutePath());
+			}
+			if (fileName.endsWith("." + Config.DICTTYPE_STARDICT)) {
+				stardictPathList.add(file.getAbsolutePath());
 			}
 		}
 	}
