@@ -9,18 +9,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.DialogPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Toast;
 
-public class TabSettings extends PreferenceActivity {
+public class TabDataSet extends PreferenceActivity {
 
 	private PreferenceScreen root = null;
 
@@ -33,47 +29,6 @@ public class TabSettings extends PreferenceActivity {
 	}
 
 	private void createPreScreen() {
-
-		// 
-		PreferenceCategory otherSetPrefCat = new PreferenceCategory(this);
-		otherSetPrefCat.setTitle("发音、例句");
-		root.addPreference(otherSetPrefCat);
-
-		// 发音功能
-		final CheckBoxPreference ttsPref = new CheckBoxPreference(this);
-		ttsPref.setKey("tts_function");
-		ttsPref.setTitle("单词发音");
-		ttsPref.setSummary("利用系统自带的文本发音功能。");
-		ttsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				if (ttsPref.isChecked()) {
-					// 设置发音类型
-					Config.init().setSpeechType(1);
-					Config.init().setCanSpeech(true);
-					Log.i("flag()", Config.init().getSpeechType());
-				} else {
-					Config.init().setSpeechType(0);
-					Config.init().setCanSpeech(false);
-				}
-				return false;
-			}
-		});
-		otherSetPrefCat.addPreference(ttsPref);
-
-		// 例句功能
-		final CheckBoxPreference sentsPref = new CheckBoxPreference(this);
-		sentsPref.setKey("sents_function");
-		sentsPref.setTitle("例句功能");
-		sentsPref.setSummary("开启此功能需要设置例句词典。");
-		sentsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				// boolean flag = sentsPref.isChecked();
-				return false;
-			}
-		});
-		otherSetPrefCat.addPreference(sentsPref);
 
 		// 数据备份
 		PreferenceCategory manualSyncPrefCat = new PreferenceCategory(this);
@@ -110,6 +65,7 @@ public class TabSettings extends PreferenceActivity {
 		root.addPreference(clear);
 
 		setPreferenceScreen(root);
+		
 	}
 
 	class DialogPre extends DialogPreference {

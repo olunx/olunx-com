@@ -12,22 +12,23 @@ public final class R {
     }
     public static final class drawable {
         public static final int common_config=0x7f020000;
-        public static final int common_sound=0x7f020001;
-        public static final int dictman_dictbrowser=0x7f020002;
-        public static final int dictman_dictlist=0x7f020003;
-        public static final int ic_lock_ringer_on=0x7f020004;
-        public static final int icon=0x7f020005;
-        public static final int manual_about=0x7f020006;
-        public static final int manual_help=0x7f020007;
-        public static final int option_mandict=0x7f020008;
-        public static final int option_manual=0x7f020009;
-        public static final int option_preview=0x7f02000a;
-        public static final int option_review=0x7f02000b;
-        public static final int option_search=0x7f02000c;
-        public static final int option_sync=0x7f02000d;
-        public static final int review_finish=0x7f02000e;
-        public static final int review_need=0x7f02000f;
-        public static final int volume=0x7f020010;
+        public static final int common_phone=0x7f020001;
+        public static final int common_sound=0x7f020002;
+        public static final int dictman_dictbrowser=0x7f020003;
+        public static final int dictman_dictlist=0x7f020004;
+        public static final int ic_lock_ringer_on=0x7f020005;
+        public static final int logo=0x7f020006;
+        public static final int manual_about=0x7f020007;
+        public static final int manual_help=0x7f020008;
+        public static final int option_mandict=0x7f020009;
+        public static final int option_manual=0x7f02000a;
+        public static final int option_preview=0x7f02000b;
+        public static final int option_review=0x7f02000c;
+        public static final int option_search=0x7f02000d;
+        public static final int option_sync=0x7f02000e;
+        public static final int review_finish=0x7f02000f;
+        public static final int review_need=0x7f020010;
+        public static final int volume=0x7f020011;
     }
     public static final class id {
         public static final int Button01=0x7f05000f;

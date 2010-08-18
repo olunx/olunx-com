@@ -14,7 +14,7 @@ import com.olunx.option.manual.OptionManual;
 import com.olunx.option.preview.TabPreviewInit;
 import com.olunx.option.review.OptionReview;
 import com.olunx.option.search.TabSearch;
-import com.olunx.option.settings.TabSettings;
+import com.olunx.option.settings.OptionSettings;
 import com.olunx.util.Config;
 
 import android.app.Activity;
@@ -188,7 +188,7 @@ public class MainActivity extends Activity {
 			}
 			case 4: {
 				Intent i = new Intent();
-				i.setClass(context, TabSettings.class);
+				i.setClass(context, OptionSettings.class);
 				context.startActivity(i);
 				break;
 			}

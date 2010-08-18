@@ -9,13 +9,13 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
-public class Speech implements TextToSpeech.OnInitListener {
+public class TtsSpeech implements TextToSpeech.OnInitListener {
 
 	private TextToSpeech tts;
 	private Context context;
 	private Locale language;
 
-	public Speech(Context context, Locale language) {
+	public TtsSpeech(Context context, Locale language) {
 		this.context = context;
 		this.language = language;
 	}

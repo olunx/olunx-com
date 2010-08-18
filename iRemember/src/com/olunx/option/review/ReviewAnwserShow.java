@@ -13,7 +13,7 @@ import java.util.Locale;
 import com.olunx.R;
 import com.olunx.db.RememberHelper;
 import com.olunx.util.Config;
-import com.olunx.util.Speech;
+import com.olunx.util.TtsSpeech;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -74,7 +74,8 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 
 	// 发音设置
 	private TextToSpeech speech;
-	private String speechType;
+	private int speechType = 0;
+	private boolean isCanSpeech = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,9 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 				speakWord();
 			}
 		});
-		if (!Config.init().isCanSpeech()) {
+		
+		isCanSpeech = Config.init().isCanSpeech();
+		if (!isCanSpeech) {
 			speakBtn.setEnabled(false);
 		}
 
@@ -220,14 +223,19 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 				thisWordList = Config.init().getWordsFromFileByLessonNo(currentLessonNo);
 				totalWordCount = thisWordList.size();
 
-				// 初始化语音数据
-				if (speechType == null) {
+				if(isCanSpeech) {
+					// 初始化语音数据
 					speechType = Config.init().getSpeechType();
-					Log.i("speechType", speechType);
-					if (speechType.equalsIgnoreCase("tts")) {
+					switch(speechType) {
+					case Config.SPEECH_TTS : {
 						if (speech == null) {
-							speech = new Speech(context, Locale.US).getTts();
+							speech = new TtsSpeech(context, Locale.US).getTts();
 						}
+						break;
+					}
+					case Config.SPEECH_REAL : {
+						break;
+					}
 					}
 				}
 
@@ -276,10 +284,16 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 
 	// 发音
 	private void speakWord() {
-		if (speechType.equalsIgnoreCase("tts")) {
+		switch(speechType) {
+		case Config.SPEECH_TTS : {
 			if (speech != null) {
 				speech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
 			}
+			break;
+		}
+		case Config.SPEECH_REAL : {
+			break;
+		}
 		}
 	}
 

@@ -5,10 +5,10 @@
 	<string name="list_desc_each_lesson_word_count">每组：</string>
 	<string name="list_desc_total_word_count">总数：</string>
 	<string name="list_desc_lesson_count">组数：</string>
-	<string name="list_title_dict_dir">词库数据目录:</string>
-	<string name="list_title_dict_current_use">当前记忆词库:</string>
-	<string name="list_title_each_lesson_word_count">每组单词数目:</string>
-	<string name="dialog_title_each_lesson_word_count">每组单词数目:</string>
+	<string name="list_title_dict_dir">词库数据目录：</string>
+	<string name="list_title_dict_current_use">当前记忆词库：</string>
+	<string name="list_title_each_lesson_word_count">每组单词数目：</string>
+	<string name="dialog_title_each_lesson_word_count">每组单词数目：</string>
 
 
 	<string name="tab_dictlist_title">词库列表</string>

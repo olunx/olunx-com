@@ -28,7 +28,6 @@ public class TabDictSet extends PreferenceActivity {
 	private PreferenceScreen defaultDictPref = null;// 默认使用词典
 	private EditTextPreference eachLesWCPref = null;// 每课单词数
 	private ListPreference chasetPref = null;// 词库文件编码
-	private PreferenceScreen transDictPref = null;// 例句库词典
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,8 @@ public class TabDictSet extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				Intent i = new Intent();
-				i.setClass(TabDictSet.this, TabDictBrowser.class);
+				i.putExtra(Config.SELECTTYPE, Config.SELECT_DICTDIR);
+				i.setClass(TabDictSet.this, TabDirSelect.class);
 				startActivityForResult(i, 0);// 要获取返回值，必需用此方法
 				return false;
 			}
@@ -113,23 +113,10 @@ public class TabDictSet extends PreferenceActivity {
 		
 		// 例句词典设置
 		PreferenceCategory transSetPrefCat = new PreferenceCategory(this);
-		transSetPrefCat.setTitle("例句词典设置");
+		transSetPrefCat.setTitle("本地查询-词典设置");
 		root.addPreference(transSetPrefCat);
 
-		// 例句库词典
-		transDictPref = getPreferenceManager().createPreferenceScreen(this);
-		transDictPref.setTitle("当前使用的例句库：");
-		transDictPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Intent i = new Intent();
-				i.putExtra(Config.DICTTYPE, Config.DICTTYPE_STARDICT);
-				i.setClass(TabDictSet.this, TabDictList.class);
-				startActivityForResult(i, 0);// 要获取返回值，必需用此方法
-				return false;
-			}
-		});
-		transSetPrefCat.addPreference(transDictPref);
+
 		
 		refreshPref();
 		setPreferenceScreen(root);
@@ -145,7 +132,6 @@ public class TabDictSet extends PreferenceActivity {
 		chasetPref.setSummary(Config.init().getDictCharset());
 		defaultDictPref.setSummary(Config.init().getCurrentUseDictName());
 		eachLesWCPref.setSummary(Config.init().getEachLessonWordCountDes());
-		transDictPref.setSummary(Config.init().getCurrentUseTransDictName());
 	}
 
 	@Override

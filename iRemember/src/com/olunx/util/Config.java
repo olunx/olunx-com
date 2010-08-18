@@ -35,11 +35,20 @@ public class Config {
 
 	private static Config config = null;
 
-	public static final String DICTTYPE = "dicttype";
+	public static final String DICTTYPE = "dict_type";
 	public static final String DICTTYPE_CSV = "csv";
 	public static final String DICTTYPE_STARDICT = "ifo";
 
+	public static final String SELECTTYPE = "select_type";
+	public static final String SELECT_DICTDIR = "dict_dir";
+	public static final String SELECT_SOUNDDIR = "sound_dir";
+
+	public static final String SPEECHTYPE = "speech_type";
+	public static final int SPEECH_TTS = 1;
+	public static final int SPEECH_REAL = 2;
+
 	private static final String SDCARD_PATH = "/sdcard/iremember/";
+	private static final String SDCARD_SOUND_PATH = "/sdcard/iremember/sound/";
 	private static final String SDCARD_BACKUP_PATH = "/sdcard/iremember/backup/";
 
 	public static final String DATABASE_FILE = "data.db";
@@ -51,7 +60,7 @@ public class Config {
 	public static final String BACKUP_FILE_SDCARD_CONFIG = SDCARD_BACKUP_PATH + CONFIG_FILE;
 
 	public static String FONT_KINGSOFT_PATH = "font/KingSoft-Phonetic-Android.ttf";
-	
+
 	public static Properties p;
 
 	private static Context context = MainActivity.context;
@@ -82,7 +91,7 @@ public class Config {
 	 */
 	public void setCon(String key, String value) {
 		p.setProperty(key, value);
-		//保存配置文件
+		// 保存配置文件
 		try {
 			p.store(new BufferedOutputStream(new FileOutputStream(new File(Config.FILE_SDCARD_CONFIG))), "");
 		} catch (FileNotFoundException e) {
@@ -143,6 +152,7 @@ public class Config {
 	public boolean isFirstRun() {
 		return Boolean.valueOf(getCon("first_run", "true"));
 	}
+
 	/**
 	 * 复位配置文件
 	 * 
@@ -150,46 +160,48 @@ public class Config {
 	 */
 	public void setDefaultConfig() {
 		this.setDictDir(SDCARD_PATH);
-		this.setEachLessonWordCount("25");//每课单词数
-		this.setLessonCount("0");//课程数
-		this.setCurrentUseDictName("");//记忆词库
-		this.setCurrentUseTransDictName("");//例句词典
-		this.setCanGetTransDict(false);//是否可用例句词典
+		this.setEachLessonWordCount("25");// 每课单词数
+		this.setLessonCount("0");// 课程数
+		this.setCurrentUseDictName("");// 记忆词库
+		this.setCurrentUseTransDictName("");// 例句词典
+		this.setCanGetTransDict(false);// 是否可用例句词典
 		this.setDictStringArray("", Config.DICTTYPE_CSV);
 		this.setDictStringArray("", Config.DICTTYPE_STARDICT);
 		this.setFirstRun("true");
 		this.cleanRememberLine();
 	}
 
-	
 	/**
 	 * 初记单词位置
+	 * 
 	 * @param lesson
 	 * @param value
 	 */
 	public void setPreviewWordIndex(int lesson, int value) {
 		this.setCon(getCurrentUseDictName() + "_preview_word_index_" + lesson, String.valueOf(value));
 	}
+
 	public int getPreviewWordIndex(int lesson) {
 		return Integer.parseInt(getCon(getCurrentUseDictName() + "_preview_word_index_" + lesson, String.valueOf(0)));
 	}
-	
+
 	/**
 	 * 复习单词位置
+	 * 
 	 * @param lesson
 	 * @param value
 	 */
 	public void setReviewWordIndex(int lesson, int value) {
 		this.setCon(getCurrentUseDictName() + "_review_word_index_" + lesson, String.valueOf(value));
 	}
+
 	public int getReviewWordIndex(int lesson) {
 		return Integer.parseInt(getCon(getCurrentUseDictName() + "_review_word_index_" + lesson, String.valueOf(0)));
 	}
-	
+
 	/**
-	 * 设置词典路径
+	 * 设置词典目录
 	 * 
-	 * @param context
 	 * @param dictDir
 	 */
 	public void setDictDir(String dictDir) {
@@ -201,9 +213,21 @@ public class Config {
 	}
 
 	/**
+	 * 设置语音库目录
+	 * 
+	 * @param dictDir
+	 */
+	public void setSoundDir(String dictDir) {
+		this.setCon("config_sound_dir", dictDir);
+	}
+
+	public String getSoundDir() {
+		return getCon("config_sound_dir", SDCARD_SOUND_PATH);
+	}
+
+	/**
 	 * 设置每组单词数
 	 * 
-	 * @param context
 	 * @param wordCount
 	 */
 	public void setEachLessonWordCount(String wordCount) {
@@ -266,8 +290,8 @@ public class Config {
 		String dictPath = null;
 		String dictSize = null;
 		String dictName = null;
-		
-		if(dictType.equalsIgnoreCase(Config.DICTTYPE_CSV)) {
+
+		if (dictType.equalsIgnoreCase(Config.DICTTYPE_CSV)) {
 			GetCsvInfo gci = null;
 			for (int i = 0; i < dictListSize; i++) {
 				dictPath = dictPathList.get(i);
@@ -280,35 +304,35 @@ public class Config {
 				this.setDictType(dictName, dictType);
 				this.setDictDesc(dictName, "大小：" + dictSize + "   类型：csv");
 			}
-		}else if(dictType.equalsIgnoreCase(Config.DICTTYPE_STARDICT)) {
+		} else if (dictType.equalsIgnoreCase(Config.DICTTYPE_STARDICT)) {
 			GetStarDictInfo gsi = null;
 			for (int i = 0; i < dictListSize; i++) {
 				dictPath = dictPathList.get(i);
 				gsi = new GetStarDictInfo(dictPath);
-				
+
 				dictName = gsi.getDictName();
 				dictsArray = dictsArray + dictName + "|";// 将词库名称作为数组，方便获取
-				
+
 				this.setDictPath(dictName, dictPath);
 				this.setDictType(dictName, dictType);
 				this.setDictDesc(dictName, "词数：" + gsi.getWordCount() + "   类型：StarDict");
 			}
 		}
-		
+
 		this.setDictStringArray(dictsArray, dictType);
 	}
 
 	public ArrayList<HashMap<String, Object>> getDictList(String dictType) {
 		String dictListArray = "";
-		if(dictType == null)  {//如果类型为空，则获取所有词典列表。
+		if (dictType == null) {// 如果类型为空，则获取所有词典列表。
 			dictType = Config.DICTTYPE_CSV;
 			dictListArray = getDictStringArray(Config.DICTTYPE_STARDICT);
 		}
-		
+
 		ArrayList<HashMap<String, Object>> resultItems = new ArrayList<HashMap<String, Object>>();
 		// 获取词典字符串
 		dictListArray += getDictStringArray(dictType);
-		
+
 		if (dictListArray != "" && dictListArray != null) {
 			String[] dictNameList = dictListArray.split("\\|");
 
@@ -383,20 +407,20 @@ public class Config {
 		return this.getCon(dictName + "_dict_type", "");
 	}
 
-//	/**
-//	 * 设置词典文件名
-//	 * 
-//	 * @param dictName
-//	 * @param dictFileName
-//	 */
-//	public void setDictFileName(String dictName, String dictFileName) {
-//		this.setCon(dictName + "_dict_file_name", dictFileName);
-//	}
-//
-//	public String getDictFileName(String dictPath) {
-//		return this.getCon(dictPath + "_dict_file_name", "");
-//	}
-	
+	// /**
+	// * 设置词典文件名
+	// *
+	// * @param dictName
+	// * @param dictFileName
+	// */
+	// public void setDictFileName(String dictName, String dictFileName) {
+	// this.setCon(dictName + "_dict_file_name", dictFileName);
+	// }
+	//
+	// public String getDictFileName(String dictPath) {
+	// return this.getCon(dictPath + "_dict_file_name", "");
+	// }
+
 	/**
 	 * 设置当前记忆词典名称
 	 * 
@@ -422,7 +446,7 @@ public class Config {
 	public String getCurrentUseTransDictName() {
 		return this.getCon("current_use_trans_dict_name", "");
 	}
-	
+
 	/**
 	 * 设置是否可以使用例句词典
 	 * 
@@ -436,7 +460,6 @@ public class Config {
 		return Boolean.parseBoolean(this.getCon("can_get_trans_dict", "false"));
 	}
 
-	
 	/**
 	 * 当前使用词典单词数
 	 * 
@@ -471,7 +494,6 @@ public class Config {
 	/**
 	 * 设置当前背诵完成的课程号
 	 * 
-	 * @param context
 	 * @param lessonNo
 	 */
 	public void setNextStudyLesson(int lessonNo) {
@@ -491,7 +513,6 @@ public class Config {
 		return "每组: " + this.getEachLessonWordCount() + "   共词数: " + this.getCurrentUseDictWordCount() + "，组数: " + this.getLessonCount()
 				+ " ";
 	}
-
 
 	/**
 	 * 清空记忆曲线的相关数据
@@ -537,8 +558,10 @@ public class Config {
 	 * 更新记忆曲线
 	 * 
 	 * @param lessonNo
-	 * @param ignoreWords  不再记忆的单词编号
-	 * @param start 是否从头开始记忆
+	 * @param ignoreWords
+	 *            不再记忆的单词编号
+	 * @param start
+	 *            是否从头开始记忆
 	 * 
 	 */
 	public void setRememberLine(int lessonNo, String ignoreWords) {
@@ -551,15 +574,15 @@ public class Config {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));// 获取当前时间
 		// 判断此课程是否存在
 		if (helper.isExistsLessonNo(lessonNo)) {// 存在
-			
-			//重新开始学习
-			if(start) {
+
+			// 重新开始学习
+			if (start) {
 				String studyTime = sdf.format(cal.getTime());
 				helper.deleteRecord(lessonNo);
 				helper.addRecord(lessonNo, studyTime, studyTime, 0, ignoreWords);
 				return;
 			}
-			
+
 			try {
 				Calendar oldTime = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
 				oldTime.setTime(sdf.parse(helper.getStudyTimeByLessonNo(lessonNo)));
@@ -621,33 +644,17 @@ public class Config {
 		return ignoreWordsStr.toLowerCase();
 	}
 
-
 	/**
 	 * 设置发音类型
 	 * 
-	 * @param context
 	 * @param which
 	 */
 	public void setSpeechType(int which) {
-		switch (which) {
-		case 0: {
-			this.setCon("speech_type", "null");
-			break;
-		}
-		case 1: {
-			this.setCon("speech_type", "tts");
-			break;
-		}
-		case 2: {
-			this.setCon("speech_type", "real");
-			break;
-		}
-		}
-
+		this.setCon("speech_type", String.valueOf(which));
 	}
 
-	public String getSpeechType() {
-		return this.getCon("speech_type", "null");
+	public int getSpeechType() {
+		return Integer.parseInt(getCon("speech_type", "0"));
 	}
 
 	/**

@@ -38,7 +38,7 @@ public class OptionManDict extends TabActivity {
 		
 		TabSpec ts3 = tabHost.newTabSpec(getString(R.string.tab_dictbrowser_title));
 		ts3.setIndicator(getString(R.string.tab_dictbrowser_title), getResources().getDrawable(R.drawable.dictman_dictbrowser));
-		ts3.setContent(new Intent(this, TabDictBrowser.class));
+		ts3.setContent(new Intent(this, TabDirSelect.class));
 		tabHost.addTab(ts3);
 	}
 }

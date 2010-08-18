@@ -26,22 +26,28 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class TabDictBrowser extends Activity {
+public class TabDirSelect extends Activity {
 
 	private List<String> items = null;
 
 	private ListView listview = null;
 
 	// 保存当前路径，以方便返回用。
-	String lastPath = null;
+	private String lastPath = null;
+
+	// 选择目录类型
+	private String select_type = null;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		select_type = getIntent().getStringExtra(Config.SELECTTYPE);
+
 		lastPath = new String("/");
 		fill(new File("/").listFiles());
-		Toast.makeText(TabDictBrowser.this, R.string.toast_msg_set_dict_dir, Toast.LENGTH_SHORT).show();
+		Toast.makeText(TabDirSelect.this, R.string.toast_msg_set_dict_dir, Toast.LENGTH_SHORT).show();
 	}
 
 	// 列出目录
@@ -89,11 +95,11 @@ public class TabDictBrowser extends Activity {
 							Log.i("files", file.listFiles().toString());
 							fill(file.listFiles());
 						} else {
-							Toast.makeText(TabDictBrowser.this, getString(R.string.toast_msg_no_rights_to_open), Toast.LENGTH_SHORT).show();
+							Toast.makeText(TabDirSelect.this, getString(R.string.toast_msg_no_rights_to_open), Toast.LENGTH_SHORT).show();
 						}
 
 					} else {
-						Toast.makeText(TabDictBrowser.this, getString(R.string.toast_msg_can_not_open_file), Toast.LENGTH_SHORT).show();
+						Toast.makeText(TabDirSelect.this, getString(R.string.toast_msg_can_not_open_file), Toast.LENGTH_SHORT).show();
 					}
 				}
 			}
@@ -106,8 +112,8 @@ public class TabDictBrowser extends Activity {
 			public boolean onItemLongClick(AdapterView<?> av, View arg1, int position, long arg3) {
 				final String path = av.getItemAtPosition(position).toString();
 
-				if (!path.equals(getString(R.string.btn_back))) {//返回按钮
-					if (new File(path).listFiles() != null) {//有读写权限的目录
+				if (!path.equals(getString(R.string.btn_back))) {// 返回按钮
+					if (new File(path).listFiles() != null) {// 有读写权限的目录
 						AlertDialog.Builder ad = new AlertDialog.Builder(av.getContext());
 						ad.setIcon(android.R.drawable.ic_dialog_alert);
 						ad.setTitle(path);
@@ -117,9 +123,16 @@ public class TabDictBrowser extends Activity {
 						ad.setPositiveButton(getString(R.string.btn_sure), new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								Intent i = new Intent();
-								setResult(RESULT_OK, i);// 返回数据给上层
-								Config.init().setDictDir( path);
+								setResult(RESULT_OK, new Intent());// 返回数据给上层
+
+								if (select_type != null) {
+									if (select_type.equalsIgnoreCase(Config.SELECT_DICTDIR)) {
+										Config.init().setDictDir(path);
+									} else if (select_type.equalsIgnoreCase(Config.SELECT_SOUNDDIR)) {
+										Config.init().setSoundDir(path);
+									}
+								}
+
 								Log.i("path", path);
 								finish();
 							}
@@ -136,7 +149,7 @@ public class TabDictBrowser extends Activity {
 						ad.create();
 						ad.show();
 					} else {
-						Toast.makeText(TabDictBrowser.this, getString(R.string.toast_msg_no_rights_to_open), Toast.LENGTH_SHORT).show();
+						Toast.makeText(TabDirSelect.this, getString(R.string.toast_msg_no_rights_to_open), Toast.LENGTH_SHORT).show();
 					}
 
 				}
