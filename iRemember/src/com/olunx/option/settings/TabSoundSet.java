@@ -1,5 +1,6 @@
 package com.olunx.option.settings;
 
+import com.olunx.option.mandict.TabDictList;
 import com.olunx.option.mandict.TabDirSelect;
 import com.olunx.util.Config;
 
@@ -119,7 +120,7 @@ public class TabSoundSet extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				Intent i = new Intent();
 				i.putExtra(Config.DICTTYPE, Config.DICTTYPE_STARDICT);
-				i.setClass(TabSoundSet.this, TabSoundSet.class);
+				i.setClass(TabSoundSet.this, TabDictList.class);
 				startActivityForResult(i, 0);// 要获取返回值，必需用此方法
 				return false;
 			}
@@ -150,4 +151,16 @@ public class TabSoundSet extends PreferenceActivity {
 		transDictPref.setSummary(Config.init().getCurrentUseTransDictName());
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (resultCode) {
+		case RESULT_OK: {
+			this.refreshPref();
+			break;
+		}
+		case RESULT_CANCELED:
+			break;
+		}
+	}
 }

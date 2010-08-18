@@ -40,6 +40,8 @@ public class TabSearch extends Activity {
 	
 	private Map<String, String> word;
 
+	SeekWord seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,7 +97,6 @@ public class TabSearch extends Activity {
 		new Thread() {
 			@Override
 			public void run() {
-				SeekWord seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
 				word = new HashMap<String, String>();
 				word.put("单词", thisWord);
 				String result = seek.getTrans(thisWord);
