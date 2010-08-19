@@ -171,6 +171,7 @@ public class Config {
 	public void setDefaultConfig() {
 		this.setDictDir(SDCARD_PATH);
 		this.setSoundDir(SDCARD_SOUND_PATH);
+		this.setSpeechType(0);
 		this.setEachLessonWordCount("25");// 每课单词数
 		this.setLessonCount("0");// 课程数
 		this.setCurrentUseDictName("");// 记忆词库
@@ -180,6 +181,7 @@ public class Config {
 		this.setDictStringArray("", Config.DICTTYPE_STARDICT);
 		this.setDictCharset("UTF-8");
 		this.setCanGetTransDict(false);
+		this.setCurrentUseTransDictName("null");
 		this.setCanSpeech(false);
 		this.setFirstRun("true");
 		this.cleanRememberLine();
@@ -390,7 +392,7 @@ public class Config {
 	}
 
 	public String getDictPath(String dictPath) {
-		return this.getCon(dictPath + "_dict_path", "");
+		return this.getCon(dictPath + "_dict_path", "null");
 	}
 
 	/**
@@ -458,7 +460,7 @@ public class Config {
 	}
 
 	public String getCurrentUseTransDictName() {
-		return this.getCon("current_use_trans_dict_name", "");
+		return this.getCon("current_use_trans_dict_name", "null");
 	}
 
 	/**

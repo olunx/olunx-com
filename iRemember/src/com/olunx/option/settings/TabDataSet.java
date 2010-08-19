@@ -136,8 +136,13 @@ public class TabDataSet extends PreferenceActivity {
 						}
 					});
 
-					Config.init().setDefaultConfig();
-					pd.dismiss();
+					new Thread() {
+						@Override
+						public void run() {
+							Config.init().setDefaultConfig();
+							pd.dismiss();
+						}
+					}.start();
 
 				}
 			}

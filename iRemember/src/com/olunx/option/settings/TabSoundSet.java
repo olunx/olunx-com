@@ -19,6 +19,7 @@ public class TabSoundSet extends PreferenceActivity {
 	private CheckBoxPreference ttsPref = null;
 	private CheckBoxPreference realPref = null;
 	private PreferenceScreen soundDirPref = null;;// 语音文件目录
+	private CheckBoxPreference sentsPref = null;
 	private PreferenceScreen transDictPref = null;// 例句库词典
 	
 	@Override
@@ -98,7 +99,7 @@ public class TabSoundSet extends PreferenceActivity {
 		root.addPreference(speechSetPrefCat);
 		
 		// 例句功能
-		final CheckBoxPreference sentsPref = new CheckBoxPreference(this);
+		sentsPref = new CheckBoxPreference(this);
 		sentsPref.setKey("sents_function");
 		sentsPref.setTitle("例句功能");
 		sentsPref.setSummary("开启此功能需要设置例句词典。");
@@ -150,7 +151,14 @@ public class TabSoundSet extends PreferenceActivity {
 			ttsPref.setEnabled(false);
 			break;
 		default :
+			ttsPref.setChecked(false);
+			realPref.setChecked(false);
 			break;
+		}
+		if(Config.init().isCanGetTransDict()) {
+			sentsPref.setChecked(true);
+		}else {
+			sentsPref.setChecked(false);
 		}
 		soundDirPref.setSummary(Config.init().getSoundDir());
 		transDictPref.setSummary(Config.init().getCurrentUseTransDictName());
@@ -168,4 +176,14 @@ public class TabSoundSet extends PreferenceActivity {
 			break;
 		}
 	}
+
+	@Override
+	protected void onDestroy() {
+		if(Config.init().getCurrentUseTransDictName().equalsIgnoreCase("null")) {
+			Config.init().setCanGetTransDict(false);
+		}
+		super.onDestroy();
+	}
+	
+	
 }
