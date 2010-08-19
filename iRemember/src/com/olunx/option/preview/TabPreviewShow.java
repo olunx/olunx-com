@@ -12,7 +12,9 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.olunx.R;
+import com.olunx.stardict.SeekWord;
 import com.olunx.util.Config;
+import com.olunx.util.RealSpeech;
 import com.olunx.util.TtsSpeech;
 
 import android.app.Activity;
@@ -23,6 +25,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -71,10 +75,13 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 
 	// 网络单词数据
 //	private Word netWord = new Word();
-//	private boolean isCanGetNetWord = false;
+	private boolean isCanGetTransDict = false;
+	SeekWord seek = null;
+	Handler mHandler = null;
 
 	// 发音设置
-	private TextToSpeech speech;
+	private TextToSpeech ttsSpeech;
+	private RealSpeech realSpeech;
 	private int speechType = 0;
 	private boolean isCanSpeech = false;
 
@@ -120,9 +127,15 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			speakBtn.setEnabled(false);
 		}
 		
-		// 是否可以读取网络单词数据
-//		this.isCanGetNetWord = Config.init().getCanConNetWord();
-//		Log.i("isCanGetNetWord", String.valueOf(isCanGetNetWord));
+		// 是否可以读取详细解释词典
+		isCanGetTransDict = Config.init().isCanGetTransDict();
+		mHandler = new Handler() {  
+	        public void handleMessage(Message msg) {
+	        	sentsTv.setText(msg.getData().getString("translations"));
+	            super.handleMessage(msg);   
+	        }   
+	   };
+		Log.i("isCanGetTransDict", String.valueOf(isCanGetTransDict));
 
 		// 获取课程数据
 		Bundle i = TabPreviewShow.this.getIntent().getExtras();
@@ -145,8 +158,17 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		translationTv.setText(this.thisTranslation);
 		sentsTv.setText("");
 
-		// 获取网络单词数据
-//		this.getNetTrans();
+		//真人发音文件处理
+		if(realSpeech != null) {
+			if(realSpeech.prepare(thisWord)) {
+				speakBtn.setEnabled(true);
+			}else {
+				speakBtn.setEnabled(false);
+			}
+		}
+		
+		// 获取词条的详细解释
+		this.getTrans();
 	}
 
 	private Set<String> ignoreWords = new HashSet<String>();
@@ -213,15 +235,23 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 					speechType = Config.init().getSpeechType();
 					switch(speechType) {
 					case Config.SPEECH_TTS : {
-						if (speech == null) {
-							speech = new TtsSpeech(context, Locale.US).getTts();
+						if (ttsSpeech == null) {
+							ttsSpeech = new TtsSpeech(context, Locale.US).getTts();
 						}
 						break;
 					}
 					case Config.SPEECH_REAL : {
+						if(realSpeech == null) {
+							realSpeech = new RealSpeech();
+						}
 						break;
 					}
 					}
+				}
+				
+				//初始化详细解释词典
+				if(isCanGetTransDict) {
+					seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
 				}
 				
 				pd.dismiss();
@@ -233,34 +263,35 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	private void speakWord() {
 		switch(speechType) {
 		case Config.SPEECH_TTS : {
-			if (speech != null) {
-				speech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
+			if (ttsSpeech != null) {
+				ttsSpeech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			break;
 		}
 		case Config.SPEECH_REAL : {
+			if(realSpeech != null) {
+				realSpeech.speak();
+			}
 			break;
 		}
 		}
 	}
 
-//	// 获取单词内容
-//	private void getNetTrans() {
-//		if (this.isCanGetNetWord) {
-//			new Thread() {
-//				@Override
-//				public void run() {
-//					FetchWord fetch = new FetchWord();
-//					netWord = fetch.getWord(thisWord);
-//					if (netWord == null) {
-//						netWord = new Word();
-//						netWord.setSentences("没有数据！");
-//						isCanGetNetWord = false;
-//					}
-//				}
-//			}.start();
-//		}
-//	}
+	// 获取词条的详细解释
+	private void getTrans() {
+		if (this.isCanGetTransDict) {
+			new Thread() {
+				@Override
+				public void run() {
+					Message msg = new Message();
+					Bundle b = new Bundle();
+					b.putString("translations", seek.getWordTrans(thisWord).get("解释"));
+					msg.setData(b);
+					mHandler.sendMessage(msg);
+				}
+			}.start();
+		}
+	}
 
 	// 显示上一个
 	private void showPre() {
@@ -364,9 +395,13 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
-		if (speech != null) {
-			speech.stop();
-			speech.shutdown();
+		if (ttsSpeech != null) {
+			ttsSpeech.stop();
+			ttsSpeech.shutdown();
+		}
+		if(realSpeech != null) {
+			realSpeech.stop();
+			realSpeech.shutdown();
 		}
 		super.onDestroy();
 	}

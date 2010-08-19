@@ -2,6 +2,10 @@ package com.olunx.stardict;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.teesoft.javadict.DictItem;
 import com.teesoft.javadict.ItemList;
@@ -55,11 +59,36 @@ public class SeekWord {
 		result = new StringBuilder();
 		for(int i=0;i<items.size();i++) {
 			DictItem item = items.getItem(i);
-//			System.out.println(item);
-//			System.out.println(item.getExplains().getString());
-			result.append(HtmlConvertor.ConvertHtmlToText(item.getExplains().getString()));
+			if(item.toString().equalsIgnoreCase(word)) {
+//				System.out.println(item);
+//				System.out.println(item.getExplains().getString());
+				result.append(HtmlConvertor.ConvertHtmlToText(item.getExplains().getString()));
+			}
 		}
 		
 		return result.toString();
+	}
+	
+	private Map<String, String> word;
+	
+	public Map<String, String> getWordTrans(String value) {
+		word = new HashMap<String, String>();
+		
+		word.put("单词", value);
+		String result = getTrans(value);
+		
+		Pattern p = Pattern.compile("/(.*?)/");
+		Matcher m = p.matcher(result);
+		
+		if(m.find()) {
+			String phonetic = m.group();
+			word.put("音标", phonetic.replace("/", ""));
+			
+			word.put("解释", result.replace(phonetic, "").replaceAll("\\*", "\n\n\\*"));
+		}else {
+			word.put("解释", result);
+		}
+		
+		return word;
 	}
 }

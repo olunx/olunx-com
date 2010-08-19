@@ -132,7 +132,7 @@ public class TabDataSet extends PreferenceActivity {
 					pd.setOnDismissListener(new OnDismissListener() {
 						@Override
 						public void onDismiss(DialogInterface arg0) {
-							Toast.makeText(context, "清除数据成功。", Toast.LENGTH_LONG).show();
+							Toast.makeText(context, "清除数据成功，请重新启动程序。", Toast.LENGTH_LONG).show();
 						}
 					});
 

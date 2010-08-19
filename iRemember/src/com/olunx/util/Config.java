@@ -49,6 +49,7 @@ public class Config {
 
 	private static final String SDCARD_PATH = "/sdcard/iremember/";
 	private static final String SDCARD_SOUND_PATH = "/sdcard/iremember/sound/";
+	private static final String SDCARD_STARDICT_PATH = "/sdcard/iremember/stardict-dicts-all/";
 	private static final String SDCARD_BACKUP_PATH = "/sdcard/iremember/backup/";
 
 	public static final String DATABASE_FILE = "data.db";
@@ -127,12 +128,21 @@ public class Config {
 			String gaokaoFile = "/sdcard/iremember/高考英语词汇.csv";
 			String tuofuFile = "/sdcard/iremember/托福词汇.csv";
 			String yasiFile = "/sdcard/iremember/雅思词汇.csv";
+			
+			//目录说明
+			String soundFile = SDCARD_SOUND_PATH + "读我.txt";
+			String stardictFile = SDCARD_STARDICT_PATH + "读我.txt";
+			
 			try {
 				Utils.init().copyFile(context.getAssets().open("dicts/cet4.csv"), cet4File);
 				Utils.init().copyFile(context.getAssets().open("dicts/cet6.csv"), cet6File);
 				Utils.init().copyFile(context.getAssets().open("dicts/gaokao.csv"), gaokaoFile);
 				Utils.init().copyFile(context.getAssets().open("dicts/tofel.csv"), tuofuFile);
 				Utils.init().copyFile(context.getAssets().open("dicts/yasi.csv"), yasiFile);
+				
+				Utils.init().copyFile(context.getAssets().open("zh-cn/readme_sound.txt"), soundFile);
+				Utils.init().copyFile(context.getAssets().open("zh-cn/readme_stardict.txt"), stardictFile);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -160,6 +170,7 @@ public class Config {
 	 */
 	public void setDefaultConfig() {
 		this.setDictDir(SDCARD_PATH);
+		this.setSoundDir(SDCARD_SOUND_PATH);
 		this.setEachLessonWordCount("25");// 每课单词数
 		this.setLessonCount("0");// 课程数
 		this.setCurrentUseDictName("");// 记忆词库
@@ -167,6 +178,8 @@ public class Config {
 		this.setCanGetTransDict(false);// 是否可用例句词典
 		this.setDictStringArray("", Config.DICTTYPE_CSV);
 		this.setDictStringArray("", Config.DICTTYPE_STARDICT);
+		this.setCanGetTransDict(false);
+		this.setCanSpeech(false);
 		this.setFirstRun("true");
 		this.cleanRememberLine();
 	}

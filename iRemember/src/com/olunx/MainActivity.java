@@ -23,6 +23,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.os.Process;
 import android.view.KeyEvent;
@@ -53,7 +54,12 @@ public class MainActivity extends Activity {
 			pd.setTitle("正在初始化词库");
 			pd.setMessage(getString(R.string.dialog_msg_wait));
 			pd.setIcon(android.R.drawable.ic_dialog_info);
-
+			pd.setOnDismissListener(new OnDismissListener() {
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					Toast.makeText(context, "软件初始化成功，o(∩_∩)o 哈哈。", Toast.LENGTH_LONG).show();
+				}
+			});
 			pd.show();
 			new Thread() {
 				@Override

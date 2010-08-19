@@ -113,7 +113,7 @@ public class TabDictSet extends PreferenceActivity {
 		
 		// 例句词典设置
 		PreferenceCategory transSetPrefCat = new PreferenceCategory(this);
-		transSetPrefCat.setTitle("本地查询-词典设置");
+		transSetPrefCat.setTitle("");
 		root.addPreference(transSetPrefCat);
 
 

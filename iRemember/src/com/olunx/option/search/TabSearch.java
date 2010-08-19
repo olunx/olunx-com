@@ -108,7 +108,7 @@ public class TabSearch extends Activity {
 					String phonetic = m.group();
 					word.put("音标", phonetic.replace("/", ""));
 					
-					word.put("解释", result.replace(phonetic, ""));
+					word.put("解释", result.replace(phonetic, "").replaceAll("\\*", "\n\\*"));
 				}else {
 					word.put("解释", result);
 				}

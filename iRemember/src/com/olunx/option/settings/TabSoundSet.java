@@ -105,7 +105,12 @@ public class TabSoundSet extends PreferenceActivity {
 		sentsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				// boolean flag = sentsPref.isChecked();
+				boolean flag = sentsPref.isChecked();
+				if(flag) {
+					Config.init().setCanGetTransDict(true);
+				}else {
+					Config.init().setCanGetTransDict(false);
+				}
 				return false;
 			}
 		});
