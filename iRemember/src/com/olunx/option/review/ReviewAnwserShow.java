@@ -12,7 +12,9 @@ import java.util.Locale;
 
 import com.olunx.R;
 import com.olunx.db.RememberHelper;
+import com.olunx.stardict.SeekWord;
 import com.olunx.util.Config;
+import com.olunx.util.RealSpeech;
 import com.olunx.util.TtsSpeech;
 
 import android.app.Activity;
@@ -72,8 +74,14 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 	// 更新记忆曲线
 	private boolean isCanUpdate = false;
 
+	// 详细解释词典
+	private boolean isCanGetTransDict = false;
+	private SeekWord seek = null;
+	private String trans;
+
 	// 发音设置
-	private TextToSpeech speech;
+	private TextToSpeech ttsSpeech;
+	private RealSpeech realSpeech;
 	private int speechType = 0;
 	private boolean isCanSpeech = false;
 
@@ -116,10 +124,15 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 			}
 		});
 		
+		//是否可以发音
 		isCanSpeech = Config.init().isCanSpeech();
-		if (!isCanSpeech) {
+		if(!isCanSpeech) {
 			speakBtn.setEnabled(false);
 		}
+		
+		// 是否可以读取详细解释词典
+		isCanGetTransDict = Config.init().isCanGetTransDict();
+		Log.i("isCanGetTransDict", String.valueOf(isCanGetTransDict));
 
 		// 获取课程数据
 		Bundle i = ReviewAnwserShow.this.getIntent().getExtras();
@@ -141,6 +154,17 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 		translationTv.setText("");
 		sentsTv.setText("");
 
+		//真人发音文件处理
+		if(realSpeech != null) {
+			if(realSpeech.prepare(thisWord)) {
+				speakBtn.setEnabled(true);
+			}else {
+				speakBtn.setEnabled(false);
+			}
+		}
+		
+		// 获取词条的详细解释
+		this.getTrans();
 	}
 
 	@Override
@@ -184,12 +208,24 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 	// 显示答案
 	private void showAnswer() {
 		translationTv.setText(this.thisTranslation);
+		sentsTv.setText(this.trans);
 	}
 
+	// 获取词条的详细解释
+	private void getTrans() {
+		if (this.isCanGetTransDict) {
+			new Thread() {
+				@Override
+				public void run() {
+					trans = seek.getWordTrans(thisWord).get("解释");
+				}
+			}.start();
+		}
+	}
+	
 	/**
 	 * 以下为相同逻辑代码
 	 * */
-
 	// 初始化单词学习界面
 	private void initWords() {
 
@@ -228,15 +264,23 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 					speechType = Config.init().getSpeechType();
 					switch(speechType) {
 					case Config.SPEECH_TTS : {
-						if (speech == null) {
-							speech = new TtsSpeech(context, Locale.US).getTts();
+						if (ttsSpeech == null) {
+							ttsSpeech = new TtsSpeech(context, Locale.US).getTts();
 						}
 						break;
 					}
 					case Config.SPEECH_REAL : {
+						if(realSpeech == null) {
+							realSpeech = new RealSpeech();
+						}
 						break;
 					}
 					}
+				}
+				
+				// 初始化详细解释词典
+				if (isCanGetTransDict) {
+					seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
 				}
 
 				pd.dismiss();
@@ -286,17 +330,20 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 	private void speakWord() {
 		switch(speechType) {
 		case Config.SPEECH_TTS : {
-			if (speech != null) {
-				speech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
+			if (ttsSpeech != null) {
+				ttsSpeech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			break;
 		}
 		case Config.SPEECH_REAL : {
+			if(realSpeech != null) {
+				realSpeech.speak();
+			}
 			break;
 		}
 		}
 	}
-
+	
 	// 显示上一个
 	private void showPre() {
 		int no = currentWordNo;
@@ -394,9 +441,13 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		Config.init().setReviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
-		if (speech != null) {
-			speech.stop();
-			speech.shutdown();
+		if (ttsSpeech != null) {
+			ttsSpeech.stop();
+			ttsSpeech.shutdown();
+		}
+		if (realSpeech != null) {
+			realSpeech.stop();
+			realSpeech.shutdown();
 		}
 		super.onDestroy();
 	}

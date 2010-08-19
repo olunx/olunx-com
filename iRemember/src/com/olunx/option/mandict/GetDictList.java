@@ -33,6 +33,8 @@ public class GetDictList {
 		String fileName;
 		if (file.isDirectory()) {
 			for (File f : file.listFiles()) {
+				if(f.getPath().contains(Config.SDCARD_SOUND_PATH))
+					continue;
 				getDictsList(f);
 			}
 		} else {

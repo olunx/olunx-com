@@ -10,6 +10,7 @@ import java.util.Random;
 import com.olunx.R;
 import com.olunx.db.RememberHelper;
 import com.olunx.util.Config;
+import com.olunx.util.RealSpeech;
 import com.olunx.util.TtsSpeech;
 
 import android.app.Activity;
@@ -78,7 +79,8 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 	private String REMEMBERTIMES;
 
 	// 发音设置
-	private TextToSpeech speech;
+	private TextToSpeech ttsSpeech;
+	private RealSpeech realSpeech;
 	private int speechType = 0;
 	private boolean isCanSpeech = false;
 
@@ -180,6 +182,14 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 			break;
 		}
 
+		// 真人发音文件处理
+		if (realSpeech != null) {
+			if (realSpeech.prepare(thisWord)) {
+				speakBtn.setEnabled(true);
+			} else {
+				speakBtn.setEnabled(false);
+			}
+		}
 	}
 
 	//产生随机候选答案
@@ -228,7 +238,7 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 			btn.setText(this.SURE);
 		}
 
-		// 清楚选中
+		// 清除选中
 		radioGroup.clearCheck();
 	}
 
@@ -282,12 +292,15 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 					speechType = Config.init().getSpeechType();
 					switch(speechType) {
 					case Config.SPEECH_TTS : {
-						if (speech == null) {
-							speech = new TtsSpeech(context, Locale.US).getTts();
+						if (ttsSpeech == null) {
+							ttsSpeech = new TtsSpeech(context, Locale.US).getTts();
 						}
 						break;
 					}
 					case Config.SPEECH_REAL : {
+						if (realSpeech == null) {
+							realSpeech = new RealSpeech();
+						}
 						break;
 					}
 					}
@@ -340,12 +353,15 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 	private void speakWord() {
 		switch(speechType) {
 		case Config.SPEECH_TTS : {
-			if (speech != null) {
-				speech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
+			if (ttsSpeech != null) {
+				ttsSpeech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			break;
 		}
 		case Config.SPEECH_REAL : {
+			if (realSpeech != null) {
+				realSpeech.speak();
+			}
 			break;
 		}
 		}
@@ -444,9 +460,13 @@ public class ReviewRadioShow extends Activity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		Config.init().setReviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
-		if (speech != null) {
-			speech.stop();
-			speech.shutdown();
+		if (ttsSpeech != null) {
+			ttsSpeech.stop();
+			ttsSpeech.shutdown();
+		}
+		if (realSpeech != null) {
+			realSpeech.stop();
+			realSpeech.shutdown();
 		}
 		super.onDestroy();
 	}

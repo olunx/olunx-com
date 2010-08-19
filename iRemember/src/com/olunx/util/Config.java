@@ -48,7 +48,7 @@ public class Config {
 	public static final int SPEECH_REAL = 2;
 
 	private static final String SDCARD_PATH = "/sdcard/iremember/";
-	private static final String SDCARD_SOUND_PATH = "/sdcard/iremember/sound/";
+	public static final String SDCARD_SOUND_PATH = "/sdcard/iremember/sound/";
 	private static final String SDCARD_STARDICT_PATH = "/sdcard/iremember/stardict-dicts-all/";
 	private static final String SDCARD_BACKUP_PATH = "/sdcard/iremember/backup/";
 

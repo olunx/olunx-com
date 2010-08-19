@@ -8,6 +8,7 @@ import java.util.Locale;
 import com.olunx.R;
 import com.olunx.db.RememberHelper;
 import com.olunx.util.Config;
+import com.olunx.util.RealSpeech;
 import com.olunx.util.TtsSpeech;
 
 import android.app.Activity;
@@ -69,7 +70,8 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 	private String REMEMBERTIMES;
 
 	// 发音设置
-	private TextToSpeech speech;
+	private TextToSpeech ttsSpeech;
+	private RealSpeech realSpeech;
 	private int speechType = 0;
 	private boolean isCanSpeech = false;
 	
@@ -147,6 +149,14 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 		this.phoneticsTv.setText(this.thisPhonetics);
 		this.translationTv.setText(this.thisTranslation);
 
+		// 真人发音文件处理
+		if (realSpeech != null) {
+			if (realSpeech.prepare(thisWord)) {
+				speakBtn.setEnabled(true);
+			} else {
+				speakBtn.setEnabled(false);
+			}
+		}
 	}
 
 	@Override
@@ -219,26 +229,20 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 				thisWordList = Config.init().getWordsFromFileByLessonNo( currentLessonNo);
 				totalWordCount = thisWordList.size();
 
-//				// 复制出候选的翻译答案
-//				if (originWordTranslation == null) {
-//					originWordTranslation = new ArrayList<String>();
-//					int length = thisWordList.size();
-//					for (int i = 0; i < length; i++) {
-//						originWordTranslation.add((String) thisWordList.get(i).get(TRANSLATION));
-//					}
-//				}
-
 				if(isCanSpeech) {
 					// 初始化语音数据
 					speechType = Config.init().getSpeechType();
 					switch(speechType) {
 					case Config.SPEECH_TTS : {
-						if (speech == null) {
-							speech = new TtsSpeech(context, Locale.US).getTts();
+						if (ttsSpeech == null) {
+							ttsSpeech = new TtsSpeech(context, Locale.US).getTts();
 						}
 						break;
 					}
 					case Config.SPEECH_REAL : {
+						if (realSpeech == null) {
+							realSpeech = new RealSpeech();
+						}
 						break;
 					}
 					}
@@ -289,14 +293,17 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 
 	// 发音
 	private void speakWord() {
-		switch(speechType) {
-		case Config.SPEECH_TTS : {
-			if (speech != null) {
-				speech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
+		switch (speechType) {
+		case Config.SPEECH_TTS: {
+			if (ttsSpeech != null) {
+				ttsSpeech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			break;
 		}
-		case Config.SPEECH_REAL : {
+		case Config.SPEECH_REAL: {
+			if (realSpeech != null) {
+				realSpeech.speak();
+			}
 			break;
 		}
 		}
@@ -396,9 +403,13 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		Config.init().setReviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
-		if (speech != null) {
-			speech.stop();
-			speech.shutdown();
+		if (ttsSpeech != null) {
+			ttsSpeech.stop();
+			ttsSpeech.shutdown();
+		}
+		if (realSpeech != null) {
+			realSpeech.stop();
+			realSpeech.shutdown();
 		}
 		super.onDestroy();
 	}

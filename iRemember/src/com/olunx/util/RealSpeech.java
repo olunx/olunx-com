@@ -28,7 +28,6 @@ public class RealSpeech {
 	private String getSoundFile(String word) {
 		subPath = word.substring(0, 1).toLowerCase();
 		fullPath = baseDir + subPath + File.separator + word.toLowerCase() + ".mp3";
-		System.out.println(fullPath);
 		return fullPath;
 	}
 
@@ -39,6 +38,8 @@ public class RealSpeech {
 
 		soundPath = getSoundFile(word);
 		soundFile = new File(soundPath);
+		System.out.println("soundFile.getPath():" + soundFile.getPath());
+		player.reset();
 		if (soundFile.exists()) {
 			try {
 				player.setDataSource(soundPath);
@@ -52,6 +53,7 @@ public class RealSpeech {
 			}
 			return true;
 		}
+		
 		return false;
 
 	}

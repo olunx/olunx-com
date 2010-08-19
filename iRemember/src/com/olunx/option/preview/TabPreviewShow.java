@@ -40,7 +40,7 @@ import android.widget.Toast;
 public class TabPreviewShow extends Activity implements OnClickListener {
 
 	private Context context = this;
-	
+
 	private TextView nameTv;
 	private TextView phoneticsTv;
 	private TextView translationTv;
@@ -73,11 +73,10 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	// 更新记忆曲线
 	private boolean isCanUpdate = false;
 
-	// 网络单词数据
-//	private Word netWord = new Word();
+	// 详细解释词典
 	private boolean isCanGetTransDict = false;
-	SeekWord seek = null;
-	Handler mHandler = null;
+	private SeekWord seek = null;
+	private Handler mHandler = null;
 
 	// 发音设置
 	private TextToSpeech ttsSpeech;
@@ -121,26 +120,26 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			}
 		});
 
-		//是否可以发音
+		// 是否可以发音
 		isCanSpeech = Config.init().isCanSpeech();
-		if(!isCanSpeech) {
+		if (!isCanSpeech) {
 			speakBtn.setEnabled(false);
 		}
-		
+
 		// 是否可以读取详细解释词典
 		isCanGetTransDict = Config.init().isCanGetTransDict();
-		mHandler = new Handler() {  
-	        public void handleMessage(Message msg) {
-	        	sentsTv.setText(msg.getData().getString("translations"));
-	            super.handleMessage(msg);   
-	        }   
-	   };
+		mHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				sentsTv.setText(msg.getData().getString("translations"));
+				super.handleMessage(msg);
+			}
+		};
 		Log.i("isCanGetTransDict", String.valueOf(isCanGetTransDict));
 
 		// 获取课程数据
 		Bundle i = TabPreviewShow.this.getIntent().getExtras();
 		currentLessonNo = i.getInt("currentLessonNo");
-		
+
 		initWords();
 	}
 
@@ -158,15 +157,15 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		translationTv.setText(this.thisTranslation);
 		sentsTv.setText("");
 
-		//真人发音文件处理
-		if(realSpeech != null) {
-			if(realSpeech.prepare(thisWord)) {
+		// 真人发音文件处理
+		if (realSpeech != null) {
+			if (realSpeech.prepare(thisWord)) {
 				speakBtn.setEnabled(true);
-			}else {
+			} else {
 				speakBtn.setEnabled(false);
 			}
 		}
-		
+
 		// 获取词条的详细解释
 		this.getTrans();
 	}
@@ -186,19 +185,27 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			this.showNext();
 		}
 	}
+	
+	// 获取词条的详细解释
+	private void getTrans() {
+		if (this.isCanGetTransDict) {
+			new Thread() {
+				@Override
+				public void run() {
+					Message msg = new Message();
+					Bundle b = new Bundle();
+					b.putString("translations", seek.getWordTrans(thisWord).get("解释"));
+					msg.setData(b);
+					mHandler.sendMessage(msg);
+				}
+			}.start();
+		}
+	}
 
-//	// 显示答案
-//	private void showAnswer() {
-//		translationTv.setText(this.thisTranslation);
-//		sentsTv.setText(netWord.getSentences());
-//		netWord.setSentences("");
-//	}
-	
-	
 	/**
 	 * 以下为相同逻辑代码
 	 * */
-		
+
 	// 初始化单词学习界面
 	private void initWords() {
 
@@ -215,8 +222,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			public void onDismiss(DialogInterface dialog) {
 				if (thisWordList != null && thisWordList.size() > 0) {
 					totalWordCount = thisWordList.size();
-//					currentWordNo = 0;
-					currentWordNo = Config.init().getPreviewWordIndex(currentLessonNo);//获取上次记忆的单词位置
+					// currentWordNo = 0;
+					currentWordNo = Config.init().getPreviewWordIndex(currentLessonNo);// 获取上次记忆的单词位置
 					showWord();
 				}
 			}
@@ -230,66 +237,50 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 				thisWordList = Config.init().getWordsFromFileByLessonNo(currentLessonNo);
 				totalWordCount = thisWordList.size();
 
-				if(isCanSpeech) {
+				if (isCanSpeech) {
 					// 初始化语音数据
 					speechType = Config.init().getSpeechType();
-					switch(speechType) {
-					case Config.SPEECH_TTS : {
+					switch (speechType) {
+					case Config.SPEECH_TTS: {
 						if (ttsSpeech == null) {
 							ttsSpeech = new TtsSpeech(context, Locale.US).getTts();
 						}
 						break;
 					}
-					case Config.SPEECH_REAL : {
-						if(realSpeech == null) {
+					case Config.SPEECH_REAL: {
+						if (realSpeech == null) {
 							realSpeech = new RealSpeech();
 						}
 						break;
 					}
 					}
 				}
-				
-				//初始化详细解释词典
-				if(isCanGetTransDict) {
+
+				// 初始化详细解释词典
+				if (isCanGetTransDict) {
 					seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
 				}
-				
+
 				pd.dismiss();
 			}
 		}.start();
 	}
-	
+
 	// 发音
 	private void speakWord() {
-		switch(speechType) {
-		case Config.SPEECH_TTS : {
+		switch (speechType) {
+		case Config.SPEECH_TTS: {
 			if (ttsSpeech != null) {
 				ttsSpeech.speak(this.thisWord, TextToSpeech.QUEUE_FLUSH, null);
 			}
 			break;
 		}
-		case Config.SPEECH_REAL : {
-			if(realSpeech != null) {
+		case Config.SPEECH_REAL: {
+			if (realSpeech != null) {
 				realSpeech.speak();
 			}
 			break;
 		}
-		}
-	}
-
-	// 获取词条的详细解释
-	private void getTrans() {
-		if (this.isCanGetTransDict) {
-			new Thread() {
-				@Override
-				public void run() {
-					Message msg = new Message();
-					Bundle b = new Bundle();
-					b.putString("translations", seek.getWordTrans(thisWord).get("解释"));
-					msg.setData(b);
-					mHandler.sendMessage(msg);
-				}
-			}.start();
 		}
 	}
 
@@ -313,57 +304,53 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		} else {
 			neverBtn.setEnabled(false);
 			nextBtn.setEnabled(false);
-			
-			new Thread(){
+
+			new Thread() {
 				public void run() {
 					if (isCanUpdate) {
-						Log.i("ignoreWords.toString()",ignoreWords.toString());
+						Log.i("ignoreWords.toString()", ignoreWords.toString());
 						// 更新记忆曲线
-						Config.init().setRememberLine( currentLessonNo, ignoreWords.toString(), true);
+						Config.init().setRememberLine(currentLessonNo, ignoreWords.toString(), true);
 						isCanUpdate = false;
 
-						Config.init().setPreviewWordIndex(currentLessonNo, 0);//清除本次记忆的单词位置
-						Config.init().setNextStudyLesson( currentLessonNo + 1);// 保存当前学习完的课程号数
+						Config.init().setPreviewWordIndex(currentLessonNo, 0);// 清除本次记忆的单词位置
+						Config.init().setNextStudyLesson(currentLessonNo + 1);// 保存当前学习完的课程号数
 					}
 				}
 			}.run();
 
-
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
 
 			// 询问是否开始下一课的学习
-			new AlertDialog.Builder(this)
-			.setIcon(android.R.drawable.ic_dialog_info)
-			.setTitle(R.string.dialog_title_tip)
-			.setMessage(getString(R.string.dialog_msg_is_goto_next_lesson))
-			.setPositiveButton(getString(R.string.btn_yes),	new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int arg1) {
-					String lessonCount = Config.init().getLessonCount();
-					if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
-						currentLessonNo++;
-						initWords();
-						neverBtn.setEnabled(true);
-						nextBtn.setEnabled(true);
-					} else {
-						Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
-						finish();
-					}
-					dialog.cancel();
-				}
-			})
-			.setNegativeButton(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle(R.string.dialog_title_tip).setMessage(
+					getString(R.string.dialog_msg_is_goto_next_lesson)).setPositiveButton(getString(R.string.btn_yes),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int arg1) {
+							String lessonCount = Config.init().getLessonCount();
+							if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
+								currentLessonNo++;
+								initWords();
+								neverBtn.setEnabled(true);
+								nextBtn.setEnabled(true);
+							} else {
+								Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
+								finish();
+							}
+							dialog.cancel();
+						}
+					}).setNegativeButton(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.cancel();
 					finish();
 				}
-			})
-			.show();
+			}).show();
 		}
 	}
 
 	private boolean isQuit = false;
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
@@ -374,10 +361,10 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			showNext();
 			break;
 		case KeyEvent.KEYCODE_BACK: {
-			if(!isQuit) {
+			if (!isQuit) {
 				Toast.makeText(this, "再按一次退出！", Toast.LENGTH_SHORT).show();
 				isQuit = true;
-			}else {
+			} else {
 				finish();
 			}
 			break;
@@ -388,18 +375,18 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 
 	@Override
 	protected void onStop() {
-		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
+		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);// 保存本次记忆的单词位置
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
-		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
+		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);// 保存本次记忆的单词位置
 		if (ttsSpeech != null) {
 			ttsSpeech.stop();
 			ttsSpeech.shutdown();
 		}
-		if(realSpeech != null) {
+		if (realSpeech != null) {
 			realSpeech.stop();
 			realSpeech.shutdown();
 		}
