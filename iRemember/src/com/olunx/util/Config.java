@@ -178,6 +178,7 @@ public class Config {
 		this.setCanGetTransDict(false);// 是否可用例句词典
 		this.setDictStringArray("", Config.DICTTYPE_CSV);
 		this.setDictStringArray("", Config.DICTTYPE_STARDICT);
+		this.setDictCharset("UTF-8");
 		this.setCanGetTransDict(false);
 		this.setCanSpeech(false);
 		this.setFirstRun("true");
@@ -736,6 +737,6 @@ public class Config {
 	}
 
 	public String getDictCharset() {
-		return getCon("config_dict_charset", "GBK");
+		return getCon("config_dict_charset", "UTF-8");
 	}
 }

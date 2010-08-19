@@ -105,8 +105,8 @@ public class Utils {
 		BufferedReader br = null;
 		BufferedWriter bw = null;
 		try {
-			br = new BufferedReader(new InputStreamReader(in, "gbk"));
-			bw = new BufferedWriter(new OutputStreamWriter(out, "gbk"));
+			br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+			bw = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

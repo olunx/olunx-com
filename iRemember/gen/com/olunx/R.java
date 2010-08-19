@@ -28,13 +28,15 @@ public final class R {
         public static final int option_sync=0x7f02000e;
         public static final int review_finish=0x7f02000f;
         public static final int review_need=0x7f020010;
-        public static final int volume=0x7f020011;
+        public static final int search=0x7f020011;
+        public static final int volume=0x7f020012;
     }
     public static final class id {
         public static final int Button01=0x7f05000f;
         public static final int Button02=0x7f050011;
         public static final int EditText01=0x7f050017;
         public static final int ImageButton01=0x7f050010;
+        public static final int ImageButton02=0x7f050018;
         public static final int ImageView01=0x7f050006;
         public static final int LinearLayout01=0x7f050004;
         public static final int LinearLayout02=0x7f050005;

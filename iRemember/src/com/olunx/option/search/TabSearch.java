@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,7 +31,7 @@ import android.widget.Toast;
 public class TabSearch extends Activity {
 
 	private EditText queryEt;
-	private Button queryBtn;
+	private ImageButton queryBtn;
 	private TextView nameTv;
 	private TextView phoneticsTv;
 	private TextView sentsTv;
@@ -49,8 +48,8 @@ public class TabSearch extends Activity {
 		this.setContentView(R.layout.search_word);
 
 		queryEt = (EditText) this.findViewById(R.id.EditText01);
-		queryBtn = (Button) this.findViewById(R.id.Button01);
-		queryBtn.setText("查找");
+		queryEt.setText("");
+		queryBtn = (ImageButton) this.findViewById(R.id.ImageButton02);
 		queryBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -62,10 +61,13 @@ public class TabSearch extends Activity {
 			}
 		});
 		nameTv = (TextView) this.findViewById(R.id.TextView01);
+		nameTv.setText("");
 		phoneticsTv = (TextView) this.findViewById(R.id.TextView02);
 		Typeface font = Typeface.createFromAsset(getAssets(), Config.FONT_KINGSOFT_PATH);
 		phoneticsTv.setTypeface(font);
+		phoneticsTv.setText("");
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
+		sentsTv.setText("");
 		speakBtn = (ImageButton) this.findViewById(R.id.ImageButton01);
 		speakBtn.setVisibility(View.INVISIBLE);
 		speakBtn.setOnClickListener(new OnClickListener() {
