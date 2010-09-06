@@ -96,7 +96,7 @@ public class TabDictSet extends PreferenceActivity {
 
 		chasetPref = new ListPreference(this);
 		chasetPref.setKey("config_dict_charset");
-		chasetPref.setTitle("词库文件编码：");
+		chasetPref.setTitle(R.string.dict_charset);
 		chasetPref.setValue(Config.init().getDictCharset());//设置默认的词典编码
 		chasetPref.setEntries(new String[]{"GBK","GB2312","Big5","UTF-8"});
 		chasetPref.setEntryValues(new String[]{"GBK","GB2312","Big5","UTF-8"});

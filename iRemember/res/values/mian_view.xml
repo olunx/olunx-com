@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="no_this_function">还没有这个功能，别乱点。</string>
+    <string name="sure_to_close_app">是否真的要关闭程序？</string>
+    <string name="init_finish">软件初始化成功，o(∩_∩)o 哈哈。</string>
+    <string name="init_dicts">正在初始化词库</string>
 	<string name="option_preview_title">开始学习</string>
 	<string name="option_preview_desc">智能化的记忆曲线，更有效的记忆。</string>
 	<string name="option_review_title">复习记忆</string>

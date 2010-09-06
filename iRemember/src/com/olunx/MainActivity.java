@@ -51,13 +51,13 @@ public class MainActivity extends Activity {
 
 		if (Config.init().isFirstRun()) {
 			final ProgressDialog pd = new ProgressDialog(context);
-			pd.setTitle("正在初始化词库");
+			pd.setTitle(getString(R.string.init_dicts));
 			pd.setMessage(getString(R.string.dialog_msg_wait));
 			pd.setIcon(android.R.drawable.ic_dialog_info);
 			pd.setOnDismissListener(new OnDismissListener() {
 				@Override
 				public void onDismiss(DialogInterface arg0) {
-					Toast.makeText(context, "软件初始化成功，o(∩_∩)o 哈哈。", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, R.string.init_finish, Toast.LENGTH_LONG).show();
 				}
 			});
 			pd.show();
@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
 			new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_alert)
 			.setTitle(R.string.dialog_title_alert)
-			.setMessage("是否真的要关闭程序？")
+			.setMessage(R.string.sure_to_close_app)
 			.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -205,7 +205,7 @@ public class MainActivity extends Activity {
 				break;
 			}
 			default: {
-				Toast.makeText(context, "还没有这个功能，别乱点。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, R.string.no_this_function, Toast.LENGTH_SHORT).show();
 			}
 			}
 

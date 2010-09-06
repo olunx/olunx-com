@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dict_charset">词库文件编码：</string>
 
 	<string name="tab_dictset_title">词库设置</string>
 	<string name="list_desc_each_lesson_word_count">每组：</string>
