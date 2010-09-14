@@ -1,13 +1,9 @@
 package com.olunx.db;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.olunx.R;
 import com.olunx.util.Config;
 import com.olunx.util.Utils;
 
@@ -15,6 +11,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class FeedsHelper implements IHelper {
 
@@ -34,6 +31,7 @@ public class FeedsHelper implements IHelper {
 	public final static String c_articles = "articles";
 
 	private static String TABLE = "t_feeds";
+	private final String TAG = "com.olunx.db.FeedsHelper";
 
 	private static SQLiteDatabase sqlite = null;
 
@@ -59,6 +57,7 @@ public class FeedsHelper implements IHelper {
 	@Override
 	public void close() {
 		if (sqlite != null || sqlite.isOpen()) {
+			Log.i(TAG, "sqlite close");
 			sqlite.close();
 		}
 	}
@@ -77,34 +76,13 @@ public class FeedsHelper implements IHelper {
 		this.getDB().execSQL("drop table if exists " + TABLE + ";");
 	}
 
-	private ContentValues row = null;
-
 	/**
 	 * 添加Feed
 	 * 
 	 * @param object
 	 */
-	public void addRecord(JSONObject object) {
-		row = new ContentValues();
-		try {
-			row.put(c_title, object.getString(c_title));
-			row.put(c_text, object.getString(c_text));
-			row.put(c_icon, String.valueOf(R.drawable.icon));
-			// row.put(c_sortId, object.getInt(c_sortId));
-			row.put(c_catTitle, object.getString(c_catTitle));
-			row.put(c_xmlUrl, object.getString(c_xmlUrl));
-			row.put(c_htmlUrl, object.getString(c_htmlUrl));
-			// row.put(c_googleFeedId, object.getString(c_googleFeedId));
-			// row.put(c_updateTime, object.getString(c_updateTime));
-			// row.put(c_charset, object.getString(c_charset));
-			// row.put(c_rssType, object.getString(c_rssType));
-			// row.put(c_articleCount, object.getInt(c_articleCount));
-			// row.put(c_articles, object.getString(c_articles));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		System.out.println("feedAdd");
-		getDB().insert(TABLE, null, row);
+	public void addRecord(ContentValues mValues) {
+		getDB().insert(TABLE, null, mValues);
 	}
 
 	/**
@@ -112,30 +90,9 @@ public class FeedsHelper implements IHelper {
 	 * 
 	 * @param object
 	 */
-	public void updateRecord(JSONObject object) {
-		row = new ContentValues();
-		String where = null;
-		try {
-			row.put(c_title, object.getString(c_title));
-			row.put(c_text, object.getString(c_text));
-			// row.put(c_icon, object.getString(c_icon));
-			// row.put(c_icon, String.valueOf(R.drawable.icon));
-			// row.put(c_sortId, object.getInt(c_sortId));
-			row.put(c_catTitle, object.getString(c_catTitle));
-			where = object.getString(c_xmlUrl);
-			row.put(c_xmlUrl, where);
-			row.put(c_htmlUrl, object.getString(c_htmlUrl));
-			// row.put(c_googleFeedId, object.getString(c_googleFeedId));
-			// row.put(c_updateTime, object.getString(c_updateTime));
-			row.put(c_charset, "utf-8");
-			// row.put(c_rssType, object.getString(c_rssType));
-			row.put(c_articleCount, 0);
-			// row.put(c_articles, object.getString(c_articles));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		System.out.println("feedUpdate:" + where);
-		getDB().update(TABLE, row, c_xmlUrl + "== ? ", new String[] { where });
+	public void updateRecord(ContentValues object) {
+		String where = (String) object.get(c_xmlUrl);
+		getDB().update(TABLE, object, c_xmlUrl + "== ? ", new String[] { where });
 	}
 
 	/**
@@ -145,10 +102,9 @@ public class FeedsHelper implements IHelper {
 	 * @param articleCount
 	 */
 	public void updateArticleCount(String feedXmlUrl, String articleCount) {
-		row = new ContentValues();
+		ContentValues row = new ContentValues();
 		row.put(c_articleCount, articleCount);
 		row.put(c_updateTime, Utils.init().getCstTime(new Date()));
-		System.out.println("updateArticleCount:" + feedXmlUrl);
 		getDB().update(TABLE, row, c_xmlUrl + "== ? ", new String[] { feedXmlUrl });
 	}
 
@@ -159,9 +115,8 @@ public class FeedsHelper implements IHelper {
 	 * @param charset
 	 */
 	public void updateFeedCharset(String feedXmlUrl, String charset) {
-		row = new ContentValues();
+		ContentValues row = new ContentValues();
 		row.put(c_charset, charset);
-		System.out.println("updateFeedCharset charset:" + charset);
 		getDB().update(TABLE, row, c_xmlUrl + "== ? ", new String[] { feedXmlUrl });
 	}
 
@@ -212,13 +167,13 @@ public class FeedsHelper implements IHelper {
 	}
 
 	/**
-	 * 返回指定栏目的Feed地址
+	 * 返回指定栏目下的所有Feed地址
 	 * 
 	 * @param catTitle
 	 * @return
 	 */
-	public JSONArray getFeedsXmlUrlByCategory(String catTitle) {
-		JSONArray array = new JSONArray();
+	public ArrayList<String> getFeedsXmlUrlByCategory(String catTitle) {
+		ArrayList<String> array = new ArrayList<String>();
 
 		Cursor result = getDB().query(TABLE, new String[] { c_id, c_xmlUrl }, c_catTitle + "== ?", new String[] { catTitle }, null, null,
 				null);
@@ -226,7 +181,7 @@ public class FeedsHelper implements IHelper {
 			result.moveToFirst();
 			int index = result.getColumnIndex(c_xmlUrl);
 			while (!result.isAfterLast()) {
-				array.put(result.getString(index));
+				array.add(result.getString(index));
 				result.moveToNext();
 			}
 		}
@@ -240,15 +195,15 @@ public class FeedsHelper implements IHelper {
 	 * 
 	 * @return
 	 */
-	public JSONArray getAllFeedsXmlUrl() {
-		JSONArray array = new JSONArray();
+	public ArrayList<String> getAllFeedsXmlUrl() {
+		ArrayList<String> array = new ArrayList<String>();
 
 		Cursor result = getDB().query(TABLE, new String[] { c_id, c_xmlUrl }, null, null, null, null, null);
 		if (result != null) {
 			result.moveToFirst();
 			int index = result.getColumnIndex(c_xmlUrl);
 			while (!result.isAfterLast()) {
-				array.put(result.getString(index));
+				array.add(result.getString(index));
 				result.moveToNext();
 			}
 		}

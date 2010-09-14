@@ -40,86 +40,95 @@ import org.apache.commons.log.LogFactory;
 /**
  * A helper class for connection managers to track idle connections.
  * 
- * <p>This class is not synchronized.</p>
+ * <p>
+ * This class is not synchronized.
+ * </p>
  * 
  * @see org.apache.commons.httpclient.HttpConnectionManager#closeIdleConnections(long)
  * 
  * @since 3.0
  */
 public class IdleConnectionHandler {
-    
-    private static final Log LOG = LogFactory.getLog(IdleConnectionHandler.class);
-    
-    /** Holds connections and the time they were added. */
-    private Map connectionToAdded = new HashMap();
-    
-    /**
-     * 
-     */
-    public IdleConnectionHandler() {
-        super();
-    }
-    
-    /**
-     * Registers the given connection with this handler.  The connection will be held until 
-     * {@link #remove(HttpConnection)} or {@link #closeIdleConnections(long)} is called.
-     * 
-     * @param connection the connection to add
-     * 
-     * @see #remove(HttpConnection)
-     */
-    public void add(HttpConnection connection) {
-        
-        Long timeAdded = new Long(System.currentTimeMillis());
-        
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Adding connection at: " + timeAdded);
-        }
-        
-        connectionToAdded.put(connection, timeAdded);
-    }
-    
-    /**
-     * Removes the given connection from the list of connections to be closed when idle.
-     * @param connection
-     */
-    public void remove(HttpConnection connection) {
-        connectionToAdded.remove(connection);
-    }
 
-    /**
-     * Removes all connections referenced by this handler.
-     */
-    public void removeAll() {
-        this.connectionToAdded.clear();
-    }
-    
-    /**
-     * Closes connections that have been idle for at least the given amount of time.
-     * 
-     * @param idleTime the minimum idle time, in milliseconds, for connections to be closed
-     */
-    public void closeIdleConnections(long idleTime) {
-        
-        // the latest time for which connections will be closed
-        long idleTimeout = System.currentTimeMillis() - idleTime;
+	private static final Log LOG = LogFactory.getLog(IdleConnectionHandler.class);
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Checking for connections, idleTimeout: "  + idleTimeout);
-        }
-        
-        Iterator connectionIter = connectionToAdded.keySet().iterator();
-        
-        while (connectionIter.hasNext()) {
-            HttpConnection conn = (HttpConnection) connectionIter.next();
-            Long connectionTime = (Long) connectionToAdded.get(conn);
-            if (connectionTime.longValue() <= idleTimeout) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Closing connection, connection time: "  + connectionTime);
-                }
-                connectionIter.remove();
-                conn.close();
-            }
-        }
-    }
+	/** Holds connections and the time they were added. */
+	private Map connectionToAdded = new HashMap();
+
+	/**
+     * 
+     */
+	public IdleConnectionHandler() {
+		super();
+	}
+
+	/**
+	 * Registers the given connection with this handler. The connection will be
+	 * held until {@link #remove(HttpConnection)} or
+	 * {@link #closeIdleConnections(long)} is called.
+	 * 
+	 * @param connection
+	 *            the connection to add
+	 * 
+	 * @see #remove(HttpConnection)
+	 */
+	public void add(HttpConnection connection) {
+
+		Long timeAdded = new Long(System.currentTimeMillis());
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Adding connection at: " + timeAdded);
+		}
+
+		connectionToAdded.put(connection, timeAdded);
+	}
+
+	/**
+	 * Removes the given connection from the list of connections to be closed
+	 * when idle.
+	 * 
+	 * @param connection
+	 */
+	public void remove(HttpConnection connection) {
+		connectionToAdded.remove(connection);
+	}
+
+	/**
+	 * Removes all connections referenced by this handler.
+	 */
+	public void removeAll() {
+		this.connectionToAdded.clear();
+	}
+
+	/**
+	 * Closes connections that have been idle for at least the given amount of
+	 * time.
+	 * 
+	 * @param idleTime
+	 *            the minimum idle time, in milliseconds, for connections to be
+	 *            closed
+	 */
+	public void closeIdleConnections(long idleTime) {
+
+		// the latest time for which connections will be closed
+		long idleTimeout = System.currentTimeMillis() - idleTime;
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Checking for connections, idleTimeout: " + idleTimeout);
+		}
+
+		Iterator connectionIter = connectionToAdded.keySet().iterator();
+
+		while (connectionIter.hasNext()) {
+			HttpConnection conn = (HttpConnection) connectionIter.next();
+			Long connectionTime = (Long) connectionToAdded.get(conn);
+			if (connectionTime.longValue() <= idleTimeout) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Closing connection, connection time: " + connectionTime);
+				}
+				connectionIter.remove();
+				conn.close();
+			}
+		}
+	}
 }

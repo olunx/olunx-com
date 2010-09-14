@@ -30,7 +30,6 @@
 
 package org.apache.commons.httpclient.util;
 
-
 /**
  * An exception to indicate an error parsing a date string.
  * 
@@ -40,18 +39,19 @@ package org.apache.commons.httpclient.util;
  */
 public class DateParseException extends Exception {
 
-    /**
+	/**
      * 
      */
-    public DateParseException() {
-        super();
-    }
+	public DateParseException() {
+		super();
+	}
 
-    /**
-     * @param message the exception message
-     */
-    public DateParseException(String message) {
-        super(message);
-    }
+	/**
+	 * @param message
+	 *            the exception message
+	 */
+	public DateParseException(String message) {
+		super(message);
+	}
 
 }

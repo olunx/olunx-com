@@ -18,23 +18,24 @@
 package org.apache.commons.codec;
 
 /**
- * Decodes a String into a String. 
- *
+ * Decodes a String into a String.
+ * 
  * @author Apache Software Foundation
  * @version $Id: StringDecoder.java 634915 2008-03-08 09:30:25Z bayard $
  */
 public interface StringDecoder extends Decoder {
-    
-    /**
-     * Decodes a String and returns a String.
-     * 
-     * @param pString a String to encode
-     * 
-     * @return the encoded String
-     * 
-     * @throws DecoderException thrown if there is
-     *  an error conidition during the Encoding process.
-     */
-    String decode(String pString) throws DecoderException;
-}  
 
+	/**
+	 * Decodes a String and returns a String.
+	 * 
+	 * @param pString
+	 *            a String to encode
+	 * 
+	 * @return the encoded String
+	 * 
+	 * @throws DecoderException
+	 *             thrown if there is an error conidition during the Encoding
+	 *             process.
+	 */
+	String decode(String pString) throws DecoderException;
+}

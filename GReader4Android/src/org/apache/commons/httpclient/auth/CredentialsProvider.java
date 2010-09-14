@@ -34,9 +34,9 @@ import org.apache.commons.httpclient.Credentials;
 
 /**
  * <p>
- * Credentials provider interface can be used to provide {@link 
- * org.apache.commons.httpclient.HttpMethod HTTP method} with a means to request
- * authentication credentials if no credentials have been given or given
+ * Credentials provider interface can be used to provide
+ * {@link org.apache.commons.httpclient.HttpMethod HTTP method} with a means to
+ * request authentication credentials if no credentials have been given or given
  * credentials are incorrect.
  * </p>
  * <p>
@@ -62,27 +62,28 @@ import org.apache.commons.httpclient.Credentials;
  */
 public interface CredentialsProvider {
 
-    /**
-     * Sets the credentials provider parameter.
-     * <p>
-     * This parameter expects a value of type {@link CredentialsProvider}.
-     * </p>
-     */ 
-    public static final String PROVIDER = "http.authentication.credential-provider";
-    
-    /**
-     * Requests additional {@link Credentials authentication credentials}.
-     * 
-     * @param scheme the {@link AuthScheme authentication scheme}
-     * @param host the authentication host
-     * @param port the port of the authentication host
-     * @param proxy <tt>true</tt> if authenticating with a proxy,
-     *              <tt>false</tt> otherwise
-     */ 
-    public Credentials getCredentials(
-        final AuthScheme scheme, 
-        final String host, 
-        int port, 
-        boolean proxy) throws CredentialsNotAvailableException; 
+	/**
+	 * Sets the credentials provider parameter.
+	 * <p>
+	 * This parameter expects a value of type {@link CredentialsProvider}.
+	 * </p>
+	 */
+	public static final String PROVIDER = "http.authentication.credential-provider";
+
+	/**
+	 * Requests additional {@link Credentials authentication credentials}.
+	 * 
+	 * @param scheme
+	 *            the {@link AuthScheme authentication scheme}
+	 * @param host
+	 *            the authentication host
+	 * @param port
+	 *            the port of the authentication host
+	 * @param proxy
+	 *            <tt>true</tt> if authenticating with a proxy, <tt>false</tt>
+	 *            otherwise
+	 */
+	public Credentials getCredentials(final AuthScheme scheme, final String host, int port, boolean proxy)
+			throws CredentialsNotAvailableException;
 
 }

@@ -49,6 +49,8 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		System.out.println("test...");
+		
 		if (Config.init().isFirstRun()) {
 			final ProgressDialog pd = new ProgressDialog(context);
 			pd.setTitle(getString(R.string.init_dicts));

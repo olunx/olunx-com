@@ -23,5 +23,5 @@ public class SAXBuilder extends org.jdom.input.SAXBuilder {
 	public XMLReader createParser() throws JDOMException {
 		return super.createParser();
 	}
-	
+
 }

@@ -34,122 +34,128 @@ import java.util.Map;
 
 /**
  * <p>
- * Abstract authentication scheme class that lays foundation for all
- * RFC 2617 compliant authetication schemes and provides capabilities common 
- * to all authentication schemes defined in RFC 2617.
+ * Abstract authentication scheme class that lays foundation for all RFC 2617
+ * compliant authetication schemes and provides capabilities common to all
+ * authentication schemes defined in RFC 2617.
  * </p>
- *
+ * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
-*/
+ */
 public abstract class RFC2617Scheme implements AuthScheme {
 
-    /**
-     * Authentication parameter map.
-     */
-    private Map params = null;
+	/**
+	 * Authentication parameter map.
+	 */
+	private Map params = null;
 
-    /**
-     * Default constructor for RFC2617 compliant authetication schemes.
-     * 
-     * @since 3.0
-     */
-    public RFC2617Scheme() {
-        super();
-    }
+	/**
+	 * Default constructor for RFC2617 compliant authetication schemes.
+	 * 
+	 * @since 3.0
+	 */
+	public RFC2617Scheme() {
+		super();
+	}
 
-    /**
-     * Default constructor for RFC2617 compliant authetication schemes.
-     * 
-     * @param challenge authentication challenge
-     * 
-     * @throws MalformedChallengeException is thrown if the authentication challenge
-     * is malformed
-     * 
-     * @deprecated Use parameterless constructor and {@link AuthScheme#processChallenge(String)} 
-     *             method
-     */
-    public RFC2617Scheme(final String challenge) throws MalformedChallengeException {
-        super();
-        processChallenge(challenge);
-    }
+	/**
+	 * Default constructor for RFC2617 compliant authetication schemes.
+	 * 
+	 * @param challenge
+	 *            authentication challenge
+	 * 
+	 * @throws MalformedChallengeException
+	 *             is thrown if the authentication challenge is malformed
+	 * 
+	 * @deprecated Use parameterless constructor and
+	 *             {@link AuthScheme#processChallenge(String)} method
+	 */
+	public RFC2617Scheme(final String challenge) throws MalformedChallengeException {
+		super();
+		processChallenge(challenge);
+	}
 
-    /**
-     * Processes the given challenge token. Some authentication schemes
-     * may involve multiple challenge-response exchanges. Such schemes must be able 
-     * to maintain the state information when dealing with sequential challenges 
-     * 
-     * @param challenge the challenge string
-     * 
-     * @throws MalformedChallengeException is thrown if the authentication challenge
-     * is malformed
-     * 
-     * @since 3.0
-     */
-    public void processChallenge(final String challenge) throws MalformedChallengeException {
-        String s = AuthChallengeParser.extractScheme(challenge);
-        if (!s.equalsIgnoreCase(getSchemeName())) {
-            throw new MalformedChallengeException(
-              "Invalid " + getSchemeName() + " challenge: " + challenge); 
-        }
-        this.params = AuthChallengeParser.extractParams(challenge);
-    }
+	/**
+	 * Processes the given challenge token. Some authentication schemes may
+	 * involve multiple challenge-response exchanges. Such schemes must be able
+	 * to maintain the state information when dealing with sequential challenges
+	 * 
+	 * @param challenge
+	 *            the challenge string
+	 * 
+	 * @throws MalformedChallengeException
+	 *             is thrown if the authentication challenge is malformed
+	 * 
+	 * @since 3.0
+	 */
+	public void processChallenge(final String challenge) throws MalformedChallengeException {
+		String s = AuthChallengeParser.extractScheme(challenge);
+		if (!s.equalsIgnoreCase(getSchemeName())) {
+			throw new MalformedChallengeException("Invalid " + getSchemeName() + " challenge: " + challenge);
+		}
+		this.params = AuthChallengeParser.extractParams(challenge);
+	}
 
-    /**
-     * Returns authentication parameters map. Keys in the map are lower-cased.
-     * 
-     * @return the map of authentication parameters
-     */
-    protected Map getParameters() {
-        return this.params;
-    }
+	/**
+	 * Returns authentication parameters map. Keys in the map are lower-cased.
+	 * 
+	 * @return the map of authentication parameters
+	 */
+	protected Map getParameters() {
+		return this.params;
+	}
 
-    /**
-     * Returns authentication parameter with the given name, if available.
-     * 
-     * @param name The name of the parameter to be returned
-     * 
-     * @return the parameter with the given name
-     */
-    public String getParameter(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name may not be null"); 
-        }
-        if (this.params == null) {
-            return null;
-        }
-        return (String) this.params.get(name.toLowerCase());
-    }
+	/**
+	 * Returns authentication parameter with the given name, if available.
+	 * 
+	 * @param name
+	 *            The name of the parameter to be returned
+	 * 
+	 * @return the parameter with the given name
+	 */
+	public String getParameter(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("Parameter name may not be null");
+		}
+		if (this.params == null) {
+			return null;
+		}
+		return (String) this.params.get(name.toLowerCase());
+	}
 
-    /**
-     * Returns authentication realm. The realm may not be null.
-     * 
-     * @return the authentication realm
-     */
-    public String getRealm() {
-        return getParameter("realm");
-    }
-    
-    /**
-     * Returns a String identifying the authentication challenge.  This is
-     * used, in combination with the host and port to determine if
-     * authorization has already been attempted or not.  Schemes which
-     * require multiple requests to complete the authentication should
-     * return a different value for each stage in the request.
-     * 
-     * <p>Additionally, the ID should take into account any changes to the
-     * authentication challenge and return a different value when appropriate.
-     * For example when the realm changes in basic authentication it should be
-     * considered a different authentication attempt and a different value should
-     * be returned.</p>
-     * 
-     * <p>This method simply returns the realm for the challenge.</p>
-     * 
-     * @return String a String identifying the authentication challenge.  The
-     * returned value may be null.
-     * 
-     * @deprecated no longer used
-     */
-    public String getID() {
-        return getRealm();
-    }
+	/**
+	 * Returns authentication realm. The realm may not be null.
+	 * 
+	 * @return the authentication realm
+	 */
+	public String getRealm() {
+		return getParameter("realm");
+	}
+
+	/**
+	 * Returns a String identifying the authentication challenge. This is used,
+	 * in combination with the host and port to determine if authorization has
+	 * already been attempted or not. Schemes which require multiple requests to
+	 * complete the authentication should return a different value for each
+	 * stage in the request.
+	 * 
+	 * <p>
+	 * Additionally, the ID should take into account any changes to the
+	 * authentication challenge and return a different value when appropriate.
+	 * For example when the realm changes in basic authentication it should be
+	 * considered a different authentication attempt and a different value
+	 * should be returned.
+	 * </p>
+	 * 
+	 * <p>
+	 * This method simply returns the realm for the challenge.
+	 * </p>
+	 * 
+	 * @return String a String identifying the authentication challenge. The
+	 *         returned value may be null.
+	 * 
+	 * @deprecated no longer used
+	 */
+	public String getID() {
+		return getRealm();
+	}
 }

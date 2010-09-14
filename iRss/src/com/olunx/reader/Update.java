@@ -1,17 +1,17 @@
 package com.olunx.reader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
+import android.util.Log;
 
 import com.olunx.db.ArticlesHelper;
 import com.olunx.db.FeedsHelper;
 
 public class Update {
+
+	private final String TAG = "com.olunx.reader.Update";
 
 	private Rss rss;
 
@@ -30,7 +30,7 @@ public class Update {
 	 */
 	public void updateFeeds() {
 
-		JSONArray array = rss.getCategory();
+		ArrayList<ContentValues> array = rss.downLoadAllFeeds();
 
 		// 如果没有数据，则返回。
 		if (array == null)
@@ -38,35 +38,46 @@ public class Update {
 
 		FeedsHelper helper = new FeedsHelper();
 
-		int len = array.length();
+		int len = array.size();
 		System.out.println("feed count" + len);
-		JSONObject object;
+		ContentValues mValues;
 		for (int i = 0; i < len; i++) {
-			try {
-				object = (JSONObject) array.get(i);
-				System.out.println("object:" + i + "  " + object.toString());
-				if (helper.isExistsFeed(object.get(FeedsHelper.c_xmlUrl).toString())) {
-					helper.updateRecord(object);
-				} else {
-					helper.addRecord(object);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			mValues = array.get(i);
+			System.out.println("object:" + i + "  " + mValues.toString());
+			if (helper.isExistsFeed(mValues.get(FeedsHelper.c_xmlUrl).toString())) {
+				helper.updateRecord(mValues);
+			} else {
+				helper.addRecord(mValues);
 			}
 		}
 		helper.updateCategory();// 添加完Feed后，为Category表重新统计Feed条数。
 		helper.close();
 
 		// new ArticlesHelper().updateFeeds();
-		updateAllArticles();
+		// updateAllArticles();
+	}
+
+	/**
+	 * 更新指定目录下的所有feed
+	 * 
+	 * @param catTitle
+	 */
+	public void updateArticlesByCat(String catTitle) {
+		FeedsHelper helper = new FeedsHelper();
+		updateArticles(helper.getFeedsXmlUrlByCategory(catTitle));
+		helper.close();
 	}
 
 	/**
 	 * 更新文章
 	 */
-	public void updateAllArticles() {
+	private void updateArticles(ArrayList<String> feeds) {
 
-		System.out.println("start update all articles");
+		Log.i(TAG, "start update articles");
+
+		if (feeds == null || feeds.size() == 0) {
+			return;
+		}
 
 		FeedsHelper fHelper = new FeedsHelper();
 		ArticlesHelper aHelper = new ArticlesHelper();
@@ -74,45 +85,36 @@ public class Update {
 		String articleTitle = null;
 		ContentValues[] articles = null;
 		ContentValues article = null;
-		JSONArray feeds = fHelper.getAllFeedsXmlUrl();
 
-		int length = feeds.length();
-		System.out.println("update feed number " + length);
+		int length = feeds.size();
+		Log.i(TAG, "update feed number " + length);
 
 		HashMap<String, Object> data = null;
 		String charset;
 		String feedXmlUrl = null;
 		for (int i = 0; i < length; i++) {
 
-			System.out.println("updating feed NO." + i);
+			Log.i(TAG, "updating feed no. " + i);
 
-			//获取数据
-			try {
-				feedXmlUrl = feeds.get(i).toString();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			// 获取数据
+			feedXmlUrl = feeds.get(i);
 
-			data = rss.getFeedContent(feedXmlUrl, null);
-			
-			//更新Feed的编码
-			charset = (String)data.get(FeedsHelper.c_charset);
+			data = rss.downLoadFeedContent(feedXmlUrl, null);
+
+			// 更新Feed的编码
+			charset = (String) data.get(FeedsHelper.c_charset);
 			fHelper.updateFeedCharset(feedXmlUrl, charset);
-			
-			//更新文章
+
+			// 更新文章
 			articles = (ContentValues[]) data.get(FeedsHelper.c_articles);
-			System.out.println("articles: " + articles);
-			System.out.println("articles.length(): " + articles.length);
 			for (int j = 0; j < articles.length; j++) {
 				article = articles[j];
 
-				System.out.println("article title: " + articleTitle);
 				articleTitle = (String) article.get(ArticlesHelper.c_title);
 
 				// 如果文章不存在则添加
 				if (!aHelper.isExistsArticle(articleTitle)) {
 					aHelper.addRecord(article);
-					System.out.println("add article...");
 				}
 
 			}
@@ -123,7 +125,7 @@ public class Update {
 		aHelper.close();
 		fHelper.close();
 
-		System.out.println("update finished!");
+		Log.i(TAG, "update finished!");
 
 	}
 }

@@ -31,14 +31,18 @@
 package org.apache.commons.httpclient;
 
 /**
- * <p>Authentication credentials.</p>
  * <p>
- * This  is just a marker interface, the  current implementation has no methods.
+ * Authentication credentials.
  * </p>
+ * <p>
+ * This is just a marker interface, the current implementation has no methods.
+ * </p>
+ * 
  * @author Unascribed
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  * 
- * @version $Revision: 480424 $ $Date: 2006-11-29 06:56:49 +0100 (Wed, 29 Nov 2006) $
+ * @version $Revision: 480424 $ $Date: 2006-11-29 06:56:49 +0100 (Wed, 29 Nov
+ *          2006) $
  */
 public interface Credentials {
 }

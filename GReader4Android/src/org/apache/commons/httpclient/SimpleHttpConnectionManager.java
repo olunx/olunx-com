@@ -38,10 +38,10 @@ import org.apache.commons.log.Log;
 import org.apache.commons.log.LogFactory;
 
 /**
- * A connection manager that provides access to a single HttpConnection.  This
+ * A connection manager that provides access to a single HttpConnection. This
  * manager makes no attempt to provide exclusive access to the contained
  * HttpConnection.
- *
+ * 
  * @author <a href="mailto:becke@u.washington.edu">Michael Becke</a>
  * @author Eric Johnson
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
@@ -52,233 +52,240 @@ import org.apache.commons.log.LogFactory;
  */
 public class SimpleHttpConnectionManager implements HttpConnectionManager {
 
-    private static final Log LOG = LogFactory.getLog(SimpleHttpConnectionManager.class);
+	private static final Log LOG = LogFactory.getLog(SimpleHttpConnectionManager.class);
 
-    private static final String MISUSE_MESSAGE = 
-        "SimpleHttpConnectionManager being used incorrectly.  Be sure that"
-        + " HttpMethod.releaseConnection() is always called and that only one thread"
-        + " and/or method is using this connection manager at a time.";
-    
-    /**
-     * Since the same connection is about to be reused, make sure the
-     * previous request was completely processed, and if not
-     * consume it now.
-     * @param conn The connection
-     */
-    static void finishLastResponse(HttpConnection conn) {
-        InputStream lastResponse = conn.getLastResponseInputStream();
-        if (lastResponse != null) {
-            conn.setLastResponseInputStream(null);
-            try {
-                lastResponse.close();
-            } catch (IOException ioe) {
-                conn.close();
-            }
-        }
-    }
-    
-    /** The http connection */
-    protected HttpConnection httpConnection;
+	private static final String MISUSE_MESSAGE = "SimpleHttpConnectionManager being used incorrectly.  Be sure that"
+			+ " HttpMethod.releaseConnection() is always called and that only one thread"
+			+ " and/or method is using this connection manager at a time.";
 
-    /**
-     * Collection of parameters associated with this connection manager.
-     */
-    private HttpConnectionManagerParams params = new HttpConnectionManagerParams(); 
+	/**
+	 * Since the same connection is about to be reused, make sure the previous
+	 * request was completely processed, and if not consume it now.
+	 * 
+	 * @param conn
+	 *            The connection
+	 */
+	static void finishLastResponse(HttpConnection conn) {
+		InputStream lastResponse = conn.getLastResponseInputStream();
+		if (lastResponse != null) {
+			conn.setLastResponseInputStream(null);
+			try {
+				lastResponse.close();
+			} catch (IOException ioe) {
+				conn.close();
+			}
+		}
+	}
 
-    /**
-     * The time the connection was made idle.
-     */
-    private long idleStartTime = Long.MAX_VALUE;
-    
-    /**
-     * Used to test if {@link #httpConnection} is currently in use 
-     * (i.e. checked out).  This is only used as a sanity check to help
-     * debug cases where this connection manager is being used incorrectly.
-     * It will not be used to enforce thread safety.
-     */
-    private volatile boolean inUse = false;
+	/** The http connection */
+	protected HttpConnection httpConnection;
 
-    private boolean alwaysClose = false;
+	/**
+	 * Collection of parameters associated with this connection manager.
+	 */
+	private HttpConnectionManagerParams params = new HttpConnectionManagerParams();
 
-    /**
-     * The connection manager created with this constructor will try to keep the 
-     * connection open (alive) between consecutive requests if the alwaysClose 
-     * parameter is set to <tt>false</tt>. Otherwise the connection manager will 
-     * always close connections upon release.
-     * 
-     * @param alwaysClose if set <tt>true</tt>, the connection manager will always
-     *    close connections upon release.
-     */
-    public SimpleHttpConnectionManager(boolean alwaysClose) {
-        super();
-        this.alwaysClose = alwaysClose;
-    }
-    
-    /**
-     * The connection manager created with this constructor will always try to keep 
-     * the connection open (alive) between consecutive requests.
-     */
-    public SimpleHttpConnectionManager() {
-        super();
-    }
-    
-    /**
-     * @see HttpConnectionManager#getConnection(HostConfiguration)
-     */
-    public HttpConnection getConnection(HostConfiguration hostConfiguration) {
-        return getConnection(hostConfiguration, 0);
-    }
+	/**
+	 * The time the connection was made idle.
+	 */
+	private long idleStartTime = Long.MAX_VALUE;
 
-    /**
-     * Gets the staleCheckingEnabled value to be set on HttpConnections that are created.
-     * 
-     * @return <code>true</code> if stale checking will be enabled on HttpConections
-     * 
-     * @see HttpConnection#isStaleCheckingEnabled()
-     * 
-     * @deprecated Use {@link HttpConnectionManagerParams#isStaleCheckingEnabled()},
-     * {@link HttpConnectionManager#getParams()}.
-     */
-    public boolean isConnectionStaleCheckingEnabled() {
-        return this.params.isStaleCheckingEnabled();
-    }
+	/**
+	 * Used to test if {@link #httpConnection} is currently in use (i.e. checked
+	 * out). This is only used as a sanity check to help debug cases where this
+	 * connection manager is being used incorrectly. It will not be used to
+	 * enforce thread safety.
+	 */
+	private volatile boolean inUse = false;
 
-    /**
-     * Sets the staleCheckingEnabled value to be set on HttpConnections that are created.
-     * 
-     * @param connectionStaleCheckingEnabled <code>true</code> if stale checking will be enabled 
-     * on HttpConections
-     * 
-     * @see HttpConnection#setStaleCheckingEnabled(boolean)
-     * 
-     * @deprecated Use {@link HttpConnectionManagerParams#setStaleCheckingEnabled(boolean)},
-     * {@link HttpConnectionManager#getParams()}.
-     */
-    public void setConnectionStaleCheckingEnabled(boolean connectionStaleCheckingEnabled) {
-        this.params.setStaleCheckingEnabled(connectionStaleCheckingEnabled);
-    }
-    
-    /**
-     * This method always returns the same connection object. If the connection is already
-     * open, it will be closed and the new host configuration will be applied.
-     * 
-     * @param hostConfiguration The host configuration specifying the connection
-     *        details.
-     * @param timeout this parameter has no effect. The connection is always returned
-     *        immediately.
-     * @since 3.0
-     */
-    public HttpConnection getConnectionWithTimeout(
-        HostConfiguration hostConfiguration, long timeout) {
+	private boolean alwaysClose = false;
 
-        if (httpConnection == null) {
-            httpConnection = new HttpConnection(hostConfiguration);
-            httpConnection.setHttpConnectionManager(this);
-            httpConnection.getParams().setDefaults(this.params);
-        } else {
+	/**
+	 * The connection manager created with this constructor will try to keep the
+	 * connection open (alive) between consecutive requests if the alwaysClose
+	 * parameter is set to <tt>false</tt>. Otherwise the connection manager will
+	 * always close connections upon release.
+	 * 
+	 * @param alwaysClose
+	 *            if set <tt>true</tt>, the connection manager will always close
+	 *            connections upon release.
+	 */
+	public SimpleHttpConnectionManager(boolean alwaysClose) {
+		super();
+		this.alwaysClose = alwaysClose;
+	}
 
-            // make sure the host and proxy are correct for this connection
-            // close it and set the values if they are not
-            if (!hostConfiguration.hostEquals(httpConnection)
-                || !hostConfiguration.proxyEquals(httpConnection)) {
-                    
-                if (httpConnection.isOpen()) {
-                    httpConnection.close();
-                }
+	/**
+	 * The connection manager created with this constructor will always try to
+	 * keep the connection open (alive) between consecutive requests.
+	 */
+	public SimpleHttpConnectionManager() {
+		super();
+	}
 
-                httpConnection.setHost(hostConfiguration.getHost());
-                httpConnection.setPort(hostConfiguration.getPort());
-                httpConnection.setProtocol(hostConfiguration.getProtocol());
-                httpConnection.setLocalAddress(hostConfiguration.getLocalAddress());
+	/**
+	 * @see HttpConnectionManager#getConnection(HostConfiguration)
+	 */
+	public HttpConnection getConnection(HostConfiguration hostConfiguration) {
+		return getConnection(hostConfiguration, 0);
+	}
 
-                httpConnection.setProxyHost(hostConfiguration.getProxyHost());
-                httpConnection.setProxyPort(hostConfiguration.getProxyPort());
-            } else {
-                finishLastResponse(httpConnection);
-            }
-        }
+	/**
+	 * Gets the staleCheckingEnabled value to be set on HttpConnections that are
+	 * created.
+	 * 
+	 * @return <code>true</code> if stale checking will be enabled on
+	 *         HttpConections
+	 * 
+	 * @see HttpConnection#isStaleCheckingEnabled()
+	 * 
+	 * @deprecated Use
+	 *             {@link HttpConnectionManagerParams#isStaleCheckingEnabled()},
+	 *             {@link HttpConnectionManager#getParams()}.
+	 */
+	public boolean isConnectionStaleCheckingEnabled() {
+		return this.params.isStaleCheckingEnabled();
+	}
 
-        // remove the connection from the timeout handler
-        idleStartTime = Long.MAX_VALUE;
+	/**
+	 * Sets the staleCheckingEnabled value to be set on HttpConnections that are
+	 * created.
+	 * 
+	 * @param connectionStaleCheckingEnabled
+	 *            <code>true</code> if stale checking will be enabled on
+	 *            HttpConections
+	 * 
+	 * @see HttpConnection#setStaleCheckingEnabled(boolean)
+	 * 
+	 * @deprecated Use
+	 *             {@link HttpConnectionManagerParams#setStaleCheckingEnabled(boolean)}
+	 *             , {@link HttpConnectionManager#getParams()}.
+	 */
+	public void setConnectionStaleCheckingEnabled(boolean connectionStaleCheckingEnabled) {
+		this.params.setStaleCheckingEnabled(connectionStaleCheckingEnabled);
+	}
 
-        if (inUse) LOG.warn(MISUSE_MESSAGE);
-        inUse = true;
-        
-        return httpConnection;
-    }
+	/**
+	 * This method always returns the same connection object. If the connection
+	 * is already open, it will be closed and the new host configuration will be
+	 * applied.
+	 * 
+	 * @param hostConfiguration
+	 *            The host configuration specifying the connection details.
+	 * @param timeout
+	 *            this parameter has no effect. The connection is always
+	 *            returned immediately.
+	 * @since 3.0
+	 */
+	public HttpConnection getConnectionWithTimeout(HostConfiguration hostConfiguration, long timeout) {
 
-    /**
-     * @see HttpConnectionManager#getConnection(HostConfiguration, long)
-     * 
-     * @deprecated Use #getConnectionWithTimeout(HostConfiguration, long)
-     */
-    public HttpConnection getConnection(
-        HostConfiguration hostConfiguration, long timeout) {
-        return getConnectionWithTimeout(hostConfiguration, timeout);
-    }
+		if (httpConnection == null) {
+			httpConnection = new HttpConnection(hostConfiguration);
+			httpConnection.setHttpConnectionManager(this);
+			httpConnection.getParams().setDefaults(this.params);
+		} else {
 
-    /**
-     * @see HttpConnectionManager#releaseConnection(org.apache.commons.httpclient.HttpConnection)
-     */
-    public void releaseConnection(HttpConnection conn) {
-        if (conn != httpConnection) {
-            throw new IllegalStateException("Unexpected release of an unknown connection.");
-        }
-        if (this.alwaysClose) {
-            httpConnection.close();
-        } else {
-            // make sure the connection is reuseable
-            finishLastResponse(httpConnection);
-        }
-        
-        inUse = false;
+			// make sure the host and proxy are correct for this connection
+			// close it and set the values if they are not
+			if (!hostConfiguration.hostEquals(httpConnection) || !hostConfiguration.proxyEquals(httpConnection)) {
 
-        // track the time the connection was made idle
-        idleStartTime = System.currentTimeMillis();
-    }
+				if (httpConnection.isOpen()) {
+					httpConnection.close();
+				}
 
-    /**
-     * Returns {@link HttpConnectionManagerParams parameters} associated 
-     * with this connection manager.
-     * 
-     * @since 2.1
-     * 
-     * @see HttpConnectionManagerParams
-     */
-    public HttpConnectionManagerParams getParams() {
-        return this.params;
-    }
+				httpConnection.setHost(hostConfiguration.getHost());
+				httpConnection.setPort(hostConfiguration.getPort());
+				httpConnection.setProtocol(hostConfiguration.getProtocol());
+				httpConnection.setLocalAddress(hostConfiguration.getLocalAddress());
 
-    /**
-     * Assigns {@link HttpConnectionManagerParams parameters} for this 
-     * connection manager.
-     * 
-     * @since 2.1
-     * 
-     * @see HttpConnectionManagerParams
-     */
-    public void setParams(final HttpConnectionManagerParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("Parameters may not be null");
-        }
-        this.params = params;
-    }
-    
-    /**
-     * @since 3.0
-     */
-    public void closeIdleConnections(long idleTimeout) {
-        long maxIdleTime = System.currentTimeMillis() - idleTimeout;
-        if (idleStartTime <= maxIdleTime) {
-            httpConnection.close();
-        }
-    }
-    
-    /**
-     * since 3.1
-     */
-    public void shutdown() {
-        httpConnection.close();
-    }
-    
+				httpConnection.setProxyHost(hostConfiguration.getProxyHost());
+				httpConnection.setProxyPort(hostConfiguration.getProxyPort());
+			} else {
+				finishLastResponse(httpConnection);
+			}
+		}
+
+		// remove the connection from the timeout handler
+		idleStartTime = Long.MAX_VALUE;
+
+		if (inUse)
+			LOG.warn(MISUSE_MESSAGE);
+		inUse = true;
+
+		return httpConnection;
+	}
+
+	/**
+	 * @see HttpConnectionManager#getConnection(HostConfiguration, long)
+	 * 
+	 * @deprecated Use #getConnectionWithTimeout(HostConfiguration, long)
+	 */
+	public HttpConnection getConnection(HostConfiguration hostConfiguration, long timeout) {
+		return getConnectionWithTimeout(hostConfiguration, timeout);
+	}
+
+	/**
+	 * @see HttpConnectionManager#releaseConnection(org.apache.commons.httpclient.HttpConnection)
+	 */
+	public void releaseConnection(HttpConnection conn) {
+		if (conn != httpConnection) {
+			throw new IllegalStateException("Unexpected release of an unknown connection.");
+		}
+		if (this.alwaysClose) {
+			httpConnection.close();
+		} else {
+			// make sure the connection is reuseable
+			finishLastResponse(httpConnection);
+		}
+
+		inUse = false;
+
+		// track the time the connection was made idle
+		idleStartTime = System.currentTimeMillis();
+	}
+
+	/**
+	 * Returns {@link HttpConnectionManagerParams parameters} associated with
+	 * this connection manager.
+	 * 
+	 * @since 2.1
+	 * 
+	 * @see HttpConnectionManagerParams
+	 */
+	public HttpConnectionManagerParams getParams() {
+		return this.params;
+	}
+
+	/**
+	 * Assigns {@link HttpConnectionManagerParams parameters} for this
+	 * connection manager.
+	 * 
+	 * @since 2.1
+	 * 
+	 * @see HttpConnectionManagerParams
+	 */
+	public void setParams(final HttpConnectionManagerParams params) {
+		if (params == null) {
+			throw new IllegalArgumentException("Parameters may not be null");
+		}
+		this.params = params;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public void closeIdleConnections(long idleTimeout) {
+		long maxIdleTime = System.currentTimeMillis() - idleTimeout;
+		if (idleStartTime <= maxIdleTime) {
+			httpConnection.close();
+		}
+	}
+
+	/**
+	 * since 3.1
+	 */
+	public void shutdown() {
+		httpConnection.close();
+	}
+
 }

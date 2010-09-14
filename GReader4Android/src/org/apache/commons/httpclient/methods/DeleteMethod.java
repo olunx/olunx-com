@@ -32,65 +32,58 @@ package org.apache.commons.httpclient.methods;
 
 import org.apache.commons.httpclient.HttpMethodBase;
 
-
 /**
  * Implements the HTTP DELETE method.
  * <p>
- * The HTTP DELETE method is defined in section 9.7 of 
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
- * <blockquote>
- * The DELETE method requests that the origin server delete the resource
- * identified by the Request-URI. This method MAY be overridden by human
- * intervention (or other means) on the origin server.
- * </blockquote>
+ * The HTTP DELETE method is defined in section 9.7 of <a
+ * href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>: <blockquote> The
+ * DELETE method requests that the origin server delete the resource identified
+ * by the Request-URI. This method MAY be overridden by human intervention (or
+ * other means) on the origin server. </blockquote>
  * </p>
- *
+ * 
  * @author <a href="mailto:remm@apache.org">Remy Maucherat</a>
  * @author <a href="mailto:bcholmes@apache.org">B.C. Holmes</a>
  * @author <a href="mailto:jsdever@apache.org">Jeff Dever</a>
- *
+ * 
  * @version $Revision: 480424 $
  * @since 1.0
  */
-public class DeleteMethod
-    extends HttpMethodBase {
+public class DeleteMethod extends HttpMethodBase {
 
+	// ----------------------------------------------------------- Constructors
 
-    // ----------------------------------------------------------- Constructors
+	/**
+	 * No-arg constructor.
+	 * 
+	 * @since 1.0
+	 */
+	public DeleteMethod() {
+	}
 
+	/**
+	 * Constructor specifying a URI.
+	 * 
+	 * @param uri
+	 *            either an absolute or relative URI
+	 * 
+	 * @since 1.0
+	 */
+	public DeleteMethod(String uri) {
+		super(uri);
+	}
 
-    /**
-     * No-arg constructor.
-     *
-     * @since 1.0
-     */
-    public DeleteMethod() {
-    }
+	// ----------------------------------------------------- HttpMethod Methods
 
-
-    /**
-     * Constructor specifying a URI.
-     *
-     * @param uri either an absolute or relative URI
-     *
-     * @since 1.0
-     */
-    public DeleteMethod(String uri) {
-        super(uri);
-    }
-
-
-    // ----------------------------------------------------- HttpMethod Methods
-
-    /**
-     * Returns <tt>"DELETE"</tt>.
-     * @return <tt>"DELETE"</tt>
-     *
-     * @since 2.0
-     */
-    public String getName() {
-        return "DELETE";
-    }
-
+	/**
+	 * Returns <tt>"DELETE"</tt>.
+	 * 
+	 * @return <tt>"DELETE"</tt>
+	 * 
+	 * @since 2.0
+	 */
+	public String getName() {
+		return "DELETE";
+	}
 
 }

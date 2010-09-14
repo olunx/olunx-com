@@ -45,34 +45,41 @@ import org.apache.commons.httpclient.util.ExceptionUtil;
  */
 public class NoHttpResponseException extends IOException {
 
-    /**
-     * Creates a new NoHttpResponseException with a <tt>null</tt> detail message.
-     */
-    public NoHttpResponseException() {
-        super();
-    }
+	/**
+	 * Creates a new NoHttpResponseException with a <tt>null</tt> detail
+	 * message.
+	 */
+	public NoHttpResponseException() {
+		super();
+	}
 
-    /**
-     * Creates a new NoHttpResponseException with the specified detail message.
-     *
-     * @param message exception message
-     */
-    public NoHttpResponseException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a new NoHttpResponseException with the specified detail message.
+	 * 
+	 * @param message
+	 *            exception message
+	 */
+	public NoHttpResponseException(String message) {
+		super(message);
+	}
 
-    /**
-     * Creates a new NoHttpResponseException with the specified detail message and cause.
-     *
-     * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
-     * 
-     * @since 3.0
-     */
-    public NoHttpResponseException(String message, Throwable cause) {
-        super(message);
-        // If we're running on JDK 1.4 or later, tell Throwable what the cause was
-        ExceptionUtil.initCause(this, cause);
-    }
+	/**
+	 * Creates a new NoHttpResponseException with the specified detail message
+	 * and cause.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param cause
+	 *            the <tt>Throwable</tt> that caused this exception, or
+	 *            <tt>null</tt> if the cause is unavailable, unknown, or not a
+	 *            <tt>Throwable</tt>
+	 * 
+	 * @since 3.0
+	 */
+	public NoHttpResponseException(String message, Throwable cause) {
+		super(message);
+		// If we're running on JDK 1.4 or later, tell Throwable what the cause
+		// was
+		ExceptionUtil.initCause(this, cause);
+	}
 }

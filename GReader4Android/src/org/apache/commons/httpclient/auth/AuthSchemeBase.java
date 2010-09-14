@@ -35,59 +35,60 @@ package org.apache.commons.httpclient.auth;
  * Abstract authentication scheme class that implements {@link AuthScheme}
  * interface and provides a default contstructor.
  * </p>
+ * 
  * @deprecated No longer used
- *
+ * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  */
 public abstract class AuthSchemeBase implements AuthScheme {
 
-    /**
-     * Original challenge string as received from the server.
-     */
-    private String challenge = null;
+	/**
+	 * Original challenge string as received from the server.
+	 */
+	private String challenge = null;
 
-    /**
-     * Constructor for an abstract authetication schemes.
-     * 
-     * @param challenge authentication challenge
-     * 
-     * @throws MalformedChallengeException is thrown if the authentication challenge
-     * is malformed
-     * 
-     * @deprecated Use parameterless constructor and {@link AuthScheme#processChallenge(String)} 
-     *             method
-     */
-    public AuthSchemeBase(final String challenge) 
-      throws MalformedChallengeException {
-        super();
-        if (challenge == null) {
-            throw new IllegalArgumentException("Challenge may not be null"); 
-        }
-        this.challenge = challenge;
-    }
+	/**
+	 * Constructor for an abstract authetication schemes.
+	 * 
+	 * @param challenge
+	 *            authentication challenge
+	 * 
+	 * @throws MalformedChallengeException
+	 *             is thrown if the authentication challenge is malformed
+	 * 
+	 * @deprecated Use parameterless constructor and
+	 *             {@link AuthScheme#processChallenge(String)} method
+	 */
+	public AuthSchemeBase(final String challenge) throws MalformedChallengeException {
+		super();
+		if (challenge == null) {
+			throw new IllegalArgumentException("Challenge may not be null");
+		}
+		this.challenge = challenge;
+	}
 
-    /**
-     * @see java.lang.Object#equals(Object)
-     */
-    public boolean equals(Object obj) {
-        if (obj instanceof AuthSchemeBase) {
-            return this.challenge.equals(((AuthSchemeBase) obj).challenge);
-        } else {
-            return super.equals(obj);
-        }
-    }
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof AuthSchemeBase) {
+			return this.challenge.equals(((AuthSchemeBase) obj).challenge);
+		} else {
+			return super.equals(obj);
+		}
+	}
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode() {
-        return this.challenge.hashCode();
-    }
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return this.challenge.hashCode();
+	}
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return this.challenge;
-    }
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return this.challenge;
+	}
 }

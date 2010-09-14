@@ -27,43 +27,56 @@ import org.jdom.Document;
  * <p>
  * TODO: explain how developers can plugin their own implementations.
  * <p>
+ * 
  * @author Alejandro Abdelnur
- *
+ * 
  */
 public interface WireFeedParser {
 
-    /**
-     * Returns the type of feed the parser handles.
-     * <p>
-     * @see WireFeed for details on the format of this string.
-     * <p>
-     * @return the type of feed the parser handles.
-     *
-     */
-    public String getType();
+	/**
+	 * Returns the type of feed the parser handles.
+	 * <p>
+	 * 
+	 * @see WireFeed for details on the format of this string.
+	 *      <p>
+	 * @return the type of feed the parser handles.
+	 * 
+	 */
+	public String getType();
 
-    /**
-     * Inspects an XML Document (JDOM) to check if it can parse it.
-     * <p>
-     * It checks if the given document if the type of feeds the parser understands.
-     * <p>
-     * @param document XML Document (JDOM) to check if it can be parsed by this parser.
-     * @return <b>true</b> if the parser know how to parser this feed, <b>false</b> otherwise.
-     *
-     */
-    public boolean isMyType(Document document);
+	/**
+	 * Inspects an XML Document (JDOM) to check if it can parse it.
+	 * <p>
+	 * It checks if the given document if the type of feeds the parser
+	 * understands.
+	 * <p>
+	 * 
+	 * @param document
+	 *            XML Document (JDOM) to check if it can be parsed by this
+	 *            parser.
+	 * @return <b>true</b> if the parser know how to parser this feed,
+	 *         <b>false</b> otherwise.
+	 * 
+	 */
+	public boolean isMyType(Document document);
 
-    /**
-     * Parses an XML document (JDOM Document) into a feed bean.
-     * <p>
-     * @param document XML document (JDOM) to parse.
-     * @param validate indicates if the feed should be strictly validated (NOT YET IMPLEMENTED).
-     * @return the resulting feed bean.
-     * @throws IllegalArgumentException thrown if the parser cannot handle the given feed type.
-     * @throws FeedException thrown if a feed bean cannot be created out of the XML document (JDOM).
-     *
-     */
-    public WireFeed parse(Document document, boolean validate) throws IllegalArgumentException,FeedException;
-
+	/**
+	 * Parses an XML document (JDOM Document) into a feed bean.
+	 * <p>
+	 * 
+	 * @param document
+	 *            XML document (JDOM) to parse.
+	 * @param validate
+	 *            indicates if the feed should be strictly validated (NOT YET
+	 *            IMPLEMENTED).
+	 * @return the resulting feed bean.
+	 * @throws IllegalArgumentException
+	 *             thrown if the parser cannot handle the given feed type.
+	 * @throws FeedException
+	 *             thrown if a feed bean cannot be created out of the XML
+	 *             document (JDOM).
+	 * 
+	 */
+	public WireFeed parse(Document document, boolean validate) throws IllegalArgumentException, FeedException;
 
 }

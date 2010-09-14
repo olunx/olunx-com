@@ -35,15 +35,13 @@ import java.util.Comparator;
 import org.apache.commons.httpclient.Cookie;
 
 /**
- * This cookie comparator ensures that multiple cookies satisfying 
- * a common criteria are ordered in the <tt>Cookie</tt> header such
- * that those with more specific Path attributes precede those with
- * less specific.
- *  
+ * This cookie comparator ensures that multiple cookies satisfying a common
+ * criteria are ordered in the <tt>Cookie</tt> header such that those with more
+ * specific Path attributes precede those with less specific.
+ * 
  * <p>
- * This comparator assumes that Path attributes of two cookies 
- * path-match a commmon request-URI. Otherwise, the result of the
- * comparison is undefined.
+ * This comparator assumes that Path attributes of two cookies path-match a
+ * commmon request-URI. Otherwise, the result of the comparison is undefined.
  * </p>
  * 
  * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
@@ -52,32 +50,32 @@ import org.apache.commons.httpclient.Cookie;
  */
 public class CookiePathComparator implements Comparator {
 
-    private String normalizePath(final Cookie cookie) {
-        String path = cookie.getPath();
-        if (path == null) {
-            path = "/";
-        }
-        if (!path.endsWith("/")) {
-            path = path + "/";
-        }
-        return path;
-    }
-    
-    public int compare(final Object o1, final Object o2) {
-        Cookie c1 = (Cookie) o1;
-        Cookie c2 = (Cookie) o2;
-        String path1 = normalizePath(c1);
-        String path2 = normalizePath(c2);
-        if (path1.equals(path2)) {
-            return 0;
-        } else if (path1.startsWith(path2)) {
-            return -1;
-        } else if (path2.startsWith(path1)) {
-            return 1;
-        } else {
-            // Does not really matter
-            return 0;
-        }
-    }
+	private String normalizePath(final Cookie cookie) {
+		String path = cookie.getPath();
+		if (path == null) {
+			path = "/";
+		}
+		if (!path.endsWith("/")) {
+			path = path + "/";
+		}
+		return path;
+	}
+
+	public int compare(final Object o1, final Object o2) {
+		Cookie c1 = (Cookie) o1;
+		Cookie c2 = (Cookie) o2;
+		String path1 = normalizePath(c1);
+		String path2 = normalizePath(c2);
+		if (path1.equals(path2)) {
+			return 0;
+		} else if (path1.startsWith(path2)) {
+			return -1;
+		} else if (path2.startsWith(path1)) {
+			return 1;
+		} else {
+			// Does not really matter
+			return 0;
+		}
+	}
 
 }

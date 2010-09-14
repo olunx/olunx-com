@@ -32,147 +32,142 @@ package org.apache.commons.httpclient;
 
 /**
  * The URI parsing and escape encoding exception.
- *
+ * 
  * @author <a href="mailto:jericho at apache.org">Sung-Gu</a>
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
- * @version $Revision: 480424 $ $Date: 2002/03/14 15:14:01 
+ * @version $Revision: 480424 $ $Date: 2002/03/14 15:14:01
  */
 public class URIException extends HttpException {
 
-    // ----------------------------------------------------------- constructors
+	// ----------------------------------------------------------- constructors
 
-    /**
-     * Default constructor.
-     */
-    public URIException() {
-    }
+	/**
+	 * Default constructor.
+	 */
+	public URIException() {
+	}
 
+	/**
+	 * The constructor with a reason code argument.
+	 * 
+	 * @param reasonCode
+	 *            the reason code
+	 */
+	public URIException(int reasonCode) {
+		this.reasonCode = reasonCode;
+	}
 
-    /**
-     * The constructor with a reason code argument.
-     *
-     * @param reasonCode the reason code
-     */
-    public URIException(int reasonCode) {
-        this.reasonCode = reasonCode;
-    }
+	/**
+	 * The constructor with a reason string and its code arguments.
+	 * 
+	 * @param reasonCode
+	 *            the reason code
+	 * @param reason
+	 *            the reason
+	 */
+	public URIException(int reasonCode, String reason) {
+		super(reason); // for backward compatibility of Throwable
+		this.reason = reason;
+		this.reasonCode = reasonCode;
+	}
 
+	/**
+	 * The constructor with a reason string argument.
+	 * 
+	 * @param reason
+	 *            the reason
+	 */
+	public URIException(String reason) {
+		super(reason); // for backward compatibility of Throwable
+		this.reason = reason;
+		this.reasonCode = UNKNOWN;
+	}
 
-    /**
-     * The constructor with a reason string and its code arguments.
-     *
-     * @param reasonCode the reason code
-     * @param reason the reason
-     */
-    public URIException(int reasonCode, String reason) {
-        super(reason); // for backward compatibility of Throwable
-        this.reason = reason;
-        this.reasonCode = reasonCode;
-    }
+	// -------------------------------------------------------------- constants
 
+	/**
+	 * No specified reason code.
+	 */
+	public static final int UNKNOWN = 0;
 
-    /**
-     * The constructor with a reason string argument.
-     *
-     * @param reason the reason
-     */
-    public URIException(String reason) {
-        super(reason); // for backward compatibility of Throwable
-        this.reason = reason;
-        this.reasonCode = UNKNOWN;
-    }
+	/**
+	 * The URI parsing error.
+	 */
+	public static final int PARSING = 1;
 
-    // -------------------------------------------------------------- constants
+	/**
+	 * The unsupported character encoding.
+	 */
+	public static final int UNSUPPORTED_ENCODING = 2;
 
-    /**
-     * No specified reason code.
-     */
-    public static final int UNKNOWN = 0;
+	/**
+	 * The URI escape encoding and decoding error.
+	 */
+	public static final int ESCAPING = 3;
 
+	/**
+	 * The DNS punycode encoding or decoding error.
+	 */
+	public static final int PUNYCODE = 4;
 
-    /**
-     * The URI parsing error.
-     */
-    public static final int PARSING = 1;
+	// ------------------------------------------------------------- properties
 
+	/**
+	 * The reason code.
+	 */
+	protected int reasonCode;
 
-    /**
-     * The unsupported character encoding.
-     */
-    public static final int UNSUPPORTED_ENCODING = 2;
+	/**
+	 * The reason message.
+	 */
+	protected String reason;
 
+	// ---------------------------------------------------------------- methods
 
-    /**
-     * The URI escape encoding and decoding error.
-     */
-    public static final int ESCAPING = 3;
+	/**
+	 * Get the reason code.
+	 * 
+	 * @return the reason code
+	 */
+	public int getReasonCode() {
+		return reasonCode;
+	}
 
+	/**
+	 * Set the reason code.
+	 * 
+	 * @param reasonCode
+	 *            the reason code
+	 * 
+	 * @deprecated Callers should set the reason code as a parameter to the
+	 *             constructor.
+	 */
+	public void setReasonCode(int reasonCode) {
+		this.reasonCode = reasonCode;
+	}
 
-    /**
-     * The DNS punycode encoding or decoding error.
-     */
-    public static final int PUNYCODE = 4;
+	/**
+	 * Get the reason message.
+	 * 
+	 * @return the reason message
+	 * 
+	 * @deprecated You should instead call {@link #getMessage()}.
+	 */
+	public String getReason() {
+		return reason;
+	}
 
-    // ------------------------------------------------------------- properties
-
-    /**
-     * The reason code.
-     */
-    protected int reasonCode;
-
-
-    /**
-     * The reason message.
-     */
-    protected String reason;
-
-    // ---------------------------------------------------------------- methods
-
-    /**
-     * Get the reason code.
-     *
-     * @return the reason code
-     */
-    public int getReasonCode() {
-        return reasonCode;
-    }
-
-    /**
-     * Set the reason code.
-     *
-     * @param reasonCode the reason code
-     *
-     * @deprecated Callers should set the reason code as a parameter to the
-     *  constructor.
-     */
-    public void setReasonCode(int reasonCode) {
-        this.reasonCode = reasonCode;
-    }
-
-
-    /**
-     * Get the reason message.
-     *
-     * @return the reason message
-     *
-     * @deprecated You should instead call {@link #getMessage()}.
-     */
-    public String getReason() {
-        return reason;
-    }
-
-
-    /**
-     * Set the reason message.
-     *
-     * @param reason the reason message
-     *
-     * @deprecated Callers should instead set this via a parameter to the constructor.
-     */
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
+	/**
+	 * Set the reason message.
+	 * 
+	 * @param reason
+	 *            the reason message
+	 * 
+	 * @deprecated Callers should instead set this via a parameter to the
+	 *             constructor.
+	 */
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 
 }
-

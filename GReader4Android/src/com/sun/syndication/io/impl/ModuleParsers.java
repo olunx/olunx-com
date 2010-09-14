@@ -28,49 +28,49 @@ import java.util.List;
 /**
  */
 public class ModuleParsers extends PluginManager {
-    public ModuleParsers(String propertyKey, WireFeedParser parentParser) {
-        super(propertyKey, parentParser, null);
-    }
+	public ModuleParsers(String propertyKey, WireFeedParser parentParser) {
+		super(propertyKey, parentParser, null);
+	}
 
-    public String getKey(Object obj) {
-        return ((ModuleParser)obj).getNamespaceUri();
-    }
+	public String getKey(Object obj) {
+		return ((ModuleParser) obj).getNamespaceUri();
+	}
 
-    public List getModuleNamespaces() {
-        return getKeys();
-    }
+	public List getModuleNamespaces() {
+		return getKeys();
+	}
 
-    public List parseModules(Element root) {
-        List parsers = getPlugins();
-        List modules = null;
-        for (int i=0;i<parsers.size();i++) {
-            ModuleParser parser = (ModuleParser) parsers.get(i);
-            String namespaceUri = parser.getNamespaceUri();
-            Namespace namespace = Namespace.getNamespace(namespaceUri);
-            if (hasElementsFrom(root, namespace)) {
-                Module module = parser.parse(root);
-                if (module != null) {
-                    if (modules == null) {
-                        modules = new ArrayList();
-                    }
-                    modules.add(module);
-                }
-            }
-        }
-        return modules;
-    }
+	public List parseModules(Element root) {
+		List parsers = getPlugins();
+		List modules = null;
+		for (int i = 0; i < parsers.size(); i++) {
+			ModuleParser parser = (ModuleParser) parsers.get(i);
+			String namespaceUri = parser.getNamespaceUri();
+			Namespace namespace = Namespace.getNamespace(namespaceUri);
+			if (hasElementsFrom(root, namespace)) {
+				Module module = parser.parse(root);
+				if (module != null) {
+					if (modules == null) {
+						modules = new ArrayList();
+					}
+					modules.add(module);
+				}
+			}
+		}
+		return modules;
+	}
 
-    private boolean hasElementsFrom(Element root, Namespace namespace) {
-        boolean hasElements = false;
-//        boolean hasElements = namespace.equals(root.getNamespace());
+	private boolean hasElementsFrom(Element root, Namespace namespace) {
+		boolean hasElements = false;
+		// boolean hasElements = namespace.equals(root.getNamespace());
 
-        if (!hasElements) {
-            List children = root.getChildren();
-            for (int i=0;!hasElements && i < children.size();i++) {
-                Element child = (Element) children.get(i);
-                hasElements = namespace.equals(child.getNamespace());
-            }
-        }
-        return hasElements;
-    }
+		if (!hasElements) {
+			List children = root.getChildren();
+			for (int i = 0; !hasElements && i < children.size(); i++) {
+				Element child = (Element) children.get(i);
+				hasElements = namespace.equals(child.getNamespace());
+			}
+		}
+		return hasElements;
+	}
 }

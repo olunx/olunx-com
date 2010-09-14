@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class ArticlesHelper implements IHelper {
 
@@ -27,6 +28,7 @@ public class ArticlesHelper implements IHelper {
 	public final static String c_feedXmlUrl = "feed_xml_url";
 
 	private static String TABLE = "t_articles";
+	private final String TAG = "com.olunx.db.ArticlesHelper";
 
 	private static SQLiteDatabase sqlite = null;
 
@@ -52,13 +54,14 @@ public class ArticlesHelper implements IHelper {
 	@Override
 	public void close() {
 		if (sqlite != null || sqlite.isOpen()) {
+			Log.i(TAG, "sqlite close");
 			sqlite.close();
 		}
 	}
 
 	@Override
 	public void createTable() {
-		System.out.println("create article table");
+		Log.i(TAG, "create table");
 		this.getDB().execSQL(
 				"create table if not exists " + TABLE + "(" + c_id + " int primary key," + c_title + " text," + c_desc + " text,"
 						+ c_content + " text," + c_author + " text," + c_publishTime + " text," + c_link + " text," + c_type + " text,"
@@ -67,7 +70,7 @@ public class ArticlesHelper implements IHelper {
 
 	@Override
 	public void dropTable() {
-		System.out.println("drop article table");
+		Log.i(TAG, "drop table");
 		this.getDB().execSQL("drop table if exists " + TABLE + ";");
 	}
 
@@ -79,7 +82,6 @@ public class ArticlesHelper implements IHelper {
 	 * @param object
 	 */
 	public void addRecord(ContentValues values) {
-		System.out.println("feedAdd");
 		getDB().insert(TABLE, null, values);
 	}
 
@@ -92,7 +94,6 @@ public class ArticlesHelper implements IHelper {
 	public void updateContent(String title, String content) {
 		row = new ContentValues();
 		row.put(c_content, content);
-		System.out.println("updateContent");
 		getDB().update(TABLE, row, c_title + "== ? ", new String[] { title });
 	}
 
@@ -115,11 +116,7 @@ public class ArticlesHelper implements IHelper {
 			while (!result.isAfterLast()) {
 				url = result.getString(urlColumn);
 				count = result.getString(countColumn);
-				System.out.println("isExistsFeed " + url);
-//				if (helper.isExistsFeed(url)) {
-					helper.updateArticleCount(url, count);
-//				}
-
+				helper.updateArticleCount(url, count);
 				result.moveToNext();
 			}
 		}
@@ -140,15 +137,15 @@ public class ArticlesHelper implements IHelper {
 
 	/**
 	 * 获取文章
+	 * 
 	 * @param title
 	 * @return
 	 */
 	public HashMap<String, String> getArticleByTitle(String title) {
 		HashMap<String, String> article = new HashMap<String, String>();
-		
-		Cursor result =  getDB().query(TABLE, new String[] { c_id, c_content }, c_title + "== ?", new String[] { title }, null, null,
-				null);
-		
+
+		Cursor result = getDB().query(TABLE, new String[] { c_id, c_content }, c_title + "== ?", new String[] { title }, null, null, null);
+
 		if (result != null) {
 			result.moveToFirst();
 			int contentIndex = result.getColumnIndex(c_content);
@@ -158,9 +155,10 @@ public class ArticlesHelper implements IHelper {
 			}
 		}
 		result.close();
-		
+
 		return article;
 	}
+
 	/**
 	 * 判断文章是否存在
 	 * 

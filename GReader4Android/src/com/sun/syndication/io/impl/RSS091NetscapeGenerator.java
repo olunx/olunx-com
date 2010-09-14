@@ -23,39 +23,37 @@ import org.jdom.Element;
 /**
  * Feed Generator for RSS 0.91
  * <p/>
- *
+ * 
  * @author Elaine Chien
- *
+ * 
  */
 public class RSS091NetscapeGenerator extends RSS091UserlandGenerator {
-    private String _version;
+	private String _version;
 
-    public RSS091NetscapeGenerator() {
-        this("rss_0.91N","0.91");
-    }
+	public RSS091NetscapeGenerator() {
+		this("rss_0.91N", "0.91");
+	}
 
-    protected RSS091NetscapeGenerator(String type,String version) {
-        super(type,version);
-    }
+	protected RSS091NetscapeGenerator(String type, String version) {
+		super(type, version);
+	}
 
-    protected Document createDocument(Element root) {
-        Document doc = new Document(root);
-        DocType docType = new DocType(RSS091NetscapeParser.ELEMENT_NAME,
-                                      RSS091NetscapeParser.PUBLIC_ID,
-                                      RSS091NetscapeParser.SYSTEM_ID);
-        doc.setDocType(docType);
-        return doc;
-    }
+	protected Document createDocument(Element root) {
+		Document doc = new Document(root);
+		DocType docType = new DocType(RSS091NetscapeParser.ELEMENT_NAME, RSS091NetscapeParser.PUBLIC_ID, RSS091NetscapeParser.SYSTEM_ID);
+		doc.setDocType(docType);
+		return doc;
+	}
 
-    protected String getTextInputLabel() {
-        return "textinput";
-    }
+	protected String getTextInputLabel() {
+		return "textinput";
+	}
 
-    /**
-     * To be overriden by RSS 0.91 Netscape and RSS 0.94
-     */
-    protected boolean isHourFormat24() {
-        return false;
-    }
+	/**
+	 * To be overriden by RSS 0.91 Netscape and RSS 0.94
+	 */
+	protected boolean isHourFormat24() {
+		return false;
+	}
 
 }

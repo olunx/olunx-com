@@ -37,66 +37,69 @@ package org.apache.commons.httpclient;
  * 
  * @see HttpMethodBase#setMethodRetryHandler(MethodRetryHandler)
  * 
- * @deprecated use {@link org.apache.commons.httpclient.DefaultHttpMethodRetryHandler}
+ * @deprecated use
+ *             {@link org.apache.commons.httpclient.DefaultHttpMethodRetryHandler}
  */
 public class DefaultMethodRetryHandler implements MethodRetryHandler {
 
-    /** the number of times a method will be retried */
-    private int retryCount;
-    
-    /** Whether or not methods that have successfully sent their request will be retried */
-    private boolean requestSentRetryEnabled;
-    
-    /**
-     */
-    public DefaultMethodRetryHandler() {
-        this.retryCount = 3;
-        this.requestSentRetryEnabled = false;
-    }
-    
-    /** 
-     * Used <code>retryCount</code> and <code>requestSentRetryEnabled</code> to determine
-     * if the given method should be retried.
-     * 
-     * @see MethodRetryHandler#retryMethod(HttpMethod, HttpConnection, HttpRecoverableException, int, boolean)
-     */
-    public boolean retryMethod(
-        HttpMethod method,
-        HttpConnection connection,
-        HttpRecoverableException recoverableException,
-        int executionCount,
-        boolean requestSent
-    ) {
-        return ((!requestSent || requestSentRetryEnabled) && (executionCount <= retryCount));
-    }
-    /**
-     * @return <code>true</code> if this handler will retry methods that have 
-     * successfully sent their request, <code>false</code> otherwise
-     */
-    public boolean isRequestSentRetryEnabled() {
-        return requestSentRetryEnabled;
-    }
+	/** the number of times a method will be retried */
+	private int retryCount;
 
-    /**
-     * @return the maximum number of times a method will be retried
-     */
-    public int getRetryCount() {
-        return retryCount;
-    }
+	/**
+	 * Whether or not methods that have successfully sent their request will be
+	 * retried
+	 */
+	private boolean requestSentRetryEnabled;
 
-    /**
-     * @param requestSentRetryEnabled a flag indicating if methods that have 
-     * successfully sent their request should be retried
+	/**
      */
-    public void setRequestSentRetryEnabled(boolean requestSentRetryEnabled) {
-        this.requestSentRetryEnabled = requestSentRetryEnabled;
-    }
+	public DefaultMethodRetryHandler() {
+		this.retryCount = 3;
+		this.requestSentRetryEnabled = false;
+	}
 
-    /**
-     * @param retryCount the maximum number of times a method can be retried
-     */
-    public void setRetryCount(int retryCount) {
-        this.retryCount = retryCount;
-    }
+	/**
+	 * Used <code>retryCount</code> and <code>requestSentRetryEnabled</code> to
+	 * determine if the given method should be retried.
+	 * 
+	 * @see MethodRetryHandler#retryMethod(HttpMethod, HttpConnection,
+	 *      HttpRecoverableException, int, boolean)
+	 */
+	public boolean retryMethod(HttpMethod method, HttpConnection connection, HttpRecoverableException recoverableException,
+			int executionCount, boolean requestSent) {
+		return ((!requestSent || requestSentRetryEnabled) && (executionCount <= retryCount));
+	}
+
+	/**
+	 * @return <code>true</code> if this handler will retry methods that have
+	 *         successfully sent their request, <code>false</code> otherwise
+	 */
+	public boolean isRequestSentRetryEnabled() {
+		return requestSentRetryEnabled;
+	}
+
+	/**
+	 * @return the maximum number of times a method will be retried
+	 */
+	public int getRetryCount() {
+		return retryCount;
+	}
+
+	/**
+	 * @param requestSentRetryEnabled
+	 *            a flag indicating if methods that have successfully sent their
+	 *            request should be retried
+	 */
+	public void setRequestSentRetryEnabled(boolean requestSentRetryEnabled) {
+		this.requestSentRetryEnabled = requestSentRetryEnabled;
+	}
+
+	/**
+	 * @param retryCount
+	 *            the maximum number of times a method can be retried
+	 */
+	public void setRetryCount(int retryCount) {
+		this.retryCount = retryCount;
+	}
 
 }

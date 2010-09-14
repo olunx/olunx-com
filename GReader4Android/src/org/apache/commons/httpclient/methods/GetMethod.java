@@ -37,20 +37,19 @@ import org.apache.commons.log.LogFactory;
 /**
  * Implements the HTTP GET method.
  * <p>
- * The HTTP GET method is defined in section 9.3 of
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
- * <blockquote>
- * The GET method means retrieve whatever information (in the form of an
- * entity) is identified by the Request-URI. If the Request-URI refers
- * to a data-producing process, it is the produced data which shall be
- * returned as the entity in the response and not the source text of the
- * process, unless that text happens to be the output of the process.
- * </blockquote>
+ * The HTTP GET method is defined in section 9.3 of <a
+ * href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>: <blockquote> The GET
+ * method means retrieve whatever information (in the form of an entity) is
+ * identified by the Request-URI. If the Request-URI refers to a data-producing
+ * process, it is the produced data which shall be returned as the entity in the
+ * response and not the source text of the process, unless that text happens to
+ * be the output of the process. </blockquote>
  * </p>
  * <p>
  * GetMethods will follow redirect requests from the http server by default.
- * This behavour can be disabled by calling setFollowRedirects(false).</p>
- *
+ * This behavour can be disabled by calling setFollowRedirects(false).
+ * </p>
+ * 
  * @author <a href="mailto:remm@apache.org">Remy Maucherat</a>
  * @author Sung-Gu Park
  * @author Sean C. Sullivan
@@ -62,68 +61,69 @@ import org.apache.commons.log.LogFactory;
  */
 public class GetMethod extends HttpMethodBase {
 
-    // -------------------------------------------------------------- Constants
+	// -------------------------------------------------------------- Constants
 
-    /** Log object for this class. */
-    private static final Log LOG = LogFactory.getLog(GetMethod.class);
+	/** Log object for this class. */
+	private static final Log LOG = LogFactory.getLog(GetMethod.class);
 
-    // ----------------------------------------------------------- Constructors
+	// ----------------------------------------------------------- Constructors
 
-    /**
-     * No-arg constructor.
-     * 
-     * @since 1.0
-     */
-    public GetMethod() {
-        setFollowRedirects(true);
-    }
+	/**
+	 * No-arg constructor.
+	 * 
+	 * @since 1.0
+	 */
+	public GetMethod() {
+		setFollowRedirects(true);
+	}
 
-    /**
-     * Constructor specifying a URI.
-     *
-     * @param uri either an absolute or relative URI
-     * 
-     * @since 1.0
-     */
-    public GetMethod(String uri) {
-        super(uri);
-        LOG.trace("enter GetMethod(String)");
-        setFollowRedirects(true);
-    }
+	/**
+	 * Constructor specifying a URI.
+	 * 
+	 * @param uri
+	 *            either an absolute or relative URI
+	 * 
+	 * @since 1.0
+	 */
+	public GetMethod(String uri) {
+		super(uri);
+		LOG.trace("enter GetMethod(String)");
+		setFollowRedirects(true);
+	}
 
-    // --------------------------------------------------------- Public Methods
+	// --------------------------------------------------------- Public Methods
 
-    /**
-     * Returns <tt>"GET"</tt>.
-     * 
-     * @return <tt>"GET"</tt>
-     * 
-     * @since 2.0
-     */
-    public String getName() {
-        return "GET";
-    }
+	/**
+	 * Returns <tt>"GET"</tt>.
+	 * 
+	 * @return <tt>"GET"</tt>
+	 * 
+	 * @since 2.0
+	 */
+	public String getName() {
+		return "GET";
+	}
 
-    // ------------------------------------------------------------- Properties
+	// ------------------------------------------------------------- Properties
 
-    /**
-     * Recycles the HTTP method so that it can be used again.
-     * Note that all of the instance variables will be reset
-     * once this method has been called. This method will also
-     * release the connection being used by this HTTP method.
-     * 
-     * @see #releaseConnection()
-     * 
-     * @since 1.0
-     * 
-     * @deprecated no longer supported and will be removed in the future
-     *             version of HttpClient
-     */
-    public void recycle() {
-        LOG.trace("enter GetMethod.recycle()");
+	/**
+	 * Recycles the HTTP method so that it can be used again. Note that all of
+	 * the instance variables will be reset once this method has been called.
+	 * This method will also release the connection being used by this HTTP
+	 * method.
+	 * 
+	 * @see #releaseConnection()
+	 * 
+	 * @since 1.0
+	 * 
+	 * @deprecated no longer supported and will be removed in the future version
+	 *             of HttpClient
+	 */
+	public void recycle() {
+		LOG.trace("enter GetMethod.recycle()");
 
-        super.recycle();
-        setFollowRedirects(true);
-    }
+		super.recycle();
+		setFollowRedirects(true);
+	}
 
 }

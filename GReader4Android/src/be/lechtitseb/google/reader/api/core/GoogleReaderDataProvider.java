@@ -27,12 +27,13 @@ import org.json.JSONObject;
  * Interface with Google Reader Service, provides raw data (json, xml)
  */
 public final class GoogleReaderDataProvider implements AuthenticationManager<GoogleCredentials> {
-//	private static final Logger LOG = Logger.getLogger(GoogleReaderDataProvider.class.getName());
+	// private static final Logger LOG =
+	// Logger.getLogger(GoogleReaderDataProvider.class.getName());
 	private HttpManager httpManager;
 	private GoogleCredentials credentials = null;
 
 	protected GoogleReaderDataProvider() {
-//		LOG.trace("Initializing Google Reader API");
+		// LOG.trace("Initializing Google Reader API");
 		httpManager = new SimpleHttpManager();
 	}
 
@@ -63,7 +64,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	}
 
 	public void clearCredentials() {
-//		LOG.trace("Clearing credentials");
+		// LOG.trace("Clearing credentials");
 		credentials = null;
 		httpManager.clearCookies();
 	}
@@ -95,7 +96,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getFeedItems(String feedUrl, Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting feed items for feed: " + feedUrl);
+		// LOG.trace("Getting feed items for feed: " + feedUrl);
 
 		if (feedUrl == null) {
 			throw new IllegalArgumentException("The feed url cannot be null!");
@@ -119,7 +120,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 * @throws GoogleReaderException
 	 */
 	public String getFeedItemsFromDate(String feedUrl, String dateStr) throws GoogleReaderException {
-//		LOG.trace("Getting feed items for feed: " + feedUrl);
+		// LOG.trace("Getting feed items for feed: " + feedUrl);
 
 		if (feedUrl == null) {
 			throw new IllegalArgumentException("The feed url cannot be null!");
@@ -157,7 +158,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not autenticated
 	 */
 	public String getFeedsWithUnreadItems(OutputFormat outputFormat) throws GoogleReaderException {
-//		LOG.trace("Getting the list of feeds with unread items");
+		// LOG.trace("Getting the list of feeds with unread items");
 		checkIfAuthenticated();
 		List<Parameter> parameters = new ArrayList<Parameter>();
 		parameters.add(new Parameter("all", "true")); // Mandatory!
@@ -177,7 +178,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getItem(String itemId) throws GoogleReaderException {
-//		LOG.trace("Retrieving the contents of an item");
+		// LOG.trace("Retrieving the contents of an item");
 		checkIfAuthenticated();
 		List<Parameter> parameters = new ArrayList<Parameter>();
 
@@ -209,7 +210,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getReadingList(Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting reading list");
+		// LOG.trace("Getting reading list");
 		if (numberOfElements != null) {
 			if (numberOfElements <= 0) {
 				throw new IllegalArgumentException("The number of elements must be > 0");
@@ -274,7 +275,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getReadItems(String feedId, Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting read items from a feed");
+		// LOG.trace("Getting read items from a feed");
 		if (feedId == null) {
 			throw new IllegalArgumentException("The feed id to get read items from cannot be null!");
 		}
@@ -306,7 +307,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getReadItems(Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting read items (from any feed)");
+		// LOG.trace("Getting read items (from any feed)");
 		if (numberOfElements != null) {
 			if (numberOfElements <= 0) {
 				throw new IllegalArgumentException("The number of elements must be > 0");
@@ -341,7 +342,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getSharedItems(Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting authenticated user shared items");
+		// LOG.trace("Getting authenticated user shared items");
 		if (numberOfElements != null) {
 			if (numberOfElements <= 0) {
 				throw new IllegalArgumentException("The number of elements must be > 0");
@@ -382,7 +383,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getSharedItems(String userId, Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting items shared by a user based on his id");
+		// LOG.trace("Getting items shared by a user based on his id");
 		if (numberOfElements != null) {
 			if (numberOfElements <= 0) {
 				throw new IllegalArgumentException("The number of elements must be > 0");
@@ -423,7 +424,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getStarredItems(Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting starred items");
+		// LOG.trace("Getting starred items");
 		if (numberOfElements != null) {
 			if (numberOfElements <= 0) {
 				throw new IllegalArgumentException("The number of elements must be > 0");
@@ -458,7 +459,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getSubscriptions(OutputFormat outputFormat) throws GoogleReaderException {
-//		LOG.trace("Getting subscriptions of the authenticated user");
+		// LOG.trace("Getting subscriptions of the authenticated user");
 		checkIfAuthenticated();
 
 		List<Parameter> parameters = new ArrayList<Parameter>();
@@ -481,7 +482,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user's not authenticated
 	 */
 	public String getToken() throws GoogleReaderException {
-//		LOG.trace("Getting a token");
+		// LOG.trace("Getting a token");
 		checkIfAuthenticated();
 		return httpManager.get(Constants.URL_TOKEN, null, true);
 	}
@@ -511,7 +512,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getUnreadItems(FeedDescriptor feed, Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting unread items from a feed");
+		// LOG.trace("Getting unread items from a feed");
 		if (feed == null) {
 			throw new IllegalArgumentException("The feed to get unread items from cannot be null!");
 		}
@@ -571,13 +572,13 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	}
 
 	public boolean login() throws AuthenticationException {
-//		LOG.trace("Trying to login");
+		// LOG.trace("Trying to login");
 		if (!hasCredentials()) {
 			throw new AuthenticationException("Credentials are not set!");
 		}
 
 		if (isAuthenticated()) {
-//			LOG.trace("Already authenticated");
+			// LOG.trace("Already authenticated");
 			return true;
 		}
 
@@ -701,7 +702,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 */
 	public String search(String searchTerm, FeedDescriptor feed, Integer numberOfElements, OutputFormat outputFormat)
 			throws GoogleReaderException {
-//		LOG.trace("Searching for items");
+		// LOG.trace("Searching for items");
 		if (searchTerm == null) {
 			throw new IllegalArgumentException("The search term cannot be null!");
 		}
@@ -794,7 +795,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 
 	public void setCredentials(GoogleCredentials credentials) {
 		clearCredentials();
-//		LOG.trace("Setting credentials");
+		// LOG.trace("Setting credentials");
 		this.credentials = credentials;
 	}
 
@@ -836,7 +837,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 * @return The list of labels
 	 */
 	public String getLabels(OutputFormat outputFormat) throws GoogleReaderException {
-//		LOG.trace("Getting labels list");
+		// LOG.trace("Getting labels list");
 
 		checkIfAuthenticated();
 
@@ -873,7 +874,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getReadingListByLabel(String label, Integer numberOfElements) throws GoogleReaderException {
-//		LOG.trace("Getting reading list for a specific label");
+		// LOG.trace("Getting reading list for a specific label");
 		if (numberOfElements != null) {
 			if (numberOfElements <= 0) {
 				throw new IllegalArgumentException("The number of elements must be > 0");
@@ -903,7 +904,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String exportSubscriptionsToOPML() throws GoogleReaderException {
-//		LOG.trace("Exporting the subscriptions list in OPML format");
+		// LOG.trace("Exporting the subscriptions list in OPML format");
 		checkIfAuthenticated();
 		return httpManager.get(Constants.URL_OPML_EXPORT, null, true);
 	}
@@ -919,7 +920,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getNextUnreadItem(String token) throws GoogleReaderException {
-//		LOG.trace("Getting next unread item");
+		// LOG.trace("Getting next unread item");
 		checkIfAuthenticated();
 
 		List<Parameter> parameters = new ArrayList<Parameter>();
@@ -938,12 +939,13 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getUserPreferences() throws GoogleReaderException {
-//		LOG.trace("Getting user preferences");
+		// LOG.trace("Getting user preferences");
 
 		checkIfAuthenticated();
 
 		List<Parameter> parameters = new ArrayList<Parameter>();
-//		parameters.add(new Parameter(Constants.PARAMETER_OUTPUT_FORMAT, OutputFormat.JSON.getFormat()));
+		// parameters.add(new Parameter(Constants.PARAMETER_OUTPUT_FORMAT,
+		// OutputFormat.JSON.getFormat()));
 		parameters.add(new Parameter(Constants.PARAMETER_OUTPUT_FORMAT, OutputFormat.XML.getFormat()));
 		return httpManager.get(Constants.URL_PREFERENCE_LIST, parameters, true);
 	}
@@ -956,14 +958,15 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public String getUserInformation() throws GoogleReaderException {
-//		LOG.trace("Getting user information");
+		// LOG.trace("Getting user information");
 
 		checkIfAuthenticated();
 
 		List<Parameter> parameters = new ArrayList<Parameter>();
 		parameters.add(new Parameter("Authorization", "GoogleLogin auth=" + credentials.getAuth()));
-//		parameters.add(new Parameter(Constants.PARAMETER_OUTPUT_FORMAT,OutputFormat.JSON.getFormat()));
-		parameters.add(new Parameter(Constants.PARAMETER_OUTPUT_FORMAT,OutputFormat.XML.getFormat()));
+		// parameters.add(new
+		// Parameter(Constants.PARAMETER_OUTPUT_FORMAT,OutputFormat.JSON.getFormat()));
+		parameters.add(new Parameter(Constants.PARAMETER_OUTPUT_FORMAT, OutputFormat.XML.getFormat()));
 		return httpManager.get(Constants.URL_USER_INFO, parameters, true);
 	}
 
@@ -991,7 +994,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public void markFeedAsRead(String feedId) throws GoogleReaderException {
-//		LOG.trace("Marking all items from a feed as read");
+		// LOG.trace("Marking all items from a feed as read");
 
 		if (feedId == null) {
 			throw new IllegalArgumentException("The feed id cannot be null!");
@@ -1040,7 +1043,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             If the user is not authenticated
 	 */
 	public void markItemAsRead(String itemId, String feedId) throws GoogleReaderException {
-//		LOG.trace("Marking item from a feed as read");
+		// LOG.trace("Marking item from a feed as read");
 
 		if (itemId == null) {
 			throw new IllegalArgumentException("The item id cannot be null!");
@@ -1193,7 +1196,7 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 	 *             the title is null or empty
 	 */
 	private void editSubscription(String feedUrl, String title, boolean add) throws GoogleReaderException {
-//		LOG.trace("Editing a subscription (adding or removing one");
+		// LOG.trace("Editing a subscription (adding or removing one");
 
 		if (feedUrl == null) {
 			throw new IllegalArgumentException("The feed url cannot be null!");
@@ -1301,9 +1304,10 @@ public final class GoogleReaderDataProvider implements AuthenticationManager<Goo
 			String userId = jSONObject.getString("userId");
 			return userId;
 		} catch (GoogleReaderException ex) {
-//			LOG.error("Google Reader Exception  while Getting User ID :  " + ex);
+			// LOG.error("Google Reader Exception  while Getting User ID :  " +
+			// ex);
 		} catch (JSONException ex) {
-//			LOG.error("JSON Exception while Getting User ID : " + ex);
+			// LOG.error("JSON Exception while Getting User ID : " + ex);
 		}
 		return null;
 	}

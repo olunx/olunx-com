@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class CategoryHelper implements IHelper {
 
@@ -22,6 +23,7 @@ public class CategoryHelper implements IHelper {
 	public final static String c_feeds = "feeds";
 
 	private static String TABLE = "t_category";
+	private final String TAG = "com.olunx.db.CategoryHelper";
 
 	private static SQLiteDatabase sqlite = null;
 
@@ -47,6 +49,7 @@ public class CategoryHelper implements IHelper {
 	@Override
 	public void close() {
 		if (sqlite != null || sqlite.isOpen()) {
+			Log.i(TAG, "sqlite close");
 			sqlite.close();
 		}
 	}
@@ -88,7 +91,7 @@ public class CategoryHelper implements IHelper {
 	public void updateFeedCount(String catTitle, String feedCount) {
 		row = new ContentValues();
 		row.put(c_feedCount, feedCount);
-		System.out.println("updateFeedCount:" + catTitle);
+		Log.i(TAG, "update feed count:" + catTitle);
 		getDB().update(TABLE, row, c_title + "== ? ", new String[] { catTitle });
 	}
 
@@ -107,8 +110,6 @@ public class CategoryHelper implements IHelper {
 	 * @param catTitle
 	 */
 	public void deleteRecord(String catTitle) {
-		createTable();
-
 		String sql = "delete from " + TABLE + " where " + c_title + " == '" + catTitle + "'";
 		this.getDB().execSQL(sql);
 	}
@@ -121,7 +122,7 @@ public class CategoryHelper implements IHelper {
 	 */
 	public boolean isExistsCat(String catTitle) {
 		String str = null;
-		Cursor result = getDB().query(TABLE, new String[] { c_title }, c_title + "== ?", new String[]{catTitle}, null, null, null);
+		Cursor result = getDB().query(TABLE, new String[] { c_title }, c_title + "== ?", new String[] { catTitle }, null, null, null);
 		if (result != null) {
 			result.moveToFirst();
 			int index = result.getColumnIndex(c_title);

@@ -59,8 +59,8 @@ public class Config {
 	public String getCon(String key, String defValue) {
 		return sp.getString(key, defValue);
 	}
-	
-	public boolean getCon(String key, boolean defValue){
+
+	public boolean getCon(String key, boolean defValue) {
 		return sp.getBoolean(key, defValue);
 	}
 
@@ -84,9 +84,10 @@ public class Config {
 	public String getPassword() {
 		return this.getCon("password", "");
 	}
-	
+
 	/**
 	 * 是否已经输入账号
+	 * 
 	 * @return
 	 */
 	public boolean isAccountInputted() {

@@ -33,41 +33,47 @@ package org.apache.commons.httpclient.auth;
 import org.apache.commons.httpclient.ProtocolException;
 
 /**
- * Signals that authentication challenge is in some way invalid or 
- * illegal in the given context
- *
+ * Signals that authentication challenge is in some way invalid or illegal in
+ * the given context
+ * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * 
  * @since 2.0
  */
 public class MalformedChallengeException extends ProtocolException {
 
-    /**
-     * Creates a new MalformedChallengeException with a <tt>null</tt> detail message. 
-     */
-    public MalformedChallengeException() {
-        super();
-    }
+	/**
+	 * Creates a new MalformedChallengeException with a <tt>null</tt> detail
+	 * message.
+	 */
+	public MalformedChallengeException() {
+		super();
+	}
 
-    /**
-     * Creates a new MalformedChallengeException with the specified message.
-     * 
-     * @param message the exception detail message
-     */
-    public MalformedChallengeException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a new MalformedChallengeException with the specified message.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 */
+	public MalformedChallengeException(String message) {
+		super(message);
+	}
 
-    /**
-     * Creates a new MalformedChallengeException with the specified detail message and cause.
-     * 
-     * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
-     * 
-     * @since 3.0
-     */
-    public MalformedChallengeException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Creates a new MalformedChallengeException with the specified detail
+	 * message and cause.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param cause
+	 *            the <tt>Throwable</tt> that caused this exception, or
+	 *            <tt>null</tt> if the cause is unavailable, unknown, or not a
+	 *            <tt>Throwable</tt>
+	 * 
+	 * @since 3.0
+	 */
+	public MalformedChallengeException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -40,35 +40,42 @@ package org.apache.commons.httpclient;
  */
 public class InvalidRedirectLocationException extends RedirectException {
 
-    private final String location;
-    
-    /**
-     * Creates a new InvalidRedirectLocationException with the specified detail message.
-     * 
-     * @param message the exception detail message
-     * @param location redirect location
-     */
-    public InvalidRedirectLocationException(final String message, final String location) {
-        super(message);
-        this.location = location;
-    }
+	private final String location;
 
-    /**
-     * Creates a new RedirectException with the specified detail message and cause.
-     * 
-     * @param message the exception detail message
-     * @param location redirect location
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
-     */
-    public InvalidRedirectLocationException(final String message, final String location, 
-            final Throwable cause) {
-        super(message, cause);
-        this.location = location;
-    }
-    
-    public String getLocation() {
-        return this.location;
-    }
-    
+	/**
+	 * Creates a new InvalidRedirectLocationException with the specified detail
+	 * message.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param location
+	 *            redirect location
+	 */
+	public InvalidRedirectLocationException(final String message, final String location) {
+		super(message);
+		this.location = location;
+	}
+
+	/**
+	 * Creates a new RedirectException with the specified detail message and
+	 * cause.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param location
+	 *            redirect location
+	 * @param cause
+	 *            the <tt>Throwable</tt> that caused this exception, or
+	 *            <tt>null</tt> if the cause is unavailable, unknown, or not a
+	 *            <tt>Throwable</tt>
+	 */
+	public InvalidRedirectLocationException(final String message, final String location, final Throwable cause) {
+		super(message, cause);
+		this.location = location;
+	}
+
+	public String getLocation() {
+		return this.location;
+	}
+
 }

@@ -41,67 +41,78 @@ import java.io.OutputStream;
  */
 public class ByteArrayRequestEntity implements RequestEntity {
 
-    /** The content */
-    private byte[] content;
-    
-    /** The content type */
-    private String contentType;
+	/** The content */
+	private byte[] content;
 
-    /**
-     * Creates a new entity with the given content.
-     * @param content The content to set.
-     */
-    public ByteArrayRequestEntity(byte[] content) {
-        this(content, null);
-    }
-    
-    /**
-     * Creates a new entity with the given content and content type.
-     * @param content The content to set.
-     * @param contentType The content type to set or <code>null</code>.
-     */
-    public ByteArrayRequestEntity(byte[] content, String contentType) {
-        super();
-        if (content == null) {
-            throw new IllegalArgumentException("The content cannot be null");
-        }
-        this.content = content;
-        this.contentType = contentType;
-    }
+	/** The content type */
+	private String contentType;
 
-    /**
-     * @return <code>true</code>
-     */
-    public boolean isRepeatable() {
-        return true;
-    }
+	/**
+	 * Creates a new entity with the given content.
+	 * 
+	 * @param content
+	 *            The content to set.
+	 */
+	public ByteArrayRequestEntity(byte[] content) {
+		this(content, null);
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.commons.httpclient.methods.RequestEntity#getContentType()
-     */
-    public String getContentType() {
-        return contentType;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.apache.commons.httpclient.RequestEntity#writeRequest(java.io.OutputStream)
-     */
-    public void writeRequest(OutputStream out) throws IOException {
-        out.write(content);
-    }
+	/**
+	 * Creates a new entity with the given content and content type.
+	 * 
+	 * @param content
+	 *            The content to set.
+	 * @param contentType
+	 *            The content type to set or <code>null</code>.
+	 */
+	public ByteArrayRequestEntity(byte[] content, String contentType) {
+		super();
+		if (content == null) {
+			throw new IllegalArgumentException("The content cannot be null");
+		}
+		this.content = content;
+		this.contentType = contentType;
+	}
 
-    /**
-     * @return The length of the content.
-     */
-    public long getContentLength() {
-        return content.length;
-    }
+	/**
+	 * @return <code>true</code>
+	 */
+	public boolean isRepeatable() {
+		return true;
+	}
 
-    /**
-     * @return Returns the content.
-     */
-    public byte[] getContent() {
-        return content;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.httpclient.methods.RequestEntity#getContentType()
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.apache.commons.httpclient.RequestEntity#writeRequest(java.io.OutputStream
+	 * )
+	 */
+	public void writeRequest(OutputStream out) throws IOException {
+		out.write(content);
+	}
+
+	/**
+	 * @return The length of the content.
+	 */
+	public long getContentLength() {
+		return content.length;
+	}
+
+	/**
+	 * @return Returns the content.
+	 */
+	public byte[] getContent() {
+		return content;
+	}
 
 }

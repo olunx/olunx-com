@@ -27,7 +27,7 @@
  * <http://www.apache.org/>.
  *
  */
- 
+
 package org.apache.commons.httpclient.params;
 
 import java.util.ArrayList;
@@ -44,102 +44,89 @@ import org.apache.commons.httpclient.util.DateUtil;
  */
 public class DefaultHttpParamsFactory implements HttpParamsFactory {
 
-    private HttpParams httpParams;
+	private HttpParams httpParams;
 
-    /**
+	/**
      * 
      */
-    public DefaultHttpParamsFactory() {
-        super();
-    }
+	public DefaultHttpParamsFactory() {
+		super();
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.commons.httpclient.params.HttpParamsFactory#getDefaultParams()
-     */
-    public synchronized HttpParams getDefaultParams() {
-        if (httpParams == null) {
-            httpParams = createParams();
-        }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.apache.commons.httpclient.params.HttpParamsFactory#getDefaultParams()
+	 */
+	public synchronized HttpParams getDefaultParams() {
+		if (httpParams == null) {
+			httpParams = createParams();
+		}
 
-        return httpParams;
-    }
+		return httpParams;
+	}
 
-    protected HttpParams createParams() {
-        HttpClientParams params = new HttpClientParams(null);
-        
-        params.setParameter(HttpMethodParams.USER_AGENT, "Jakarta Commons-HttpClient/3.1");
-        params.setVersion(HttpVersion.HTTP_1_1);
-        params.setConnectionManagerClass(SimpleHttpConnectionManager.class);
-        params.setCookiePolicy(CookiePolicy.DEFAULT);
-        params.setHttpElementCharset("US-ASCII");
-        params.setContentCharset("ISO-8859-1");
-        params.setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
-        
-        ArrayList datePatterns = new ArrayList();
-        datePatterns.addAll(
-            Arrays.asList(
-                new String[] {
-                    DateUtil.PATTERN_RFC1123,
-                    DateUtil.PATTERN_RFC1036,
-                    DateUtil.PATTERN_ASCTIME,
-                    "EEE, dd-MMM-yyyy HH:mm:ss z",
-                    "EEE, dd-MMM-yyyy HH-mm-ss z",
-                    "EEE, dd MMM yy HH:mm:ss z",
-                    "EEE dd-MMM-yyyy HH:mm:ss z",
-                    "EEE dd MMM yyyy HH:mm:ss z",
-                    "EEE dd-MMM-yyyy HH-mm-ss z",
-                    "EEE dd-MMM-yy HH:mm:ss z",
-                    "EEE dd MMM yy HH:mm:ss z",
-                    "EEE,dd-MMM-yy HH:mm:ss z",
-                    "EEE,dd-MMM-yyyy HH:mm:ss z",
-                    "EEE, dd-MM-yyyy HH:mm:ss z",                
-                }
-            )
-        );
-        params.setParameter(HttpMethodParams.DATE_PATTERNS, datePatterns);
-            
-        // TODO: To be removed. Provided for backward compatibility
-        String agent = null;
-        try {
-            agent = System.getProperty("httpclient.useragent");
-        } catch (SecurityException ignore) {
-        }
-        if (agent != null) {        
-            params.setParameter(HttpMethodParams.USER_AGENT, agent);
-        }
-        
-        // TODO: To be removed. Provided for backward compatibility
-        String preemptiveDefault = null;
-        try {
-            preemptiveDefault = System.getProperty("httpclient.authentication.preemptive");
-        } catch (SecurityException ignore) {
-        }
-        if (preemptiveDefault != null) {
-            preemptiveDefault = preemptiveDefault.trim().toLowerCase();
-            if (preemptiveDefault.equals("true")) {
-                params.setParameter(HttpClientParams.PREEMPTIVE_AUTHENTICATION, Boolean.TRUE);
-            } else if (preemptiveDefault.equals("false")) {
-                params.setParameter(HttpClientParams.PREEMPTIVE_AUTHENTICATION, Boolean.FALSE);
-            }
-        }
-        
-        // TODO: To be removed. Provided for backward compatibility
-        String defaultCookiePolicy = null;
-        try {
-            defaultCookiePolicy = System.getProperty("apache.commons.httpclient.cookiespec");
-        } catch (SecurityException ignore) {
-        }
-        if (defaultCookiePolicy != null) {
-            if ("COMPATIBILITY".equalsIgnoreCase(defaultCookiePolicy)) {
-                params.setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
-            } else if ("NETSCAPE_DRAFT".equalsIgnoreCase(defaultCookiePolicy)) {
-                params.setCookiePolicy(CookiePolicy.NETSCAPE);
-            } else if ("RFC2109".equalsIgnoreCase(defaultCookiePolicy)) {
-                params.setCookiePolicy(CookiePolicy.RFC_2109);
-            }
-        }
+	protected HttpParams createParams() {
+		HttpClientParams params = new HttpClientParams(null);
 
-        return params;
-    } 
+		params.setParameter(HttpMethodParams.USER_AGENT, "Jakarta Commons-HttpClient/3.1");
+		params.setVersion(HttpVersion.HTTP_1_1);
+		params.setConnectionManagerClass(SimpleHttpConnectionManager.class);
+		params.setCookiePolicy(CookiePolicy.DEFAULT);
+		params.setHttpElementCharset("US-ASCII");
+		params.setContentCharset("ISO-8859-1");
+		params.setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+
+		ArrayList datePatterns = new ArrayList();
+		datePatterns.addAll(Arrays.asList(new String[] { DateUtil.PATTERN_RFC1123, DateUtil.PATTERN_RFC1036, DateUtil.PATTERN_ASCTIME,
+				"EEE, dd-MMM-yyyy HH:mm:ss z", "EEE, dd-MMM-yyyy HH-mm-ss z", "EEE, dd MMM yy HH:mm:ss z", "EEE dd-MMM-yyyy HH:mm:ss z",
+				"EEE dd MMM yyyy HH:mm:ss z", "EEE dd-MMM-yyyy HH-mm-ss z", "EEE dd-MMM-yy HH:mm:ss z", "EEE dd MMM yy HH:mm:ss z",
+				"EEE,dd-MMM-yy HH:mm:ss z", "EEE,dd-MMM-yyyy HH:mm:ss z", "EEE, dd-MM-yyyy HH:mm:ss z", }));
+		params.setParameter(HttpMethodParams.DATE_PATTERNS, datePatterns);
+
+		// TODO: To be removed. Provided for backward compatibility
+		String agent = null;
+		try {
+			agent = System.getProperty("httpclient.useragent");
+		} catch (SecurityException ignore) {
+		}
+		if (agent != null) {
+			params.setParameter(HttpMethodParams.USER_AGENT, agent);
+		}
+
+		// TODO: To be removed. Provided for backward compatibility
+		String preemptiveDefault = null;
+		try {
+			preemptiveDefault = System.getProperty("httpclient.authentication.preemptive");
+		} catch (SecurityException ignore) {
+		}
+		if (preemptiveDefault != null) {
+			preemptiveDefault = preemptiveDefault.trim().toLowerCase();
+			if (preemptiveDefault.equals("true")) {
+				params.setParameter(HttpClientParams.PREEMPTIVE_AUTHENTICATION, Boolean.TRUE);
+			} else if (preemptiveDefault.equals("false")) {
+				params.setParameter(HttpClientParams.PREEMPTIVE_AUTHENTICATION, Boolean.FALSE);
+			}
+		}
+
+		// TODO: To be removed. Provided for backward compatibility
+		String defaultCookiePolicy = null;
+		try {
+			defaultCookiePolicy = System.getProperty("apache.commons.httpclient.cookiespec");
+		} catch (SecurityException ignore) {
+		}
+		if (defaultCookiePolicy != null) {
+			if ("COMPATIBILITY".equalsIgnoreCase(defaultCookiePolicy)) {
+				params.setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
+			} else if ("NETSCAPE_DRAFT".equalsIgnoreCase(defaultCookiePolicy)) {
+				params.setCookiePolicy(CookiePolicy.NETSCAPE);
+			} else if ("RFC2109".equalsIgnoreCase(defaultCookiePolicy)) {
+				params.setCookiePolicy(CookiePolicy.RFC_2109);
+			}
+		}
+
+		return params;
+	}
 
 }

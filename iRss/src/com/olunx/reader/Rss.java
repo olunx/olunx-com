@@ -2,13 +2,10 @@ package com.olunx.reader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.olunx.db.ArticlesHelper;
 import com.olunx.db.FeedsHelper;
@@ -21,6 +18,7 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 import android.content.ContentValues;
+import android.util.Log;
 import be.lechtitseb.google.reader.api.core.GoogleReader;
 import be.lechtitseb.google.reader.api.core.GoogleReaderDataProvider;
 import be.lechtitseb.google.reader.api.model.exception.AuthenticationException;
@@ -34,6 +32,8 @@ public class Rss {
 	private GoogleReaderDataProvider dataProvider;
 	private Boolean logined;
 
+	private final String TAG = "com.olunx.reader.Rss";
+	
 	/**
 	 * 登录
 	 * 
@@ -77,7 +77,7 @@ public class Rss {
 	 * 
 	 * @return
 	 */
-	public JSONArray getCategory() {
+	public ArrayList<ContentValues> downLoadAllFeeds() {
 
 		if (dataProvider != null) {
 			try {
@@ -90,15 +90,15 @@ public class Rss {
 	}
 
 	/**
-	 * 处理OMPL文件内容，返回JSONArray。内容为feed列表。
+	 * 处理OMPL文件内容，返回ArrayList<Map<String, String>>。内容为feed列表。
 	 * 
-	 * @param xmlContent
-	 * @return
+	 * @param xmlConten
 	 */
-	public JSONArray parseOPMLSubscriptions(String xmlContent) {
-		JSONArray array = new JSONArray();
+	public ArrayList<ContentValues> parseOPMLSubscriptions(String xmlContent) {
+		
+		ArrayList<ContentValues> array = new ArrayList<ContentValues>();
 
-		JSONObject feed = null;
+		ContentValues feed = null;
 
 		List<Outline> outlines = null;
 		try {
@@ -111,36 +111,28 @@ public class Rss {
 
 			// 未分类的Feed
 			if (o.getXmlUrl() != null) {
-				feed = new JSONObject();
-				try {
-					feed.put(FeedsHelper.c_title, o.getTitle());
-					feed.put(FeedsHelper.c_text, o.getText());
-					feed.put(FeedsHelper.c_htmlUrl, o.getHtmlUrl());
-					feed.put(FeedsHelper.c_xmlUrl, o.getXmlUrl());
-					feed.put(FeedsHelper.c_catTitle, "未分类");
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+				feed = new ContentValues();
+				feed.put(FeedsHelper.c_title, o.getTitle());
+				feed.put(FeedsHelper.c_text, o.getText());
+				feed.put(FeedsHelper.c_htmlUrl, o.getHtmlUrl());
+				feed.put(FeedsHelper.c_xmlUrl, o.getXmlUrl());
+				feed.put(FeedsHelper.c_catTitle, "未分类");
 			} else {
 				for (Outline c : o.getChilds()) {
 					// System.out.println("child： " + c.getTitle() + "  " +
 					// c.getHtmlUrl());
-					feed = new JSONObject();
-					try {
-						feed.put(FeedsHelper.c_title, c.getTitle());
-						feed.put(FeedsHelper.c_text, c.getText());
-						feed.put(FeedsHelper.c_htmlUrl, c.getHtmlUrl());
-						feed.put(FeedsHelper.c_xmlUrl, c.getXmlUrl());
-						feed.put(FeedsHelper.c_catTitle, o.getTitle());
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-					array.put(feed);
+					feed = new ContentValues();
+					feed.put(FeedsHelper.c_title, c.getTitle());
+					feed.put(FeedsHelper.c_text, c.getText());
+					feed.put(FeedsHelper.c_htmlUrl, c.getHtmlUrl());
+					feed.put(FeedsHelper.c_xmlUrl, c.getXmlUrl());
+					feed.put(FeedsHelper.c_catTitle, o.getTitle());
+					array.add(feed);
 					System.out.println("feed:" + feed.toString());
 				}
 			}
 
-			array.put(feed);
+			array.add(feed);
 			System.out.println("feed:" + feed.toString());
 		}
 
@@ -154,7 +146,7 @@ public class Rss {
 	 * @param feedUrl
 	 * @param fromDate
 	 */
-	public HashMap<String, Object> getFeedContent(String feedUrl, String fromDate) {
+	public HashMap<String, Object> downLoadFeedContent(String feedUrl, String fromDate) {
 
 		String feed = "feed/" + feedUrl;
 		String content = "";
@@ -170,8 +162,8 @@ public class Rss {
 				e.printStackTrace();
 			}
 
-			System.out.println("parseRss： " + feed);
-			return parseRss(content, feedUrl);// 解析rss内容
+			Log.i(TAG, "parse feed: " + feed);
+			return parseFeed(content, feedUrl);// 解析rss内容
 		}
 
 		return null;
@@ -184,7 +176,7 @@ public class Rss {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> parseRss(String source, String feedUrl) {
+	public HashMap<String, Object> parseFeed(String source, String feedUrl) {
 
 		HashMap<String, Object> singleFeed = new HashMap<String, Object>();
 

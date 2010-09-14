@@ -20,67 +20,71 @@ package org.apache.commons.codec;
 import java.util.Comparator;
 
 /**
- * Strings are comparable, and this comparator allows 
- * you to configure it with an instance of a class
- * which implements StringEncoder.  This comparator
- * is used to sort Strings by an encoding scheme such
- * as Soundex, Metaphone, etc.  This class can come in
- * handy if one need to sort Strings by an encoded
- * form of a name such as Soundex.
- *
+ * Strings are comparable, and this comparator allows you to configure it with
+ * an instance of a class which implements StringEncoder. This comparator is
+ * used to sort Strings by an encoding scheme such as Soundex, Metaphone, etc.
+ * This class can come in handy if one need to sort Strings by an encoded form
+ * of a name such as Soundex.
+ * 
  * @author Apache Software Foundation
- * @version $Id: StringEncoderComparator.java 793391 2009-07-12 18:38:08Z ggregory $
+ * @version $Id: StringEncoderComparator.java 793391 2009-07-12 18:38:08Z
+ *          ggregory $
  */
 public class StringEncoderComparator implements Comparator {
 
-    /**
-     * Internal encoder instance.
-     */
-    private final StringEncoder stringEncoder;
+	/**
+	 * Internal encoder instance.
+	 */
+	private final StringEncoder stringEncoder;
 
-    /**
-     * Constructs a new instance.
-     * @deprecated as creating without a StringEncoder will lead to a 
-     *             broken NullPointerException creating comparator.
-     */
-    public StringEncoderComparator() {
-        this.stringEncoder = null;   // Trying to use this will cause things to break
-    }
+	/**
+	 * Constructs a new instance.
+	 * 
+	 * @deprecated as creating without a StringEncoder will lead to a broken
+	 *             NullPointerException creating comparator.
+	 */
+	public StringEncoderComparator() {
+		this.stringEncoder = null; // Trying to use this will cause things to
+									// break
+	}
 
-    /**
-     * Constructs a new instance with the given algorithm.
-     * @param stringEncoder the StringEncoder used for comparisons.
-     */
-    public StringEncoderComparator(StringEncoder stringEncoder) {
-        this.stringEncoder = stringEncoder;
-    }
+	/**
+	 * Constructs a new instance with the given algorithm.
+	 * 
+	 * @param stringEncoder
+	 *            the StringEncoder used for comparisons.
+	 */
+	public StringEncoderComparator(StringEncoder stringEncoder) {
+		this.stringEncoder = stringEncoder;
+	}
 
-    /**
-     * Compares two strings based not on the strings 
-     * themselves, but on an encoding of the two 
-     * strings using the StringEncoder this Comparator
-     * was created with.
-     * 
-     * If an {@link EncoderException} is encountered, return <code>0</code>.
-     * 
-     * @param o1 the object to compare
-     * @param o2 the object to compare to
-     * @return the Comparable.compareTo() return code or 0 if an encoding error was caught.
-     * @see Comparable
-     */
-    public int compare(Object o1, Object o2) {
+	/**
+	 * Compares two strings based not on the strings themselves, but on an
+	 * encoding of the two strings using the StringEncoder this Comparator was
+	 * created with.
+	 * 
+	 * If an {@link EncoderException} is encountered, return <code>0</code>.
+	 * 
+	 * @param o1
+	 *            the object to compare
+	 * @param o2
+	 *            the object to compare to
+	 * @return the Comparable.compareTo() return code or 0 if an encoding error
+	 *         was caught.
+	 * @see Comparable
+	 */
+	public int compare(Object o1, Object o2) {
 
-        int compareCode = 0;
+		int compareCode = 0;
 
-        try {
-            Comparable s1 = (Comparable) this.stringEncoder.encode(o1);
-            Comparable s2 = (Comparable) this.stringEncoder.encode(o2);
-            compareCode = s1.compareTo(s2);
-        } 
-        catch (EncoderException ee) {
-            compareCode = 0;
-        }
-        return compareCode;
-    }
+		try {
+			Comparable s1 = (Comparable) this.stringEncoder.encode(o1);
+			Comparable s2 = (Comparable) this.stringEncoder.encode(o2);
+			compareCode = s1.compareTo(s2);
+		} catch (EncoderException ee) {
+			compareCode = 0;
+		}
+		return compareCode;
+	}
 
 }

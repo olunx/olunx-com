@@ -31,7 +31,8 @@ import be.lechtitseb.google.reader.api.model.exception.GoogleReaderException;
  * HttpClient
  */
 public class SimpleHttpManager implements HttpManager {
-//	private static final Logger LOG = Logger.getLogger(SimpleHttpManager.class.getName());
+	// private static final Logger LOG =
+	// Logger.getLogger(SimpleHttpManager.class.getName());
 	private List<Cookie> cookies = null;
 	private HttpMethodRetryHandler retryHandler = null;
 	private HttpClient httpClient = null;
@@ -53,7 +54,7 @@ public class SimpleHttpManager implements HttpManager {
 		if (cookie != null) {
 			cookies.add(cookie);
 		} else {
-//			LOG.debug("Some psycho tried to add a null cookie to the list");
+			// LOG.debug("Some psycho tried to add a null cookie to the list");
 		}
 	}
 
@@ -108,9 +109,9 @@ public class SimpleHttpManager implements HttpManager {
 		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, retryHandler);
 		if (auth != null) {
 			method.addRequestHeader(Constants.AUTHORIZATION_HTTP_HEADER, Constants.GOOGLE_AUTH_KEY + auth);// TODO
-																											// remove
-																											// to
-																											// Constants
+			// remove
+			// to
+			// Constants
 		}
 		if (useCookies) {
 			HttpState initialState = new HttpState();

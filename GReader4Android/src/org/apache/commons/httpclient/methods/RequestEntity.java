@@ -38,38 +38,43 @@ import java.io.OutputStream;
  */
 public interface RequestEntity {
 
-    /**
-     * Tests if {@link #writeRequest(OutputStream)} can be called more than once.
-     * 
-     * @return <tt>true</tt> if the entity can be written to {@link OutputStream} more than once, 
-     * <tt>false</tt> otherwise.
-     */
-    boolean isRepeatable();
+	/**
+	 * Tests if {@link #writeRequest(OutputStream)} can be called more than
+	 * once.
+	 * 
+	 * @return <tt>true</tt> if the entity can be written to
+	 *         {@link OutputStream} more than once, <tt>false</tt> otherwise.
+	 */
+	boolean isRepeatable();
 
-    /**
-     * Writes the request entity to the given stream.
-     * @param out
-     * @throws IOException
-     */
-    void writeRequest(OutputStream out) throws IOException;
-    
-    /**
-     * Gets the request entity's length. This method should return a non-negative value if the content 
-     * length is known or a negative value if it is not. In the latter case the
-     * {@link org.apache.commons.httpclient.methods.EntityEnclosingMethod} will use chunk encoding to
-     * transmit the request entity.
-     *  
-     * @return a non-negative value when content length is known or a negative value when content length 
-     * is not known  
-     */
-    long getContentLength();
-    
-    /**
-     * Gets the entity's content type.  This content type will be used as the value for the
-     * "Content-Type" header.
-     * @return the entity's content type
-     * @see org.apache.commons.httpclient.HttpMethod#setRequestHeader(String, String)
-     */
-    String getContentType();
-    
+	/**
+	 * Writes the request entity to the given stream.
+	 * 
+	 * @param out
+	 * @throws IOException
+	 */
+	void writeRequest(OutputStream out) throws IOException;
+
+	/**
+	 * Gets the request entity's length. This method should return a
+	 * non-negative value if the content length is known or a negative value if
+	 * it is not. In the latter case the
+	 * {@link org.apache.commons.httpclient.methods.EntityEnclosingMethod} will
+	 * use chunk encoding to transmit the request entity.
+	 * 
+	 * @return a non-negative value when content length is known or a negative
+	 *         value when content length is not known
+	 */
+	long getContentLength();
+
+	/**
+	 * Gets the entity's content type. This content type will be used as the
+	 * value for the "Content-Type" header.
+	 * 
+	 * @return the entity's content type
+	 * @see org.apache.commons.httpclient.HttpMethod#setRequestHeader(String,
+	 *      String)
+	 */
+	String getContentType();
+
 }

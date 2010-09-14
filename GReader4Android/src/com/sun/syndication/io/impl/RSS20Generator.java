@@ -24,69 +24,69 @@ import org.jdom.Element;
 
 import java.util.List;
 
-
 /**
  * Feed Generator for RSS 2.0
  * <p/>
- *
+ * 
  * @author Elaine Chien
- *
+ * 
  */
 
 public class RSS20Generator extends RSS094Generator {
 
-    public RSS20Generator() {
-        this("rss_2.0","2.0");
-    }
+	public RSS20Generator() {
+		this("rss_2.0", "2.0");
+	}
 
-    protected RSS20Generator(String feedType,String version) {
-        super(feedType,version);
-    }
+	protected RSS20Generator(String feedType, String version) {
+		super(feedType, version);
+	}
 
-    protected void populateChannel(Channel channel,Element eChannel) {
-        super.populateChannel(channel,eChannel);
+	protected void populateChannel(Channel channel, Element eChannel) {
+		super.populateChannel(channel, eChannel);
 
-        String generator = channel.getGenerator();
-        if (generator != null) {
-            eChannel.addContent(generateSimpleElement("generator", generator));
-        }
+		String generator = channel.getGenerator();
+		if (generator != null) {
+			eChannel.addContent(generateSimpleElement("generator", generator));
+		}
 
-        int ttl = channel.getTtl();
-        if (ttl>-1) {
-            eChannel.addContent(generateSimpleElement("ttl", String.valueOf(ttl)));
-        }
+		int ttl = channel.getTtl();
+		if (ttl > -1) {
+			eChannel.addContent(generateSimpleElement("ttl", String.valueOf(ttl)));
+		}
 
-        List categories = channel.getCategories();
-        for(int i = 0; i < categories.size(); i++) {
-            eChannel.addContent(generateCategoryElement((Category)categories.get(i)));
-        }
+		List categories = channel.getCategories();
+		for (int i = 0; i < categories.size(); i++) {
+			eChannel.addContent(generateCategoryElement((Category) categories.get(i)));
+		}
 
-    }
+	}
 
-    public void populateItem(Item item, Element eItem, int index) {
-        super.populateItem(item,eItem, index);
+	public void populateItem(Item item, Element eItem, int index) {
+		super.populateItem(item, eItem, index);
 
-        Element eDescription = eItem.getChild("description",getFeedNamespace());
-        if (eDescription != null) eDescription.removeAttribute("type");
+		Element eDescription = eItem.getChild("description", getFeedNamespace());
+		if (eDescription != null)
+			eDescription.removeAttribute("type");
 
-        String author = item.getAuthor();
-        if (author != null) {
-            eItem.addContent(generateSimpleElement("author", author));
-        }
+		String author = item.getAuthor();
+		if (author != null) {
+			eItem.addContent(generateSimpleElement("author", author));
+		}
 
-        String comments = item.getComments();
-        if (comments != null) {
-            eItem.addContent(generateSimpleElement("comments", comments));
-        }
+		String comments = item.getComments();
+		if (comments != null) {
+			eItem.addContent(generateSimpleElement("comments", comments));
+		}
 
-        Guid guid = item.getGuid();
-        if (guid != null) {
-            Element eGuid = generateSimpleElement("guid",guid.getValue());
-            if (!guid.isPermaLink()) {
-                eGuid.setAttribute("isPermaLink", "false");
-            }
-            eItem.addContent(eGuid);
-        }
-    }
+		Guid guid = item.getGuid();
+		if (guid != null) {
+			Element eGuid = generateSimpleElement("guid", guid.getValue());
+			if (!guid.isPermaLink()) {
+				eGuid.setAttribute("isPermaLink", "false");
+			}
+			eItem.addContent(eGuid);
+		}
+	}
 
 }

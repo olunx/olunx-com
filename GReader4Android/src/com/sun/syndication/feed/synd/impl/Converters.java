@@ -22,34 +22,31 @@ import com.sun.syndication.feed.synd.Converter;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: tucu
- * Date: May 21, 2004
- * Time: 5:26:04 PM
- * To change this template use Options | File Templates.
+ * Created by IntelliJ IDEA. User: tucu Date: May 21, 2004 Time: 5:26:04 PM To
+ * change this template use Options | File Templates.
  */
 public class Converters extends PluginManager {
 
-    /**
-     * Converter.classes=  [className] ...
-     *
-     */
-    public static final String CONVERTERS_KEY = "Converter.classes";
+	/**
+	 * Converter.classes= [className] ...
+	 * 
+	 */
+	public static final String CONVERTERS_KEY = "Converter.classes";
 
-    public Converters() {
-        super(CONVERTERS_KEY);
-    }
+	public Converters() {
+		super(CONVERTERS_KEY);
+	}
 
-    public Converter getConverter(String feedType) {
-        return (Converter) getPlugin(feedType);
-    }
+	public Converter getConverter(String feedType) {
+		return (Converter) getPlugin(feedType);
+	}
 
-    protected String getKey(Object obj) {
-        return ((Converter)obj).getType();
-    }
+	protected String getKey(Object obj) {
+		return ((Converter) obj).getType();
+	}
 
-    public List getSupportedFeedTypes() {
-        return getKeys();
-    }
+	public List getSupportedFeedTypes() {
+		return getKeys();
+	}
 
 }

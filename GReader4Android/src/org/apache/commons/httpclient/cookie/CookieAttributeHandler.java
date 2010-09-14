@@ -32,48 +32,53 @@ package org.apache.commons.httpclient.cookie;
 import org.apache.commons.httpclient.Cookie;
 
 /**
- * Ths interface represents a cookie attribute handler responsible
- * for parsing, validating, and matching a specific cookie attribute, 
- * such as path, domain, port, etc.
- *
- * Different cookie specifications can provide a specific
- * implementation for this class based on their cookie handling
- * rules.
- *
+ * Ths interface represents a cookie attribute handler responsible for parsing,
+ * validating, and matching a specific cookie attribute, such as path, domain,
+ * port, etc.
+ * 
+ * Different cookie specifications can provide a specific implementation for
+ * this class based on their cookie handling rules.
+ * 
  * @author jain.samit@gmail.com (Samit Jain)
  * 
  * @since 3.1
  */
 public interface CookieAttributeHandler {
 
-  /**
-   * Parse the given cookie attribute value and update the corresponding
-   * {@link org.apache.commons.httpclient.Cookie} property.
-   *
-   * @param cookie {@link org.apache.commons.httpclient.Cookie} to be updated
-   * @param value cookie attribute value from the cookie response header
-   */
-  void parse(Cookie cookie, String value)
-          throws MalformedCookieException;
+	/**
+	 * Parse the given cookie attribute value and update the corresponding
+	 * {@link org.apache.commons.httpclient.Cookie} property.
+	 * 
+	 * @param cookie
+	 *            {@link org.apache.commons.httpclient.Cookie} to be updated
+	 * @param value
+	 *            cookie attribute value from the cookie response header
+	 */
+	void parse(Cookie cookie, String value) throws MalformedCookieException;
 
-  /**
-   * Peforms cookie validation for the given attribute value.
-   *
-   * @param cookie {@link org.apache.commons.httpclient.Cookie} to validate
-   * @param origin the cookie source to validate against
-   * @throws MalformedCookieException if cookie validation fails for this attribute
-   */
-  void validate(Cookie cookie, CookieOrigin origin)
-          throws MalformedCookieException;
+	/**
+	 * Peforms cookie validation for the given attribute value.
+	 * 
+	 * @param cookie
+	 *            {@link org.apache.commons.httpclient.Cookie} to validate
+	 * @param origin
+	 *            the cookie source to validate against
+	 * @throws MalformedCookieException
+	 *             if cookie validation fails for this attribute
+	 */
+	void validate(Cookie cookie, CookieOrigin origin) throws MalformedCookieException;
 
-  /**
-   * Matches the given value (property of the destination host where request is being
-   * submitted) with the corresponding cookie attribute.
-   *
-   * @param cookie {@link org.apache.commons.httpclient.Cookie} to match
-   * @param origin the cookie source to match against
-   * @return <tt>true</tt> if the match is successful; <tt>false</tt> otherwise
-   */
-  boolean match(Cookie cookie, CookieOrigin origin);
+	/**
+	 * Matches the given value (property of the destination host where request
+	 * is being submitted) with the corresponding cookie attribute.
+	 * 
+	 * @param cookie
+	 *            {@link org.apache.commons.httpclient.Cookie} to match
+	 * @param origin
+	 *            the cookie source to match against
+	 * @return <tt>true</tt> if the match is successful; <tt>false</tt>
+	 *         otherwise
+	 */
+	boolean match(Cookie cookie, CookieOrigin origin);
 
 }

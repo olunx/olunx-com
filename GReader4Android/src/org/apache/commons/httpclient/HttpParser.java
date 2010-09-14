@@ -40,8 +40,8 @@ import org.apache.commons.log.Log;
 import org.apache.commons.log.LogFactory;
 
 /**
- * A utility class for parsing http header values according to
- * RFC-2616 Section 4 and 19.3.
+ * A utility class for parsing http header values according to RFC-2616 Section
+ * 4 and 19.3.
  * 
  * @author Michael Becke
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
@@ -50,186 +50,199 @@ import org.apache.commons.log.LogFactory;
  */
 public class HttpParser {
 
-    /** Log object for this class. */
-    private static final Log LOG = LogFactory.getLog(HttpParser.class);
-    
-    /**
-     * Constructor for HttpParser.
-     */
-    private HttpParser() { }
+	/** Log object for this class. */
+	private static final Log LOG = LogFactory.getLog(HttpParser.class);
 
-    /**
-     * Return byte array from an (unchunked) input stream.
-     * Stop reading when <tt>"\n"</tt> terminator encountered 
-     * If the stream ends before the line terminator is found,
-     * the last part of the string will still be returned. 
-     * If no input data available, <code>null</code> is returned.
-     *
-     * @param inputStream the stream to read from
-     *
-     * @throws IOException if an I/O problem occurs
-     * @return a byte array from the stream
-     */
-    public static byte[] readRawLine(InputStream inputStream) throws IOException {
-        LOG.trace("enter HttpParser.readRawLine()");
+	/**
+	 * Constructor for HttpParser.
+	 */
+	private HttpParser() {
+	}
 
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        int ch;
-        while ((ch = inputStream.read()) >= 0) {
-            buf.write(ch);
-            if (ch == '\n') { // be tolerant (RFC-2616 Section 19.3)
-                break;
-            }
-        }
-        if (buf.size() == 0) {
-            return null;
-        }
-        return buf.toByteArray();
-    }
+	/**
+	 * Return byte array from an (unchunked) input stream. Stop reading when
+	 * <tt>"\n"</tt> terminator encountered If the stream ends before the line
+	 * terminator is found, the last part of the string will still be returned.
+	 * If no input data available, <code>null</code> is returned.
+	 * 
+	 * @param inputStream
+	 *            the stream to read from
+	 * 
+	 * @throws IOException
+	 *             if an I/O problem occurs
+	 * @return a byte array from the stream
+	 */
+	public static byte[] readRawLine(InputStream inputStream) throws IOException {
+		LOG.trace("enter HttpParser.readRawLine()");
 
-    /**
-     * Read up to <tt>"\n"</tt> from an (unchunked) input stream.
-     * If the stream ends before the line terminator is found,
-     * the last part of the string will still be returned.
-     * If no input data available, <code>null</code> is returned.
-     *
-     * @param inputStream the stream to read from
-     * @param charset charset of HTTP protocol elements
-     *
-     * @throws IOException if an I/O problem occurs
-     * @return a line from the stream
-     * 
-     * @since 3.0
-     */
-    public static String readLine(InputStream inputStream, String charset) throws IOException {
-        LOG.trace("enter HttpParser.readLine(InputStream, String)");
-        byte[] rawdata = readRawLine(inputStream);
-        if (rawdata == null) {
-            return null;
-        }
-        // strip CR and LF from the end
-        int len = rawdata.length;
-        int offset = 0;
-        if (len > 0) {
-            if (rawdata[len - 1] == '\n') {
-                offset++;
-                if (len > 1) {
-                    if (rawdata[len - 2] == '\r') {
-                        offset++;
-                    }
-                }
-            }
-        }
-        final String result =
-            EncodingUtil.getString(rawdata, 0, len - offset, charset);
-        if (Wire.HEADER_WIRE.enabled()) {
-            String logoutput = result;
-            if (offset == 2)
-                logoutput = result + "\r\n";
-            else if (offset == 1)
-                logoutput = result + "\n";
-            Wire.HEADER_WIRE.input(logoutput);
-        }
-        return result;
-    }
+		ByteArrayOutputStream buf = new ByteArrayOutputStream();
+		int ch;
+		while ((ch = inputStream.read()) >= 0) {
+			buf.write(ch);
+			if (ch == '\n') { // be tolerant (RFC-2616 Section 19.3)
+				break;
+			}
+		}
+		if (buf.size() == 0) {
+			return null;
+		}
+		return buf.toByteArray();
+	}
 
-    /**
-     * Read up to <tt>"\n"</tt> from an (unchunked) input stream.
-     * If the stream ends before the line terminator is found,
-     * the last part of the string will still be returned.
-     * If no input data available, <code>null</code> is returned
-     *
-     * @param inputStream the stream to read from
-     *
-     * @throws IOException if an I/O problem occurs
-     * @return a line from the stream
-     * 
-     * @deprecated use #readLine(InputStream, String)
-     */
+	/**
+	 * Read up to <tt>"\n"</tt> from an (unchunked) input stream. If the stream
+	 * ends before the line terminator is found, the last part of the string
+	 * will still be returned. If no input data available, <code>null</code> is
+	 * returned.
+	 * 
+	 * @param inputStream
+	 *            the stream to read from
+	 * @param charset
+	 *            charset of HTTP protocol elements
+	 * 
+	 * @throws IOException
+	 *             if an I/O problem occurs
+	 * @return a line from the stream
+	 * 
+	 * @since 3.0
+	 */
+	public static String readLine(InputStream inputStream, String charset) throws IOException {
+		LOG.trace("enter HttpParser.readLine(InputStream, String)");
+		byte[] rawdata = readRawLine(inputStream);
+		if (rawdata == null) {
+			return null;
+		}
+		// strip CR and LF from the end
+		int len = rawdata.length;
+		int offset = 0;
+		if (len > 0) {
+			if (rawdata[len - 1] == '\n') {
+				offset++;
+				if (len > 1) {
+					if (rawdata[len - 2] == '\r') {
+						offset++;
+					}
+				}
+			}
+		}
+		final String result = EncodingUtil.getString(rawdata, 0, len - offset, charset);
+		if (Wire.HEADER_WIRE.enabled()) {
+			String logoutput = result;
+			if (offset == 2)
+				logoutput = result + "\r\n";
+			else if (offset == 1)
+				logoutput = result + "\n";
+			Wire.HEADER_WIRE.input(logoutput);
+		}
+		return result;
+	}
 
-    public static String readLine(InputStream inputStream) throws IOException {
-        LOG.trace("enter HttpParser.readLine(InputStream)");
-        return readLine(inputStream, "US-ASCII");
-    }
-    
-    /**
-     * Parses headers from the given stream.  Headers with the same name are not
-     * combined.
-     * 
-     * @param is the stream to read headers from
-     * @param charset the charset to use for reading the data
-     * 
-     * @return an array of headers in the order in which they were parsed
-     * 
-     * @throws IOException if an IO error occurs while reading from the stream
-     * @throws HttpException if there is an error parsing a header value
-     * 
-     * @since 3.0
-     */
-    public static Header[] parseHeaders(InputStream is, String charset) throws IOException, HttpException {
-        LOG.trace("enter HeaderParser.parseHeaders(InputStream, String)");
+	/**
+	 * Read up to <tt>"\n"</tt> from an (unchunked) input stream. If the stream
+	 * ends before the line terminator is found, the last part of the string
+	 * will still be returned. If no input data available, <code>null</code> is
+	 * returned
+	 * 
+	 * @param inputStream
+	 *            the stream to read from
+	 * 
+	 * @throws IOException
+	 *             if an I/O problem occurs
+	 * @return a line from the stream
+	 * 
+	 * @deprecated use #readLine(InputStream, String)
+	 */
 
-        ArrayList headers = new ArrayList();
-        String name = null;
-        StringBuffer value = null;
-        for (; ;) {
-            String line = HttpParser.readLine(is, charset);
-            if ((line == null) || (line.trim().length() < 1)) {
-                break;
-            }
+	public static String readLine(InputStream inputStream) throws IOException {
+		LOG.trace("enter HttpParser.readLine(InputStream)");
+		return readLine(inputStream, "US-ASCII");
+	}
 
-            // Parse the header name and value
-            // Check for folded headers first
-            // Detect LWS-char see HTTP/1.0 or HTTP/1.1 Section 2.2
-            // discussion on folded headers
-            if ((line.charAt(0) == ' ') || (line.charAt(0) == '\t')) {
-                // we have continuation folded header
-                // so append value
-                if (value != null) {
-                    value.append(' ');
-                    value.append(line.trim());
-                }
-            } else {
-                // make sure we save the previous name,value pair if present
-                if (name != null) {
-                    headers.add(new Header(name, value.toString()));
-                }
+	/**
+	 * Parses headers from the given stream. Headers with the same name are not
+	 * combined.
+	 * 
+	 * @param is
+	 *            the stream to read headers from
+	 * @param charset
+	 *            the charset to use for reading the data
+	 * 
+	 * @return an array of headers in the order in which they were parsed
+	 * 
+	 * @throws IOException
+	 *             if an IO error occurs while reading from the stream
+	 * @throws HttpException
+	 *             if there is an error parsing a header value
+	 * 
+	 * @since 3.0
+	 */
+	public static Header[] parseHeaders(InputStream is, String charset) throws IOException, HttpException {
+		LOG.trace("enter HeaderParser.parseHeaders(InputStream, String)");
 
-                // Otherwise we should have normal HTTP header line
-                // Parse the header name and value
-                int colon = line.indexOf(":");
-                if (colon < 0) {
-                    throw new ProtocolException("Unable to parse header: " + line);
-                }
-                name = line.substring(0, colon).trim();
-                value = new StringBuffer(line.substring(colon + 1).trim());
-            }
+		ArrayList headers = new ArrayList();
+		String name = null;
+		StringBuffer value = null;
+		for (;;) {
+			String line = HttpParser.readLine(is, charset);
+			if ((line == null) || (line.trim().length() < 1)) {
+				break;
+			}
 
-        }
+			// Parse the header name and value
+			// Check for folded headers first
+			// Detect LWS-char see HTTP/1.0 or HTTP/1.1 Section 2.2
+			// discussion on folded headers
+			if ((line.charAt(0) == ' ') || (line.charAt(0) == '\t')) {
+				// we have continuation folded header
+				// so append value
+				if (value != null) {
+					value.append(' ');
+					value.append(line.trim());
+				}
+			} else {
+				// make sure we save the previous name,value pair if present
+				if (name != null) {
+					headers.add(new Header(name, value.toString()));
+				}
 
-        // make sure we save the last name,value pair if present
-        if (name != null) {
-            headers.add(new Header(name, value.toString()));
-        }
-        
-        return (Header[]) headers.toArray(new Header[headers.size()]);    
-    }
+				// Otherwise we should have normal HTTP header line
+				// Parse the header name and value
+				int colon = line.indexOf(":");
+				if (colon < 0) {
+					throw new ProtocolException("Unable to parse header: " + line);
+				}
+				name = line.substring(0, colon).trim();
+				value = new StringBuffer(line.substring(colon + 1).trim());
+			}
 
-    /**
-     * Parses headers from the given stream.  Headers with the same name are not
-     * combined.
-     * 
-     * @param is the stream to read headers from
-     * 
-     * @return an array of headers in the order in which they were parsed
-     * 
-     * @throws IOException if an IO error occurs while reading from the stream
-     * @throws HttpException if there is an error parsing a header value
-     * 
-     * @deprecated use #parseHeaders(InputStream, String)
-     */
-    public static Header[] parseHeaders(InputStream is) throws IOException, HttpException {
-        LOG.trace("enter HeaderParser.parseHeaders(InputStream, String)");
-        return parseHeaders(is, "US-ASCII");
-    }
+		}
+
+		// make sure we save the last name,value pair if present
+		if (name != null) {
+			headers.add(new Header(name, value.toString()));
+		}
+
+		return (Header[]) headers.toArray(new Header[headers.size()]);
+	}
+
+	/**
+	 * Parses headers from the given stream. Headers with the same name are not
+	 * combined.
+	 * 
+	 * @param is
+	 *            the stream to read headers from
+	 * 
+	 * @return an array of headers in the order in which they were parsed
+	 * 
+	 * @throws IOException
+	 *             if an IO error occurs while reading from the stream
+	 * @throws HttpException
+	 *             if there is an error parsing a header value
+	 * 
+	 * @deprecated use #parseHeaders(InputStream, String)
+	 */
+	public static Header[] parseHeaders(InputStream is) throws IOException, HttpException {
+		LOG.trace("enter HeaderParser.parseHeaders(InputStream, String)");
+		return parseHeaders(is, "US-ASCII");
+	}
 }

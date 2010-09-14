@@ -39,8 +39,8 @@ import org.apache.commons.log.Log;
 import org.apache.commons.log.LogFactory;
 
 /**
- * This class provides utility methods for processing HTTP www and proxy authentication 
- * challenges.
+ * This class provides utility methods for processing HTTP www and proxy
+ * authentication challenges.
  * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * 
@@ -48,119 +48,117 @@ import org.apache.commons.log.LogFactory;
  */
 public final class AuthChallengeProcessor {
 
-    private static final Log LOG = LogFactory.getLog(AuthChallengeProcessor.class);
+	private static final Log LOG = LogFactory.getLog(AuthChallengeProcessor.class);
 
-    private HttpParams params = null;
-    
-    /**
-     * Creates an authentication challenge processor with the given {@link HttpParams HTTP 
-     * parameters}
-     * 
-     * @param params the {@link HttpParams HTTP parameters} used by this processor
-     */
-    public AuthChallengeProcessor(final HttpParams params) {
-        super();
-        if (params == null) {
-            throw new IllegalArgumentException("Parameter collection may not be null");
-        }
-        this.params = params;
-    }
+	private HttpParams params = null;
 
-    /**
-     * Determines the preferred {@link AuthScheme authentication scheme} that can be used 
-     * to respond to the given collection of challenges.
-     * 
-     * @param challenges the collection of authentication challenges
-     * 
-     * @return the preferred {@link AuthScheme authentication scheme}
-     * 
-     * @throws AuthChallengeException if the preferred authentication scheme 
-     * cannot be determined or is not supported
-     */
-    public AuthScheme selectAuthScheme(final Map challenges) throws AuthChallengeException {
-        if (challenges == null) {
-            throw new IllegalArgumentException("Challenge map may not be null"); 
-        }
-        Collection authPrefs = (Collection) this.params.getParameter(
-            AuthPolicy.AUTH_SCHEME_PRIORITY);
-        if (authPrefs == null || authPrefs.isEmpty()) {
-            authPrefs = AuthPolicy.getDefaultAuthPrefs();    
-        }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Supported authentication schemes in the order of preference: " 
-                + authPrefs);
-        }
-        AuthScheme authscheme = null;
-        String challenge = null;
-        Iterator item = authPrefs.iterator();
-        while (item.hasNext()) {
-            String id = (String) item.next();
-            challenge = (String) challenges.get(id.toLowerCase()); 
-            if (challenge != null) {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info(id + " authentication scheme selected");
-                }
-                try {
-                    authscheme = AuthPolicy.getAuthScheme(id);
-                } catch (IllegalStateException e) {
-                    throw new AuthChallengeException(e.getMessage());
-                }
-                break;
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Challenge for " + id + " authentication scheme not available");
-                    // Try again
-                }
-            }
-        }
-        if (authscheme == null) {
-            // If none selected, something is wrong
-            throw new AuthChallengeException(
-                "Unable to respond to any of these challenges: "
-                    + challenges);
-        }
-        return authscheme;
-    }
+	/**
+	 * Creates an authentication challenge processor with the given
+	 * {@link HttpParams HTTP parameters}
+	 * 
+	 * @param params
+	 *            the {@link HttpParams HTTP parameters} used by this processor
+	 */
+	public AuthChallengeProcessor(final HttpParams params) {
+		super();
+		if (params == null) {
+			throw new IllegalArgumentException("Parameter collection may not be null");
+		}
+		this.params = params;
+	}
 
-    /**
-     * Processes the given collection of challenges and updates the 
-     * {@link AuthState state} of the authentication process.
-     * 
-     * @param challenges the collection of authentication challenges
-     * 
-     * @return the {@link AuthScheme authentication scheme} used to 
-     * process the challenge
-     * 
-     * @throws AuthChallengeException if authentication challenges cannot be 
-     * successfully processed or the preferred authentication scheme cannot
-     * be determined
-     */
-    public AuthScheme processChallenge(final AuthState state, final Map challenges)
-        throws MalformedChallengeException, AuthenticationException
-    {    
-        if (state == null) {
-            throw new IllegalArgumentException("Authentication state may not be null"); 
-        }
-        if (challenges == null) {
-            throw new IllegalArgumentException("Challenge map may not be null"); 
-        }
-        
-        if (state.isPreemptive() || state.getAuthScheme() == null) {
-            // Authentication not attempted before
-            state.setAuthScheme(selectAuthScheme(challenges));
-        }
-        AuthScheme authscheme = state.getAuthScheme();
-        String id = authscheme.getSchemeName();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Using authentication scheme: " + id);
-        }
-        String challenge = (String) challenges.get(id.toLowerCase());
-        if (challenge == null) {
-            throw new AuthenticationException(id + 
-                " authorization challenge expected, but not found");
-        }
-        authscheme.processChallenge(challenge);
-        LOG.debug("Authorization challenge processed");
-        return authscheme;
-    }
+	/**
+	 * Determines the preferred {@link AuthScheme authentication scheme} that
+	 * can be used to respond to the given collection of challenges.
+	 * 
+	 * @param challenges
+	 *            the collection of authentication challenges
+	 * 
+	 * @return the preferred {@link AuthScheme authentication scheme}
+	 * 
+	 * @throws AuthChallengeException
+	 *             if the preferred authentication scheme cannot be determined
+	 *             or is not supported
+	 */
+	public AuthScheme selectAuthScheme(final Map challenges) throws AuthChallengeException {
+		if (challenges == null) {
+			throw new IllegalArgumentException("Challenge map may not be null");
+		}
+		Collection authPrefs = (Collection) this.params.getParameter(AuthPolicy.AUTH_SCHEME_PRIORITY);
+		if (authPrefs == null || authPrefs.isEmpty()) {
+			authPrefs = AuthPolicy.getDefaultAuthPrefs();
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Supported authentication schemes in the order of preference: " + authPrefs);
+		}
+		AuthScheme authscheme = null;
+		String challenge = null;
+		Iterator item = authPrefs.iterator();
+		while (item.hasNext()) {
+			String id = (String) item.next();
+			challenge = (String) challenges.get(id.toLowerCase());
+			if (challenge != null) {
+				if (LOG.isInfoEnabled()) {
+					LOG.info(id + " authentication scheme selected");
+				}
+				try {
+					authscheme = AuthPolicy.getAuthScheme(id);
+				} catch (IllegalStateException e) {
+					throw new AuthChallengeException(e.getMessage());
+				}
+				break;
+			} else {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Challenge for " + id + " authentication scheme not available");
+					// Try again
+				}
+			}
+		}
+		if (authscheme == null) {
+			// If none selected, something is wrong
+			throw new AuthChallengeException("Unable to respond to any of these challenges: " + challenges);
+		}
+		return authscheme;
+	}
+
+	/**
+	 * Processes the given collection of challenges and updates the
+	 * {@link AuthState state} of the authentication process.
+	 * 
+	 * @param challenges
+	 *            the collection of authentication challenges
+	 * 
+	 * @return the {@link AuthScheme authentication scheme} used to process the
+	 *         challenge
+	 * 
+	 * @throws AuthChallengeException
+	 *             if authentication challenges cannot be successfully processed
+	 *             or the preferred authentication scheme cannot be determined
+	 */
+	public AuthScheme processChallenge(final AuthState state, final Map challenges) throws MalformedChallengeException,
+			AuthenticationException {
+		if (state == null) {
+			throw new IllegalArgumentException("Authentication state may not be null");
+		}
+		if (challenges == null) {
+			throw new IllegalArgumentException("Challenge map may not be null");
+		}
+
+		if (state.isPreemptive() || state.getAuthScheme() == null) {
+			// Authentication not attempted before
+			state.setAuthScheme(selectAuthScheme(challenges));
+		}
+		AuthScheme authscheme = state.getAuthScheme();
+		String id = authscheme.getSchemeName();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Using authentication scheme: " + id);
+		}
+		String challenge = (String) challenges.get(id.toLowerCase());
+		if (challenge == null) {
+			throw new AuthenticationException(id + " authorization challenge expected, but not found");
+		}
+		authscheme.processChallenge(challenge);
+		LOG.debug("Authorization challenge processed");
+		return authscheme;
+	}
 }

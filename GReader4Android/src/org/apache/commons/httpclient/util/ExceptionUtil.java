@@ -45,78 +45,88 @@ import org.apache.commons.log.LogFactory;
  */
 public class ExceptionUtil {
 
-    /** Log object for this class. */
-    private static final Log LOG = LogFactory.getLog(ExceptionUtil.class);
+	/** Log object for this class. */
+	private static final Log LOG = LogFactory.getLog(ExceptionUtil.class);
 
-    /** A reference to Throwable's initCause method, or null if it's not there in this JVM */
-    static private final Method INIT_CAUSE_METHOD = getInitCauseMethod();
+	/**
+	 * A reference to Throwable's initCause method, or null if it's not there in
+	 * this JVM
+	 */
+	static private final Method INIT_CAUSE_METHOD = getInitCauseMethod();
 
-    /** A reference to SocketTimeoutExceptionClass class, or null if it's not there in this JVM */
-    static private final Class SOCKET_TIMEOUT_CLASS = SocketTimeoutExceptionClass();
-    
-    /**
-     * Returns a <code>Method<code> allowing access to
-     * {@link Throwable.initCause(Throwable) initCause} method of {@link Throwable},
-     * or <code>null</code> if the method
-     * does not exist.
-     * 
-     * @return A <code>Method<code> for <code>Throwable.initCause</code>, or
-     * <code>null</code> if unavailable.
-     */ 
-    static private Method getInitCauseMethod() {
-        try {
-            Class[] paramsClasses = new Class[] { Throwable.class };
-            return Throwable.class.getMethod("initCause", paramsClasses);
-        } catch (NoSuchMethodException e) {
-            return null;
-        }
-    }
-    
-    /**
-     * Returns <code>SocketTimeoutExceptionClass<code> or <code>null</code> if the class
-     * does not exist.
-     * 
-     * @return <code>SocketTimeoutExceptionClass<code>, or <code>null</code> if unavailable.
-     */ 
-    static private Class SocketTimeoutExceptionClass() {
-        try {
-            return Class.forName("java.net.SocketTimeoutException");
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-    
-    /** 
-     * If we're running on JDK 1.4 or later, initialize the cause for the given throwable.
-     * 
-     * @param  throwable The throwable.
-     * @param  cause     The cause of the throwable.
-     */
-    public static void initCause(Throwable throwable, Throwable cause) {
-        if (INIT_CAUSE_METHOD != null) {
-            try {
-                INIT_CAUSE_METHOD.invoke(throwable, new Object[] { cause });
-            } catch (Exception e) {
-                LOG.warn("Exception invoking Throwable.initCause", e);
-            }
-        }
-    }
+	/**
+	 * A reference to SocketTimeoutExceptionClass class, or null if it's not
+	 * there in this JVM
+	 */
+	static private final Class SOCKET_TIMEOUT_CLASS = SocketTimeoutExceptionClass();
 
-    /** 
-     * If SocketTimeoutExceptionClass is defined, returns <tt>true</tt> only if the 
-     * exception is an instance of SocketTimeoutExceptionClass. If 
-     * SocketTimeoutExceptionClass is undefined, always returns <tt>true</tt>. 
-     * 
-     * @param  e an instance of InterruptedIOException class.
-     * 
-     * @return <tt>true</tt> if the exception signals socket timeout, <tt>false</tt>
-     *  otherwise.   
-     */
-    public static boolean isSocketTimeoutException(final InterruptedIOException e) {
-        if (SOCKET_TIMEOUT_CLASS != null) {
-            return SOCKET_TIMEOUT_CLASS.isInstance(e);
-        } else {
-            return true;
-        }
-    }
+	/**
+	 * Returns a <code>Method<code> allowing access to
+	 * {@link Throwable.initCause(Throwable) initCause} method of {@link Throwable},
+     * or <code>null</code> if the method does not exist.
+	 * 
+	 * @return A <code>Method<code> for <code>Throwable.initCause</code>, or
+	 *         <code>null</code> if unavailable.
+	 */
+	static private Method getInitCauseMethod() {
+		try {
+			Class[] paramsClasses = new Class[] { Throwable.class };
+			return Throwable.class.getMethod("initCause", paramsClasses);
+		} catch (NoSuchMethodException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns <code>SocketTimeoutExceptionClass<code> or <code>null</code> if
+	 * the class does not exist.
+	 * 
+	 * @return <code>SocketTimeoutExceptionClass<code>, or <code>null</code> if
+	 *         unavailable.
+	 */
+	static private Class SocketTimeoutExceptionClass() {
+		try {
+			return Class.forName("java.net.SocketTimeoutException");
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * If we're running on JDK 1.4 or later, initialize the cause for the given
+	 * throwable.
+	 * 
+	 * @param throwable
+	 *            The throwable.
+	 * @param cause
+	 *            The cause of the throwable.
+	 */
+	public static void initCause(Throwable throwable, Throwable cause) {
+		if (INIT_CAUSE_METHOD != null) {
+			try {
+				INIT_CAUSE_METHOD.invoke(throwable, new Object[] { cause });
+			} catch (Exception e) {
+				LOG.warn("Exception invoking Throwable.initCause", e);
+			}
+		}
+	}
+
+	/**
+	 * If SocketTimeoutExceptionClass is defined, returns <tt>true</tt> only if
+	 * the exception is an instance of SocketTimeoutExceptionClass. If
+	 * SocketTimeoutExceptionClass is undefined, always returns <tt>true</tt>.
+	 * 
+	 * @param e
+	 *            an instance of InterruptedIOException class.
+	 * 
+	 * @return <tt>true</tt> if the exception signals socket timeout,
+	 *         <tt>false</tt> otherwise.
+	 */
+	public static boolean isSocketTimeoutException(final InterruptedIOException e) {
+		if (SOCKET_TIMEOUT_CLASS != null) {
+			return SOCKET_TIMEOUT_CLASS.isInstance(e);
+		} else {
+			return true;
+		}
+	}
 }

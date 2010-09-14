@@ -40,271 +40,282 @@ import org.apache.commons.httpclient.Cookie;
  * cookie specification. It extends {@link Cookie} class and adds newer cookie
  * attributes and functions required for this specification.
  * </p>
- *
+ * 
  * @author Samit Jain (jain.samit@gmail.com)
  * 
  * @since 3.1
  */
 public class Cookie2 extends Cookie {
 
-    // string constants for cookie attributes
-    public static final String DOMAIN = "domain";
-    public static final String PATH = "path";
-    public static final String PORT = "port";
-    public static final String VERSION = "version";
-    public static final String SECURE = "secure";
-    public static final String MAXAGE = "max-age";
-    public static final String COMMENT = "comment";
-    public static final String COMMENTURL = "commenturl";
-    public static final String DISCARD = "discard";
+	// string constants for cookie attributes
+	public static final String DOMAIN = "domain";
+	public static final String PATH = "path";
+	public static final String PORT = "port";
+	public static final String VERSION = "version";
+	public static final String SECURE = "secure";
+	public static final String MAXAGE = "max-age";
+	public static final String COMMENT = "comment";
+	public static final String COMMENTURL = "commenturl";
+	public static final String DISCARD = "discard";
 
-    /**
-     * Default constructor. Creates a blank cookie
-     */
-    public Cookie2() {
-        super(null, "noname", null, null, null, false);
-    }
+	/**
+	 * Default constructor. Creates a blank cookie
+	 */
+	public Cookie2() {
+		super(null, "noname", null, null, null, false);
+	}
 
-    /**
-     * Creates a cookie with the given name, value and domain attribute.
-     *
-     * @param name    the cookie name
-     * @param value   the cookie value
-     * @param domain  the domain this cookie can be sent to
-     */
-    public Cookie2(String domain, String name, String value) {
-        super(domain, name, value);
-    }
+	/**
+	 * Creates a cookie with the given name, value and domain attribute.
+	 * 
+	 * @param name
+	 *            the cookie name
+	 * @param value
+	 *            the cookie value
+	 * @param domain
+	 *            the domain this cookie can be sent to
+	 */
+	public Cookie2(String domain, String name, String value) {
+		super(domain, name, value);
+	}
 
-    /**
-     * Creates a cookie with the given name, value, domain attribute,
-     * path attribute, expiration attribute, and secure attribute
-     *
-     * @param name    the cookie name
-     * @param value   the cookie value
-     * @param domain  the domain this cookie can be sent to
-     * @param path    the path prefix for which this cookie can be sent
-     * @param expires the {@link Date} at which this cookie expires,
-     *                or <tt>null</tt> if the cookie expires at the end
-     *                of the session
-     * @param secure if true this cookie can only be sent over secure
-     * connections
-     * @throws IllegalArgumentException If cookie name is null or blank,
-     *   cookie name contains a blank, or cookie name starts with character $
-     *
-     */
-    public Cookie2(String domain, String name, String value,
-                   String path, Date expires, boolean secure) {
-        super(domain, name, value, path, expires, secure);
-    }
+	/**
+	 * Creates a cookie with the given name, value, domain attribute, path
+	 * attribute, expiration attribute, and secure attribute
+	 * 
+	 * @param name
+	 *            the cookie name
+	 * @param value
+	 *            the cookie value
+	 * @param domain
+	 *            the domain this cookie can be sent to
+	 * @param path
+	 *            the path prefix for which this cookie can be sent
+	 * @param expires
+	 *            the {@link Date} at which this cookie expires, or
+	 *            <tt>null</tt> if the cookie expires at the end of the session
+	 * @param secure
+	 *            if true this cookie can only be sent over secure connections
+	 * @throws IllegalArgumentException
+	 *             If cookie name is null or blank, cookie name contains a
+	 *             blank, or cookie name starts with character $
+	 * 
+	 */
+	public Cookie2(String domain, String name, String value, String path, Date expires, boolean secure) {
+		super(domain, name, value, path, expires, secure);
+	}
 
-    /**
-     * Creates a cookie with the given name, value, domain attribute,
-     * path attribute, expiration attribute, secure attribute, and ports
-     * attribute.
-     *
-     * @param name    the cookie name
-     * @param value   the cookie value
-     * @param domain  the domain this cookie can be sent to
-     * @param path    the path prefix for which this cookie can be sent
-     * @param expires the {@link Date} at which this cookie expires,
-     *                or <tt>null</tt> if the cookie expires at the end
-     *                of the session
-     * @param secure if true this cookie can only be sent over secure
-     * connections
-     * @param ports   the ports for which this cookie can be sent
-     * @throws IllegalArgumentException If cookie name is null or blank,
-     *   cookie name contains a blank, or cookie name starts with character $
-     *
-     */
-    public Cookie2(String domain, String name, String value,
-                   String path, Date expires, boolean secure, int[] ports) {
-        super(domain, name, value, path, expires, secure);
-        setPorts(ports);
-    }
+	/**
+	 * Creates a cookie with the given name, value, domain attribute, path
+	 * attribute, expiration attribute, secure attribute, and ports attribute.
+	 * 
+	 * @param name
+	 *            the cookie name
+	 * @param value
+	 *            the cookie value
+	 * @param domain
+	 *            the domain this cookie can be sent to
+	 * @param path
+	 *            the path prefix for which this cookie can be sent
+	 * @param expires
+	 *            the {@link Date} at which this cookie expires, or
+	 *            <tt>null</tt> if the cookie expires at the end of the session
+	 * @param secure
+	 *            if true this cookie can only be sent over secure connections
+	 * @param ports
+	 *            the ports for which this cookie can be sent
+	 * @throws IllegalArgumentException
+	 *             If cookie name is null or blank, cookie name contains a
+	 *             blank, or cookie name starts with character $
+	 * 
+	 */
+	public Cookie2(String domain, String name, String value, String path, Date expires, boolean secure, int[] ports) {
+		super(domain, name, value, path, expires, secure);
+		setPorts(ports);
+	}
 
-   /**
-     * If a user agent (web browser) presents this cookie to a user, the
-     * cookie's purpose will be described by the information at this URL.
-     *
-     * @see #setCommentURL(String)
-     */
-    public String getCommentURL() {
-        return cookieCommentURL;
-    }
+	/**
+	 * If a user agent (web browser) presents this cookie to a user, the
+	 * cookie's purpose will be described by the information at this URL.
+	 * 
+	 * @see #setCommentURL(String)
+	 */
+	public String getCommentURL() {
+		return cookieCommentURL;
+	}
 
-   /**
-     * If a user agent (web browser) presents this cookie to a user, the
-     * cookie's purpose will be described by the information at this URL.
-     *
-     * @param commentURL
-     *
-     * @see #getCommentURL()
-     */
-    public void setCommentURL(String commentURL) {
-        this.cookieCommentURL = commentURL;
-    }
+	/**
+	 * If a user agent (web browser) presents this cookie to a user, the
+	 * cookie's purpose will be described by the information at this URL.
+	 * 
+	 * @param commentURL
+	 * 
+	 * @see #getCommentURL()
+	 */
+	public void setCommentURL(String commentURL) {
+		this.cookieCommentURL = commentURL;
+	}
 
-    /**
-     * Get the Port attribute. It restricts the ports to which a cookie
-     * may be returned in a Cookie request header.
-     *
-     * @see #setPorts(int[])
-     */
-    public int[] getPorts() {
-        return cookiePorts;
-    }
+	/**
+	 * Get the Port attribute. It restricts the ports to which a cookie may be
+	 * returned in a Cookie request header.
+	 * 
+	 * @see #setPorts(int[])
+	 */
+	public int[] getPorts() {
+		return cookiePorts;
+	}
 
-   /**
-     * Set the Port attribute. It restricts the ports to which a cookie
-     * may be returned in a Cookie request header.
-     *
-     * @param ports
-     *
-     * @see #getPorts()
-     */
-    public void setPorts(int[] ports) {
-        this.cookiePorts = ports;
-    }
+	/**
+	 * Set the Port attribute. It restricts the ports to which a cookie may be
+	 * returned in a Cookie request header.
+	 * 
+	 * @param ports
+	 * 
+	 * @see #getPorts()
+	 */
+	public void setPorts(int[] ports) {
+		this.cookiePorts = ports;
+	}
 
-    /**
-     * Set the Discard attribute.
-     *
-     * Note: <tt>Discard</tt> attribute overrides <tt>Max-age</tt>.
-     *
-     * @see #isPersistent()
-     */
-    public void setDiscard(boolean toDiscard) {
-        discard = toDiscard;
-    }
+	/**
+	 * Set the Discard attribute.
+	 * 
+	 * Note: <tt>Discard</tt> attribute overrides <tt>Max-age</tt>.
+	 * 
+	 * @see #isPersistent()
+	 */
+	public void setDiscard(boolean toDiscard) {
+		discard = toDiscard;
+	}
 
-    /**
-     * Returns <tt>false</tt> if the cookie should be discarded at the end
-     * of the "session"; <tt>true</tt> otherwise.
-     *
-     * @return <tt>false</tt> if the cookie should be discarded at the end
-     *         of the "session"; <tt>true</tt> otherwise
-     */
-    public boolean isPersistent() {
-        return (null != getExpiryDate()) && !discard;
-    }
+	/**
+	 * Returns <tt>false</tt> if the cookie should be discarded at the end of
+	 * the "session"; <tt>true</tt> otherwise.
+	 * 
+	 * @return <tt>false</tt> if the cookie should be discarded at the end of
+	 *         the "session"; <tt>true</tt> otherwise
+	 */
+	public boolean isPersistent() {
+		return (null != getExpiryDate()) && !discard;
+	}
 
-    /**
-     * Indicates whether the cookie had a port attribute specified in the
-     * <tt>Set-Cookie2</tt> response header. 
-     *
-     * @param value <tt>true</tt> if port attribute is specified in response
-     * header.
-     *
-     * @see #isPortAttributeSpecified
-     */
-    public void setPortAttributeSpecified(boolean value) {
-        hasPortAttribute = value;
-    }
+	/**
+	 * Indicates whether the cookie had a port attribute specified in the
+	 * <tt>Set-Cookie2</tt> response header.
+	 * 
+	 * @param value
+	 *            <tt>true</tt> if port attribute is specified in response
+	 *            header.
+	 * 
+	 * @see #isPortAttributeSpecified
+	 */
+	public void setPortAttributeSpecified(boolean value) {
+		hasPortAttribute = value;
+	}
 
-    /**
-     * @return <tt>true</tt> if cookie port attribute was specified in the
-     * <tt>Set-Cookie2</tt> header.
-     *
-     * @see #setPortAttributeSpecified
-     */
-    public boolean isPortAttributeSpecified() {
-        return hasPortAttribute;
-    }
+	/**
+	 * @return <tt>true</tt> if cookie port attribute was specified in the
+	 *         <tt>Set-Cookie2</tt> header.
+	 * 
+	 * @see #setPortAttributeSpecified
+	 */
+	public boolean isPortAttributeSpecified() {
+		return hasPortAttribute;
+	}
 
-    /**
-     * Indicates whether the Port attribute in <tt>Set-Cookie2</tt> header
-     * contains no value (is of the form Port="").
-     * <p>
-     * This value is required for generating
-     * the <tt>Cookie</tt> request header because the specification requires that if
-     * <tt>Set-Cookie2</tt> header contains a blank value for port attribute,
-     * the <tt>Cookie</tt> header should also contain a port attribute with no value.
-     *
-     * @param value <tt>true</tt> if port attribute is specified as blank in response
-     * header.
-     *
-     * @see #isPortAttributeBlank
-     */
-    public void setPortAttributeBlank(boolean value) {
-        isPortAttributeBlank = value;
-    }
+	/**
+	 * Indicates whether the Port attribute in <tt>Set-Cookie2</tt> header
+	 * contains no value (is of the form Port="").
+	 * <p>
+	 * This value is required for generating the <tt>Cookie</tt> request header
+	 * because the specification requires that if <tt>Set-Cookie2</tt> header
+	 * contains a blank value for port attribute, the <tt>Cookie</tt> header
+	 * should also contain a port attribute with no value.
+	 * 
+	 * @param value
+	 *            <tt>true</tt> if port attribute is specified as blank in
+	 *            response header.
+	 * 
+	 * @see #isPortAttributeBlank
+	 */
+	public void setPortAttributeBlank(boolean value) {
+		isPortAttributeBlank = value;
+	}
 
-    /**
-     * @return <tt>true</tt> if the port attribute in <tt>Set-Cookie2</tt> header
-     * had no value (was of the form Port="").
-     *
-     * @see #setPortAttributeBlank
-     */
-    public boolean isPortAttributeBlank() {
-        return isPortAttributeBlank;
-    }
+	/**
+	 * @return <tt>true</tt> if the port attribute in <tt>Set-Cookie2</tt>
+	 *         header had no value (was of the form Port="").
+	 * 
+	 * @see #setPortAttributeBlank
+	 */
+	public boolean isPortAttributeBlank() {
+		return isPortAttributeBlank;
+	}
 
-    /**
-     * Indicates whether the cookie had a version attribute specified in the
-     * <tt>Set-Cookie2</tt> response header. 
-     *
-     * @param value <tt>true</tt> if version attribute is specified in response
-     * header.
-     * @see #isVersionAttributeSpecified()
-     */
-    public void setVersionAttributeSpecified(boolean value) {
-        hasVersionAttribute = value;
-    }
+	/**
+	 * Indicates whether the cookie had a version attribute specified in the
+	 * <tt>Set-Cookie2</tt> response header.
+	 * 
+	 * @param value
+	 *            <tt>true</tt> if version attribute is specified in response
+	 *            header.
+	 * @see #isVersionAttributeSpecified()
+	 */
+	public void setVersionAttributeSpecified(boolean value) {
+		hasVersionAttribute = value;
+	}
 
-    /**
-     * @return <tt>true</tt> if cookie version attribute was specified in the
-     * <tt>Set-Cookie2</tt> header.
-     *
-     * @see #setVersionAttributeSpecified
-     */
-    public boolean isVersionAttributeSpecified() {
-        return hasVersionAttribute;
-    }
+	/**
+	 * @return <tt>true</tt> if cookie version attribute was specified in the
+	 *         <tt>Set-Cookie2</tt> header.
+	 * 
+	 * @see #setVersionAttributeSpecified
+	 */
+	public boolean isVersionAttributeSpecified() {
+		return hasVersionAttribute;
+	}
 
-    /**
-     * Return a textual representation of the cookie.
-     *
-     * @return string.
-     */
-    public String toExternalForm() {
-        CookieSpec spec =
-                CookiePolicy.getCookieSpec(CookiePolicy.RFC_2965);
-        return spec.formatCookie(this);
-    }
+	/**
+	 * Return a textual representation of the cookie.
+	 * 
+	 * @return string.
+	 */
+	public String toExternalForm() {
+		CookieSpec spec = CookiePolicy.getCookieSpec(CookiePolicy.RFC_2965);
+		return spec.formatCookie(this);
+	}
 
-    /**
-     * Comment URL attribute
-     */
-    private String cookieCommentURL;
+	/**
+	 * Comment URL attribute
+	 */
+	private String cookieCommentURL;
 
-    /**
-     * Port attribute.
-     */
-    private int[] cookiePorts;
+	/**
+	 * Port attribute.
+	 */
+	private int[] cookiePorts;
 
-    /**
-     * Discard attribute.
-     */
-    private boolean discard = false;
+	/**
+	 * Discard attribute.
+	 */
+	private boolean discard = false;
 
-    /**
-     * Indicates if the set-cookie2 header included a Port attribute for this
-     * cookie
-     */
-    private boolean hasPortAttribute = false;
+	/**
+	 * Indicates if the set-cookie2 header included a Port attribute for this
+	 * cookie
+	 */
+	private boolean hasPortAttribute = false;
 
-    /**
-     * Indicates if the set-cookie2 header's Port attribute did not have
-     * any value.
-     */
-    private boolean isPortAttributeBlank = false;
+	/**
+	 * Indicates if the set-cookie2 header's Port attribute did not have any
+	 * value.
+	 */
+	private boolean isPortAttributeBlank = false;
 
-    /**
-     * Indicates if the set-cookie2 header included a Version attribute
-     */
-    private boolean hasVersionAttribute = false;
-
+	/**
+	 * Indicates if the set-cookie2 header included a Version attribute
+	 */
+	private boolean hasVersionAttribute = false;
 
 }
-

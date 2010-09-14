@@ -40,9 +40,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * A utility class for parsing HTTP dates as used in cookies and other headers.  
- * This class handles dates as defined by RFC 2616 section 3.3.1 as well as 
- * some other common non-standard formats.
+ * A utility class for parsing HTTP dates as used in cookies and other headers.
+ * This class handles dates as defined by RFC 2616 section 3.3.1 as well as some
+ * other common non-standard formats.
  * 
  * @author Christopher Brown
  * @author Michael Becke
@@ -51,92 +51,92 @@ import java.util.TimeZone;
  */
 public class DateParser {
 
-    /**
-     * Date format pattern used to parse HTTP date headers in RFC 1123 format.
-     */
-    public static final String PATTERN_RFC1123 = "EEE, dd MMM yyyy HH:mm:ss zzz";
+	/**
+	 * Date format pattern used to parse HTTP date headers in RFC 1123 format.
+	 */
+	public static final String PATTERN_RFC1123 = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
-    /**
-     * Date format pattern used to parse HTTP date headers in RFC 1036 format.
-     */
-    public static final String PATTERN_RFC1036 = "EEEE, dd-MMM-yy HH:mm:ss zzz";
+	/**
+	 * Date format pattern used to parse HTTP date headers in RFC 1036 format.
+	 */
+	public static final String PATTERN_RFC1036 = "EEEE, dd-MMM-yy HH:mm:ss zzz";
 
-    /**
-     * Date format pattern used to parse HTTP date headers in ANSI C 
-     * <code>asctime()</code> format.
-     */
-    public static final String PATTERN_ASCTIME = "EEE MMM d HH:mm:ss yyyy";
+	/**
+	 * Date format pattern used to parse HTTP date headers in ANSI C
+	 * <code>asctime()</code> format.
+	 */
+	public static final String PATTERN_ASCTIME = "EEE MMM d HH:mm:ss yyyy";
 
-    private static final Collection DEFAULT_PATTERNS = Arrays.asList(
-            new String[] { PATTERN_ASCTIME, PATTERN_RFC1036, PATTERN_RFC1123 } );
-    /**
-     * Parses a date value.  The formats used for parsing the date value are retrieved from
-     * the default http params.
-     *
-     * @param dateValue the date value to parse
-     * 
-     * @return the parsed date
-     *
-     * @throws DateParseException if the value could not be parsed using any of the 
-     * supported date formats
-     */
-    public static Date parseDate(String dateValue) throws DateParseException {
-        return parseDate(dateValue, null);
-    }
-    
-    /**
-     * Parses the date value using the given date formats.
-     * 
-     * @param dateValue the date value to parse
-     * @param dateFormats the date formats to use
-     * 
-     * @return the parsed date
-     * 
-     * @throws DateParseException if none of the dataFormats could parse the dateValue
-     */
-    public static Date parseDate(
-        String dateValue, 
-        Collection dateFormats
-    ) throws DateParseException {
-        
-        if (dateValue == null) {
-            throw new IllegalArgumentException("dateValue is null");
-        }
-        if (dateFormats == null) {
-            dateFormats = DEFAULT_PATTERNS;
-        }
-        // trim single quotes around date if present
-        // see issue #5279
-        if (dateValue.length() > 1 
-            && dateValue.startsWith("'") 
-            && dateValue.endsWith("'")
-        ) {
-            dateValue = dateValue.substring (1, dateValue.length() - 1);
-        }
-        
-        SimpleDateFormat dateParser = null;        
-        Iterator formatIter = dateFormats.iterator();
-        
-        while (formatIter.hasNext()) {
-            String format = (String) formatIter.next();            
-            if (dateParser == null) {
-                dateParser = new SimpleDateFormat(format, Locale.US);
-                dateParser.setTimeZone(TimeZone.getTimeZone("GMT"));
-            } else {
-                dateParser.applyPattern(format);                    
-            }
-            try {
-                return dateParser.parse(dateValue);
-            } catch (ParseException pe) {
-                // ignore this exception, we will try the next format
-            }                
-        }
-        
-        // we were unable to parse the date
-        throw new DateParseException("Unable to parse the date " + dateValue);        
-    }
+	private static final Collection DEFAULT_PATTERNS = Arrays.asList(new String[] { PATTERN_ASCTIME, PATTERN_RFC1036, PATTERN_RFC1123 });
 
-    /** This class should not be instantiated. */    
-    private DateParser() { }
-    
+	/**
+	 * Parses a date value. The formats used for parsing the date value are
+	 * retrieved from the default http params.
+	 * 
+	 * @param dateValue
+	 *            the date value to parse
+	 * 
+	 * @return the parsed date
+	 * 
+	 * @throws DateParseException
+	 *             if the value could not be parsed using any of the supported
+	 *             date formats
+	 */
+	public static Date parseDate(String dateValue) throws DateParseException {
+		return parseDate(dateValue, null);
+	}
+
+	/**
+	 * Parses the date value using the given date formats.
+	 * 
+	 * @param dateValue
+	 *            the date value to parse
+	 * @param dateFormats
+	 *            the date formats to use
+	 * 
+	 * @return the parsed date
+	 * 
+	 * @throws DateParseException
+	 *             if none of the dataFormats could parse the dateValue
+	 */
+	public static Date parseDate(String dateValue, Collection dateFormats) throws DateParseException {
+
+		if (dateValue == null) {
+			throw new IllegalArgumentException("dateValue is null");
+		}
+		if (dateFormats == null) {
+			dateFormats = DEFAULT_PATTERNS;
+		}
+		// trim single quotes around date if present
+		// see issue #5279
+		if (dateValue.length() > 1 && dateValue.startsWith("'") && dateValue.endsWith("'")) {
+			dateValue = dateValue.substring(1, dateValue.length() - 1);
+		}
+
+		SimpleDateFormat dateParser = null;
+		Iterator formatIter = dateFormats.iterator();
+
+		while (formatIter.hasNext()) {
+			String format = (String) formatIter.next();
+			if (dateParser == null) {
+				dateParser = new SimpleDateFormat(format, Locale.US);
+				dateParser.setTimeZone(TimeZone.getTimeZone("GMT"));
+			} else {
+				dateParser.applyPattern(format);
+			}
+			try {
+				return dateParser.parse(dateValue);
+			} catch (ParseException pe) {
+				// ignore this exception, we will try the next format
+			}
+		}
+
+		// we were unable to parse the date
+		throw new DateParseException("Unable to parse the date " + dateValue);
+	}
+
+	/** This class should not be instantiated. */
+	private DateParser() {
+	}
+
 }

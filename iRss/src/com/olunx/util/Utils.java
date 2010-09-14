@@ -44,7 +44,7 @@ public class Utils {
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
 		return sdf.format(date);
 	}
-	
+
 	/**
 	 * 将日期转换为时间戳
 	 * 
@@ -101,16 +101,17 @@ public class Utils {
 	public long getTimestamp(Date date) {
 		return getTimestamp(date.toString());
 	}
-	
+
 	/**
 	 * 如果文件不存在则创建它
+	 * 
 	 * @param path
 	 * @return
 	 */
 	public File createFileIfNotExist(String path) {
 		File file = new File(path);
 		if (!file.exists()) {
-//			Log.i("srcFile file exists", String.valueOf(file.exists()));
+			// Log.i("srcFile file exists", String.valueOf(file.exists()));
 			try {
 				new File(path.substring(0, path.lastIndexOf("/"))).mkdirs();
 				file.createNewFile();
@@ -118,7 +119,7 @@ public class Utils {
 				e.printStackTrace();
 			}
 		}
-//		Log.i("file create finished", String.valueOf(file.exists()));
+		// Log.i("file create finished", String.valueOf(file.exists()));
 		return file;
 	}
 }

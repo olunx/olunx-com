@@ -18,23 +18,24 @@
 package org.apache.commons.codec;
 
 /**
- * Encodes a String into a String. 
- *
+ * Encodes a String into a String.
+ * 
  * @author Apache Software Foundation
  * @version $Id: StringEncoder.java 651573 2008-04-25 11:11:21Z niallp $
  */
 public interface StringEncoder extends Encoder {
-    
-    /**
-     * Encodes a String and returns a String.
-     * 
-     * @param pString a String to encode
-     * 
-     * @return the encoded String
-     * 
-     * @throws EncoderException thrown if there is
-     *  an error conidition during the Encoding process.
-     */
-    String encode(String pString) throws EncoderException;
-}  
 
+	/**
+	 * Encodes a String and returns a String.
+	 * 
+	 * @param pString
+	 *            a String to encode
+	 * 
+	 * @return the encoded String
+	 * 
+	 * @throws EncoderException
+	 *             thrown if there is an error conidition during the Encoding
+	 *             process.
+	 */
+	String encode(String pString) throws EncoderException;
+}

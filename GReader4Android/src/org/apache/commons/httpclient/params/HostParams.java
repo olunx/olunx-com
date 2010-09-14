@@ -31,11 +31,12 @@
 package org.apache.commons.httpclient.params;
 
 /**
- * This class represents a collection of HTTP protocol parameters applicable to 
- * {@link org.apache.commons.httpclient.HostConfiguration instances of HostConfiguration}. 
- * Protocol parameters may be linked together to form a hierarchy. If a particular 
- * parameter value has not been explicitly defined in the collection itself, its 
- * value will be drawn from the parent collection of parameters.
+ * This class represents a collection of HTTP protocol parameters applicable to
+ * {@link org.apache.commons.httpclient.HostConfiguration instances of
+ * HostConfiguration}. Protocol parameters may be linked together to form a
+ * hierarchy. If a particular parameter value has not been explicitly defined in
+ * the collection itself, its value will be drawn from the parent collection of
+ * parameters.
  * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * 
@@ -45,58 +46,60 @@ package org.apache.commons.httpclient.params;
  */
 public class HostParams extends DefaultHttpParams {
 
-    /**
-     * Defines the request headers to be sent per default with each request.
-     * <p>
-     * This parameter expects a value of type {@link java.util.Collection}. The 
-     * collection is expected to contain {@link org.apache.commons.httpclient.Header}s. 
-     * </p>
-     */
-    public static final String DEFAULT_HEADERS = "http.default-headers"; 
+	/**
+	 * Defines the request headers to be sent per default with each request.
+	 * <p>
+	 * This parameter expects a value of type {@link java.util.Collection}. The
+	 * collection is expected to contain
+	 * {@link org.apache.commons.httpclient.Header}s.
+	 * </p>
+	 */
+	public static final String DEFAULT_HEADERS = "http.default-headers";
 
-    /**
-     * Creates a new collection of parameters with the collection returned
-     * by {@link #getDefaultParams()} as a parent. The collection will defer
-     * to its parent for a default value if a particular parameter is not 
-     * explicitly set in the collection itself.
-     * 
-     * @see #getDefaultParams()
-     */
-    public HostParams() {
-        super();
-    }
+	/**
+	 * Creates a new collection of parameters with the collection returned by
+	 * {@link #getDefaultParams()} as a parent. The collection will defer to its
+	 * parent for a default value if a particular parameter is not explicitly
+	 * set in the collection itself.
+	 * 
+	 * @see #getDefaultParams()
+	 */
+	public HostParams() {
+		super();
+	}
 
-    /**
-     * Creates a new collection of parameters with the given parent. 
-     * The collection will defer to its parent for a default value 
-     * if a particular parameter is not explicitly set in the collection
-     * itself.
-     * 
-     * @param defaults the parent collection to defer to, if a parameter
-     * is not explictly set in the collection itself.
-     *
-     * @see #getDefaultParams()
-     */
-    public HostParams(HttpParams defaults) {
-        super(defaults);
-    }
-    
-    /**
-     * Sets the virtual host name.
-     * 
-     * @param hostname The host name
-     */
-    public void setVirtualHost(final String hostname) {
-        setParameter(HttpMethodParams.VIRTUAL_HOST, hostname);
-    }
+	/**
+	 * Creates a new collection of parameters with the given parent. The
+	 * collection will defer to its parent for a default value if a particular
+	 * parameter is not explicitly set in the collection itself.
+	 * 
+	 * @param defaults
+	 *            the parent collection to defer to, if a parameter is not
+	 *            explictly set in the collection itself.
+	 * 
+	 * @see #getDefaultParams()
+	 */
+	public HostParams(HttpParams defaults) {
+		super(defaults);
+	}
 
-    /**
-     * Returns the virtual host name.
-     * 
-     * @return The virtual host name
-     */
-    public String getVirtualHost() {
-        return (String) getParameter(HttpMethodParams.VIRTUAL_HOST);
-    }
-        
+	/**
+	 * Sets the virtual host name.
+	 * 
+	 * @param hostname
+	 *            The host name
+	 */
+	public void setVirtualHost(final String hostname) {
+		setParameter(HttpMethodParams.VIRTUAL_HOST, hostname);
+	}
+
+	/**
+	 * Returns the virtual host name.
+	 * 
+	 * @return The virtual host name
+	 */
+	public String getVirtualHost() {
+		return (String) getParameter(HttpMethodParams.VIRTUAL_HOST);
+	}
+
 }

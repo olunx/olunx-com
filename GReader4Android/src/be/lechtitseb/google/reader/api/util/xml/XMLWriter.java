@@ -14,7 +14,8 @@ import org.jdom.output.XMLOutputter;
  * XML Writer helper class based on JDOM
  */
 public class XMLWriter {
-//	private static final Logger logger = Logger.getLogger(XMLWriter.class.getName());
+	// private static final Logger logger =
+	// Logger.getLogger(XMLWriter.class.getName());
 
 	/**
 	 * Write an XML document to a file
@@ -52,7 +53,8 @@ public class XMLWriter {
 				try {
 					oStream.close();
 				} catch (IOException e1) {
-//					logger.debug("Error while closing the output stream after writing the xml file: " + e1);
+					// logger.debug("Error while closing the output stream after writing the xml file: "
+					// + e1);
 				}
 			}
 		}

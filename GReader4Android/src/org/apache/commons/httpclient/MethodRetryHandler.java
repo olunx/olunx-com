@@ -31,7 +31,7 @@
 package org.apache.commons.httpclient;
 
 /**
- * A handler for determining if an HttpMethod should be retried after a 
+ * A handler for determining if an HttpMethod should be retried after a
  * recoverable exception during execution.
  * 
  * @see HttpMethod#execute(HttpState, HttpConnection)
@@ -43,26 +43,27 @@ package org.apache.commons.httpclient;
  */
 public interface MethodRetryHandler {
 
-    /**
-     * Determines if a method should be retried after an HttpRecoverableException
-     * occurs during execution.
-     * 
-     * @param method the method being executed
-     * @param connection the connection the method is using
-     * @param recoverableException the exception that occurred
-     * @param executionCount the number of times this method has been 
-     * unsuccessfully executed
-     * @param requestSent this argument is unused and will be removed in the future. 
-     *   {@link HttpMethod#isRequestSent()} should be used instead
-     * 
-     * @return <code>true</code> if the method should be retried, <code>false</code>
-     * otherwise
-     */
-    boolean retryMethod(
-        HttpMethod method, 
-        HttpConnection connection,
-        HttpRecoverableException recoverableException,
-        int executionCount,
-        boolean requestSent);
+	/**
+	 * Determines if a method should be retried after an
+	 * HttpRecoverableException occurs during execution.
+	 * 
+	 * @param method
+	 *            the method being executed
+	 * @param connection
+	 *            the connection the method is using
+	 * @param recoverableException
+	 *            the exception that occurred
+	 * @param executionCount
+	 *            the number of times this method has been unsuccessfully
+	 *            executed
+	 * @param requestSent
+	 *            this argument is unused and will be removed in the future.
+	 *            {@link HttpMethod#isRequestSent()} should be used instead
+	 * 
+	 * @return <code>true</code> if the method should be retried,
+	 *         <code>false</code> otherwise
+	 */
+	boolean retryMethod(HttpMethod method, HttpConnection connection, HttpRecoverableException recoverableException, int executionCount,
+			boolean requestSent);
 
 }

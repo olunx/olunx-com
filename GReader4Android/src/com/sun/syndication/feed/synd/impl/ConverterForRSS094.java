@@ -34,90 +34,88 @@ import java.util.Set;
  */
 public class ConverterForRSS094 extends ConverterForRSS093 {
 
-    public ConverterForRSS094() {
-        this("rss_0.94");
-    }
+	public ConverterForRSS094() {
+		this("rss_0.94");
+	}
 
-    protected ConverterForRSS094(String type) {
-        super(type);
-    }
+	protected ConverterForRSS094(String type) {
+		super(type);
+	}
 
-    public void copyInto(WireFeed feed,SyndFeed syndFeed) {
-        Channel channel = (Channel) feed;
-        super.copyInto(channel,syndFeed);
-        List cats = channel.getCategories();    //c
-        if (cats.size()>0) {
-            Set s = new HashSet();                // using a set to remove duplicates
-            s.addAll(createSyndCategories(cats)); // feed native categories (as syndcat)
-            s.addAll(syndFeed.getCategories());   // DC subjects (as syndcat)
-            syndFeed.setCategories(new ArrayList(s));
-        }
-    }
+	public void copyInto(WireFeed feed, SyndFeed syndFeed) {
+		Channel channel = (Channel) feed;
+		super.copyInto(channel, syndFeed);
+		List cats = channel.getCategories(); // c
+		if (cats.size() > 0) {
+			Set s = new HashSet(); // using a set to remove duplicates
+			s.addAll(createSyndCategories(cats)); // feed native categories (as
+													// syndcat)
+			s.addAll(syndFeed.getCategories()); // DC subjects (as syndcat)
+			syndFeed.setCategories(new ArrayList(s));
+		}
+	}
 
-    protected SyndEntry createSyndEntry(Item item, boolean preserveWireItem) {
-        SyndEntry syndEntry = super.createSyndEntry(item, preserveWireItem);
+	protected SyndEntry createSyndEntry(Item item, boolean preserveWireItem) {
+		SyndEntry syndEntry = super.createSyndEntry(item, preserveWireItem);
 
-        // adding native feed author to DC creators list
-        String author = item.getAuthor();
-        if (author!=null) {
-            List creators = ((DCModule)syndEntry.getModule(DCModule.URI)).getCreators();
-            if (!creators.contains(author)) {
-                Set s = new HashSet(); // using a set to remove duplicates
-                s.addAll(creators);    // DC creators
-                s.add(author);         // feed native author
-                creators.clear();
-                creators.addAll(s);
-            }
-        }
+		// adding native feed author to DC creators list
+		String author = item.getAuthor();
+		if (author != null) {
+			List creators = ((DCModule) syndEntry.getModule(DCModule.URI)).getCreators();
+			if (!creators.contains(author)) {
+				Set s = new HashSet(); // using a set to remove duplicates
+				s.addAll(creators); // DC creators
+				s.add(author); // feed native author
+				creators.clear();
+				creators.addAll(s);
+			}
+		}
 
-        Guid guid = item.getGuid();
-        if (guid!=null) {
-            syndEntry.setUri(guid.getValue());
-            if (item.getLink()==null && guid.isPermaLink()) {
-                syndEntry.setLink(guid.getValue());
-            }
-        }
-        else {
-            syndEntry.setUri(item.getLink());
-        }
-        return syndEntry;
-    }
+		Guid guid = item.getGuid();
+		if (guid != null) {
+			syndEntry.setUri(guid.getValue());
+			if (item.getLink() == null && guid.isPermaLink()) {
+				syndEntry.setLink(guid.getValue());
+			}
+		} else {
+			syndEntry.setUri(item.getLink());
+		}
+		return syndEntry;
+	}
 
+	protected WireFeed createRealFeed(String type, SyndFeed syndFeed) {
+		Channel channel = (Channel) super.createRealFeed(type, syndFeed);
+		List cats = syndFeed.getCategories(); // c
+		if (cats.size() > 0) {
+			channel.setCategories(createRSSCategories(cats));
+		}
+		return channel;
+	}
 
-    protected WireFeed createRealFeed(String type,SyndFeed syndFeed) {
-        Channel channel = (Channel) super.createRealFeed(type,syndFeed);
-        List cats = syndFeed.getCategories();    //c
-        if (cats.size()>0) {
-            channel.setCategories(createRSSCategories(cats));
-        }
-        return channel;
-    }
+	protected Item createRSSItem(SyndEntry sEntry) {
+		Item item = super.createRSSItem(sEntry);
+		if (sEntry.getAuthors() != null && sEntry.getAuthors().size() > 0) {
+			SyndPerson author = (SyndPerson) sEntry.getAuthors().get(0);
+			item.setAuthor(author.getEmail());
+		}
 
-    protected Item createRSSItem(SyndEntry sEntry) {
-        Item item = super.createRSSItem(sEntry);     
-        if (sEntry.getAuthors()!=null && sEntry.getAuthors().size() > 0) {
-            SyndPerson author = (SyndPerson)sEntry.getAuthors().get(0);
-            item.setAuthor(author.getEmail());  
-        }  
+		Guid guid = null;
+		String uri = sEntry.getUri();
+		if (uri != null) {
+			guid = new Guid();
+			guid.setPermaLink(false);
+			guid.setValue(uri);
+		} else {
+			String link = sEntry.getLink();
+			if (link != null) {
+				guid = new Guid();
+				guid.setPermaLink(true);
+				guid.setValue(link);
+			}
+		}
+		item.setGuid(guid);
 
-        Guid guid = null;
-        String uri = sEntry.getUri();
-        if (uri!=null) {
-            guid = new Guid();
-            guid.setPermaLink(false);
-            guid.setValue(uri);
-        }
-        else {
-            String link = sEntry.getLink();
-            if (link!=null) {
-                guid = new Guid();
-                guid.setPermaLink(true);
-                guid.setValue(link);
-            }
-        }
-        item.setGuid(guid);
-
-        return item;
-    }
+		return item;
+	}
 
 }

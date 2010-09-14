@@ -33,21 +33,23 @@ package org.apache.commons.httpclient;
 /**
  * When a response stream has been consumed, various parts of the HttpClient
  * implementation need to respond appropriately.
- *
- * <p>When one of the three types of {@link java.io.InputStream}, one of
+ * 
+ * <p>
+ * When one of the three types of {@link java.io.InputStream}, one of
  * AutoCloseInputStream (package), {@link ContentLengthInputStream}, or
- * {@link ChunkedInputStream} finishes with its content, either because
- * all content has been consumed, or because it was explicitly closed,
- * it notifies its corresponding method via this interface.</p>
- *
+ * {@link ChunkedInputStream} finishes with its content, either because all
+ * content has been consumed, or because it was explicitly closed, it notifies
+ * its corresponding method via this interface.
+ * </p>
+ * 
  * @see ContentLengthInputStream
  * @see ChunkedInputStream
  * @author Eric Johnson
  */
 interface ResponseConsumedWatcher {
 
-    /**
-     * A response has been consumed.
-     */
-    void responseConsumed();
+	/**
+	 * A response has been consumed.
+	 */
+	void responseConsumed();
 }

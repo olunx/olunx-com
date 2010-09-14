@@ -28,43 +28,63 @@ import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 public class Main extends Activity {
 
 	private Cursor cursor;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+
 		initCOnfig();
 		//
-		createView();
+		// createView();
 	}
 
 	private void createView() {
 
 		CategoryHelper helper = new CategoryHelper();
 		cursor = helper.getAllRecords();
-		
+
 		GridView gridview = (GridView) findViewById(R.id.GridView01);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.main_item, cursor, new String[] { CategoryHelper.c_icon,
 				CategoryHelper.c_title, CategoryHelper.c_feedCount }, new int[] { R.id.ItemImage, R.id.ItemText, R.id.ItemNum });
 		gridview.setAdapter(adapter);
+		//短按事件
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
 				SQLiteCursor cursor = (SQLiteCursor) arg0.getItemAtPosition(position);
 				String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
 				System.out.println(title);// 打印
 				Intent i = new Intent();
-				i.putExtra(CategoryHelper.c_title, title);//分类标题
+				i.putExtra(CategoryHelper.c_title, title);// 分类标题
 				i.setClass(Main.this, FeedList.class);
 				cursor.close();
 				Main.this.startActivity(i);
 			}
 		});
+		//长按事件
+		gridview.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
+				final String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
+				System.out.println(title);// 打印
+				Toast.makeText(Main.this, "开始更新...", Toast.LENGTH_SHORT).show();
+				new Thread() {
+					public void run() {
+						new Update().updateArticlesByCat(title);
+						System.out.println("finished!");
+					}
+				}.start();
+				cursor.close();
+				return false;
+			}});
 
 		helper.close();
 	}
@@ -77,7 +97,7 @@ public class Main extends Activity {
 
 	@Override
 	protected void onPause() {
-		if(cursor != null) {
+		if (cursor != null) {
 			cursor.close();
 		}
 		super.onPause();

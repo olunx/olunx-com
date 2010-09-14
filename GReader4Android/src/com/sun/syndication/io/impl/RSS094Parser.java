@@ -29,77 +29,80 @@ import java.util.List;
  */
 public class RSS094Parser extends RSS093Parser {
 
-    public RSS094Parser() {
-        this("rss_0.94");
-    }
+	public RSS094Parser() {
+		this("rss_0.94");
+	}
 
-    protected RSS094Parser(String type) {
-        super(type);
-    }
+	protected RSS094Parser(String type) {
+		super(type);
+	}
 
-    protected String getRSSVersion() {
-            return "0.94";
-    }
+	protected String getRSSVersion() {
+		return "0.94";
+	}
 
-    protected WireFeed parseChannel(Element rssRoot)  {
-        Channel channel = (Channel) super.parseChannel(rssRoot);
-        Element eChannel = rssRoot.getChild("channel",getRSSNamespace());
+	protected WireFeed parseChannel(Element rssRoot) {
+		Channel channel = (Channel) super.parseChannel(rssRoot);
+		Element eChannel = rssRoot.getChild("channel", getRSSNamespace());
 
-        List eCats = eChannel.getChildren("category",getRSSNamespace());
-        channel.setCategories(parseCategories(eCats));
+		List eCats = eChannel.getChildren("category", getRSSNamespace());
+		channel.setCategories(parseCategories(eCats));
 
-        Element eTtl = eChannel.getChild("ttl",getRSSNamespace());
-        if (eTtl!=null && eTtl.getText() != null ) {
-            Integer ttlValue = null;        
-            try{
-                 ttlValue = new Integer(eTtl.getText());
-            } catch(NumberFormatException nfe ){ 
-                ; //let it go by
-            }
-            if (ttlValue != null) {
-                channel.setTtl(ttlValue.intValue());
-            }
-        }
+		Element eTtl = eChannel.getChild("ttl", getRSSNamespace());
+		if (eTtl != null && eTtl.getText() != null) {
+			Integer ttlValue = null;
+			try {
+				ttlValue = new Integer(eTtl.getText());
+			} catch (NumberFormatException nfe) {
+				; // let it go by
+			}
+			if (ttlValue != null) {
+				channel.setTtl(ttlValue.intValue());
+			}
+		}
 
-        return channel;
-    }
+		return channel;
+	}
 
-    public Item parseItem(Element rssRoot,Element eItem) {
-        Item item = super.parseItem(rssRoot,eItem);
-        item.setExpirationDate(null);
+	public Item parseItem(Element rssRoot, Element eItem) {
+		Item item = super.parseItem(rssRoot, eItem);
+		item.setExpirationDate(null);
 
-        Element e = eItem.getChild("author",getRSSNamespace());
-        if (e!=null) {
-            item.setAuthor(e.getText());
-        }
+		Element e = eItem.getChild("author", getRSSNamespace());
+		if (e != null) {
+			item.setAuthor(e.getText());
+		}
 
-        e = eItem.getChild("guid",getRSSNamespace());
-        if (e!=null) {
-            Guid guid = new Guid();
-            String att = e.getAttributeValue("isPermaLink");//getRSSNamespace()); DONT KNOW WHY DOESN'T WORK
-            if (att!=null) {
-                guid.setPermaLink(att.equalsIgnoreCase("true"));
-            }
-            guid.setValue(e.getText());
-            item.setGuid(guid);
-        }
+		e = eItem.getChild("guid", getRSSNamespace());
+		if (e != null) {
+			Guid guid = new Guid();
+			String att = e.getAttributeValue("isPermaLink");// getRSSNamespace());
+															// DONT KNOW WHY
+															// DOESN'T WORK
+			if (att != null) {
+				guid.setPermaLink(att.equalsIgnoreCase("true"));
+			}
+			guid.setValue(e.getText());
+			item.setGuid(guid);
+		}
 
-        e = eItem.getChild("comments",getRSSNamespace());
-        if (e!=null) {
-            item.setComments(e.getText());
-        }
+		e = eItem.getChild("comments", getRSSNamespace());
+		if (e != null) {
+			item.setComments(e.getText());
+		}
 
-        return item;
-    }
+		return item;
+	}
 
-    protected Description parseItemDescription(Element rssRoot,Element eDesc) {
-        Description desc = super.parseItemDescription(rssRoot,eDesc);
-        String att = eDesc.getAttributeValue("type");//getRSSNamespace()); DONT KNOW WHY DOESN'T WORK
-        if (att==null) {
-            att = "text/html";
-        }
-        desc.setType(att);
-        return desc;
-    }
+	protected Description parseItemDescription(Element rssRoot, Element eDesc) {
+		Description desc = super.parseItemDescription(rssRoot, eDesc);
+		String att = eDesc.getAttributeValue("type");// getRSSNamespace()); DONT
+														// KNOW WHY DOESN'T WORK
+		if (att == null) {
+			att = "text/html";
+		}
+		desc.setType(att);
+		return desc;
+	}
 
 }

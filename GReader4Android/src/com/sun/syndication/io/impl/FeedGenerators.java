@@ -23,40 +23,41 @@ import java.util.List;
 /**
  * Generates an XML document (JDOM Document) out of a Feed.
  * <p>
- * It can generate all flavors of RSS (0.90, 0.91, 0.92, 0.93, 0.94, 1.0 and 2.0) and
- * Atom 0.3 feed.
+ * It can generate all flavors of RSS (0.90, 0.91, 0.92, 0.93, 0.94, 1.0 and
+ * 2.0) and Atom 0.3 feed.
  * <p>
  * WireFeedGenerator instances are thread safe.
  * <p>
- * Generators for a specific type must extend this class and register in the generator list.
- * (Right now registration is hardcoded in the WireFeedGenerator constructor).
+ * Generators for a specific type must extend this class and register in the
+ * generator list. (Right now registration is hardcoded in the WireFeedGenerator
+ * constructor).
  * <p>
+ * 
  * @author Alejandro Abdelnur
- *
+ * 
  */
 public class FeedGenerators extends PluginManager {
 
-    /**
-     * WireFeedGenerator.classes=  [className] ...
-     *
-     */
-    public static final String FEED_GENERATORS_KEY = "WireFeedGenerator.classes";
+	/**
+	 * WireFeedGenerator.classes= [className] ...
+	 * 
+	 */
+	public static final String FEED_GENERATORS_KEY = "WireFeedGenerator.classes";
 
+	public FeedGenerators() {
+		super(FEED_GENERATORS_KEY);
+	}
 
-    public FeedGenerators() {
-        super(FEED_GENERATORS_KEY);
-    }
+	public WireFeedGenerator getGenerator(String feedType) {
+		return (WireFeedGenerator) getPlugin(feedType);
+	}
 
-    public WireFeedGenerator getGenerator(String feedType) {
-        return (WireFeedGenerator) getPlugin(feedType);
-    }
+	protected String getKey(Object obj) {
+		return ((WireFeedGenerator) obj).getType();
+	}
 
-    protected String getKey(Object obj) {
-        return ((WireFeedGenerator)obj).getType();
-    }
-
-    public List getSupportedFeedTypes() {
-        return getKeys();
-    }
+	public List getSupportedFeedTypes() {
+		return getKeys();
+	}
 
 }

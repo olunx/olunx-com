@@ -36,54 +36,57 @@ import java.io.OutputStream;
 
 /**
  * Logs all data written to the wire LOG.
- *
+ * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * 
  * @since 2.0beta1
  */
 class WireLogOutputStream extends FilterOutputStream {
 
-    /** Original input stream. */
-    private OutputStream out;
-    
-    /** The wire log to use. */
-    private Wire wire;
+	/** Original input stream. */
+	private OutputStream out;
 
-    /**
-     * Create an instance that wraps the specified output stream.
-     * @param out The output stream.
-     * @param wire The Wire log to use.
-     */
-    public WireLogOutputStream(OutputStream out, Wire wire) {
-        super(out);
-        this.out = out;
-        this.wire = wire;
-    }
-    
-    /**
-     * 
-     * @see java.io.OutputStream#write(byte[], int, int)
-     */
-    public void write(byte[] b, int off, int len) throws IOException {
-        this.out.write(b,  off,  len);
-        wire.output(b, off, len);
-    }
+	/** The wire log to use. */
+	private Wire wire;
 
-    /**
-     * 
-     * @see java.io.OutputStream#write()
-     */
-    public void write(int b) throws IOException {
-        this.out.write(b);
-        wire.output(b);
-    }
+	/**
+	 * Create an instance that wraps the specified output stream.
+	 * 
+	 * @param out
+	 *            The output stream.
+	 * @param wire
+	 *            The Wire log to use.
+	 */
+	public WireLogOutputStream(OutputStream out, Wire wire) {
+		super(out);
+		this.out = out;
+		this.wire = wire;
+	}
 
-    /**
-     * 
-     * @see java.io.OutputStream#write(byte[])
-     */
-    public void write(byte[] b) throws IOException {
-        this.out.write(b);
-        wire.output(b);
-    }
+	/**
+	 * 
+	 * @see java.io.OutputStream#write(byte[], int, int)
+	 */
+	public void write(byte[] b, int off, int len) throws IOException {
+		this.out.write(b, off, len);
+		wire.output(b, off, len);
+	}
+
+	/**
+	 * 
+	 * @see java.io.OutputStream#write()
+	 */
+	public void write(int b) throws IOException {
+		this.out.write(b);
+		wire.output(b);
+	}
+
+	/**
+	 * 
+	 * @see java.io.OutputStream#write(byte[])
+	 */
+	public void write(byte[] b) throws IOException {
+		this.out.write(b);
+		wire.output(b);
+	}
 }

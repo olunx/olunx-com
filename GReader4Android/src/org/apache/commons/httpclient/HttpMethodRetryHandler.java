@@ -33,12 +33,12 @@ package org.apache.commons.httpclient;
 import java.io.IOException;
 
 /**
- * A handler for determining if an HttpMethod should be retried after a 
+ * A handler for determining if an HttpMethod should be retried after a
  * recoverable exception during execution.
  * 
  * <p>
- * Classes implementing this interface must synchronize access to shared
- * data as methods of this interfrace may be executed from multiple threads 
+ * Classes implementing this interface must synchronize access to shared data as
+ * methods of this interfrace may be executed from multiple threads
  * </p>
  * 
  * @see HttpMethod#execute(HttpState, HttpConnection)
@@ -48,18 +48,21 @@ import java.io.IOException;
  */
 public interface HttpMethodRetryHandler {
 
-    /**
-     * Determines if a method should be retried after an HttpRecoverableException
-     * occurs during execution.
-     * 
-     * @param method the method being executed
-     * @param exception the exception that occurred
-     * @param executionCount the number of times this method has been 
-     * unsuccessfully executed
-     * 
-     * @return <code>true</code> if the method should be retried, <code>false</code>
-     * otherwise
-     */
-    boolean retryMethod(HttpMethod method, IOException exception, int executionCount);
+	/**
+	 * Determines if a method should be retried after an
+	 * HttpRecoverableException occurs during execution.
+	 * 
+	 * @param method
+	 *            the method being executed
+	 * @param exception
+	 *            the exception that occurred
+	 * @param executionCount
+	 *            the number of times this method has been unsuccessfully
+	 *            executed
+	 * 
+	 * @return <code>true</code> if the method should be retried,
+	 *         <code>false</code> otherwise
+	 */
+	boolean retryMethod(HttpMethod method, IOException exception, int executionCount);
 
 }

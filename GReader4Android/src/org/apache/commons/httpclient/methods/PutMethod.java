@@ -33,58 +33,57 @@ package org.apache.commons.httpclient.methods;
 /**
  * Implements the HTTP PUT method.
  * <p>
- * The HTTP PUT method is defined in section 9.6 of 
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
- * <blockquote>
- * The PUT method requests that the enclosed entity be stored under the
- * supplied Request-URI. If the Request-URI refers to an already
- * existing resource, the enclosed entity SHOULD be considered as a
- * modified version of the one residing on the origin server. 
- * </blockquote>
+ * The HTTP PUT method is defined in section 9.6 of <a
+ * href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>: <blockquote> The PUT
+ * method requests that the enclosed entity be stored under the supplied
+ * Request-URI. If the Request-URI refers to an already existing resource, the
+ * enclosed entity SHOULD be considered as a modified version of the one
+ * residing on the origin server. </blockquote>
  * </p>
  * 
  * @author <a href="mailto:remm@apache.org">Remy Maucherat</a>
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * @author <a href="mailto:jsdever@apache.org">Jeff Dever</a>
- *
+ * 
  * @version $Revision: 480424 $
  * @since 1.0
  */
 public class PutMethod extends EntityEnclosingMethod {
 
-    // ----------------------------------------------------------- Constructors
+	// ----------------------------------------------------------- Constructors
 
-    /**
-     * No-arg constructor.
-     *
-     * @since 1.0
-     */
-    public PutMethod() {
-        super();
-    }
+	/**
+	 * No-arg constructor.
+	 * 
+	 * @since 1.0
+	 */
+	public PutMethod() {
+		super();
+	}
 
+	/**
+	 * Constructor specifying a URI.
+	 * 
+	 * @param uri
+	 *            either an absolute or relative URI
+	 * 
+	 * @since 1.0
+	 */
+	public PutMethod(String uri) {
+		super(uri);
+	}
 
-    /**
-     * Constructor specifying a URI.
-     *
-     * @param uri either an absolute or relative URI
-     *
-     * @since 1.0
-     */
-    public PutMethod(String uri) {
-        super(uri);
-    }
+	// --------------------------------------------------------- Public Methods
 
-    // --------------------------------------------------------- Public Methods
-
-    /**
-     * Return <tt>"PUT"</tt>.
-     * @return <tt>"PUT"</tt>
-     *
-     * @since 2.0
-     */
-    public String getName() {
-        return "PUT";
-    }
+	/**
+	 * Return <tt>"PUT"</tt>.
+	 * 
+	 * @return <tt>"PUT"</tt>
+	 * 
+	 * @since 2.0
+	 */
+	public String getName() {
+		return "PUT";
+	}
 }

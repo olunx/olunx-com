@@ -46,506 +46,521 @@ import org.apache.commons.log.Log;
 import org.apache.commons.log.LogFactory;
 
 /**
- * This abstract class serves as a foundation for all HTTP methods 
- * that can enclose an entity within requests 
- *
+ * This abstract class serves as a foundation for all HTTP methods that can
+ * enclose an entity within requests
+ * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * @author <a href="mailto:jsdever@apache.org">Jeff Dever</a>
- *
+ * 
  * @since 2.0beta1
  * @version $Revision: 480424 $
  */
 public abstract class EntityEnclosingMethod extends ExpectContinueMethod {
 
-    // ----------------------------------------- Static variables/initializers
+	// ----------------------------------------- Static variables/initializers
 
-    /**
-     * The content length will be calculated automatically. This implies
-     * buffering of the content.
-     * @deprecated Use {@link InputStreamRequestEntity#CONTENT_LENGTH_AUTO}.
-     */
-    public static final long CONTENT_LENGTH_AUTO = InputStreamRequestEntity.CONTENT_LENGTH_AUTO;
+	/**
+	 * The content length will be calculated automatically. This implies
+	 * buffering of the content.
+	 * 
+	 * @deprecated Use {@link InputStreamRequestEntity#CONTENT_LENGTH_AUTO}.
+	 */
+	public static final long CONTENT_LENGTH_AUTO = InputStreamRequestEntity.CONTENT_LENGTH_AUTO;
 
-    /**
-     * The request will use chunked transfer encoding. Content length is not
-     * calculated and the content is not buffered.<br>
-     * @deprecated Use {@link #setContentChunked(boolean)}.
-     */
-    public static final long CONTENT_LENGTH_CHUNKED = -1;
+	/**
+	 * The request will use chunked transfer encoding. Content length is not
+	 * calculated and the content is not buffered.<br>
+	 * 
+	 * @deprecated Use {@link #setContentChunked(boolean)}.
+	 */
+	public static final long CONTENT_LENGTH_CHUNKED = -1;
 
-    /** LOG object for this class. */
-    private static final Log LOG = LogFactory.getLog(EntityEnclosingMethod.class);
+	/** LOG object for this class. */
+	private static final Log LOG = LogFactory.getLog(EntityEnclosingMethod.class);
 
-    /** The unbuffered request body, if any. */
-    private InputStream requestStream = null;
+	/** The unbuffered request body, if any. */
+	private InputStream requestStream = null;
 
-    /** The request body as string, if any. */
-    private String requestString = null;
+	/** The request body as string, if any. */
+	private String requestString = null;
 
-    private RequestEntity requestEntity;
-    
-    /** Counts how often the request was sent to the server. */
-    private int repeatCount = 0;
+	private RequestEntity requestEntity;
 
-    /** The content length of the <code>requestBodyStream</code> or one of
-     *  <code>CONTENT_LENGTH_AUTO</code> and <code>CONTENT_LENGTH_CHUNKED</code>.
-     * 
-     * @deprecated
-     */
-    private long requestContentLength = InputStreamRequestEntity.CONTENT_LENGTH_AUTO;
-    
-    private boolean chunked = false;
+	/** Counts how often the request was sent to the server. */
+	private int repeatCount = 0;
 
-    // ----------------------------------------------------------- Constructors
+	/**
+	 * The content length of the <code>requestBodyStream</code> or one of
+	 * <code>CONTENT_LENGTH_AUTO</code> and <code>CONTENT_LENGTH_CHUNKED</code>.
+	 * 
+	 * @deprecated
+	 */
+	private long requestContentLength = InputStreamRequestEntity.CONTENT_LENGTH_AUTO;
 
-    /**
-     * No-arg constructor.
-     *
-     * @since 2.0
-     */
-    public EntityEnclosingMethod() {
-        super();
-        setFollowRedirects(false);
-    }
+	private boolean chunked = false;
 
-    /**
-     * Constructor specifying a URI.
-     *
-     * @param uri either an absolute or relative URI
-     *
-     * @since 2.0
-     */
-    public EntityEnclosingMethod(String uri) {
-        super(uri);
-        setFollowRedirects(false);
-    }
+	// ----------------------------------------------------------- Constructors
 
-    /**
-     * Returns <tt>true</tt> if there is a request body to be sent.
-     * 
-     * <P>This method must be overridden by sub-classes that implement
-     * alternative request content input methods
-     * </p>
-     * 
-     * @return boolean
-     * 
-     * @since 2.0beta1
-     */
-    protected boolean hasRequestContent() {
-        LOG.trace("enter EntityEnclosingMethod.hasRequestContent()");
-        return (this.requestEntity != null) 
-            || (this.requestStream != null) 
-            || (this.requestString != null);
-    }
+	/**
+	 * No-arg constructor.
+	 * 
+	 * @since 2.0
+	 */
+	public EntityEnclosingMethod() {
+		super();
+		setFollowRedirects(false);
+	}
 
-    /**
-     * Clears the request body.
-     * 
-     * <p>This method must be overridden by sub-classes that implement
-     * alternative request content input methods.</p>
-     * 
-     * @since 2.0beta1
-     */
-    protected void clearRequestBody() {
-        LOG.trace("enter EntityEnclosingMethod.clearRequestBody()");
-        this.requestStream = null;
-        this.requestString = null;
-        this.requestEntity = null;
-    }
+	/**
+	 * Constructor specifying a URI.
+	 * 
+	 * @param uri
+	 *            either an absolute or relative URI
+	 * 
+	 * @since 2.0
+	 */
+	public EntityEnclosingMethod(String uri) {
+		super(uri);
+		setFollowRedirects(false);
+	}
 
-    /**
-     * Generates the request body.   
-     * 
-     * <p>This method must be overridden by sub-classes that implement
-     * alternative request content input methods.</p>
-     * 
-     * @return request body as an array of bytes. If the request content 
-     *          has not been set, returns <tt>null</tt>.
-     * 
-     * @since 2.0beta1
-     */
-    protected byte[] generateRequestBody() {
-        LOG.trace("enter EntityEnclosingMethod.renerateRequestBody()");
-        return null;
-    }
+	/**
+	 * Returns <tt>true</tt> if there is a request body to be sent.
+	 * 
+	 * <P>
+	 * This method must be overridden by sub-classes that implement alternative
+	 * request content input methods
+	 * </p>
+	 * 
+	 * @return boolean
+	 * 
+	 * @since 2.0beta1
+	 */
+	protected boolean hasRequestContent() {
+		LOG.trace("enter EntityEnclosingMethod.hasRequestContent()");
+		return (this.requestEntity != null) || (this.requestStream != null) || (this.requestString != null);
+	}
 
-    protected RequestEntity generateRequestEntity() {
-        
-        byte[] requestBody = generateRequestBody();
-        if (requestBody != null) {
-            // use the request body, if it exists.
-            // this is just for backwards compatability
-            this.requestEntity = new ByteArrayRequestEntity(requestBody);
-        } else if (this.requestStream != null) {
-            this.requestEntity = new InputStreamRequestEntity(
-                requestStream, 
-                requestContentLength);
-            this.requestStream = null;
-        } else if (this.requestString != null) {
-            String charset = getRequestCharSet(); 
-            try {
-                this.requestEntity = new StringRequestEntity(
-                        requestString, null, charset);
-            } catch (UnsupportedEncodingException e) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn(charset + " not supported");
-                }
-                try {
-                    this.requestEntity = new StringRequestEntity(
-                            requestString, null, null);
-                } catch (UnsupportedEncodingException ignore) {
-                }
-            }
-        }
+	/**
+	 * Clears the request body.
+	 * 
+	 * <p>
+	 * This method must be overridden by sub-classes that implement alternative
+	 * request content input methods.
+	 * </p>
+	 * 
+	 * @since 2.0beta1
+	 */
+	protected void clearRequestBody() {
+		LOG.trace("enter EntityEnclosingMethod.clearRequestBody()");
+		this.requestStream = null;
+		this.requestString = null;
+		this.requestEntity = null;
+	}
 
-        return this.requestEntity;
-    }
-    
-    /**
-     * Entity enclosing requests cannot be redirected without user intervention
-     * according to RFC 2616.
-     *
-     * @return <code>false</code>.
-     *
-     * @since 2.0
-     */
-    public boolean getFollowRedirects() {
-        return false;
-    }
+	/**
+	 * Generates the request body.
+	 * 
+	 * <p>
+	 * This method must be overridden by sub-classes that implement alternative
+	 * request content input methods.
+	 * </p>
+	 * 
+	 * @return request body as an array of bytes. If the request content has not
+	 *         been set, returns <tt>null</tt>.
+	 * 
+	 * @since 2.0beta1
+	 */
+	protected byte[] generateRequestBody() {
+		LOG.trace("enter EntityEnclosingMethod.renerateRequestBody()");
+		return null;
+	}
 
+	protected RequestEntity generateRequestEntity() {
 
-    /**
-     * Entity enclosing requests cannot be redirected without user intervention 
-     * according to RFC 2616.
-     *
-     * @param followRedirects must always be <code>false</code>
-     */
-    public void setFollowRedirects(boolean followRedirects) {
-        if (followRedirects == true) {
-            throw new IllegalArgumentException("Entity enclosing requests cannot be redirected without user intervention");
-        }
-        super.setFollowRedirects(false);
-    }
+		byte[] requestBody = generateRequestBody();
+		if (requestBody != null) {
+			// use the request body, if it exists.
+			// this is just for backwards compatability
+			this.requestEntity = new ByteArrayRequestEntity(requestBody);
+		} else if (this.requestStream != null) {
+			this.requestEntity = new InputStreamRequestEntity(requestStream, requestContentLength);
+			this.requestStream = null;
+		} else if (this.requestString != null) {
+			String charset = getRequestCharSet();
+			try {
+				this.requestEntity = new StringRequestEntity(requestString, null, charset);
+			} catch (UnsupportedEncodingException e) {
+				if (LOG.isWarnEnabled()) {
+					LOG.warn(charset + " not supported");
+				}
+				try {
+					this.requestEntity = new StringRequestEntity(requestString, null, null);
+				} catch (UnsupportedEncodingException ignore) {
+				}
+			}
+		}
 
-    /**
-     * Sets length information about the request body.
-     *
-     * <p>
-     * Note: If you specify a content length the request is unbuffered. This
-     * prevents redirection and automatic retry if a request fails the first
-     * time. This means that the HttpClient can not perform authorization
-     * automatically but will throw an Exception. You will have to set the
-     * necessary 'Authorization' or 'Proxy-Authorization' headers manually.
-     * </p>
-     *
-     * @param length size in bytes or any of CONTENT_LENGTH_AUTO,
-     *        CONTENT_LENGTH_CHUNKED. If number of bytes or CONTENT_LENGTH_CHUNKED
-     *        is specified the content will not be buffered internally and the
-     *        Content-Length header of the request will be used. In this case
-     *        the user is responsible to supply the correct content length.
-     *        If CONTENT_LENGTH_AUTO is specified the request will be buffered
-     *        before it is sent over the network.
-     * 
-     * @deprecated Use {@link #setContentChunked(boolean)} or 
-     * {@link #setRequestEntity(RequestEntity)}
-     */
-    public void setRequestContentLength(int length) {
-        LOG.trace("enter EntityEnclosingMethod.setRequestContentLength(int)");
-        this.requestContentLength = length;
-    }
+		return this.requestEntity;
+	}
 
-    /**
-     * Returns the request's charset.  The charset is parsed from the request entity's 
-     * content type, unless the content type header has been set manually. 
-     * 
-     * @see RequestEntity#getContentType()
-     * 
-     * @since 3.0
-     */
-    public String getRequestCharSet() {
-        if (getRequestHeader("Content-Type") == null) {
-            // check the content type from request entity
-            // We can't call getRequestEntity() since it will probably call
-            // this method.
-            if (this.requestEntity != null) {
-                return getContentCharSet(
-                    new Header("Content-Type", requestEntity.getContentType()));
-            } else {
-                return super.getRequestCharSet();
-            }
-        } else {
-            return super.getRequestCharSet();
-        }
-    }
+	/**
+	 * Entity enclosing requests cannot be redirected without user intervention
+	 * according to RFC 2616.
+	 * 
+	 * @return <code>false</code>.
+	 * 
+	 * @since 2.0
+	 */
+	public boolean getFollowRedirects() {
+		return false;
+	}
 
-    /**
-     * Sets length information about the request body.
-     *
-     * <p>
-     * Note: If you specify a content length the request is unbuffered. This
-     * prevents redirection and automatic retry if a request fails the first
-     * time. This means that the HttpClient can not perform authorization
-     * automatically but will throw an Exception. You will have to set the
-     * necessary 'Authorization' or 'Proxy-Authorization' headers manually.
-     * </p>
-     *
-     * @param length size in bytes or any of CONTENT_LENGTH_AUTO,
-     *        CONTENT_LENGTH_CHUNKED. If number of bytes or CONTENT_LENGTH_CHUNKED
-     *        is specified the content will not be buffered internally and the
-     *        Content-Length header of the request will be used. In this case
-     *        the user is responsible to supply the correct content length.
-     *        If CONTENT_LENGTH_AUTO is specified the request will be buffered
-     *        before it is sent over the network.
-     * 
-     * @deprecated Use {@link #setContentChunked(boolean)} or 
-     * {@link #setRequestEntity(RequestEntity)}
-     */
-    public void setRequestContentLength(long length) {
-        LOG.trace("enter EntityEnclosingMethod.setRequestContentLength(int)");
-        this.requestContentLength = length;
-    }
+	/**
+	 * Entity enclosing requests cannot be redirected without user intervention
+	 * according to RFC 2616.
+	 * 
+	 * @param followRedirects
+	 *            must always be <code>false</code>
+	 */
+	public void setFollowRedirects(boolean followRedirects) {
+		if (followRedirects == true) {
+			throw new IllegalArgumentException("Entity enclosing requests cannot be redirected without user intervention");
+		}
+		super.setFollowRedirects(false);
+	}
 
-    /**
-     * Sets whether or not the content should be chunked.
-     * 
-     * @param chunked <code>true</code> if the content should be chunked
-     * 
-     * @since 3.0
-     */
-    public void setContentChunked(boolean chunked) {
-        this.chunked = chunked;
-    }
-    
-    /**
-     * Returns the length of the request body.
-     *
-     * @return number of bytes in the request body
-     */
-    protected long getRequestContentLength() {
-        LOG.trace("enter EntityEnclosingMethod.getRequestContentLength()");
+	/**
+	 * Sets length information about the request body.
+	 * 
+	 * <p>
+	 * Note: If you specify a content length the request is unbuffered. This
+	 * prevents redirection and automatic retry if a request fails the first
+	 * time. This means that the HttpClient can not perform authorization
+	 * automatically but will throw an Exception. You will have to set the
+	 * necessary 'Authorization' or 'Proxy-Authorization' headers manually.
+	 * </p>
+	 * 
+	 * @param length
+	 *            size in bytes or any of CONTENT_LENGTH_AUTO,
+	 *            CONTENT_LENGTH_CHUNKED. If number of bytes or
+	 *            CONTENT_LENGTH_CHUNKED is specified the content will not be
+	 *            buffered internally and the Content-Length header of the
+	 *            request will be used. In this case the user is responsible to
+	 *            supply the correct content length. If CONTENT_LENGTH_AUTO is
+	 *            specified the request will be buffered before it is sent over
+	 *            the network.
+	 * 
+	 * @deprecated Use {@link #setContentChunked(boolean)} or
+	 *             {@link #setRequestEntity(RequestEntity)}
+	 */
+	public void setRequestContentLength(int length) {
+		LOG.trace("enter EntityEnclosingMethod.setRequestContentLength(int)");
+		this.requestContentLength = length;
+	}
 
-        if (!hasRequestContent()) {
-            return 0;
-        }
-        if (this.chunked) {
-            return -1;
-        }
-        if (this.requestEntity == null) {
-            this.requestEntity = generateRequestEntity(); 
-        }
-        return (this.requestEntity == null) ? 0 : this.requestEntity.getContentLength();
-    }
+	/**
+	 * Returns the request's charset. The charset is parsed from the request
+	 * entity's content type, unless the content type header has been set
+	 * manually.
+	 * 
+	 * @see RequestEntity#getContentType()
+	 * 
+	 * @since 3.0
+	 */
+	public String getRequestCharSet() {
+		if (getRequestHeader("Content-Type") == null) {
+			// check the content type from request entity
+			// We can't call getRequestEntity() since it will probably call
+			// this method.
+			if (this.requestEntity != null) {
+				return getContentCharSet(new Header("Content-Type", requestEntity.getContentType()));
+			} else {
+				return super.getRequestCharSet();
+			}
+		} else {
+			return super.getRequestCharSet();
+		}
+	}
 
-    /**
-     * Populates the request headers map to with additional 
-     * {@link org.apache.commons.httpclient.Header headers} to be submitted to 
-     * the given {@link HttpConnection}.
-     *
-     * <p>
-     * This implementation adds tt>Content-Length</tt> or <tt>Transfer-Encoding</tt>
-     * headers.
-     * </p>
-     *
-     * <p>
-     * Subclasses may want to override this method to to add additional
-     * headers, and may choose to invoke this implementation (via
-     * <tt>super</tt>) to add the "standard" headers.
-     * </p>
-     *
-     * @param state the {@link HttpState state} information associated with this method
-     * @param conn the {@link HttpConnection connection} used to execute
-     *        this HTTP method
-     *
-     * @throws IOException if an I/O (transport) error occurs. Some transport exceptions
-     *                     can be recovered from.
-     * @throws HttpException  if a protocol exception occurs. Usually protocol exceptions 
-     *                    cannot be recovered from.
-     *
-     * @see #writeRequestHeaders
-     * 
-     * @since 3.0
-     */
-    protected void addRequestHeaders(HttpState state, HttpConnection conn)
-    throws IOException, HttpException {
-        LOG.trace("enter EntityEnclosingMethod.addRequestHeaders(HttpState, "
-            + "HttpConnection)");
+	/**
+	 * Sets length information about the request body.
+	 * 
+	 * <p>
+	 * Note: If you specify a content length the request is unbuffered. This
+	 * prevents redirection and automatic retry if a request fails the first
+	 * time. This means that the HttpClient can not perform authorization
+	 * automatically but will throw an Exception. You will have to set the
+	 * necessary 'Authorization' or 'Proxy-Authorization' headers manually.
+	 * </p>
+	 * 
+	 * @param length
+	 *            size in bytes or any of CONTENT_LENGTH_AUTO,
+	 *            CONTENT_LENGTH_CHUNKED. If number of bytes or
+	 *            CONTENT_LENGTH_CHUNKED is specified the content will not be
+	 *            buffered internally and the Content-Length header of the
+	 *            request will be used. In this case the user is responsible to
+	 *            supply the correct content length. If CONTENT_LENGTH_AUTO is
+	 *            specified the request will be buffered before it is sent over
+	 *            the network.
+	 * 
+	 * @deprecated Use {@link #setContentChunked(boolean)} or
+	 *             {@link #setRequestEntity(RequestEntity)}
+	 */
+	public void setRequestContentLength(long length) {
+		LOG.trace("enter EntityEnclosingMethod.setRequestContentLength(int)");
+		this.requestContentLength = length;
+	}
 
-        super.addRequestHeaders(state, conn);
-        addContentLengthRequestHeader(state, conn);
+	/**
+	 * Sets whether or not the content should be chunked.
+	 * 
+	 * @param chunked
+	 *            <code>true</code> if the content should be chunked
+	 * 
+	 * @since 3.0
+	 */
+	public void setContentChunked(boolean chunked) {
+		this.chunked = chunked;
+	}
 
-        // only use the content type of the request entity if it has not already been
-        // set manually
-        if (getRequestHeader("Content-Type") == null) {
-            RequestEntity requestEntity = getRequestEntity();
-            if (requestEntity != null && requestEntity.getContentType() != null) {
-                setRequestHeader("Content-Type", requestEntity.getContentType());
-            }
-        }
-    }
-    
-    /**
-     * Generates <tt>Content-Length</tt> or <tt>Transfer-Encoding: Chunked</tt>
-     * request header, as long as no <tt>Content-Length</tt> request header
-     * already exists.
-     *
-     * @param state current state of http requests
-     * @param conn the connection to use for I/O
-     *
-     * @throws IOException when errors occur reading or writing to/from the
-     *         connection
-     * @throws HttpException when a recoverable error occurs
-     */
-    protected void addContentLengthRequestHeader(HttpState state,
-                                                 HttpConnection conn)
-    throws IOException, HttpException {
-        LOG.trace("enter EntityEnclosingMethod.addContentLengthRequestHeader("
-                  + "HttpState, HttpConnection)");
+	/**
+	 * Returns the length of the request body.
+	 * 
+	 * @return number of bytes in the request body
+	 */
+	protected long getRequestContentLength() {
+		LOG.trace("enter EntityEnclosingMethod.getRequestContentLength()");
 
-        if ((getRequestHeader("content-length") == null) 
-            && (getRequestHeader("Transfer-Encoding") == null)) {
-            long len = getRequestContentLength();
-            if (len < 0) {
-                if (getEffectiveVersion().greaterEquals(HttpVersion.HTTP_1_1)) {
-                    addRequestHeader("Transfer-Encoding", "chunked");
-                } else {
-                    throw new ProtocolException(getEffectiveVersion() + 
-                        " does not support chunk encoding");
-                }
-            } else {
-                addRequestHeader("Content-Length", String.valueOf(len));
-            }
-        }
-    }
+		if (!hasRequestContent()) {
+			return 0;
+		}
+		if (this.chunked) {
+			return -1;
+		}
+		if (this.requestEntity == null) {
+			this.requestEntity = generateRequestEntity();
+		}
+		return (this.requestEntity == null) ? 0 : this.requestEntity.getContentLength();
+	}
 
-    /**
-     * Sets the request body to be the specified inputstream.
-     *
-     * @param body Request body content as {@link java.io.InputStream}
-     * 
-     * @deprecated use {@link #setRequestEntity(RequestEntity)}
-     */
-    public void setRequestBody(InputStream body) {
-        LOG.trace("enter EntityEnclosingMethod.setRequestBody(InputStream)");
-        clearRequestBody();
-        this.requestStream = body;
-    }
+	/**
+	 * Populates the request headers map to with additional
+	 * {@link org.apache.commons.httpclient.Header headers} to be submitted to
+	 * the given {@link HttpConnection}.
+	 * 
+	 * <p>
+	 * This implementation adds tt>Content-Length</tt> or
+	 * <tt>Transfer-Encoding</tt> headers.
+	 * </p>
+	 * 
+	 * <p>
+	 * Subclasses may want to override this method to to add additional headers,
+	 * and may choose to invoke this implementation (via <tt>super</tt>) to add
+	 * the "standard" headers.
+	 * </p>
+	 * 
+	 * @param state
+	 *            the {@link HttpState state} information associated with this
+	 *            method
+	 * @param conn
+	 *            the {@link HttpConnection connection} used to execute this
+	 *            HTTP method
+	 * 
+	 * @throws IOException
+	 *             if an I/O (transport) error occurs. Some transport exceptions
+	 *             can be recovered from.
+	 * @throws HttpException
+	 *             if a protocol exception occurs. Usually protocol exceptions
+	 *             cannot be recovered from.
+	 * 
+	 * @see #writeRequestHeaders
+	 * 
+	 * @since 3.0
+	 */
+	protected void addRequestHeaders(HttpState state, HttpConnection conn) throws IOException, HttpException {
+		LOG.trace("enter EntityEnclosingMethod.addRequestHeaders(HttpState, " + "HttpConnection)");
 
-    /**
-     * Sets the request body to be the specified string.
-     * The string will be submitted, using the encoding
-     * specified in the Content-Type request header.<br>
-     * Example: <code>setRequestHeader("Content-type", "text/xml; charset=UTF-8");</code><br>
-     * Would use the UTF-8 encoding.
-     * If no charset is specified, the 
-     * {@link org.apache.commons.httpclient.HttpConstants#DEFAULT_CONTENT_CHARSET default}
-     * content encoding is used (ISO-8859-1).
-     *
-     * @param body Request body content as a string
-     * 
-     * @deprecated use {@link #setRequestEntity(RequestEntity)}
-     */
-    public void setRequestBody(String body) {
-        LOG.trace("enter EntityEnclosingMethod.setRequestBody(String)");
-        clearRequestBody();
-        this.requestString = body;
-    }
+		super.addRequestHeaders(state, conn);
+		addContentLengthRequestHeader(state, conn);
 
-    /**
-     * Writes the request body to the given {@link HttpConnection connection}.
-     *
-     * @param state the {@link HttpState state} information associated with this method
-     * @param conn the {@link HttpConnection connection} used to execute
-     *        this HTTP method
-     *
-     * @return <tt>true</tt>
-     *
-     * @throws IOException if an I/O (transport) error occurs. Some transport exceptions
-     *                     can be recovered from.
-     * @throws HttpException  if a protocol exception occurs. Usually protocol exceptions 
-     *                    cannot be recovered from.
-     */
-    protected boolean writeRequestBody(HttpState state, HttpConnection conn)
-    throws IOException, HttpException {
-        LOG.trace(
-            "enter EntityEnclosingMethod.writeRequestBody(HttpState, HttpConnection)");
-        
-        if (!hasRequestContent()) {
-            LOG.debug("Request body has not been specified");
-            return true;
-        }
-        if (this.requestEntity == null) {
-            this.requestEntity = generateRequestEntity(); 
-        }
-        if (requestEntity == null) {
-            LOG.debug("Request body is empty");
-            return true;
-        }
+		// only use the content type of the request entity if it has not already
+		// been
+		// set manually
+		if (getRequestHeader("Content-Type") == null) {
+			RequestEntity requestEntity = getRequestEntity();
+			if (requestEntity != null && requestEntity.getContentType() != null) {
+				setRequestHeader("Content-Type", requestEntity.getContentType());
+			}
+		}
+	}
 
-        long contentLength = getRequestContentLength();
+	/**
+	 * Generates <tt>Content-Length</tt> or <tt>Transfer-Encoding: Chunked</tt>
+	 * request header, as long as no <tt>Content-Length</tt> request header
+	 * already exists.
+	 * 
+	 * @param state
+	 *            current state of http requests
+	 * @param conn
+	 *            the connection to use for I/O
+	 * 
+	 * @throws IOException
+	 *             when errors occur reading or writing to/from the connection
+	 * @throws HttpException
+	 *             when a recoverable error occurs
+	 */
+	protected void addContentLengthRequestHeader(HttpState state, HttpConnection conn) throws IOException, HttpException {
+		LOG.trace("enter EntityEnclosingMethod.addContentLengthRequestHeader(" + "HttpState, HttpConnection)");
 
-        if ((this.repeatCount > 0) && !requestEntity.isRepeatable()) {
-            throw new ProtocolException(
-                "Unbuffered entity enclosing request can not be repeated.");
-        }
+		if ((getRequestHeader("content-length") == null) && (getRequestHeader("Transfer-Encoding") == null)) {
+			long len = getRequestContentLength();
+			if (len < 0) {
+				if (getEffectiveVersion().greaterEquals(HttpVersion.HTTP_1_1)) {
+					addRequestHeader("Transfer-Encoding", "chunked");
+				} else {
+					throw new ProtocolException(getEffectiveVersion() + " does not support chunk encoding");
+				}
+			} else {
+				addRequestHeader("Content-Length", String.valueOf(len));
+			}
+		}
+	}
 
-        this.repeatCount++;
+	/**
+	 * Sets the request body to be the specified inputstream.
+	 * 
+	 * @param body
+	 *            Request body content as {@link java.io.InputStream}
+	 * 
+	 * @deprecated use {@link #setRequestEntity(RequestEntity)}
+	 */
+	public void setRequestBody(InputStream body) {
+		LOG.trace("enter EntityEnclosingMethod.setRequestBody(InputStream)");
+		clearRequestBody();
+		this.requestStream = body;
+	}
 
-        OutputStream outstream = conn.getRequestOutputStream();
-        
-        if (contentLength < 0) {
-            outstream = new ChunkedOutputStream(outstream);
-        }
-        
-        requestEntity.writeRequest(outstream);
-        
-        // This is hardly the most elegant solution to closing chunked stream
-        if (outstream instanceof ChunkedOutputStream) {
-            ((ChunkedOutputStream) outstream).finish();
-        }
-        
-        outstream.flush();
-        
-        LOG.debug("Request body sent");
-        return true;
-    }
+	/**
+	 * Sets the request body to be the specified string. The string will be
+	 * submitted, using the encoding specified in the Content-Type request
+	 * header.<br>
+	 * Example:
+	 * <code>setRequestHeader("Content-type", "text/xml; charset=UTF-8");</code><br>
+	 * Would use the UTF-8 encoding. If no charset is specified, the
+	 * {@link org.apache.commons.httpclient.HttpConstants#DEFAULT_CONTENT_CHARSET
+	 * default} content encoding is used (ISO-8859-1).
+	 * 
+	 * @param body
+	 *            Request body content as a string
+	 * 
+	 * @deprecated use {@link #setRequestEntity(RequestEntity)}
+	 */
+	public void setRequestBody(String body) {
+		LOG.trace("enter EntityEnclosingMethod.setRequestBody(String)");
+		clearRequestBody();
+		this.requestString = body;
+	}
 
-    /**
-     * Recycles the HTTP method so that it can be used again.
-     * Note that all of the instance variables will be reset
-     * once this method has been called. This method will also
-     * release the connection being used by this HTTP method.
-     * 
-     * @see #releaseConnection()
-     * 
-     * @deprecated no longer supported and will be removed in the future
-     *             version of HttpClient
-     */
-    public void recycle() {
-        LOG.trace("enter EntityEnclosingMethod.recycle()");
-        clearRequestBody();
-        this.requestContentLength = InputStreamRequestEntity.CONTENT_LENGTH_AUTO;
-        this.repeatCount = 0;
-        this.chunked = false;
-        super.recycle();
-    }
+	/**
+	 * Writes the request body to the given {@link HttpConnection connection}.
+	 * 
+	 * @param state
+	 *            the {@link HttpState state} information associated with this
+	 *            method
+	 * @param conn
+	 *            the {@link HttpConnection connection} used to execute this
+	 *            HTTP method
+	 * 
+	 * @return <tt>true</tt>
+	 * 
+	 * @throws IOException
+	 *             if an I/O (transport) error occurs. Some transport exceptions
+	 *             can be recovered from.
+	 * @throws HttpException
+	 *             if a protocol exception occurs. Usually protocol exceptions
+	 *             cannot be recovered from.
+	 */
+	protected boolean writeRequestBody(HttpState state, HttpConnection conn) throws IOException, HttpException {
+		LOG.trace("enter EntityEnclosingMethod.writeRequestBody(HttpState, HttpConnection)");
 
-    /**
-     * @return Returns the requestEntity.
-     * 
-     * @since 3.0
-     */
-    public RequestEntity getRequestEntity() {
-        return generateRequestEntity();
-    }
+		if (!hasRequestContent()) {
+			LOG.debug("Request body has not been specified");
+			return true;
+		}
+		if (this.requestEntity == null) {
+			this.requestEntity = generateRequestEntity();
+		}
+		if (requestEntity == null) {
+			LOG.debug("Request body is empty");
+			return true;
+		}
 
-    /**
-     * @param requestEntity The requestEntity to set.
-     * 
-     * @since 3.0
-     */
-    public void setRequestEntity(RequestEntity requestEntity) {
-        clearRequestBody();
-        this.requestEntity = requestEntity;
-    }
+		long contentLength = getRequestContentLength();
+
+		if ((this.repeatCount > 0) && !requestEntity.isRepeatable()) {
+			throw new ProtocolException("Unbuffered entity enclosing request can not be repeated.");
+		}
+
+		this.repeatCount++;
+
+		OutputStream outstream = conn.getRequestOutputStream();
+
+		if (contentLength < 0) {
+			outstream = new ChunkedOutputStream(outstream);
+		}
+
+		requestEntity.writeRequest(outstream);
+
+		// This is hardly the most elegant solution to closing chunked stream
+		if (outstream instanceof ChunkedOutputStream) {
+			((ChunkedOutputStream) outstream).finish();
+		}
+
+		outstream.flush();
+
+		LOG.debug("Request body sent");
+		return true;
+	}
+
+	/**
+	 * Recycles the HTTP method so that it can be used again. Note that all of
+	 * the instance variables will be reset once this method has been called.
+	 * This method will also release the connection being used by this HTTP
+	 * method.
+	 * 
+	 * @see #releaseConnection()
+	 * 
+	 * @deprecated no longer supported and will be removed in the future version
+	 *             of HttpClient
+	 */
+	public void recycle() {
+		LOG.trace("enter EntityEnclosingMethod.recycle()");
+		clearRequestBody();
+		this.requestContentLength = InputStreamRequestEntity.CONTENT_LENGTH_AUTO;
+		this.repeatCount = 0;
+		this.chunked = false;
+		super.recycle();
+	}
+
+	/**
+	 * @return Returns the requestEntity.
+	 * 
+	 * @since 3.0
+	 */
+	public RequestEntity getRequestEntity() {
+		return generateRequestEntity();
+	}
+
+	/**
+	 * @param requestEntity
+	 *            The requestEntity to set.
+	 * 
+	 * @since 3.0
+	 */
+	public void setRequestEntity(RequestEntity requestEntity) {
+		clearRequestBody();
+		this.requestEntity = requestEntity;
+	}
 
 }

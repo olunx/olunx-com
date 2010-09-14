@@ -27,7 +27,7 @@
  * <http://www.apache.org/>.
  *
  */
- 
+
 package org.apache.commons.httpclient.methods;
 
 import org.apache.commons.httpclient.HttpMethodBase;
@@ -35,74 +35,72 @@ import org.apache.commons.httpclient.HttpMethodBase;
 /**
  * Implements the HTTP TRACE method.
  * <p>
- * The HTTP TRACE method is defined in section 9.6 of 
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
- * <blockquote>
- *  The TRACE method is used to invoke a remote, application-layer loop-
- *  back of the request message. The final recipient of the request
- *  SHOULD reflect the message received back to the client as the
- *  entity-body of a 200 (OK) response. The final recipient is either the
- *  origin server or the first proxy or gateway to receive a Max-Forwards
- *  value of zero (0) in the request (see section 14.31). A TRACE request
- *  MUST NOT include an entity.
- * </blockquote>
+ * The HTTP TRACE method is defined in section 9.6 of <a
+ * href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>: <blockquote> The
+ * TRACE method is used to invoke a remote, application-layer loop- back of the
+ * request message. The final recipient of the request SHOULD reflect the
+ * message received back to the client as the entity-body of a 200 (OK)
+ * response. The final recipient is either the origin server or the first proxy
+ * or gateway to receive a Max-Forwards value of zero (0) in the request (see
+ * section 14.31). A TRACE request MUST NOT include an entity. </blockquote>
  * </p>
- *
+ * 
  * @author Sean C. Sullivan
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  * @author <a href="mailto:jsdever@apache.org">Jeff Dever</a>
- *
+ * 
  * @version $Revision: 480424 $
  * @since 2.0
  * 
  */
 public class TraceMethod extends HttpMethodBase {
 
-    //~ Constructors
+	// ~ Constructors
 
-    /**
-     * Constructor specifying a URI.
-     *
-     * @param uri either an absolute or relative URI
-     * 
-     * @since 2.0
-     * 
-     */
-    public TraceMethod(String uri) {
-        super(uri);
-        setFollowRedirects(false);
-    }
+	/**
+	 * Constructor specifying a URI.
+	 * 
+	 * @param uri
+	 *            either an absolute or relative URI
+	 * 
+	 * @since 2.0
+	 * 
+	 */
+	public TraceMethod(String uri) {
+		super(uri);
+		setFollowRedirects(false);
+	}
 
-    //~ Methods
+	// ~ Methods
 
-    /**
-     * Returns <tt>"TRACE"</tt>.
-     * 
-     * @return <tt>"TRACE"</tt>
-     * 
-     * @since 2.0
-     * 
-     */
-    public String getName() {
-        return "TRACE";
-    }
+	/**
+	 * Returns <tt>"TRACE"</tt>.
+	 * 
+	 * @return <tt>"TRACE"</tt>
+	 * 
+	 * @since 2.0
+	 * 
+	 */
+	public String getName() {
+		return "TRACE";
+	}
 
-    /**
-     * Recycles the HTTP method so that it can be used again.
-     * Note that all of the instance variables will be reset
-     * once this method has been called. This method will also
-     * release the connection being used by this HTTP method.
-     * 
-     * @see #releaseConnection()
-     * 
-     * @since 2.0
-     * 
-     * @deprecated no longer supported and will be removed in the future
-     *             version of HttpClient
-     */
-    public void recycle() {
-        super.recycle();
-        setFollowRedirects(false);
-    }
+	/**
+	 * Recycles the HTTP method so that it can be used again. Note that all of
+	 * the instance variables will be reset once this method has been called.
+	 * This method will also release the connection being used by this HTTP
+	 * method.
+	 * 
+	 * @see #releaseConnection()
+	 * 
+	 * @since 2.0
+	 * 
+	 * @deprecated no longer supported and will be removed in the future version
+	 *             of HttpClient
+	 */
+	public void recycle() {
+		super.recycle();
+		setFollowRedirects(false);
+	}
 
 }

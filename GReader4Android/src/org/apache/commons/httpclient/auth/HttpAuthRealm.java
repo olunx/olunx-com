@@ -30,7 +30,8 @@
 
 package org.apache.commons.httpclient.auth;
 
-/** The key used to look up authentication credentials.
+/**
+ * The key used to look up authentication credentials.
  * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * @author <a href="mailto:adrian@intencha.com">Adrian Sutton</a>
@@ -38,20 +39,21 @@ package org.apache.commons.httpclient.auth;
  * @deprecated no longer used
  */
 public class HttpAuthRealm extends AuthScope {
-    
-    /** Creates a new HttpAuthRealm for the given <tt>domain</tt> and 
-     * <tt>realm</tt>.
-     * 
-     * @param domain the domain the credentials apply to. May be set
-     *   to <tt>null</tt> if credenticals are applicable to
-     *   any domain. 
-     * @param realm the realm the credentials apply to. May be set 
-     *   to <tt>null</tt> if credenticals are applicable to
-     *   any realm. 
-     *   
-     */
-    public HttpAuthRealm(final String domain, final String realm) {
-        super(domain, ANY_PORT, realm, ANY_SCHEME);
-    }
-    
+
+	/**
+	 * Creates a new HttpAuthRealm for the given <tt>domain</tt> and
+	 * <tt>realm</tt>.
+	 * 
+	 * @param domain
+	 *            the domain the credentials apply to. May be set to
+	 *            <tt>null</tt> if credenticals are applicable to any domain.
+	 * @param realm
+	 *            the realm the credentials apply to. May be set to
+	 *            <tt>null</tt> if credenticals are applicable to any realm.
+	 * 
+	 */
+	public HttpAuthRealm(final String domain, final String realm) {
+		super(domain, ANY_PORT, realm, ANY_SCHEME);
+	}
+
 }

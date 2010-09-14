@@ -22,48 +22,48 @@ import org.jdom.*;
  */
 public class RSS091NetscapeParser extends RSS091UserlandParser {
 
-    public RSS091NetscapeParser() {
-        this("rss_0.91N");
-    }
+	public RSS091NetscapeParser() {
+		this("rss_0.91N");
+	}
 
-    protected RSS091NetscapeParser(String type) {
-        super(type);
-    }
+	protected RSS091NetscapeParser(String type) {
+		super(type);
+	}
 
-    static final String ELEMENT_NAME = "rss";
-    static final String PUBLIC_ID = "-//Netscape Communications//DTD RSS 0.91//EN";
-    static final String SYSTEM_ID = "http://my.netscape.com/publish/formats/rss-0.91.dtd";
+	static final String ELEMENT_NAME = "rss";
+	static final String PUBLIC_ID = "-//Netscape Communications//DTD RSS 0.91//EN";
+	static final String SYSTEM_ID = "http://my.netscape.com/publish/formats/rss-0.91.dtd";
 
-    public boolean isMyType(Document document) {
-        boolean ok = false;
-        Element rssRoot = document.getRootElement();
-        ok = rssRoot.getName().equals("rss");
-        if (ok) {
-            ok = false;
-            Attribute version = rssRoot.getAttribute("version");
-            if (version!=null) {
-                ok = version.getValue().equals(getRSSVersion());
-                if (ok) {
-                    ok = false;
-                    DocType docType = document.getDocType();
+	public boolean isMyType(Document document) {
+		boolean ok = false;
+		Element rssRoot = document.getRootElement();
+		ok = rssRoot.getName().equals("rss");
+		if (ok) {
+			ok = false;
+			Attribute version = rssRoot.getAttribute("version");
+			if (version != null) {
+				ok = version.getValue().equals(getRSSVersion());
+				if (ok) {
+					ok = false;
+					DocType docType = document.getDocType();
 
-                    if (docType!=null) {
-                        ok = ELEMENT_NAME.equals(docType.getElementName());
-                        ok = ok && PUBLIC_ID.equals(docType.getPublicID());
-                        ok = ok && SYSTEM_ID.equals(docType.getSystemID());
-                    }
-                }
-            }
-        }
-        return ok;
-    }
+					if (docType != null) {
+						ok = ELEMENT_NAME.equals(docType.getElementName());
+						ok = ok && PUBLIC_ID.equals(docType.getPublicID());
+						ok = ok && SYSTEM_ID.equals(docType.getSystemID());
+					}
+				}
+			}
+		}
+		return ok;
+	}
 
-    protected boolean isHourFormat24(Element rssRoot) {
-        return false;
-    }
+	protected boolean isHourFormat24(Element rssRoot) {
+		return false;
+	}
 
-    protected String getTextInputLabel() {
-        return "textinput";
-    }
+	protected String getTextInputLabel() {
+		return "textinput";
+	}
 
 }

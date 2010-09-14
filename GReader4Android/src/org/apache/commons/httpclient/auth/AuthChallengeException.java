@@ -32,38 +32,43 @@ package org.apache.commons.httpclient.auth;
 
 /**
  * Signals a failure processing authentication challenge
- *
+ * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * 
  * @since 3.0
  */
 public class AuthChallengeException extends AuthenticationException {
 
-    /**
-     * Creates a new AuthChallengeException with a <tt>null</tt> detail message. 
-     */
-    public AuthChallengeException() {
-        super();
-    }
+	/**
+	 * Creates a new AuthChallengeException with a <tt>null</tt> detail message.
+	 */
+	public AuthChallengeException() {
+		super();
+	}
 
-    /**
-     * Creates a new AuthChallengeException with the specified message.
-     * 
-     * @param message the exception detail message
-     */
-    public AuthChallengeException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a new AuthChallengeException with the specified message.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 */
+	public AuthChallengeException(String message) {
+		super(message);
+	}
 
-    /**
-     * Creates a new AuthChallengeException with the specified detail message and cause.
-     * 
-     * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
-     */
-    public AuthChallengeException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Creates a new AuthChallengeException with the specified detail message
+	 * and cause.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param cause
+	 *            the <tt>Throwable</tt> that caused this exception, or
+	 *            <tt>null</tt> if the cause is unavailable, unknown, or not a
+	 *            <tt>Throwable</tt>
+	 */
+	public AuthChallengeException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

@@ -13,42 +13,42 @@ public class LogFactory implements Log {
 
 	@Override
 	public void debug(Object arg0) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void debug(Object arg0, Throwable arg1) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void error(Object arg0) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void error(Object arg0, Throwable arg1) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void fatal(Object arg0) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void fatal(Object arg0, Throwable arg1) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void info(Object arg0) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void info(Object arg0, Throwable arg1) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
@@ -83,21 +83,21 @@ public class LogFactory implements Log {
 
 	@Override
 	public void trace(Object arg0) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void trace(Object arg0, Throwable arg1) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void warn(Object arg0) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 
 	@Override
 	public void warn(Object arg0, Throwable arg1) {
-		System.out.println(arg0);
+		// System.out.println(arg0);
 	}
 }

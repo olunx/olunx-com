@@ -35,8 +35,8 @@ import java.io.InterruptedIOException;
 import org.apache.commons.httpclient.util.ExceptionUtil;
 
 /**
- * A timeout while connecting to an HTTP server or waiting for an
- * available connection from an HttpConnectionManager.
+ * A timeout while connecting to an HTTP server or waiting for an available
+ * connection from an HttpConnectionManager.
  * 
  * @author <a href="mailto:laura@lwerner.org">Laura Werner</a>
  * 
@@ -44,33 +44,39 @@ import org.apache.commons.httpclient.util.ExceptionUtil;
  */
 public class ConnectTimeoutException extends InterruptedIOException {
 
-    /**
-     * Creates a ConnectTimeoutException with a <tt>null</tt> detail message.
-     */
-    public ConnectTimeoutException() {
-        super();
-    }
+	/**
+	 * Creates a ConnectTimeoutException with a <tt>null</tt> detail message.
+	 */
+	public ConnectTimeoutException() {
+		super();
+	}
 
-    /**
-     * Creates a ConnectTimeoutException with the specified detail message.
-     * 
-     * @param message The exception detail message 
-     */
-    public ConnectTimeoutException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a ConnectTimeoutException with the specified detail message.
+	 * 
+	 * @param message
+	 *            The exception detail message
+	 */
+	public ConnectTimeoutException(String message) {
+		super(message);
+	}
 
-    /**
-     * Creates a new ConnectTimeoutException with the specified detail message and cause.
-     * 
-     * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
-     */
-    public ConnectTimeoutException(String message, Throwable cause) {
-        super(message);
-        // If we're running on JDK 1.4 or later, tell Throwable what the cause was
-        ExceptionUtil.initCause(this, cause);
-    }
+	/**
+	 * Creates a new ConnectTimeoutException with the specified detail message
+	 * and cause.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param cause
+	 *            the <tt>Throwable</tt> that caused this exception, or
+	 *            <tt>null</tt> if the cause is unavailable, unknown, or not a
+	 *            <tt>Throwable</tt>
+	 */
+	public ConnectTimeoutException(String message, Throwable cause) {
+		super(message);
+		// If we're running on JDK 1.4 or later, tell Throwable what the cause
+		// was
+		ExceptionUtil.initCause(this, cause);
+	}
 
 }

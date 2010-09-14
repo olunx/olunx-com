@@ -30,54 +30,59 @@ import java.util.List;
  * <p>
  * WireFeedParser instances are thread safe.
  * <p>
- * Parsers for a specific type must extend this class and register in the parser list.
- * (Right now registration is hardcoded in the WireFeedParser constructor).
+ * Parsers for a specific type must extend this class and register in the parser
+ * list. (Right now registration is hardcoded in the WireFeedParser
+ * constructor).
  * <p>
+ * 
  * @author Alejandro Abdelnur
- *
+ * 
  */
 public class FeedParsers extends PluginManager {
 
-    /**
-     * WireFeedParser.classes=  [className] ...
-     *
-     */
-    public static final String FEED_PARSERS_KEY = "WireFeedParser.classes";
+	/**
+	 * WireFeedParser.classes= [className] ...
+	 * 
+	 */
+	public static final String FEED_PARSERS_KEY = "WireFeedParser.classes";
 
-    /**
-     * Creates a parser instance.
-     * <p>
-     *
-     */
-    public FeedParsers() {
-        super(FEED_PARSERS_KEY);
-    }
+	/**
+	 * Creates a parser instance.
+	 * <p>
+	 * 
+	 */
+	public FeedParsers() {
+		super(FEED_PARSERS_KEY);
+	}
 
-    public List getSupportedFeedTypes() {
-        return getKeys();
-    }
+	public List getSupportedFeedTypes() {
+		return getKeys();
+	}
 
-    /**
-     * Finds the real parser type for the given document feed.
-     * <p>
-     * @param document document feed to find the parser for.
-     * @return the parser for the given document or <b>null</b> if there is no parser for that document.
-     *
-     */
-    public WireFeedParser getParserFor(Document document) {
-        List parsers = getPlugins();
-        WireFeedParser parser = null;
-        for (int i=0;parser==null && i<parsers.size();i++) {
-            parser = (WireFeedParser) parsers.get(i);
-            if (!parser.isMyType(document)) {
-                parser = null;
-            }
-        }
-        return parser;
-    }
+	/**
+	 * Finds the real parser type for the given document feed.
+	 * <p>
+	 * 
+	 * @param document
+	 *            document feed to find the parser for.
+	 * @return the parser for the given document or <b>null</b> if there is no
+	 *         parser for that document.
+	 * 
+	 */
+	public WireFeedParser getParserFor(Document document) {
+		List parsers = getPlugins();
+		WireFeedParser parser = null;
+		for (int i = 0; parser == null && i < parsers.size(); i++) {
+			parser = (WireFeedParser) parsers.get(i);
+			if (!parser.isMyType(document)) {
+				parser = null;
+			}
+		}
+		return parser;
+	}
 
-    protected String getKey(Object obj) {
-        return ((WireFeedParser)obj).getType();
-    }
+	protected String getKey(Object obj) {
+		return ((WireFeedParser) obj).getType();
+	}
 
 }

@@ -29,59 +29,62 @@ import java.util.Collections;
 /**
  * Feed Generator for SY ModuleImpl
  * <p/>
- *
+ * 
  * @author Elaine Chien
- *
+ * 
  */
 
 public class SyModuleGenerator implements ModuleGenerator {
 
-    private static final String SY_URI  = "http://purl.org/rss/1.0/modules/syndication/";
-    private static final Namespace SY_NS  = Namespace.getNamespace("sy", SY_URI);
+	private static final String SY_URI = "http://purl.org/rss/1.0/modules/syndication/";
+	private static final Namespace SY_NS = Namespace.getNamespace("sy", SY_URI);
 
-    private static final Set NAMESPACES;
+	private static final Set NAMESPACES;
 
-    static {
-        Set nss = new HashSet();
-        nss.add(SY_NS);
-        NAMESPACES = Collections.unmodifiableSet(nss);
-    }
+	static {
+		Set nss = new HashSet();
+		nss.add(SY_NS);
+		NAMESPACES = Collections.unmodifiableSet(nss);
+	}
 
-    public String getNamespaceUri() {
-        return SY_URI;
-    }
+	public String getNamespaceUri() {
+		return SY_URI;
+	}
 
-    /**
-     * Returns a set with all the URIs (JDOM Namespace elements) this module generator uses.
-     * <p/>
-     * It is used by the the feed generators to add their namespace definition in
-     * the root element of the generated document (forward-missing of Java 5.0 Generics).
-     * <p/>
-     *
-     * @return a set with all the URIs (JDOM Namespace elements) this module generator uses.
-     */
-    public Set getNamespaces() {
-        return NAMESPACES;
-    }
+	/**
+	 * Returns a set with all the URIs (JDOM Namespace elements) this module
+	 * generator uses.
+	 * <p/>
+	 * It is used by the the feed generators to add their namespace definition
+	 * in the root element of the generated document (forward-missing of Java
+	 * 5.0 Generics).
+	 * <p/>
+	 * 
+	 * @return a set with all the URIs (JDOM Namespace elements) this module
+	 *         generator uses.
+	 */
+	public Set getNamespaces() {
+		return NAMESPACES;
+	}
 
-    public void generate(Module module, Element element) {
+	public void generate(Module module, Element element) {
 
-        SyModule syModule = (SyModule)module;
+		SyModule syModule = (SyModule) module;
 
-        if (syModule.getUpdatePeriod() != null) {
-            Element updatePeriodElement = new Element("updatePeriod", SY_NS);
-            updatePeriodElement.addContent(syModule.getUpdatePeriod());
-            element.addContent(updatePeriodElement);
-        }
+		if (syModule.getUpdatePeriod() != null) {
+			Element updatePeriodElement = new Element("updatePeriod", SY_NS);
+			updatePeriodElement.addContent(syModule.getUpdatePeriod());
+			element.addContent(updatePeriodElement);
+		}
 
-        Element updateFrequencyElement = new Element("updateFrequency", SY_NS);
-        updateFrequencyElement.addContent(String.valueOf(syModule.getUpdateFrequency()));
-        element.addContent(updateFrequencyElement);
+		Element updateFrequencyElement = new Element("updateFrequency", SY_NS);
+		updateFrequencyElement.addContent(String.valueOf(syModule.getUpdateFrequency()));
+		element.addContent(updateFrequencyElement);
 
-        if (syModule.getUpdateBase() != null) {
-            Element updateBaseElement = new Element("updateBase", SY_NS);
-            updateBaseElement.addContent(DateParser.formatW3CDateTime(syModule.getUpdateBase()));
-            element.addContent(updateBaseElement);
-        }
-    }
+		if (syModule.getUpdateBase() != null) {
+			Element updateBaseElement = new Element("updateBase", SY_NS);
+			updateBaseElement.addContent(DateParser.formatW3CDateTime(syModule.getUpdateBase()));
+			element.addContent(updateBaseElement);
+		}
+	}
 }

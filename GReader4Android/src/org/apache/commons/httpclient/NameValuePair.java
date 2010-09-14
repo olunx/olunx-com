@@ -35,118 +35,125 @@ import java.io.Serializable;
 import org.apache.commons.httpclient.util.LangUtils;
 
 /**
- * <p>A simple class encapsulating a name/value pair.</p>
+ * <p>
+ * A simple class encapsulating a name/value pair.
+ * </p>
  * 
  * @author <a href="mailto:bcholmes@interlog.com">B.C. Holmes</a>
  * @author Sean C. Sullivan
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  * 
- * @version $Revision: 480424 $ $Date: 2006-11-29 06:56:49 +0100 (Wed, 29 Nov 2006) $
+ * @version $Revision: 480424 $ $Date: 2006-11-29 06:56:49 +0100 (Wed, 29 Nov
+ *          2006) $
  * 
  */
 public class NameValuePair implements Serializable {
 
-    // ----------------------------------------------------------- Constructors
+	// ----------------------------------------------------------- Constructors
 
-    /**
-     * Default constructor.
-     * 
-     */
-    public NameValuePair() {
-        this (null, null);
-    }
+	/**
+	 * Default constructor.
+	 * 
+	 */
+	public NameValuePair() {
+		this(null, null);
+	}
 
-    /**
-     * Constructor.
-     * @param name The name.
-     * @param value The value.
-     */
-    public NameValuePair(String name, String value) {
-        this.name = name;
-        this.value = value;
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param name
+	 *            The name.
+	 * @param value
+	 *            The value.
+	 */
+	public NameValuePair(String name, String value) {
+		this.name = name;
+		this.value = value;
+	}
 
-    // ----------------------------------------------------- Instance Variables
+	// ----------------------------------------------------- Instance Variables
 
-    /**
-     * Name.
-     */
-    private String name = null;
+	/**
+	 * Name.
+	 */
+	private String name = null;
 
-    /**
-     * Value.
-     */
-    private String value = null;
+	/**
+	 * Value.
+	 */
+	private String value = null;
 
-    // ------------------------------------------------------------- Properties
+	// ------------------------------------------------------------- Properties
 
-    /**
-     * Set the name.
-     *
-     * @param name The new name
-     * @see #getName()
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * Set the name.
+	 * 
+	 * @param name
+	 *            The new name
+	 * @see #getName()
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
+	/**
+	 * Return the name.
+	 * 
+	 * @return String name The name
+	 * @see #setName(String)
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Return the name.
-     *
-     * @return String name The name
-     * @see #setName(String)
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Set the value.
+	 * 
+	 * @param value
+	 *            The new value.
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
 
+	/**
+	 * Return the current value.
+	 * 
+	 * @return String value The current value.
+	 */
+	public String getValue() {
+		return value;
+	}
 
-    /**
-     * Set the value.
-     *
-     * @param value The new value.
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+	// --------------------------------------------------------- Public Methods
 
+	/**
+	 * Get a String representation of this pair.
+	 * 
+	 * @return A string representation.
+	 */
+	public String toString() {
+		return ("name=" + name + ", " + "value=" + value);
+	}
 
-    /**
-     * Return the current value.
-     *
-     * @return String value The current value.
-     */
-    public String getValue() {
-        return value;
-    }
+	public boolean equals(final Object object) {
+		if (object == null)
+			return false;
+		if (this == object)
+			return true;
+		if (object instanceof NameValuePair) {
+			NameValuePair that = (NameValuePair) object;
+			return LangUtils.equals(this.name, that.name) && LangUtils.equals(this.value, that.value);
+		} else {
+			return false;
+		}
+	}
 
-    // --------------------------------------------------------- Public Methods
-
-    /**
-     * Get a String representation of this pair.
-     * @return A string representation.
-     */
-    public String toString() {
-        return ("name=" + name + ", " + "value=" + value);
-    }
-
-    public boolean equals(final Object object) {
-        if (object == null) return false;
-        if (this == object) return true;
-        if (object instanceof NameValuePair) {
-            NameValuePair that = (NameValuePair) object;
-            return LangUtils.equals(this.name, that.name)
-                  && LangUtils.equals(this.value, that.value);
-        } else {
-            return false;
-        }
-    }
-
-    public int hashCode() {
-        int hash = LangUtils.HASH_SEED;
-        hash = LangUtils.hashCode(hash, this.name);
-        hash = LangUtils.hashCode(hash, this.value);
-        return hash;
-    }
+	public int hashCode() {
+		int hash = LangUtils.HASH_SEED;
+		hash = LangUtils.hashCode(hash, this.name);
+		hash = LangUtils.hashCode(hash, this.value);
+		return hash;
+	}
 }

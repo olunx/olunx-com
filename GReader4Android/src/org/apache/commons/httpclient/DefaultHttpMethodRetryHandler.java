@@ -43,106 +43,110 @@ import java.net.UnknownHostException;
  */
 public class DefaultHttpMethodRetryHandler implements HttpMethodRetryHandler {
 
+	private static Class SSL_HANDSHAKE_EXCEPTION = null;
 
-    private static Class SSL_HANDSHAKE_EXCEPTION = null;
-    
-    static {
-        try {
-            SSL_HANDSHAKE_EXCEPTION = Class.forName("javax.net.ssl.SSLHandshakeException");
-        } catch (ClassNotFoundException ignore) {           
-        }
-    }
-    /** the number of times a method will be retried */
-    private int retryCount;
-    
-    /** Whether or not methods that have successfully sent their request will be retried */
-    private boolean requestSentRetryEnabled;
-    
-    /**
-     * Creates a new DefaultHttpMethodRetryHandler.
-     * @param retryCount the number of times a method will be retried
-     * @param requestSentRetryEnabled if true, methods that have successfully sent their request will be retried
-     */
-    public DefaultHttpMethodRetryHandler(int retryCount, boolean requestSentRetryEnabled) {
-        super();
-        this.retryCount = retryCount;
-        this.requestSentRetryEnabled = requestSentRetryEnabled;
-    }
-    
-    /**
-     * Creates a new DefaultHttpMethodRetryHandler that retries up to 3 times
-     * but does not retry methods that have successfully sent their requests.
-     */
-    public DefaultHttpMethodRetryHandler() {
-        this(3, false);
-    }
-    /** 
-     * Used <code>retryCount</code> and <code>requestSentRetryEnabled</code> to determine
-     * if the given method should be retried.
-     * 
-     * @see HttpMethodRetryHandler#retryMethod(HttpMethod, IOException, int)
-     */
-    public boolean retryMethod(
-        final HttpMethod method, 
-        final IOException exception, 
-        int executionCount) {
-        if (method == null) {
-            throw new IllegalArgumentException("HTTP method may not be null");
-        }
-        if (exception == null) {
-            throw new IllegalArgumentException("Exception parameter may not be null");
-        }
-        // HttpMethod interface is the WORST thing ever done to HttpClient
-        if (method instanceof HttpMethodBase) {
-            if (((HttpMethodBase)method).isAborted()) {
-                return false;
-            }
-        }
-        if (executionCount > this.retryCount) {
-            // Do not retry if over max retry count
-            return false;
-        }
-        if (exception instanceof NoHttpResponseException) {
-            // Retry if the server dropped connection on us
-            return true;
-        }
-        if (exception instanceof InterruptedIOException) {
-            // Timeout
-            return false;
-        }
-        if (exception instanceof UnknownHostException) {
-            // Unknown host
-            return false;
-        }
-        if (exception instanceof NoRouteToHostException) {
-            // Host unreachable
-            return false;
-        }
-        if (SSL_HANDSHAKE_EXCEPTION != null && SSL_HANDSHAKE_EXCEPTION.isInstance(exception)) {
-            // SSL handshake exception
-            return false;
-        }
-        if (!method.isRequestSent() || this.requestSentRetryEnabled) {
-            // Retry if the request has not been sent fully or
-            // if it's OK to retry methods that have been sent
-            return true;
-        }
-        // otherwise do not retry
-        return false;
-    }
-    
-    /**
-     * @return <code>true</code> if this handler will retry methods that have 
-     * successfully sent their request, <code>false</code> otherwise
-     */
-    public boolean isRequestSentRetryEnabled() {
-        return requestSentRetryEnabled;
-    }
+	static {
+		try {
+			SSL_HANDSHAKE_EXCEPTION = Class.forName("javax.net.ssl.SSLHandshakeException");
+		} catch (ClassNotFoundException ignore) {
+		}
+	}
+	/** the number of times a method will be retried */
+	private int retryCount;
 
-    /**
-     * @return the maximum number of times a method will be retried
-     */
-    public int getRetryCount() {
-        return retryCount;
-    }
+	/**
+	 * Whether or not methods that have successfully sent their request will be
+	 * retried
+	 */
+	private boolean requestSentRetryEnabled;
+
+	/**
+	 * Creates a new DefaultHttpMethodRetryHandler.
+	 * 
+	 * @param retryCount
+	 *            the number of times a method will be retried
+	 * @param requestSentRetryEnabled
+	 *            if true, methods that have successfully sent their request
+	 *            will be retried
+	 */
+	public DefaultHttpMethodRetryHandler(int retryCount, boolean requestSentRetryEnabled) {
+		super();
+		this.retryCount = retryCount;
+		this.requestSentRetryEnabled = requestSentRetryEnabled;
+	}
+
+	/**
+	 * Creates a new DefaultHttpMethodRetryHandler that retries up to 3 times
+	 * but does not retry methods that have successfully sent their requests.
+	 */
+	public DefaultHttpMethodRetryHandler() {
+		this(3, false);
+	}
+
+	/**
+	 * Used <code>retryCount</code> and <code>requestSentRetryEnabled</code> to
+	 * determine if the given method should be retried.
+	 * 
+	 * @see HttpMethodRetryHandler#retryMethod(HttpMethod, IOException, int)
+	 */
+	public boolean retryMethod(final HttpMethod method, final IOException exception, int executionCount) {
+		if (method == null) {
+			throw new IllegalArgumentException("HTTP method may not be null");
+		}
+		if (exception == null) {
+			throw new IllegalArgumentException("Exception parameter may not be null");
+		}
+		// HttpMethod interface is the WORST thing ever done to HttpClient
+		if (method instanceof HttpMethodBase) {
+			if (((HttpMethodBase) method).isAborted()) {
+				return false;
+			}
+		}
+		if (executionCount > this.retryCount) {
+			// Do not retry if over max retry count
+			return false;
+		}
+		if (exception instanceof NoHttpResponseException) {
+			// Retry if the server dropped connection on us
+			return true;
+		}
+		if (exception instanceof InterruptedIOException) {
+			// Timeout
+			return false;
+		}
+		if (exception instanceof UnknownHostException) {
+			// Unknown host
+			return false;
+		}
+		if (exception instanceof NoRouteToHostException) {
+			// Host unreachable
+			return false;
+		}
+		if (SSL_HANDSHAKE_EXCEPTION != null && SSL_HANDSHAKE_EXCEPTION.isInstance(exception)) {
+			// SSL handshake exception
+			return false;
+		}
+		if (!method.isRequestSent() || this.requestSentRetryEnabled) {
+			// Retry if the request has not been sent fully or
+			// if it's OK to retry methods that have been sent
+			return true;
+		}
+		// otherwise do not retry
+		return false;
+	}
+
+	/**
+	 * @return <code>true</code> if this handler will retry methods that have
+	 *         successfully sent their request, <code>false</code> otherwise
+	 */
+	public boolean isRequestSentRetryEnabled() {
+		return requestSentRetryEnabled;
+	}
+
+	/**
+	 * @return the maximum number of times a method will be retried
+	 */
+	public int getRetryCount() {
+		return retryCount;
+	}
 }

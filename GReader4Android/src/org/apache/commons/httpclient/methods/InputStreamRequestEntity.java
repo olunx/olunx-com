@@ -46,154 +46,175 @@ import org.apache.commons.log.LogFactory;
  */
 public class InputStreamRequestEntity implements RequestEntity {
 
-    /**
-     * The content length will be calculated automatically. This implies
-     * buffering of the content.
-     */
-    public static final int CONTENT_LENGTH_AUTO = -2;
-    
-    private static final Log LOG = LogFactory.getLog(InputStreamRequestEntity.class);
-    
-    private long contentLength;
-    
-    private InputStream content;
+	/**
+	 * The content length will be calculated automatically. This implies
+	 * buffering of the content.
+	 */
+	public static final int CONTENT_LENGTH_AUTO = -2;
 
-    /** The buffered request body, if any. */
-    private byte[] buffer = null;
-    
-    /** The content type */
-    private String contentType;
+	private static final Log LOG = LogFactory.getLog(InputStreamRequestEntity.class);
 
-    /**
-     * Creates a new InputStreamRequestEntity with the given content and a content type of
-     * {@link #CONTENT_LENGTH_AUTO}.
-     * @param content The content to set.
-     */
-    public InputStreamRequestEntity(InputStream content) {
-        this(content, null);
-    }
-    
-    /**
-     * Creates a new InputStreamRequestEntity with the given content, content type, and a 
-     * content length of {@link #CONTENT_LENGTH_AUTO}.
-     * @param content The content to set.
-     * @param contentType The type of the content, or <code>null</code>.
-     */
-    public InputStreamRequestEntity(InputStream content, String contentType) {
-        this(content, CONTENT_LENGTH_AUTO, contentType);
-    }
+	private long contentLength;
 
-    /**
-     * Creates a new InputStreamRequestEntity with the given content and content length.
-     * @param content The content to set.
-     * @param contentLength The content size in bytes or a negative number if not known.
-     *  If {@link #CONTENT_LENGTH_AUTO} is given the content will be buffered in order to 
-     *  determine its size when {@link #getContentLength()} is called.
-     */
-    public InputStreamRequestEntity(InputStream content, long contentLength) {
-        this(content, contentLength, null);
-    }
-    
-    /**
-     * Creates a new InputStreamRequestEntity with the given content, content length, and 
-     * content type.
-     * @param content The content to set.
-     * @param contentLength The content size in bytes or a negative number if not known.
-     *  If {@link #CONTENT_LENGTH_AUTO} is given the content will be buffered in order to 
-     *  determine its size when {@link #getContentLength()} is called.
-     * @param contentType The type of the content, or <code>null</code>.
-     */
-    public InputStreamRequestEntity(InputStream content, long contentLength, String contentType) {
-        if (content == null) {
-            throw new IllegalArgumentException("The content cannot be null");
-        }
-        this.content = content;
-        this.contentLength = contentLength;
-        this.contentType = contentType;
-    }
+	private InputStream content;
 
-    /* (non-Javadoc)
-     * @see org.apache.commons.httpclient.methods.RequestEntity#getContentType()
-     */
-    public String getContentType() {
-        return contentType;
-    }
-    
-    /**
-     * Buffers request body input stream.
-     */
-    private void bufferContent() {
+	/** The buffered request body, if any. */
+	private byte[] buffer = null;
 
-        if (this.buffer != null) {
-            // Already been buffered
-            return;
-        }
-        if (this.content != null) {
-            try {
-                ByteArrayOutputStream tmp = new ByteArrayOutputStream();
-                byte[] data = new byte[4096];
-                int l = 0;
-                while ((l = this.content.read(data)) >= 0) {
-                    tmp.write(data, 0, l);
-                }
-                this.buffer = tmp.toByteArray();
-                this.content = null;
-                this.contentLength = buffer.length;
-            } catch (IOException e) {
-                LOG.error(e.getMessage(), e);
-                this.buffer = null;
-                this.content = null;
-                this.contentLength = 0;
-            }
-        }
-    }
-    
-    /**
-     * Tests if this method is repeatable.  Only <code>true</code> if the content has been
-     * buffered.
-     * 
-     * @see #getContentLength()
-     */
-    public boolean isRepeatable() {
-        return buffer != null;
-    }
+	/** The content type */
+	private String contentType;
 
-    /* (non-Javadoc)
-     * @see org.apache.commons.httpclient.RequestEntity#writeRequest(java.io.OutputStream)
-     */
-    public void writeRequest(OutputStream out) throws IOException {
-        
-        if (content != null) {
-            byte[] tmp = new byte[4096];
-            int total = 0;
-            int i = 0;
-            while ((i = content.read(tmp)) >= 0) {
-                out.write(tmp, 0, i);
-                total += i;
-            }        
-        } else if (buffer != null) {
-            out.write(buffer);
-        } else {
-            throw new IllegalStateException("Content must be set before entity is written");
-        }
-    }
+	/**
+	 * Creates a new InputStreamRequestEntity with the given content and a
+	 * content type of {@link #CONTENT_LENGTH_AUTO}.
+	 * 
+	 * @param content
+	 *            The content to set.
+	 */
+	public InputStreamRequestEntity(InputStream content) {
+		this(content, null);
+	}
 
-    /**
-     * Gets the content length.  If the content length has not been set, the content will be
-     * buffered to determine the actual content length.
-     */
-    public long getContentLength() {
-        if (contentLength == CONTENT_LENGTH_AUTO && buffer == null) {
-            bufferContent();
-        }
-        return contentLength;
-    }
+	/**
+	 * Creates a new InputStreamRequestEntity with the given content, content
+	 * type, and a content length of {@link #CONTENT_LENGTH_AUTO}.
+	 * 
+	 * @param content
+	 *            The content to set.
+	 * @param contentType
+	 *            The type of the content, or <code>null</code>.
+	 */
+	public InputStreamRequestEntity(InputStream content, String contentType) {
+		this(content, CONTENT_LENGTH_AUTO, contentType);
+	}
 
-    /**
-     * @return Returns the content.
-     */
-    public InputStream getContent() {
-        return content;
-    }
+	/**
+	 * Creates a new InputStreamRequestEntity with the given content and content
+	 * length.
+	 * 
+	 * @param content
+	 *            The content to set.
+	 * @param contentLength
+	 *            The content size in bytes or a negative number if not known.
+	 *            If {@link #CONTENT_LENGTH_AUTO} is given the content will be
+	 *            buffered in order to determine its size when
+	 *            {@link #getContentLength()} is called.
+	 */
+	public InputStreamRequestEntity(InputStream content, long contentLength) {
+		this(content, contentLength, null);
+	}
+
+	/**
+	 * Creates a new InputStreamRequestEntity with the given content, content
+	 * length, and content type.
+	 * 
+	 * @param content
+	 *            The content to set.
+	 * @param contentLength
+	 *            The content size in bytes or a negative number if not known.
+	 *            If {@link #CONTENT_LENGTH_AUTO} is given the content will be
+	 *            buffered in order to determine its size when
+	 *            {@link #getContentLength()} is called.
+	 * @param contentType
+	 *            The type of the content, or <code>null</code>.
+	 */
+	public InputStreamRequestEntity(InputStream content, long contentLength, String contentType) {
+		if (content == null) {
+			throw new IllegalArgumentException("The content cannot be null");
+		}
+		this.content = content;
+		this.contentLength = contentLength;
+		this.contentType = contentType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.httpclient.methods.RequestEntity#getContentType()
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * Buffers request body input stream.
+	 */
+	private void bufferContent() {
+
+		if (this.buffer != null) {
+			// Already been buffered
+			return;
+		}
+		if (this.content != null) {
+			try {
+				ByteArrayOutputStream tmp = new ByteArrayOutputStream();
+				byte[] data = new byte[4096];
+				int l = 0;
+				while ((l = this.content.read(data)) >= 0) {
+					tmp.write(data, 0, l);
+				}
+				this.buffer = tmp.toByteArray();
+				this.content = null;
+				this.contentLength = buffer.length;
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
+				this.buffer = null;
+				this.content = null;
+				this.contentLength = 0;
+			}
+		}
+	}
+
+	/**
+	 * Tests if this method is repeatable. Only <code>true</code> if the content
+	 * has been buffered.
+	 * 
+	 * @see #getContentLength()
+	 */
+	public boolean isRepeatable() {
+		return buffer != null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.apache.commons.httpclient.RequestEntity#writeRequest(java.io.OutputStream
+	 * )
+	 */
+	public void writeRequest(OutputStream out) throws IOException {
+
+		if (content != null) {
+			byte[] tmp = new byte[4096];
+			int total = 0;
+			int i = 0;
+			while ((i = content.read(tmp)) >= 0) {
+				out.write(tmp, 0, i);
+				total += i;
+			}
+		} else if (buffer != null) {
+			out.write(buffer);
+		} else {
+			throw new IllegalStateException("Content must be set before entity is written");
+		}
+	}
+
+	/**
+	 * Gets the content length. If the content length has not been set, the
+	 * content will be buffered to determine the actual content length.
+	 */
+	public long getContentLength() {
+		if (contentLength == CONTENT_LENGTH_AUTO && buffer == null) {
+			bufferContent();
+		}
+		return contentLength;
+	}
+
+	/**
+	 * @return Returns the content.
+	 */
+	public InputStream getContent() {
+		return content;
+	}
 
 }

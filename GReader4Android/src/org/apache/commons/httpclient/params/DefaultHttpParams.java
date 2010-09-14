@@ -37,10 +37,10 @@ import org.apache.commons.log.Log;
 import org.apache.commons.log.LogFactory;
 
 /**
- * This class represents a collection of HTTP protocol parameters. Protocol parameters
- * may be linked together to form a hierarchy. If a particular parameter value has not been
- * explicitly defined in the collection itself, its value will be drawn from the parent 
- * collection of parameters.
+ * This class represents a collection of HTTP protocol parameters. Protocol
+ * parameters may be linked together to form a hierarchy. If a particular
+ * parameter value has not been explicitly defined in the collection itself, its
+ * value will be drawn from the parent collection of parameters.
  * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * 
@@ -50,205 +50,210 @@ import org.apache.commons.log.LogFactory;
  */
 public class DefaultHttpParams implements HttpParams, Serializable, Cloneable {
 
-    /** Log object for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultHttpParams.class);
+	/** Log object for this class. */
+	private static final Log LOG = LogFactory.getLog(DefaultHttpParams.class);
 
-    /** HttpParams class factory. */
-    private static HttpParamsFactory httpParamsFactory = new DefaultHttpParamsFactory();
+	/** HttpParams class factory. */
+	private static HttpParamsFactory httpParamsFactory = new DefaultHttpParamsFactory();
 
-    /**
-     * Gets the default HttpParams to be used.
-     * 
-     * @return the value returned from <code>HttpParamsFactory#getDefaultParams()</code>
-     * 
-     * @see HttpParamsFactory#getDefaultParams()
-     */
-    public static HttpParams getDefaultParams() {
-        return httpParamsFactory.getDefaultParams();
-    }
-    
-    /**
-     * Sets the factory that will provide the default HttpParams.
-     * 
-     * @param httpParamsFactory an instance of HttpParamsFactory
-     * 
-     * @see #getDefaultParams()
-     */
-    public static void setHttpParamsFactory(HttpParamsFactory httpParamsFactory) {
-        if (httpParamsFactory == null) {
-            throw new IllegalArgumentException("httpParamsFactory may not be null");
-        }
-        DefaultHttpParams.httpParamsFactory = httpParamsFactory;
-    }
+	/**
+	 * Gets the default HttpParams to be used.
+	 * 
+	 * @return the value returned from
+	 *         <code>HttpParamsFactory#getDefaultParams()</code>
+	 * 
+	 * @see HttpParamsFactory#getDefaultParams()
+	 */
+	public static HttpParams getDefaultParams() {
+		return httpParamsFactory.getDefaultParams();
+	}
 
-    /** The set of default values to defer to */
-    private HttpParams defaults = null;
+	/**
+	 * Sets the factory that will provide the default HttpParams.
+	 * 
+	 * @param httpParamsFactory
+	 *            an instance of HttpParamsFactory
+	 * 
+	 * @see #getDefaultParams()
+	 */
+	public static void setHttpParamsFactory(HttpParamsFactory httpParamsFactory) {
+		if (httpParamsFactory == null) {
+			throw new IllegalArgumentException("httpParamsFactory may not be null");
+		}
+		DefaultHttpParams.httpParamsFactory = httpParamsFactory;
+	}
 
-    /** Hash map of HTTP parameters that this collection contains */
-    private HashMap parameters = null;
-    
-    /**
-     * Creates a new collection of parameters with the given parent. 
-     * The collection will defer to its parent for a default value 
-     * if a particular parameter is not explicitly set in the collection
-     * itself.
-     * 
-     * @param defaults the parent collection to defer to, if a parameter
-     * is not explictly set in the collection itself.
-     */
-    public DefaultHttpParams(final HttpParams defaults) {
-        super();
-        this.defaults = defaults; 
-    }
-    
-    /**
-     * Creates a new collection of parameters with the collection returned
-     * by {@link #getDefaultParams()} as a parent. The collection will defer
-     * to its parent for a default value if a particular parameter is not 
-     * explicitly set in the collection itself.
-     * 
-     * @see #getDefaultParams()
-     */
-    public DefaultHttpParams() {
-        this(getDefaultParams());
-    }
-    
-    public synchronized HttpParams getDefaults() {
-        return this.defaults;
-    }
-    
-    public synchronized void setDefaults(final HttpParams params) {
-        this.defaults = params;
-    }
-    
-    public synchronized Object getParameter(final String name) {
-        // See if the parameter has been explicitly defined
-        Object param = null;
-        if (this.parameters != null) {
-            param = this.parameters.get(name);
-        }    
-        if (param != null) {
-            // If so, return
-            return param;
-        } else {
-            // If not, see if defaults are available
-            if (this.defaults != null) {
-                // Return default parameter value
-                return this.defaults.getParameter(name);
-            } else {
-                // Otherwise, return null
-                return null;
-            }
-        }
-    }
+	/** The set of default values to defer to */
+	private HttpParams defaults = null;
 
-    public synchronized void setParameter(final String name, final Object value) {
-        if (this.parameters == null) {
-            this.parameters = new HashMap();
-        }
-        this.parameters.put(name, value);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Set parameter " + name + " = " + value);
-        }
-    }
-    
-    /**
-     * Assigns the value to all the parameter with the given names
-     * 
-     * @param names array of parameter name
-     * @param value parameter value
-     */ 
-    public synchronized void setParameters(final String[] names, final Object value) {
-        for (int i = 0; i < names.length; i++) {
-            setParameter(names[i], value);
-        }
-    }
+	/** Hash map of HTTP parameters that this collection contains */
+	private HashMap parameters = null;
 
-    public long getLongParameter(final String name, long defaultValue) { 
-        Object param = getParameter(name);
-        if (param == null) {
-            return defaultValue;
-        }
-        return ((Long)param).longValue();
-    }
-    
-    public void setLongParameter(final String name, long value) {
-        setParameter(name, new Long(value));
-    }
+	/**
+	 * Creates a new collection of parameters with the given parent. The
+	 * collection will defer to its parent for a default value if a particular
+	 * parameter is not explicitly set in the collection itself.
+	 * 
+	 * @param defaults
+	 *            the parent collection to defer to, if a parameter is not
+	 *            explictly set in the collection itself.
+	 */
+	public DefaultHttpParams(final HttpParams defaults) {
+		super();
+		this.defaults = defaults;
+	}
 
-    public int getIntParameter(final String name, int defaultValue) { 
-        Object param = getParameter(name);
-        if (param == null) {
-            return defaultValue;
-        }
-        return ((Integer)param).intValue();
-    }
-    
-    public void setIntParameter(final String name, int value) {
-        setParameter(name, new Integer(value));
-    }
+	/**
+	 * Creates a new collection of parameters with the collection returned by
+	 * {@link #getDefaultParams()} as a parent. The collection will defer to its
+	 * parent for a default value if a particular parameter is not explicitly
+	 * set in the collection itself.
+	 * 
+	 * @see #getDefaultParams()
+	 */
+	public DefaultHttpParams() {
+		this(getDefaultParams());
+	}
 
-    public double getDoubleParameter(final String name, double defaultValue) { 
-        Object param = getParameter(name);
-        if (param == null) {
-            return defaultValue;
-        }
-        return ((Double)param).doubleValue();
-    }
-    
-    public void setDoubleParameter(final String name, double value) {
-        setParameter(name, new Double(value));
-    }
+	public synchronized HttpParams getDefaults() {
+		return this.defaults;
+	}
 
-    public boolean getBooleanParameter(final String name, boolean defaultValue) { 
-        Object param = getParameter(name);
-        if (param == null) {
-            return defaultValue;
-        }
-        return ((Boolean)param).booleanValue();
-    }
-    
-    public void setBooleanParameter(final String name, boolean value) {
-        setParameter(name, value ? Boolean.TRUE : Boolean.FALSE);// Boolean.valueOf() = Java 1.4+
-    }
+	public synchronized void setDefaults(final HttpParams params) {
+		this.defaults = params;
+	}
 
-    public boolean isParameterSet(final String name) {
-        return getParameter(name) != null;
-    }
-        
-    public boolean isParameterSetLocally(final String name) {
-        return this.parameters != null && this.parameters.get(name) != null;
-    }
-        
-    public boolean isParameterTrue(final String name) {
-        return getBooleanParameter(name, false);
-    }
-        
-    public boolean isParameterFalse(final String name) {
-        return !getBooleanParameter(name, false);
-    }
+	public synchronized Object getParameter(final String name) {
+		// See if the parameter has been explicitly defined
+		Object param = null;
+		if (this.parameters != null) {
+			param = this.parameters.get(name);
+		}
+		if (param != null) {
+			// If so, return
+			return param;
+		} else {
+			// If not, see if defaults are available
+			if (this.defaults != null) {
+				// Return default parameter value
+				return this.defaults.getParameter(name);
+			} else {
+				// Otherwise, return null
+				return null;
+			}
+		}
+	}
 
-    /**
-     * Removes all parameters from this collection. 
-     */
-    public void clear() {
-        this.parameters = null;
-    }
+	public synchronized void setParameter(final String name, final Object value) {
+		if (this.parameters == null) {
+			this.parameters = new HashMap();
+		}
+		this.parameters.put(name, value);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Set parameter " + name + " = " + value);
+		}
+	}
 
-    /**
-     * Clones this collection of parameters. Please note that paramter values
-     * themselves are not cloned. 
-     * 
-     * @see java.io.Serializable
-     * @see java.lang.Object#clone()
-     */
-    public Object clone() throws CloneNotSupportedException
-    {
-        DefaultHttpParams clone = (DefaultHttpParams)super.clone();
-        if (this.parameters != null) {
-            clone.parameters = (HashMap)this.parameters.clone(); 
-        }
-        clone.setDefaults(this.defaults);
-        return clone;
-    }
+	/**
+	 * Assigns the value to all the parameter with the given names
+	 * 
+	 * @param names
+	 *            array of parameter name
+	 * @param value
+	 *            parameter value
+	 */
+	public synchronized void setParameters(final String[] names, final Object value) {
+		for (int i = 0; i < names.length; i++) {
+			setParameter(names[i], value);
+		}
+	}
+
+	public long getLongParameter(final String name, long defaultValue) {
+		Object param = getParameter(name);
+		if (param == null) {
+			return defaultValue;
+		}
+		return ((Long) param).longValue();
+	}
+
+	public void setLongParameter(final String name, long value) {
+		setParameter(name, new Long(value));
+	}
+
+	public int getIntParameter(final String name, int defaultValue) {
+		Object param = getParameter(name);
+		if (param == null) {
+			return defaultValue;
+		}
+		return ((Integer) param).intValue();
+	}
+
+	public void setIntParameter(final String name, int value) {
+		setParameter(name, new Integer(value));
+	}
+
+	public double getDoubleParameter(final String name, double defaultValue) {
+		Object param = getParameter(name);
+		if (param == null) {
+			return defaultValue;
+		}
+		return ((Double) param).doubleValue();
+	}
+
+	public void setDoubleParameter(final String name, double value) {
+		setParameter(name, new Double(value));
+	}
+
+	public boolean getBooleanParameter(final String name, boolean defaultValue) {
+		Object param = getParameter(name);
+		if (param == null) {
+			return defaultValue;
+		}
+		return ((Boolean) param).booleanValue();
+	}
+
+	public void setBooleanParameter(final String name, boolean value) {
+		setParameter(name, value ? Boolean.TRUE : Boolean.FALSE);// Boolean.valueOf()
+																	// = Java
+																	// 1.4+
+	}
+
+	public boolean isParameterSet(final String name) {
+		return getParameter(name) != null;
+	}
+
+	public boolean isParameterSetLocally(final String name) {
+		return this.parameters != null && this.parameters.get(name) != null;
+	}
+
+	public boolean isParameterTrue(final String name) {
+		return getBooleanParameter(name, false);
+	}
+
+	public boolean isParameterFalse(final String name) {
+		return !getBooleanParameter(name, false);
+	}
+
+	/**
+	 * Removes all parameters from this collection.
+	 */
+	public void clear() {
+		this.parameters = null;
+	}
+
+	/**
+	 * Clones this collection of parameters. Please note that paramter values
+	 * themselves are not cloned.
+	 * 
+	 * @see java.io.Serializable
+	 * @see java.lang.Object#clone()
+	 */
+	public Object clone() throws CloneNotSupportedException {
+		DefaultHttpParams clone = (DefaultHttpParams) super.clone();
+		if (this.parameters != null) {
+			clone.parameters = (HashMap) this.parameters.clone();
+		}
+		clone.setDefaults(this.defaults);
+		return clone;
+	}
 }

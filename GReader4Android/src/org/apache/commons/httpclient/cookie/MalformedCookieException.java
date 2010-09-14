@@ -33,41 +33,46 @@ package org.apache.commons.httpclient.cookie;
 import org.apache.commons.httpclient.ProtocolException;
 
 /**
- * Signals that a cookie is in some way invalid or illegal in a given
- * context
- *
+ * Signals that a cookie is in some way invalid or illegal in a given context
+ * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * 
  * @since 2.0
  */
 public class MalformedCookieException extends ProtocolException {
 
-    /**
-     * Creates a new MalformedCookieException with a <tt>null</tt> detail message.
-     */
-    public MalformedCookieException() {
-        super();
-    }
-     
-    /** 
-     * Creates a new MalformedCookieException with a specified message string.
-     * 
-     * @param message The exception detail message
-     */
-    public MalformedCookieException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a new MalformedCookieException with a <tt>null</tt> detail
+	 * message.
+	 */
+	public MalformedCookieException() {
+		super();
+	}
 
-    /**
-     * Creates a new MalformedCookieException with the specified detail message and cause.
-     * 
-     * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
-     * 
-     * @since 3.0
-     */
-    public MalformedCookieException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Creates a new MalformedCookieException with a specified message string.
+	 * 
+	 * @param message
+	 *            The exception detail message
+	 */
+	public MalformedCookieException(String message) {
+		super(message);
+	}
+
+	/**
+	 * Creates a new MalformedCookieException with the specified detail message
+	 * and cause.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param cause
+	 *            the <tt>Throwable</tt> that caused this exception, or
+	 *            <tt>null</tt> if the cause is unavailable, unknown, or not a
+	 *            <tt>Throwable</tt>
+	 * 
+	 * @since 3.0
+	 */
+	public MalformedCookieException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

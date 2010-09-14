@@ -36,13 +36,13 @@ import org.apache.commons.httpclient.Header;
  * Defines cookie specification specific capabilities
  * 
  * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
+ * 
  * @since 3.1
  */
-public interface CookieVersionSupport {    
+public interface CookieVersionSupport {
 
-    int getVersion();
-    
-    Header getVersionHeader();
+	int getVersion();
+
+	Header getVersionHeader();
 
 }

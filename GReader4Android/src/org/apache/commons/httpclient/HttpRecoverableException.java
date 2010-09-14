@@ -32,33 +32,36 @@ package org.apache.commons.httpclient;
 
 /**
  * <p>
- * Signals that an HTTP or HttpClient exception has occurred.  This
- * exception may have been caused by a transient error and the request
- * may be retried.  It may be possible to retrieve the underlying transient
- * error via the inherited {@link HttpException#getCause()} method.
+ * Signals that an HTTP or HttpClient exception has occurred. This exception may
+ * have been caused by a transient error and the request may be retried. It may
+ * be possible to retrieve the underlying transient error via the inherited
+ * {@link HttpException#getCause()} method.
  * </p>
  * 
  * @deprecated no longer used
  * 
  * @author Unascribed
- * @version $Revision: 480424 $ $Date: 2006-11-29 06:56:49 +0100 (Wed, 29 Nov 2006) $
+ * @version $Revision: 480424 $ $Date: 2006-11-29 06:56:49 +0100 (Wed, 29 Nov
+ *          2006) $
  */
 public class HttpRecoverableException extends HttpException {
 
-    /**
-     * Creates a new HttpRecoverableException with a <tt>null</tt> detail message.
-     */
-    public HttpRecoverableException() {
-        super();
-    }
+	/**
+	 * Creates a new HttpRecoverableException with a <tt>null</tt> detail
+	 * message.
+	 */
+	public HttpRecoverableException() {
+		super();
+	}
 
-    /**
-     * Creates a new HttpRecoverableException with the specified detail message.
-     *
-     * @param message exception message
-     */
-    public HttpRecoverableException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a new HttpRecoverableException with the specified detail message.
+	 * 
+	 * @param message
+	 *            exception message
+	 */
+	public HttpRecoverableException(String message) {
+		super(message);
+	}
 
 }

@@ -33,53 +33,58 @@ package org.apache.commons.httpclient;
 import org.apache.commons.httpclient.protocol.Protocol;
 
 /**
- * Holds all of the variables needed to describe an HTTP connection to a proxy. Proxy hosts
- * always use plain HTTP connection when communicating with clients.
+ * Holds all of the variables needed to describe an HTTP connection to a proxy.
+ * Proxy hosts always use plain HTTP connection when communicating with clients.
  * 
  * @author <a href="mailto:becke@u.washington.edu">Michael Becke</a>
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  * @author Laura Werner
  * 
- * @since 3.0 
+ * @since 3.0
  */
 public class ProxyHost extends HttpHost {
 
-    /**
-     * Copy constructor for HttpHost
-     * 
-     * @param httpproxy the HTTP host to copy details from
-     */
-    public ProxyHost (final ProxyHost httpproxy) {
-        super(httpproxy);
-    }
+	/**
+	 * Copy constructor for HttpHost
+	 * 
+	 * @param httpproxy
+	 *            the HTTP host to copy details from
+	 */
+	public ProxyHost(final ProxyHost httpproxy) {
+		super(httpproxy);
+	}
 
-    /**
-     * Constructor for ProxyHost.
-     *   
-     * @param hostname the hostname (IP or DNS name). Can be <code>null</code>.
-     * @param port the port. Value <code>-1</code> can be used to set default protocol port
-     */
-    public ProxyHost(final String hostname, int port) {
-        super(hostname, port, Protocol.getProtocol("http"));
-    }
-    
-    /**
-     * Constructor for HttpHost.
-     *   
-     * @param hostname the hostname (IP or DNS name). Can be <code>null</code>.
-     */
-    public ProxyHost(final String hostname) {
-        this(hostname, -1);
-    }
-    
-    /**
-     * @throws CloneNotSupportedException 
-     * @see java.lang.Object#clone()
-     */
-    public Object clone() throws CloneNotSupportedException {
-        ProxyHost copy = (ProxyHost) super.clone();
-        return copy;
-    }    
-    
+	/**
+	 * Constructor for ProxyHost.
+	 * 
+	 * @param hostname
+	 *            the hostname (IP or DNS name). Can be <code>null</code>.
+	 * @param port
+	 *            the port. Value <code>-1</code> can be used to set default
+	 *            protocol port
+	 */
+	public ProxyHost(final String hostname, int port) {
+		super(hostname, port, Protocol.getProtocol("http"));
+	}
+
+	/**
+	 * Constructor for HttpHost.
+	 * 
+	 * @param hostname
+	 *            the hostname (IP or DNS name). Can be <code>null</code>.
+	 */
+	public ProxyHost(final String hostname) {
+		this(hostname, -1);
+	}
+
+	/**
+	 * @throws CloneNotSupportedException
+	 * @see java.lang.Object#clone()
+	 */
+	public Object clone() throws CloneNotSupportedException {
+		ProxyHost copy = (ProxyHost) super.clone();
+		return copy;
+	}
+
 }

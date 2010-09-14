@@ -31,8 +31,8 @@
 package org.apache.commons.httpclient;
 
 /**
- * A timeout while connecting waiting for an available connection 
- * from an HttpConnectionManager.
+ * A timeout while connecting waiting for an available connection from an
+ * HttpConnectionManager.
  * 
  * @author <a href="mailto:laura@lwerner.org">Laura Werner</a>
  * 
@@ -40,31 +40,36 @@ package org.apache.commons.httpclient;
  */
 public class ConnectionPoolTimeoutException extends ConnectTimeoutException {
 
-    /**
-     * Creates a ConnectTimeoutException with a <tt>null</tt> detail message.
-     */
-    public ConnectionPoolTimeoutException() {
-        super();
-    }
+	/**
+	 * Creates a ConnectTimeoutException with a <tt>null</tt> detail message.
+	 */
+	public ConnectionPoolTimeoutException() {
+		super();
+	}
 
-    /**
-     * Creates a ConnectTimeoutException with the specified detail message.
-     * 
-     * @param message The exception detail message 
-     */
-    public ConnectionPoolTimeoutException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a ConnectTimeoutException with the specified detail message.
+	 * 
+	 * @param message
+	 *            The exception detail message
+	 */
+	public ConnectionPoolTimeoutException(String message) {
+		super(message);
+	}
 
-    /**
-     * Creates a new ConnectTimeoutException with the specified detail message and cause.
-     * 
-     * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
-     */
-    public ConnectionPoolTimeoutException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Creates a new ConnectTimeoutException with the specified detail message
+	 * and cause.
+	 * 
+	 * @param message
+	 *            the exception detail message
+	 * @param cause
+	 *            the <tt>Throwable</tt> that caused this exception, or
+	 *            <tt>null</tt> if the cause is unavailable, unknown, or not a
+	 *            <tt>Throwable</tt>
+	 */
+	public ConnectionPoolTimeoutException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

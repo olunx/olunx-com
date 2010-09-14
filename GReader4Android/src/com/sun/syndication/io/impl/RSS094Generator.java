@@ -24,30 +24,30 @@ import org.jdom.Element;
 /**
  * Feed Generator for RSS 0.94
  * <p/>
- *
+ * 
  * @author Elaine Chien
- *
+ * 
  */
 
 public class RSS094Generator extends RSS093Generator {
 
-    public RSS094Generator() {
-        this("rss_0.94","0.94");
-    }
+	public RSS094Generator() {
+		this("rss_0.94", "0.94");
+	}
 
-    protected RSS094Generator(String feedType,String version) {
-        super(feedType,version);
-    }
+	protected RSS094Generator(String feedType, String version) {
+		super(feedType, version);
+	}
 
-    protected void populateItem(Item item, Element eItem, int index) {
-        super.populateItem(item,eItem, index);
+	protected void populateItem(Item item, Element eItem, int index) {
+		super.populateItem(item, eItem, index);
 
-        Description description = item.getDescription();
-        if (description!=null && description.getType()!=null) {
-            Element eDescription = eItem.getChild("description",getFeedNamespace());
-            eDescription.setAttribute(new Attribute("type",description.getType()));
-        }
-        eItem.removeChild("expirationDate",getFeedNamespace());
-    }
+		Description description = item.getDescription();
+		if (description != null && description.getType() != null) {
+			Element eDescription = eItem.getChild("description", getFeedNamespace());
+			eDescription.setAttribute(new Attribute("type", description.getType()));
+		}
+		eItem.removeChild("expirationDate", getFeedNamespace());
+	}
 
 }

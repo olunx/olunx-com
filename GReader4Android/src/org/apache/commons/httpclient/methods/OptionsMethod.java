@@ -42,152 +42,143 @@ import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-
 /**
  * Implements the HTTP OPTIONS method.
  * <p>
- * The HTTP OPTIONS method is defined in section 9.2 of 
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
- * <blockquote>
- *  The OPTIONS method represents a request for information about the
- *  communication options available on the request/response chain
- *  identified by the Request-URI. This method allows the client to
- *  determine the options and/or requirements associated with a resource,
- *  or the capabilities of a server, without implying a resource action
- *  or initiating a resource retrieval.
+ * The HTTP OPTIONS method is defined in section 9.2 of <a
+ * href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>: <blockquote> The
+ * OPTIONS method represents a request for information about the communication
+ * options available on the request/response chain identified by the
+ * Request-URI. This method allows the client to determine the options and/or
+ * requirements associated with a resource, or the capabilities of a server,
+ * without implying a resource action or initiating a resource retrieval.
  * </blockquote>
  * </p>
- *
+ * 
  * @author <a href="mailto:remm@apache.org">Remy Maucherat</a>
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  * @author <a href="mailto:jsdever@apache.org">Jeff Dever</a>
- *
+ * 
  * @version $Revision: 480424 $
  * @since 1.0
  */
-public class OptionsMethod
-    extends HttpMethodBase {
+public class OptionsMethod extends HttpMethodBase {
 
+	// --------------------------------------------------------- Class Variables
 
-    // --------------------------------------------------------- Class Variables
+	/** Log object for this class. */
+	private static final Log LOG = LogFactory.getLog(OptionsMethod.class);
 
-    /** Log object for this class. */
-    private static final Log LOG = LogFactory.getLog(OptionsMethod.class);
+	// ----------------------------------------------------------- Constructors
 
-    // ----------------------------------------------------------- Constructors
+	/**
+	 * Method constructor.
+	 * 
+	 * @since 1.0
+	 */
+	public OptionsMethod() {
+	}
 
+	/**
+	 * Constructor specifying a URI.
+	 * 
+	 * @param uri
+	 *            either an absolute or relative URI
+	 * 
+	 * @since 1.0
+	 */
+	public OptionsMethod(String uri) {
+		super(uri);
+	}
 
-    /**
-     * Method constructor.
-     *
-     * @since 1.0
-     */
-    public OptionsMethod() {
-    }
+	// ----------------------------------------------------- Instance Variables
 
+	/**
+	 * Methods allowed.
+	 */
+	private Vector methodsAllowed = new Vector();
 
-    /**
-     * Constructor specifying a URI.
-     *
-     * @param uri either an absolute or relative URI
-     *
-     * @since 1.0
-     */
-    public OptionsMethod(String uri) {
-        super(uri);
-    }
+	// --------------------------------------------------------- Public Methods
 
+	/**
+	 * Get the name.
+	 * 
+	 * @return "OPTIONS"
+	 * @since 2.0
+	 */
+	public String getName() {
+		return "OPTIONS";
+	}
 
-    // ----------------------------------------------------- Instance Variables
+	/**
+	 * Is the specified method allowed ?
+	 * 
+	 * @param method
+	 *            The method to check.
+	 * @return true if the specified method is allowed.
+	 * @since 1.0
+	 */
+	public boolean isAllowed(String method) {
+		checkUsed();
+		return methodsAllowed.contains(method);
+	}
 
+	/**
+	 * Get a list of allowed methods.
+	 * 
+	 * @return An enumeration of all the allowed methods.
+	 * 
+	 * @since 1.0
+	 */
+	public Enumeration getAllowedMethods() {
+		checkUsed();
+		return methodsAllowed.elements();
+	}
 
-    /**
-     * Methods allowed.
-     */
-    private Vector methodsAllowed = new Vector();
+	// ----------------------------------------------------- HttpMethod Methods
 
+	/**
+	 * <p>
+	 * This implementation will parse the <tt>Allow</tt> header to obtain the
+	 * set of methods supported by the resource identified by the Request-URI.
+	 * </p>
+	 * 
+	 * @param state
+	 *            the {@link HttpState state} information associated with this
+	 *            method
+	 * @param conn
+	 *            the {@link HttpConnection connection} used to execute this
+	 *            HTTP method
+	 * 
+	 * @see #readResponse
+	 * @see #readResponseHeaders
+	 * @since 2.0
+	 */
+	protected void processResponseHeaders(HttpState state, HttpConnection conn) {
+		LOG.trace("enter OptionsMethod.processResponseHeaders(HttpState, HttpConnection)");
 
-    // --------------------------------------------------------- Public Methods
+		Header allowHeader = getResponseHeader("allow");
+		if (allowHeader != null) {
+			String allowHeaderValue = allowHeader.getValue();
+			StringTokenizer tokenizer = new StringTokenizer(allowHeaderValue, ",");
+			while (tokenizer.hasMoreElements()) {
+				String methodAllowed = tokenizer.nextToken().trim().toUpperCase();
+				methodsAllowed.addElement(methodAllowed);
+			}
+		}
+	}
 
-    /**
-     * Get the name.
-     * @return "OPTIONS"
-     * @since 2.0
-     */
-    public String getName() {
-        return "OPTIONS";
-    }
-
-
-    /**
-     * Is the specified method allowed ?
-     * 
-     * @param method The method to check.
-     * @return true if the specified method is allowed.
-     * @since 1.0
-     */
-    public boolean isAllowed(String method) {
-        checkUsed();
-        return methodsAllowed.contains(method);
-    }
-
-
-    /**
-     * Get a list of allowed methods.
-     * @return An enumeration of all the allowed methods.
-     *
-     * @since 1.0
-     */
-    public Enumeration getAllowedMethods() {
-        checkUsed();
-        return methodsAllowed.elements();
-    }
-
-
-    // ----------------------------------------------------- HttpMethod Methods
-
-    /**
-     * <p>
-     * This implementation will parse the <tt>Allow</tt> header to obtain 
-     * the set of methods supported by the resource identified by the Request-URI.
-     * </p>
-     *
-     * @param state the {@link HttpState state} information associated with this method
-     * @param conn the {@link HttpConnection connection} used to execute
-     *        this HTTP method
-     *
-     * @see #readResponse
-     * @see #readResponseHeaders
-     * @since 2.0
-     */
-    protected void processResponseHeaders(HttpState state, HttpConnection conn) {
-        LOG.trace("enter OptionsMethod.processResponseHeaders(HttpState, HttpConnection)");
-
-        Header allowHeader = getResponseHeader("allow");
-        if (allowHeader != null) {
-            String allowHeaderValue = allowHeader.getValue();
-            StringTokenizer tokenizer =
-                new StringTokenizer(allowHeaderValue, ",");
-            while (tokenizer.hasMoreElements()) {
-                String methodAllowed =
-                    tokenizer.nextToken().trim().toUpperCase();
-                methodsAllowed.addElement(methodAllowed);
-            }
-        }
-    }
-
-    /**
-     * Return true if the method needs a content-length header in the request.
-     *
-     * @return true if a content-length header will be expected by the server
-     *
-     * @since 1.0
-     * 
-     * @deprecated only entity enclosing methods set content length header
-     */
-    public boolean needContentLength() {
-        return false;
-    }
-
+	/**
+	 * Return true if the method needs a content-length header in the request.
+	 * 
+	 * @return true if a content-length header will be expected by the server
+	 * 
+	 * @since 1.0
+	 * 
+	 * @deprecated only entity enclosing methods set content length header
+	 */
+	public boolean needContentLength() {
+		return false;
+	}
 
 }

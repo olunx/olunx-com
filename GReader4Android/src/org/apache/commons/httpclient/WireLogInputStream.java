@@ -36,7 +36,7 @@ import java.io.InputStream;
 
 /**
  * Logs all data read to the wire LOG.
- *
+ * 
  * @author Ortwin Gl�ck
  * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
@@ -44,56 +44,60 @@ import java.io.InputStream;
  * @since 2.0
  */
 class WireLogInputStream extends FilterInputStream {
-     
-    /** Original input stream. */
-    private InputStream in;
 
-    /** The wire log to use for writing. */
-    private Wire wire;
-    
-    /**
-     * Create an instance that wraps the specified input stream.
-     * @param in The input stream.
-     * @param wire The wire log to use.
-     */
-    public WireLogInputStream(InputStream in, Wire wire) {
-        super(in);
-        this.in = in;
-        this.wire = wire;
-    }
-    /**
-     * 
-     * @see java.io.InputStream#read(byte[], int, int)
-     */
-    public int read(byte[] b, int off, int len) throws IOException {
-        int l = this.in.read(b,  off,  len);
-        if (l > 0) {
-            wire.input(b, off, l);
-        }
-        return l;
-    }
+	/** Original input stream. */
+	private InputStream in;
 
-    /**
-     * 
-     * @see java.io.InputStream#read()
-     */
-    public int read() throws IOException {
-        int l = this.in.read();
-        if (l > 0) { 
-            wire.input(l);
-        }
-        return l;
-    }
+	/** The wire log to use for writing. */
+	private Wire wire;
 
-    /**
-     * 
-     * @see java.io.InputStream#read(byte[])
-     */
-    public int read(byte[] b) throws IOException {
-        int l = this.in.read(b);
-        if (l > 0) {
-            wire.input(b, 0, l);
-        }
-        return l;
-    }
+	/**
+	 * Create an instance that wraps the specified input stream.
+	 * 
+	 * @param in
+	 *            The input stream.
+	 * @param wire
+	 *            The wire log to use.
+	 */
+	public WireLogInputStream(InputStream in, Wire wire) {
+		super(in);
+		this.in = in;
+		this.wire = wire;
+	}
+
+	/**
+	 * 
+	 * @see java.io.InputStream#read(byte[], int, int)
+	 */
+	public int read(byte[] b, int off, int len) throws IOException {
+		int l = this.in.read(b, off, len);
+		if (l > 0) {
+			wire.input(b, off, l);
+		}
+		return l;
+	}
+
+	/**
+	 * 
+	 * @see java.io.InputStream#read()
+	 */
+	public int read() throws IOException {
+		int l = this.in.read();
+		if (l > 0) {
+			wire.input(l);
+		}
+		return l;
+	}
+
+	/**
+	 * 
+	 * @see java.io.InputStream#read(byte[])
+	 */
+	public int read(byte[] b) throws IOException {
+		int l = this.in.read(b);
+		if (l > 0) {
+			wire.input(b, 0, l);
+		}
+		return l;
+	}
 }
