@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.os.Process;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,12 +34,13 @@ import android.widget.AdapterView.OnItemLongClickListener;
 public class Main extends Activity {
 
 	private Cursor cursor;
+	private final String TAG = "com.olunx.Main";
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.ui);
 
 		initCOnfig();
 		//
@@ -59,7 +61,7 @@ public class Main extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
 				SQLiteCursor cursor = (SQLiteCursor) arg0.getItemAtPosition(position);
 				String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
-				System.out.println(title);// 打印
+				Log.i(TAG, title);
 				Intent i = new Intent();
 				i.putExtra(CategoryHelper.c_title, title);// 分类标题
 				i.setClass(Main.this, FeedList.class);
@@ -74,12 +76,12 @@ public class Main extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
 				final String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
-				System.out.println(title);// 打印
+				Log.i(TAG, title);
 				Toast.makeText(Main.this, "开始更新...", Toast.LENGTH_SHORT).show();
 				new Thread() {
 					public void run() {
 						new Update().updateArticlesByCat(title);
-						System.out.println("finished!");
+						Log.i(TAG, "update finish");
 					}
 				}.start();
 				cursor.close();
@@ -91,18 +93,23 @@ public class Main extends Activity {
 
 	@Override
 	protected void onResume() {
+		Log.i(TAG, "onResume()");
 		createView();
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
+		Log.i(TAG, "onPause()");
 		if (cursor != null) {
 			cursor.close();
 		}
 		super.onPause();
 	}
 
+	/**
+	 * 初始化软件
+	 */
 	private void initCOnfig() {
 		Config config = Config.init(this);
 

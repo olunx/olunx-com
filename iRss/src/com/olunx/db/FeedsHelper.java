@@ -125,9 +125,7 @@ public class FeedsHelper implements IHelper {
 	 * 
 	 * @return
 	 */
-	public void updateCategory() {
-		// String query = "select " + c_catTitle + ", count(" + c_catTitle +
-		// ") from " + TABLE + " group by " + c_catTitle + ";";
+	public void updateCategoryStatus() {
 		Cursor result = getDB().query(TABLE, new String[] { c_catTitle, "count(" + c_catTitle + ") as count" }, null, null, c_catTitle,
 				null, null);
 
@@ -218,7 +216,7 @@ public class FeedsHelper implements IHelper {
 	 * @param feedXmlUrl
 	 * @return
 	 */
-	public String getUpdateTime(String feedXmlUrl) {
+	public String getFeedUpdateTime(String feedXmlUrl) {
 		String str = null;
 		Cursor result = getDB().query(TABLE, new String[] { c_updateTime }, c_xmlUrl + "== ?", new String[] { feedXmlUrl }, null, null,
 				null);

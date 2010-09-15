@@ -50,7 +50,7 @@ public class Update {
 				helper.addRecord(mValues);
 			}
 		}
-		helper.updateCategory();// 添加完Feed后，为Category表重新统计Feed条数。
+		helper.updateCategoryStatus();// 添加完Feed后，为Category表重新统计Feed条数。
 		helper.close();
 
 		// new ArticlesHelper().updateFeeds();
@@ -63,9 +63,17 @@ public class Update {
 	 * @param catTitle
 	 */
 	public void updateArticlesByCat(String catTitle) {
+		if(catTitle == null) return;
 		FeedsHelper helper = new FeedsHelper();
 		updateArticles(helper.getFeedsXmlUrlByCategory(catTitle));
 		helper.close();
+	}
+	
+	public void updateArticlesByfeed(String feedXmlUrl) {
+		if(feedXmlUrl == null) return;
+		ArrayList<String> feeds = new ArrayList<String>();
+		feeds.add(feedXmlUrl);
+		updateArticles(feeds);
 	}
 
 	/**
@@ -99,7 +107,7 @@ public class Update {
 			// 获取数据
 			feedXmlUrl = feeds.get(i);
 
-			data = rss.downLoadFeedContent(feedXmlUrl, null);
+			data = rss.downLoadFeedContent(feedXmlUrl, null, 2);
 
 			// 更新Feed的编码
 			charset = (String) data.get(FeedsHelper.c_charset);
@@ -121,11 +129,15 @@ public class Update {
 
 		}
 
-		aHelper.updateFeeds();// 添加完文章后，为Feed表重新统计文章数目。
+		aHelper.updateFeedsStatus();// 添加完文章后，为Feed表重新统计文章数目。
 		aHelper.close();
 		fHelper.close();
 
-		Log.i(TAG, "update finished!");
+		Log.i(TAG, "update articles finished!");
 
+	}
+	
+	public void buildArticleContent() {
+		
 	}
 }

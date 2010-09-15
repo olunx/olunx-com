@@ -33,19 +33,18 @@ public class ArticleList extends Activity {
 		ArticlesHelper helper = new ArticlesHelper();
 		String url = this.getIntent().getStringExtra(FeedsHelper.c_xmlUrl);
 		final String charset = this.getIntent().getStringExtra(FeedsHelper.c_charset);
-		cursor = helper.getArticlesByXmlUrl(url);
+		cursor = helper.getArticlesByFeedXmlUrl(url);
 
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, new String[] {
-				ArticlesHelper.c_title, ArticlesHelper.c_link }, new int[] { android.R.id.text1, android.R.id.text2 });
+				ArticlesHelper.c_title, ArticlesHelper.c_publishTime }, new int[] { android.R.id.text1, android.R.id.text2 });
 		listview.setAdapter(adapter);
 
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
 				SQLiteCursor cursor = (SQLiteCursor) arg0.getItemAtPosition(position);
-				String title = cursor.getString(cursor.getColumnIndex(ArticlesHelper.c_title));
-				System.out.println(title);// 打印
+				String link = cursor.getString(cursor.getColumnIndex(ArticlesHelper.c_link));
 				Intent i = new Intent();
-				i.putExtra(ArticlesHelper.c_title, title);// 文章标题
+				i.putExtra(ArticlesHelper.c_link, link);// 文章链接
 				i.putExtra(FeedsHelper.c_charset, charset);// 内容编码
 				i.setClass(ArticleList.this, ArticleShow.class);
 				cursor.close();

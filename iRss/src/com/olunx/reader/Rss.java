@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.olunx.R;
 import com.olunx.db.ArticlesHelper;
 import com.olunx.db.FeedsHelper;
 import com.olunx.util.Utils;
@@ -33,7 +34,7 @@ public class Rss {
 	private Boolean logined;
 
 	private final String TAG = "com.olunx.reader.Rss";
-	
+
 	/**
 	 * 登录
 	 * 
@@ -73,12 +74,11 @@ public class Rss {
 	}
 
 	/**
-	 * 返回Feed列表
+	 * 下载Feed列表
 	 * 
 	 * @return
 	 */
 	public ArrayList<ContentValues> downLoadAllFeeds() {
-
 		if (dataProvider != null) {
 			try {
 				return this.parseOPMLSubscriptions(dataProvider.exportSubscriptionsToOPML());
@@ -95,7 +95,7 @@ public class Rss {
 	 * @param xmlConten
 	 */
 	public ArrayList<ContentValues> parseOPMLSubscriptions(String xmlContent) {
-		
+
 		ArrayList<ContentValues> array = new ArrayList<ContentValues>();
 
 		ContentValues feed = null;
@@ -117,23 +117,20 @@ public class Rss {
 				feed.put(FeedsHelper.c_htmlUrl, o.getHtmlUrl());
 				feed.put(FeedsHelper.c_xmlUrl, o.getXmlUrl());
 				feed.put(FeedsHelper.c_catTitle, "未分类");
+				feed.put(FeedsHelper.c_icon, R.drawable.icon);
 			} else {
 				for (Outline c : o.getChilds()) {
-					// System.out.println("child： " + c.getTitle() + "  " +
-					// c.getHtmlUrl());
 					feed = new ContentValues();
 					feed.put(FeedsHelper.c_title, c.getTitle());
 					feed.put(FeedsHelper.c_text, c.getText());
 					feed.put(FeedsHelper.c_htmlUrl, c.getHtmlUrl());
 					feed.put(FeedsHelper.c_xmlUrl, c.getXmlUrl());
 					feed.put(FeedsHelper.c_catTitle, o.getTitle());
+					feed.put(FeedsHelper.c_icon, R.drawable.icon);
 					array.add(feed);
-					System.out.println("feed:" + feed.toString());
 				}
 			}
-
 			array.add(feed);
-			System.out.println("feed:" + feed.toString());
 		}
 
 		return array;
@@ -143,27 +140,28 @@ public class Rss {
 	 * 
 	 * 根据时间获取文章数据，如果时间为空则返回指定条数的数据。
 	 * 
-	 * @param feedUrl
+	 * @param feedXmlUrl
 	 * @param fromDate
 	 */
-	public HashMap<String, Object> downLoadFeedContent(String feedUrl, String fromDate) {
+	public HashMap<String, Object> downLoadFeedContent(String feedXmlUrl, String fromDate, int articleCount) {
 
-		String feed = "feed/" + feedUrl;
+		String feedUrl = "feed/" + feedXmlUrl;
 		String content = "";
 
 		if (dataProvider != null) {
 			try {
 				if (fromDate == null) {
-					content = dataProvider.getFeedItems(feed, 2);
+					content = dataProvider.getFeedItems(feedUrl, (articleCount <= 0 ? 5 : articleCount));
 				} else {
-					content = dataProvider.getFeedItemsFromDate(feed, String.valueOf(Utils.init().getTimestamp(fromDate)));
+					content = dataProvider.getFeedItemsFromDate(feedUrl, String.valueOf(Utils.init().getTimestamp(fromDate)));
 				}
 			} catch (GoogleReaderException e) {
 				e.printStackTrace();
 			}
 
-			Log.i(TAG, "parse feed: " + feed);
-			return parseFeed(content, feedUrl);// 解析rss内容
+//			Log.i(TAG, "feed content: " + content);
+			Log.i(TAG, "parse feed: " + feedUrl);
+			return parseFeed(content, feedXmlUrl);// 解析rss内容
 		}
 
 		return null;
@@ -179,6 +177,7 @@ public class Rss {
 	public HashMap<String, Object> parseFeed(String source, String feedUrl) {
 
 		HashMap<String, Object> singleFeed = new HashMap<String, Object>();
+		String feedCharset = null;
 
 		XmlReader reader = null;
 		try {
@@ -196,7 +195,8 @@ public class Rss {
 			e1.printStackTrace();
 		}
 
-		singleFeed.put(FeedsHelper.c_charset, reader.getEncoding());
+		feedCharset = reader.getEncoding();
+		singleFeed.put(FeedsHelper.c_charset, feedCharset);
 		singleFeed.put(FeedsHelper.c_rssType, feed.getFeedType());
 
 		ContentValues[] articles;// 文章数组
@@ -204,13 +204,12 @@ public class Rss {
 		// 得到Rss新闻中子项列表
 		List entries = feed.getEntries();
 
-		String title, desc, author, link;
+		String title, desc = null, parsedContent, author, link;
 		Date date;
 		StringBuilder content;
 		SyndEntry entry;
 		SyndContent description;
 		List<SyndContent> contents;
-		System.out.println("entries.size() " + entries.size());
 		int entriesSize = entries.size();
 		articles = new ContentValues[entriesSize];
 		for (int i = 0; i < entriesSize; i++) {
@@ -222,10 +221,10 @@ public class Rss {
 			title = entry.getTitle();
 			if (title != null) {
 				article.put(ArticlesHelper.c_title, title.trim());
+				Log.i(TAG, "title: " + title);
 			} else {
 				article.put(ArticlesHelper.c_title, "无标题");
 			}
-			System.out.println("article title put : " + title);
 			// // URI
 			// uri = entry.getUri();
 			// if (uri != null) {
@@ -235,14 +234,6 @@ public class Rss {
 			link = entry.getLink();
 			if (link != null) {
 				article.put(ArticlesHelper.c_link, link.trim());
-			}
-			// 描述
-			description = entry.getDescription();
-			if (description != null) {
-				desc = description.getValue();
-				if (desc != null) {
-					article.put(ArticlesHelper.c_desc, desc.trim());
-				}
 			}
 			// 发表日期
 			date = entry.getPublishedDate();
@@ -254,6 +245,12 @@ public class Rss {
 			// for (Object e : entry.getCategories()) {
 			// category.append(((SyndCategory) e).getName());
 			// }
+			// 描述
+			description = entry.getDescription();
+			if (description != null) {
+				desc = description.getValue();
+//				Log.i(TAG, "desc: " + desc);
+			}
 			// 内容
 			content = new StringBuilder();
 			contents = entry.getContents();
@@ -261,7 +258,12 @@ public class Rss {
 				c.getType();
 				content.append(c.getValue());
 			}
-			article.put(ArticlesHelper.c_content, content.toString().trim());
+			
+			//处理content格式问题
+			parsedContent = Utils.init().parseTextToHtmlForWebview(feedCharset, title, content.toString(), desc);
+			article.put(ArticlesHelper.c_content, parsedContent);
+			Log.i(TAG, "content: " + parsedContent);
+
 			// 作者
 			author = entry.getAuthor();
 			if (author != null) {
@@ -269,7 +271,7 @@ public class Rss {
 			}
 
 			articles[i] = article;
-			System.out.println("add article " + i);
+			Log.i(TAG, "add article: " + i);
 		}
 
 		singleFeed.put(FeedsHelper.c_articles, articles);

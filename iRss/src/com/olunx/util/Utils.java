@@ -2,6 +2,8 @@ package com.olunx.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,7 +16,6 @@ public class Utils {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Utils u = new Utils();
 		// Calendar cal = Calendar.getInstance();
 		// cal.set(1970, 1, 1, 0, 0, 0);
@@ -121,5 +122,36 @@ public class Utils {
 		}
 		// Log.i("file create finished", String.valueOf(file.exists()));
 		return file;
+	}
+
+	/**
+	 * 生成适合WebView显示的数据
+	 * 
+	 * @param charset
+	 * @param article
+	 * @return
+	 */
+	public String parseTextToHtmlForWebview(String charset, String title, String content, String desc) {
+		System.out.println("parseTextToHtmlForWebview()");
+		StringBuffer sb = new StringBuffer();
+		sb.append("<html><head><meta http-equiv='content-type' content='text/html; charset=");
+		sb.append(charset);
+		sb.append("' /></head><body><h3>");
+		sb.append(title);
+		sb.append("</h3>");
+		sb.append(content);
+		if(desc != null) {
+			sb.append(desc);
+		}
+		sb.append("</body></html>");
+
+		String result = sb.toString();
+//		try {
+//			result = URLEncoder.encode(result, "utf-8").replaceAll("\\+", " ").trim();
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
+
+		return result;
 	}
 }

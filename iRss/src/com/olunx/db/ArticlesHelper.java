@@ -1,7 +1,6 @@
 package com.olunx.db;
 
 import java.io.File;
-import java.util.HashMap;
 
 import com.olunx.util.Config;
 import com.olunx.util.Utils;
@@ -74,8 +73,6 @@ public class ArticlesHelper implements IHelper {
 		this.getDB().execSQL("drop table if exists " + TABLE + ";");
 	}
 
-	private ContentValues row = null;
-
 	/**
 	 * 添加Article
 	 * 
@@ -85,22 +82,22 @@ public class ArticlesHelper implements IHelper {
 		getDB().insert(TABLE, null, values);
 	}
 
-	/**
-	 * 更新文章内容
-	 * 
-	 * @param title
-	 * @param content
-	 */
-	public void updateContent(String title, String content) {
-		row = new ContentValues();
-		row.put(c_content, content);
-		getDB().update(TABLE, row, c_title + "== ? ", new String[] { title });
-	}
+//	/**
+//	 * 更新文章内容
+//	 * 
+//	 * @param link
+//	 * @param content
+//	 */
+//	public void updateArticleContent(String link, String content) {
+//		ContentValues row = new ContentValues();
+//		row.put(c_content, content);
+//		getDB().update(TABLE, row, c_link + "== ? ", new String[] { link });
+//	}
 
 	/**
-	 * 更新Feed的文章数目
+	 * 更新Feed的状态信息
 	 */
-	public void updateFeeds() {
+	public void updateFeedsStatus() {
 		Cursor result = getDB().query(TABLE, new String[] { c_feedXmlUrl, "count(" + c_feedXmlUrl + ") as count" }, null, null,
 				c_feedXmlUrl, null, null);
 
@@ -130,35 +127,36 @@ public class ArticlesHelper implements IHelper {
 	 * @param articleTitle
 	 * @return
 	 */
-	public Cursor getArticlesByXmlUrl(String feedXmlUrl) {
-		return getDB().query(TABLE, new String[] { c_id, c_title, c_link }, c_feedXmlUrl + "== ?", new String[] { feedXmlUrl }, null, null,
+	public Cursor getArticlesByFeedXmlUrl(String feedXmlUrl) {
+		return getDB().query(TABLE, new String[] { c_id, c_title, c_link, c_publishTime}, c_feedXmlUrl + "== ?", new String[] { feedXmlUrl }, null, null,
 				null);
 	}
 
 	/**
-	 * 获取文章
+	 * 获取指定文章内容
 	 * 
-	 * @param title
+	 * @param link
 	 * @return
 	 */
-	public HashMap<String, String> getArticleByTitle(String title) {
-		HashMap<String, String> article = new HashMap<String, String>();
+	public String getArticleContentByLink(String link) {
 
-		Cursor result = getDB().query(TABLE, new String[] { c_id, c_content }, c_title + "== ?", new String[] { title }, null, null, null);
+		String content= null;
+		
+		Cursor result = getDB().query(TABLE, new String[] { c_id, c_content }, c_link + "== ?", new String[] { link }, null, null, null);
 
 		if (result != null) {
 			result.moveToFirst();
 			int contentIndex = result.getColumnIndex(c_content);
 			while (!result.isAfterLast()) {
-				article.put(c_content, result.getString(contentIndex));
+				content = result.getString(contentIndex);
 				result.moveToNext();
 			}
 		}
 		result.close();
 
-		return article;
+		return content;
 	}
-
+	
 	/**
 	 * 判断文章是否存在
 	 * 

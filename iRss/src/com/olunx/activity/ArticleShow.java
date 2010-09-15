@@ -2,27 +2,23 @@ package com.olunx.activity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 
-import com.olunx.R;
 import com.olunx.db.ArticlesHelper;
 import com.olunx.db.FeedsHelper;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Html;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 public class ArticleShow extends Activity {
 
-	private TextView mWebView;
-	
+	private WebView mWebView;
 	private final String TAG = "com.olunx.activity.ArticleShow";
+	
+	private final int LOAD_DATA = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +26,10 @@ public class ArticleShow extends Activity {
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.article_show);
-		mWebView = (TextView) findViewById(R.id.TextView01);
+		// setContentView(R.layout.article_show);
+		// mWebView = (WebView) findViewById(R.id.WebView01);
+		mWebView = new WebView(this);
+		this.setContentView(mWebView);
 		// setContentView(R.layout.article_show);
 
 		// createView();
@@ -40,31 +38,47 @@ public class ArticleShow extends Activity {
 	private void createView() {
 
 		ArticlesHelper helper = new ArticlesHelper();
-		String title = this.getIntent().getStringExtra(ArticlesHelper.c_title);// 文章标题
+		String link = this.getIntent().getStringExtra(ArticlesHelper.c_link);// 文章链接
 		String charset = this.getIntent().getStringExtra(FeedsHelper.c_charset);// 内容编码
-		HashMap<String, String> article = helper.getArticleByTitle(title);
+		String content = helper.getArticleContentByLink(link);
 		helper.close();
-		String content = article.get(ArticlesHelper.c_content);
-		System.out.println("article.get(ArticlesHelper.c_content) " + content);
-		mWebView.setText(Html.fromHtml(content));
-		// mWebView.loadUrl("http://t.qq.com");
-//		try {
-//			mWebView.loadData(URLEncoder.encode(content, "utf-8"), "text/html", charset);
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-		// mWebView.setWebViewClient(new WebViewClient(){
-		// public boolean shouldOverrideUrlLoading(WebView view, String url) {
-		// view.loadUrl(url);
-		// return true;
-		// }
-		// });
+
+		try {
+			content = URLEncoder.encode(content, "utf-8").replaceAll("\\+", " ").trim();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		Message msg = mHandler.obtainMessage();
+		msg.what = LOAD_DATA;
+		Bundle data = new Bundle();
+		data.putString("content", content);
+		data.putString("charset", charset);
+		msg.setData(data);
+		msg.sendToTarget();
+		
 	}
 
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch(msg.what) {
+			case LOAD_DATA: {
+				Bundle data = msg.getData();
+				mWebView.loadData(data.getString("content"), "text/html", data.getString("charset"));
+			}
+			}
+		}
+	};
+	
 	@Override
 	protected void onResume() {
 		Log.i(TAG, "onResume()");
-		createView();
+		new Thread() {
+			public void run() {
+				createView();
+			}
+		}.start();
 		super.onResume();
 	}
 }
+
