@@ -1,6 +1,7 @@
 package com.olunx.db;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.olunx.R;
 import com.olunx.util.Config;
@@ -104,6 +105,26 @@ public class CategoryHelper implements IHelper {
 		return getDB().query(TABLE, new String[] { c_id, c_title, c_icon, c_feedCount }, null, null, null, null, null);
 	}
 
+	/**
+	 * 获取所有数据
+	 * 
+	 * @return
+	 */
+	public ArrayList<String> getAllCats() {
+		ArrayList<String> titles = new ArrayList<String>();
+		Cursor result = getDB().query(TABLE, new String[] {c_title}, null, null, null, null, null);
+		if (result != null) {
+			result.moveToFirst();
+			int index = result.getColumnIndex(c_title);
+			while (!result.isAfterLast()) {
+				titles.add(result.getString(index));
+				result.moveToNext();
+			}
+		}
+		result.close();
+		return titles;
+	}
+	
 	/**
 	 * 删除一个分类
 	 * 

@@ -1,6 +1,8 @@
 package com.olunx;
 
-import com.olunx.activity.FeedList;
+import java.util.ArrayList;
+
+import com.olunx.activity.ArticleList;
 import com.olunx.db.ArticlesHelper;
 import com.olunx.db.CategoryHelper;
 import com.olunx.db.FeedsHelper;
@@ -9,6 +11,7 @@ import com.olunx.util.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,95 +25,175 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class Main extends Activity {
 
-	private Cursor cursor;
 	private final String TAG = "com.olunx.Main";
+	private Cursor cursor;
+	private GridView gridview;
+	private ItemClickListener itemClickListener;
+	private FeedsHelper helper;
+	private String currentCatTitle;
+	private ArrayList<String> allTitles;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui);
-
-		initCOnfig();
-		//
-		// createView();
+		
+		//初始化一次的对象
+		itemClickListener =  new ItemClickListener();
+		CategoryHelper helper = new CategoryHelper();
+		allTitles = helper.getAllCats();
+		helper.close();
+		
+		if(allTitles != null && allTitles.size() > 0) {
+			currentCatTitle = allTitles.get(0);
+		}else {
+			return ;
+		}
+		
+		initConfig();
+		createBtn();// 初始化底部栏目
 	}
 
-	private void createView() {
+	/**
+	 * 创建Feed Item
+	 * @param catTitle
+	 */
+	private void createFeedItem(String catTitle) {
+		this.setTitle("当前分类：" + catTitle);
 
-		CategoryHelper helper = new CategoryHelper();
-		cursor = helper.getAllRecords();
-
-		GridView gridview = (GridView) findViewById(R.id.GridView01);
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.main_item, cursor, new String[] { CategoryHelper.c_icon,
-				CategoryHelper.c_title, CategoryHelper.c_feedCount }, new int[] { R.id.ItemImage, R.id.ItemText, R.id.ItemNum });
+		cursor = helper.getFeedsByCategory(catTitle);
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.main_item, cursor, new String[] { FeedsHelper.c_icon,
+				FeedsHelper.c_title, FeedsHelper.c_articleCount }, new int[] { R.id.ItemImage, R.id.ItemText, R.id.ItemNum });
 		gridview.setAdapter(adapter);
-		//短按事件
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
-				SQLiteCursor cursor = (SQLiteCursor) arg0.getItemAtPosition(position);
-				String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
-				Log.i(TAG, title);
-				Intent i = new Intent();
-				i.putExtra(CategoryHelper.c_title, title);// 分类标题
-				i.setClass(Main.this, FeedList.class);
+		gridview.setOnItemClickListener(itemClickListener);
+	}
+
+	/**
+	 * 创建底部栏目
+	 */
+	private void createBtn() {
+
+		RadioGroup group = (RadioGroup) findViewById(R.id.RadioGroup01);
+
+		int length = allTitles.size();
+		ClickListener listener = new ClickListener();
+		for (int i = 0; i < length; i++) {
+			RadioButton btn = new RadioButton(this);
+			btn.setMinWidth(70);
+			btn.setText(allTitles.get(i));
+			btn.setOnClickListener(listener);
+			group.addView(btn);
+			if(i == 0) {btn.setChecked(true);};//如果在假如group前选择，则和后面的分成两组。
+		}
+
+	}
+
+	/**
+	 * 按钮短按事件
+	 */
+	class ClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			if (cursor != null) {
 				cursor.close();
-				Main.this.startActivity(i);
+				cursor = null;
 			}
-		});
-		//长按事件
-		gridview.setOnItemLongClickListener(new OnItemLongClickListener() {
+			Button btn = (Button) v;
+			currentCatTitle = btn.getText().toString();
+			createFeedItem(currentCatTitle);
+		}
+	}
+	
+	/**
+	 *按钮长按事件
+	 */
+	class LongClickListener implements OnLongClickListener{
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
-				final String title = cursor.getString(cursor.getColumnIndex(CategoryHelper.c_title));
-				Log.i(TAG, title);
-				Toast.makeText(Main.this, "开始更新...", Toast.LENGTH_SHORT).show();
-				new Thread() {
-					public void run() {
-						new Update().updateArticlesByCat(title);
-						Log.i(TAG, "update finish");
-					}
-				}.start();
-				cursor.close();
-				return false;
-			}});
+		@Override
+		public boolean onLongClick(View v) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+	}
 
-		helper.close();
+	/**
+	 * GridView短按事件
+	 */
+	class ItemClickListener implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
+			String xmlUrl = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_xmlUrl));
+			String charset = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_charset));
+			Log.i(TAG, xmlUrl);
+			Intent i = new Intent();
+			i.putExtra(FeedsHelper.c_xmlUrl, xmlUrl);// Feed地址
+			i.putExtra(FeedsHelper.c_charset, charset);// 内容编码
+			i.setClass(Main.this, ArticleList.class);
+			cursor.close();
+			Main.this.startActivity(i);
+		}
+
+	}
+	
+	/**
+	 * GridView长按事件
+	 *
+	 */
+	class ItemLongClickListener implements OnItemLongClickListener{
+		
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 	}
 
 	@Override
 	protected void onResume() {
+		gridview = (GridView) findViewById(R.id.GridView01);
+		helper = new FeedsHelper();
+		if(currentCatTitle != null) {
+			createFeedItem(currentCatTitle);
+		}
 		Log.i(TAG, "onResume()");
-		createView();
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		Log.i(TAG, "onPause()");
-		if (cursor != null) {
-			cursor.close();
+		if(helper != null) {
+			helper.close();
 		}
+		Log.i(TAG, "onPause()");
 		super.onPause();
 	}
 
 	/**
 	 * 初始化软件
 	 */
-	private void initCOnfig() {
+	private void initConfig() {
 		Config config = Config.init(this);
 
 		if (!config.isAccountInputted()) {
