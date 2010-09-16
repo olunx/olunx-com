@@ -6,7 +6,7 @@
 	</ImageView>
 	<TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/ItemImage" android:text="0" android:textStyle="bold" android:id="@+id/ItemNum" android:layout_marginLeft="-15dip" android:textSize="20sp" android:typeface="sans" android:textColor="#ff6600"></TextView>
 	<TextView android:layout_width="wrap_content" android:layout_below="@+id/ItemImage" android:layout_height="wrap_content"
-		android:text="TextView01" android:layout_centerHorizontal="true" android:id="@+id/ItemText" android:textStyle="normal" android:textSize="16dip" android:textColor="#fff">
+		android:text="TextView01" android:layout_centerHorizontal="true" android:id="@+id/ItemText" android:lines="2">
 	</TextView>  
 
 </RelativeLayout>  

@@ -1,5 +1,6 @@
 package com.olunx.activity;
 
+import com.olunx.R;
 import com.olunx.db.ArticlesHelper;
 import com.olunx.db.FeedsHelper;
 
@@ -22,8 +23,8 @@ public class ArticleList extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		listview = new ListView(this);
-		setContentView(listview);
+		this.setContentView(R.layout.article_list);
+		listview = (ListView)this.findViewById(R.id.ListView01);
 
 		// createView();
 	}
@@ -35,8 +36,8 @@ public class ArticleList extends Activity {
 		final String charset = this.getIntent().getStringExtra(FeedsHelper.c_charset);
 		cursor = helper.getArticlesByFeedXmlUrl(url);
 
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, new String[] {
-				ArticlesHelper.c_title, ArticlesHelper.c_publishTime }, new int[] { android.R.id.text1, android.R.id.text2 });
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.article_list_item, cursor, new String[] {
+				ArticlesHelper.c_title, ArticlesHelper.c_publishTime }, new int[] { R.id.TextView01, R.id.TextView02 });
 		listview.setAdapter(adapter);
 
 		listview.setOnItemClickListener(new OnItemClickListener() {

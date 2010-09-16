@@ -11,7 +11,6 @@ import com.olunx.util.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,7 +35,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
@@ -80,8 +78,8 @@ public class Main extends Activity {
 		this.setTitle("当前分类：" + catTitle);
 
 		cursor = helper.getFeedsByCategory(catTitle);
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.main_item, cursor, new String[] { FeedsHelper.c_icon,
-				FeedsHelper.c_title, FeedsHelper.c_articleCount }, new int[] { R.id.ItemImage, R.id.ItemText, R.id.ItemNum });
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.gridview_item, cursor, new String[] { FeedsHelper.c_icon,
+				FeedsHelper.c_title, FeedsHelper.c_articleCount }, new int[] { R.id.ImageView01, R.id.TextView01, R.id.TextView02 });
 		gridview.setAdapter(adapter);
 		gridview.setOnItemClickListener(itemClickListener);
 	}
@@ -169,6 +167,7 @@ public class Main extends Activity {
 			return false;
 		}
 	}
+	
 
 	@Override
 	protected void onResume() {
