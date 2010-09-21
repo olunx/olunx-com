@@ -61,6 +61,14 @@ public class FeedsHelper implements IHelper {
 			sqlite.close();
 		}
 	}
+	
+	public boolean isOpen() {
+		if (sqlite != null) {
+			return sqlite.isOpen();
+		}
+		return false;
+	}
+	
 
 	@Override
 	public void createTable() {

@@ -90,6 +90,39 @@ public class Rss {
 	}
 
 	/**
+	 * 添加一条feed
+	 * 
+	 * @param feedUrl
+	 * @param title
+	 */
+	public void addFeed(String feedUrl, String title) {
+		if (dataProvider != null) {
+			try {
+				dataProvider.addSubscription(feedUrl, title);
+			} catch (GoogleReaderException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 删除一条feed
+	 * 
+	 * @param feedUrl
+	 */
+	public void removeFeed(String feedUrl) {
+		if (dataProvider != null) {
+			try {
+				dataProvider.removeSubscription(feedUrl);
+			} catch (GoogleReaderException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+
+	/**
 	 * 处理OMPL文件内容，返回ArrayList<Map<String, String>>。内容为feed列表。
 	 * 
 	 * @param xmlConten
@@ -159,7 +192,7 @@ public class Rss {
 				e.printStackTrace();
 			}
 
-//			Log.i(TAG, "feed content: " + content);
+			// Log.i(TAG, "feed content: " + content);
 			Log.i(TAG, "parse feed: " + feedUrl);
 			return parseFeed(content, feedXmlUrl);// 解析rss内容
 		}
@@ -174,7 +207,7 @@ public class Rss {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> parseFeed(String source, String feedUrl) {
+	private HashMap<String, Object> parseFeed(String source, String feedUrl) {
 
 		HashMap<String, Object> singleFeed = new HashMap<String, Object>();
 		String feedCharset = null;
@@ -249,7 +282,7 @@ public class Rss {
 			description = entry.getDescription();
 			if (description != null) {
 				desc = description.getValue();
-//				Log.i(TAG, "desc: " + desc);
+				// Log.i(TAG, "desc: " + desc);
 			}
 			// 内容
 			content = new StringBuilder();
@@ -258,8 +291,8 @@ public class Rss {
 				c.getType();
 				content.append(c.getValue());
 			}
-			
-			//处理content格式问题
+
+			// 处理content格式问题
 			parsedContent = Utils.init().parseTextToHtmlForWebview(feedCharset, title, content.toString(), desc);
 			article.put(ArticlesHelper.c_content, parsedContent);
 			Log.i(TAG, "content: " + parsedContent);

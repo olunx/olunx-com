@@ -28,13 +28,12 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
@@ -47,31 +46,37 @@ public class Main extends Activity {
 	private FeedsHelper helper;
 	private String currentCatTitle;
 	private ArrayList<String> allTitles;
+	private ToggleButton lastBtn;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ui);
-		
-		//初始化一次的对象
-		itemClickListener =  new ItemClickListener();
+		setContentView(R.layout.gridview);
+		gridview = (GridView) findViewById(R.id.GridView01);
+
+		// 初始化一次的对象
+		itemClickListener = new ItemClickListener();
+
+		// 获取所有栏目
 		CategoryHelper helper = new CategoryHelper();
 		allTitles = helper.getAllCats();
 		helper.close();
-		
-		if(allTitles != null && allTitles.size() > 0) {
+
+		// 设置当前目录
+		if (allTitles != null && allTitles.size() > 0) {
 			currentCatTitle = allTitles.get(0);
-		}else {
-			return ;
+		} else {
+			return;
 		}
-		
+
 		initConfig();
 		createBtn();// 初始化底部栏目
 	}
 
 	/**
 	 * 创建Feed Item
+	 * 
 	 * @param catTitle
 	 */
 	private void createFeedItem(String catTitle) {
@@ -92,14 +97,24 @@ public class Main extends Activity {
 		RadioGroup group = (RadioGroup) findViewById(R.id.RadioGroup01);
 
 		int length = allTitles.size();
-		ClickListener listener = new ClickListener();
+		String title = null;
+		BtnClickListener listener = new BtnClickListener();
+		BtnLongClickListener longListener = new BtnLongClickListener();
 		for (int i = 0; i < length; i++) {
-			RadioButton btn = new RadioButton(this);
+			ToggleButton btn = new ToggleButton(this);
 			btn.setMinWidth(70);
-			btn.setText(allTitles.get(i));
+			title = allTitles.get(i);
+			btn.setText(title);
+			btn.setTextOff(title);
+			btn.setTextOn(title);
 			btn.setOnClickListener(listener);
+			btn.setOnLongClickListener(longListener);
 			group.addView(btn);
-			if(i == 0) {btn.setChecked(true);};//如果在假如group前选择，则和后面的分成两组。
+			if (i == 0) {
+				btn.setChecked(true);
+				lastBtn = btn;
+			}
+			;// 如果在假如group前选择，则和后面的分成两组。
 		}
 
 	}
@@ -107,31 +122,74 @@ public class Main extends Activity {
 	/**
 	 * 按钮短按事件
 	 */
-	class ClickListener implements OnClickListener {
+	class BtnClickListener implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
+			ToggleButton btn = (ToggleButton) v;
+
+			// 取消上次选择的按钮
+			if (lastBtn != null) {
+				if(lastBtn == btn) {
+					btn.setChecked(true);
+					return;
+				};
+				lastBtn.setChecked(false);
+				lastBtn.setClickable(true);
+			}
+			//关闭当前cursor
 			if (cursor != null) {
 				cursor.close();
 				cursor = null;
 			}
-			Button btn = (Button) v;
+			lastBtn = btn;
+			btn.setClickable(false);
 			currentCatTitle = btn.getText().toString();
 			createFeedItem(currentCatTitle);
 		}
 	}
-	
+
 	/**
 	 *按钮长按事件
 	 */
-	class LongClickListener implements OnLongClickListener{
+	class BtnLongClickListener implements OnLongClickListener {
 
 		@Override
 		public boolean onLongClick(View v) {
-			// TODO Auto-generated method stub
+
+			ToggleButton btn = (ToggleButton) v;
+			final String selectTitle = btn.getText().toString();
+			
+			final AlertDialog.Builder ad = new AlertDialog.Builder(Main.this);
+			ad.setInverseBackgroundForced(true);// 翻转底色
+			ad.setIcon(android.R.drawable.ic_dialog_info);
+			ad.setTitle("请选择操作");
+			ad.setCancelable(false);
+			ad.setItems(new String[] { "更新该分类", "修改分类名称", "删除该分类" }, new android.content.DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case 0:
+						break;
+					case 1:
+						break;
+					case 2:
+						break;
+					}
+				}
+			});
+			ad.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int arg1) {
+					dialog.dismiss();
+				}
+			});
+			ad.show();
+
 			return false;
 		}
-		
+
 	}
 
 	/**
@@ -154,26 +212,26 @@ public class Main extends Activity {
 		}
 
 	}
-	
+
 	/**
 	 * GridView长按事件
-	 *
+	 * 
 	 */
-	class ItemLongClickListener implements OnItemLongClickListener{
-		
+	class ItemLongClickListener implements OnItemLongClickListener {
+
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 			// TODO Auto-generated method stub
 			return false;
 		}
 	}
-	
 
 	@Override
 	protected void onResume() {
-		gridview = (GridView) findViewById(R.id.GridView01);
-		helper = new FeedsHelper();
-		if(currentCatTitle != null) {
+		if (helper == null || !helper.isOpen()) {
+			helper = new FeedsHelper();
+		}
+		if (currentCatTitle != null) {
 			createFeedItem(currentCatTitle);
 		}
 		Log.i(TAG, "onResume()");
@@ -182,8 +240,13 @@ public class Main extends Activity {
 
 	@Override
 	protected void onPause() {
-		if(helper != null) {
+		// 关闭数据库
+		if (helper != null) {
 			helper.close();
+		}
+		// 关闭cursor
+		if (cursor != null) {
+			cursor.close();
 		}
 		Log.i(TAG, "onPause()");
 		super.onPause();

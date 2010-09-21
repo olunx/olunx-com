@@ -22,6 +22,8 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.log.Log;
+import org.apache.commons.log.LogFactory;
 
 import be.lechtitseb.google.reader.api.core.Constants;
 import be.lechtitseb.google.reader.api.model.exception.GoogleReaderException;
@@ -31,8 +33,7 @@ import be.lechtitseb.google.reader.api.model.exception.GoogleReaderException;
  * HttpClient
  */
 public class SimpleHttpManager implements HttpManager {
-	// private static final Logger LOG =
-	// Logger.getLogger(SimpleHttpManager.class.getName());
+	private static final Log LOG = LogFactory.getLog(SimpleHttpManager.class.getName());
 	private List<Cookie> cookies = null;
 	private HttpMethodRetryHandler retryHandler = null;
 	private HttpClient httpClient = null;
@@ -45,7 +46,7 @@ public class SimpleHttpManager implements HttpManager {
 		httpClient = getHttpClient();
 		retryHandler = getRetryHandler();
 	}
-
+	
 	public void setAuth(String auth) {
 		this.auth = auth;
 	}
@@ -54,7 +55,7 @@ public class SimpleHttpManager implements HttpManager {
 		if (cookie != null) {
 			cookies.add(cookie);
 		} else {
-			// LOG.debug("Some psycho tried to add a null cookie to the list");
+			LOG.debug("Some psycho tried to add a null cookie to the list");
 		}
 	}
 
@@ -62,9 +63,11 @@ public class SimpleHttpManager implements HttpManager {
 		cookies.clear();
 	}
 
-	private byte[] download(HttpMethod method, List<Parameter> parameters, boolean useCookies) throws GoogleReaderException {
+	private byte[] download(HttpMethod method, List<Parameter> parameters,
+			boolean useCookies) throws GoogleReaderException {
 		method.setQueryString(toNameValuePairArray(parameters));
-		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, retryHandler);
+		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
+				retryHandler);
 		if (useCookies) {
 			HttpState initialState = new HttpState();
 			for (Cookie c : cookies) {
@@ -75,12 +78,16 @@ public class SimpleHttpManager implements HttpManager {
 		try {
 			int statusCode = httpClient.executeMethod(method);
 			if (statusCode != HttpStatus.SC_OK) {
-				String error = String.format("Expected 200 OK. Received %d %s", statusCode, HttpStatus.getStatusText(statusCode));
+				String error =
+						String.format("Expected 200 OK. Received %d %s",
+								statusCode, HttpStatus
+										.getStatusText(statusCode));
 				throw new GoogleReaderException(error);
 			}
 			InputStream stream = method.getResponseBodyAsStream();
 			if (stream == null) {
-				throw new GoogleReaderException("Expected response content, got null");
+				throw new GoogleReaderException(
+						"Expected response content, got null");
 			}
 			byte[] returnValue = getBytes(stream);
 			return returnValue;
@@ -95,23 +102,24 @@ public class SimpleHttpManager implements HttpManager {
 		return download(new GetMethod(url), null, false);
 	}
 
-	public byte[] download(String url, List<Parameter> parameters) throws GoogleReaderException {
+	public byte[] download(String url, List<Parameter> parameters)
+			throws GoogleReaderException {
 		return download(new GetMethod(url), parameters, false);
 	}
 
-	public byte[] download(String url, List<Parameter> parameters, boolean useCookies) throws GoogleReaderException {
+	public byte[] download(String url, List<Parameter> parameters,
+			boolean useCookies) throws GoogleReaderException {
 		return download(new GetMethod(url), parameters, useCookies);
 	}
 
-	private String execute(HttpMethod method, List<Parameter> parameters, boolean useCookies) throws GoogleReaderException {
+	private String execute(HttpMethod method, List<Parameter> parameters,
+			boolean useCookies) throws GoogleReaderException {
 		method.setQueryString(toNameValuePairArray(parameters));
 		method.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
-		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, retryHandler);
+		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
+				retryHandler);
 		if (auth != null) {
-			method.addRequestHeader(Constants.AUTHORIZATION_HTTP_HEADER, Constants.GOOGLE_AUTH_KEY + auth);// TODO
-			// remove
-			// to
-			// Constants
+			method.addRequestHeader(Constants.AUTHORIZATION_HTTP_HEADER,Constants.GOOGLE_AUTH_KEY+auth);
 		}
 		if (useCookies) {
 			HttpState initialState = new HttpState();
@@ -123,12 +131,16 @@ public class SimpleHttpManager implements HttpManager {
 		try {
 			int statusCode = httpClient.executeMethod(method);
 			if (statusCode != HttpStatus.SC_OK) {
-				String error = String.format("Expected 200 OK. Received %d %s", statusCode, HttpStatus.getStatusText(statusCode));
+				String error =
+						String.format("Expected 200 OK. Received %d %s",
+								statusCode, HttpStatus
+										.getStatusText(statusCode));
 				throw new GoogleReaderException(error);
 			}
 			InputStream stream = method.getResponseBodyAsStream();
 			if (stream == null) {
-				throw new GoogleReaderException("Expected response content, got null");
+				throw new GoogleReaderException(
+						"Expected response content, got null");
 			}
 			return getContent(stream);
 		} catch (Throwable error) {
@@ -142,11 +154,13 @@ public class SimpleHttpManager implements HttpManager {
 		return get(url, null);
 	}
 
-	public String get(String url, List<Parameter> parameters) throws GoogleReaderException {
+	public String get(String url, List<Parameter> parameters)
+			throws GoogleReaderException {
 		return get(url, parameters, false);
 	}
 
-	public String get(String url, List<Parameter> parameters, boolean useCookies) throws GoogleReaderException {
+	public String get(String url, List<Parameter> parameters, boolean useCookies)
+			throws GoogleReaderException {
 		return execute(new GetMethod(url), parameters, useCookies);
 	}
 
@@ -162,7 +176,8 @@ public class SimpleHttpManager implements HttpManager {
 	}
 
 	private String getContent(InputStream in) throws IOException {
-		InputStreamReader isreader = new InputStreamReader(in, Constants.HTTP_CHARSET_VALUE);
+		InputStreamReader isreader =
+				new InputStreamReader(in, Constants.HTTP_CHARSET_VALUE);
 		StringBuilder sb = new StringBuilder();
 		int ch;
 		while ((ch = isreader.read()) > -1) {
@@ -174,8 +189,10 @@ public class SimpleHttpManager implements HttpManager {
 
 	private HttpClient getHttpClient() {
 		HttpClient client = new HttpClient(manager);
-		client.getParams().setParameter(Constants.HTTP_CHARSET_PARAMETER, Constants.HTTP_CHARSET_VALUE);
-		client.getParams().setParameter(Constants.USER_AGENT_PARAMETER, Constants.USER_AGENT_VALUE);
+		client.getParams().setParameter(Constants.HTTP_CHARSET_PARAMETER,
+				Constants.HTTP_CHARSET_VALUE);
+		client.getParams().setParameter(Constants.USER_AGENT_PARAMETER,
+				Constants.USER_AGENT_VALUE);
 		HttpState initialState = new HttpState();
 		for (Cookie c : cookies) {
 			initialState.addCookie(c);
@@ -186,7 +203,8 @@ public class SimpleHttpManager implements HttpManager {
 
 	private HttpMethodRetryHandler getRetryHandler() {
 		return new HttpMethodRetryHandler() {
-			public boolean retryMethod(final HttpMethod method, final IOException exception, int executionCount) {
+			public boolean retryMethod(final HttpMethod method,
+					final IOException exception, int executionCount) {
 				if (executionCount >= 5) {
 					// Do not retry if over max retry count
 					return false;
@@ -213,11 +231,13 @@ public class SimpleHttpManager implements HttpManager {
 		return post(url, null);
 	}
 
-	public String post(String url, List<Parameter> parameters) throws GoogleReaderException {
+	public String post(String url, List<Parameter> parameters)
+			throws GoogleReaderException {
 		return post(url, parameters, false);
 	}
 
-	public String post(String url, List<Parameter> parameters, boolean useCookies) throws GoogleReaderException {
+	public String post(String url, List<Parameter> parameters,
+			boolean useCookies) throws GoogleReaderException {
 		return execute(new PostMethod(url), parameters, useCookies);
 	}
 
@@ -228,7 +248,8 @@ public class SimpleHttpManager implements HttpManager {
 		List<NameValuePair> out = new ArrayList<NameValuePair>();
 		for (Parameter parameter : in) {
 			if (parameter.hasName() && parameter.hasValue()) {
-				out.add(new NameValuePair(parameter.getName(), parameter.getValue().toString()));
+				out.add(new NameValuePair(parameter.getName(), parameter
+						.getValue().toString()));
 			}
 		}
 		return (NameValuePair[]) out.toArray(new NameValuePair[out.size()]);
