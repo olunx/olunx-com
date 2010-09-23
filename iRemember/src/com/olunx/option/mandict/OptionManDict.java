@@ -1,8 +1,3 @@
-/*
- *author:olunx
- *date:2009-10-10
- */
-
 package com.olunx.option.mandict;
 
 import com.olunx.R;

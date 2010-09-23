@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,7 +32,7 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.RadioGroup;
+import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -40,23 +42,39 @@ import android.widget.AdapterView.OnItemLongClickListener;
 public class Main extends Activity {
 
 	private final String TAG = "com.olunx.Main";
-	private Cursor cursor;
-	private GridView gridview;
-	private ItemClickListener itemClickListener;
+	private Cursor cursor;// Feed Item每次检索结果
+	private GridView gridview;// Feed Item布局区域
+	private ItemClickListener itemClickListener;// Feed Item点击事件
+	private ItemLongClickListener itemLongClickListener;// Feed Item长按事件
 	private FeedsHelper helper;
-	private String currentCatTitle;
-	private ArrayList<String> allTitles;
-	private ToggleButton lastBtn;
+	private String currentCatTitle;// 当前选中的分类标题
+	private ArrayList<String> allTitles;// 所有分类标题
+	private ToggleButton lastBtn;// 最后一次选中的按钮
+
+	private final int MSG_REFRESH = 0;// 刷新UI
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gridview);
-		gridview = (GridView) findViewById(R.id.GridView01);
+
+		initConfig();// 软件配置初始化
 
 		// 初始化一次的对象
+		gridview = (GridView) findViewById(R.id.GridView01);
 		itemClickListener = new ItemClickListener();
+		itemLongClickListener = new ItemLongClickListener();
+		gridview.setOnItemClickListener(itemClickListener);
+		gridview.setOnItemLongClickListener(itemLongClickListener);
+
+		init();// 初始化数据
+	}
+
+	/**
+	 * 初始化，写成方法方便在软件中重新调用。
+	 */
+	private void init() {
 
 		// 获取所有栏目
 		CategoryHelper helper = new CategoryHelper();
@@ -65,14 +83,33 @@ public class Main extends Activity {
 
 		// 设置当前目录
 		if (allTitles != null && allTitles.size() > 0) {
-			currentCatTitle = allTitles.get(0);
+			if (currentCatTitle == null)//如果没有选中分类名，则表示更新所有分类。
+				currentCatTitle = allTitles.get(0);
 		} else {
 			return;
 		}
 
-		initConfig();
 		createBtn();// 初始化底部栏目
 	}
+
+	private Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_REFRESH: {
+				init();
+				// 关闭当前cursor
+				if (cursor != null) {
+					cursor.close();
+				}
+				onResume();
+				Toast.makeText(Main.this, "更新数据完成！o(∩_∩)o 哈哈", Toast.LENGTH_SHORT).show();
+				break;
+			}
+			}
+		}
+	};
 
 	/**
 	 * 创建Feed Item
@@ -86,7 +123,6 @@ public class Main extends Activity {
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.gridview_item, cursor, new String[] { FeedsHelper.c_icon,
 				FeedsHelper.c_title, FeedsHelper.c_articleCount }, new int[] { R.id.ImageView01, R.id.TextView01, R.id.TextView02 });
 		gridview.setAdapter(adapter);
-		gridview.setOnItemClickListener(itemClickListener);
 	}
 
 	/**
@@ -94,7 +130,8 @@ public class Main extends Activity {
 	 */
 	private void createBtn() {
 
-		RadioGroup group = (RadioGroup) findViewById(R.id.RadioGroup01);
+		LinearLayout group = (LinearLayout) findViewById(R.id.LinearLayout04);
+		group.removeAllViews();
 
 		int length = allTitles.size();
 		String title = null;
@@ -110,11 +147,10 @@ public class Main extends Activity {
 			btn.setOnClickListener(listener);
 			btn.setOnLongClickListener(longListener);
 			group.addView(btn);
-			if (i == 0) {
+			if (i == 0) {// 默认选中第一项
 				btn.setChecked(true);
 				lastBtn = btn;
 			}
-			;// 如果在假如group前选择，则和后面的分成两组。
 		}
 
 	}
@@ -130,27 +166,25 @@ public class Main extends Activity {
 
 			// 取消上次选择的按钮
 			if (lastBtn != null) {
-				if(lastBtn == btn) {
+				// 如果重复选择同一按钮，则返回。
+				if (lastBtn == btn) {
 					btn.setChecked(true);
 					return;
-				};
+				}
 				lastBtn.setChecked(false);
-				lastBtn.setClickable(true);
 			}
-			//关闭当前cursor
+			// 关闭当前cursor
 			if (cursor != null) {
 				cursor.close();
-				cursor = null;
 			}
 			lastBtn = btn;
-			btn.setClickable(false);
 			currentCatTitle = btn.getText().toString();
-			createFeedItem(currentCatTitle);
+			createFeedItem(currentCatTitle);// 根据分类名创建Feed Item
 		}
 	}
 
 	/**
-	 *按钮长按事件
+	 * 按钮长按事件
 	 */
 	class BtnLongClickListener implements OnLongClickListener {
 
@@ -159,32 +193,38 @@ public class Main extends Activity {
 
 			ToggleButton btn = (ToggleButton) v;
 			final String selectTitle = btn.getText().toString();
-			
+			String titlePlus = "[" + selectTitle + "]";
+
 			final AlertDialog.Builder ad = new AlertDialog.Builder(Main.this);
 			ad.setInverseBackgroundForced(true);// 翻转底色
 			ad.setIcon(android.R.drawable.ic_dialog_info);
 			ad.setTitle("请选择操作");
 			ad.setCancelable(false);
-			ad.setItems(new String[] { "更新该分类", "修改分类名称", "删除该分类" }, new android.content.DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					switch (which) {
-					case 0:
-						break;
-					case 1:
-						break;
-					case 2:
-						break;
-					}
-				}
-			});
-			ad.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int arg1) {
-					dialog.dismiss();
-				}
-			});
+			ad.setNegativeButton("取消", null);
+			ad.setItems(new String[] { "更新该分类所有Feed", "修改分类名称" + titlePlus, "删除当前分类" + titlePlus },
+					new android.content.DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0: {
+								Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
+								new Thread() {
+									public void run() {
+										new Update().updateArticlesByCat(selectTitle);
+										mHandler.sendEmptyMessage(MSG_REFRESH);
+									}
+								}.start();
+								break;
+							}
+							case 1: {
+								break;
+							}
+							case 2: {
+								break;
+							}
+							}
+						}
+					});
 			ad.show();
 
 			return false;
@@ -221,7 +261,41 @@ public class Main extends Activity {
 
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-			// TODO Auto-generated method stub
+
+			SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
+			// final String selectTitle =
+			// cursor.getString(cursor.getColumnIndex(FeedsHelper.c_title));
+			final String selectXmlUrl = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_xmlUrl));
+
+			final AlertDialog.Builder ad = new AlertDialog.Builder(Main.this);
+			ad.setInverseBackgroundForced(true);// 翻转底色
+			ad.setIcon(android.R.drawable.ic_dialog_info);
+			ad.setTitle("请选择操作");
+			ad.setCancelable(false);
+			ad.setNegativeButton("取消", null);
+			ad.setItems(new String[] { "更新当前Feed", "修改Feed名称", "删除这条Feed" }, new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case 0: {
+						Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
+						new Thread() {
+							public void run() {
+								new Update().updateArticlesByfeed(selectXmlUrl);
+								mHandler.sendEmptyMessage(MSG_REFRESH);
+							}
+						}.start();
+						break;
+					}
+					case 1:
+						break;
+					case 2:
+						break;
+					}
+				}
+			});
+			ad.show();
+
 			return false;
 		}
 	}
@@ -256,7 +330,7 @@ public class Main extends Activity {
 	 * 初始化软件
 	 */
 	private void initConfig() {
-		Config config = Config.init(this);
+		final Config config = Config.init();
 
 		if (!config.isAccountInputted()) {
 			final View view = LayoutInflater.from(this).inflate(R.layout.account_input, null);
@@ -280,21 +354,26 @@ public class Main extends Activity {
 			});
 
 			// 输入对话框
-			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle("请输入Google账户信息：").setView(view)
-					.setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							// 保存账户信息
-							String user = username.getText().toString();
-							if (user != null) {
-								user = user.trim();
-							}
-							String pwd = password.getText().toString();
-							if (pwd != null) {
-								pwd = pwd.trim();
-							}
-							Config.init(Main.this).setAccount(user, pwd);
-						}
-					}).show();
+			AlertDialog.Builder ad = new AlertDialog.Builder(this);
+			ad.setIcon(android.R.drawable.ic_dialog_info);
+			ad.setTitle("请输入Google账户信息：");
+			ad.setView(view);
+			ad.setNegativeButton("取消", null);
+			ad.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					// 保存账户信息
+					String user = username.getText().toString();
+					if (user != null) {
+						user = user.trim();
+					}
+					String pwd = password.getText().toString();
+					if (pwd != null) {
+						pwd = pwd.trim();
+					}
+					config.setAccount(user, pwd);
+				}
+			});
+			ad.show();
 
 		}
 	}
@@ -326,14 +405,15 @@ public class Main extends Activity {
 			break;
 		}
 		case 5: {
-			Toast.makeText(this, "开始连接...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "开始更新所有Feed...", Toast.LENGTH_SHORT).show();
+			currentCatTitle = null;//更新所有Feed的文章
 			new Thread() {
 				public void run() {
 					new Update().updateFeeds();
 					System.out.println("finished!");
+					mHandler.sendEmptyMessage(MSG_REFRESH);
 				}
 			}.start();
-			Toast.makeText(this, "链接完成。", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		case 6: {
@@ -356,15 +436,18 @@ public class Main extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("警告").setMessage("是否真的要关闭程序？")
-					.setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							finish();
-						}
-					}).show();
-
+			AlertDialog.Builder ad = new AlertDialog.Builder(this);
+			ad.setIcon(android.R.drawable.ic_dialog_alert);
+			ad.setTitle("警告");
+			ad.setMessage("是否真的要关闭程序？");
+			ad.setNegativeButton("取消", null);
+			ad.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					finish();
+				}
+			});
+			ad.show();
 			return true;
-
 		} else {
 			return super.onKeyDown(keyCode, event);
 		}

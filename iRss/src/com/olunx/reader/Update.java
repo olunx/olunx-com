@@ -58,6 +58,15 @@ public class Update {
 	}
 
 	/**
+	 *更新所有Feed 
+	 */
+	public void updateAllArticles() {
+		FeedsHelper helper = new FeedsHelper();
+		updateArticles(helper.getAllFeedsXmlUrl());
+		helper.close();
+	}
+	
+	/**
 	 * 更新指定目录下的所有feed
 	 * 
 	 * @param catTitle
@@ -137,7 +146,4 @@ public class Update {
 
 	}
 	
-	public void buildArticleContent() {
-		
-	}
 }

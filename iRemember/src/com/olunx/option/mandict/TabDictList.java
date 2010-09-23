@@ -1,8 +1,3 @@
-/*
- *author:olunx
- *date:2009-10-11
- */
-
 package com.olunx.option.mandict;
 
 import java.util.ArrayList;
@@ -85,10 +80,10 @@ public class TabDictList extends Activity {
 		// 单击事件。
 		listview.setOnItemClickListener(new OnItemClickListener() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int position, long arg3) {
 
+				@SuppressWarnings("rawtypes")
 				Map map = (Map) av.getItemAtPosition(position);
 				dialogProcess((String)map.get(getString(R.string.title)));
 			}
@@ -97,10 +92,10 @@ public class TabDictList extends Activity {
 		// 长按事件，将选择的项目返回。
 		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public boolean onItemLongClick(AdapterView<?> av, View v, int position, long arg3) {
 
+				@SuppressWarnings("rawtypes")
 				Map map = (Map) av.getItemAtPosition(position);
 				dialogProcess((String)map.get(getString(R.string.title)));
 				return false;

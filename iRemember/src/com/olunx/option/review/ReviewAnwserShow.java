@@ -1,8 +1,3 @@
-/*
- *author:olunx
- *date:2009-10-14
- */
-
 package com.olunx.option.review;
 
 import java.util.ArrayList;
@@ -39,6 +34,7 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 
 	private Context context = this;
 
+	// 界面元素
 	private TextView nameTv;
 	private TextView phoneticsTv;
 	private TextView translationTv;
@@ -46,6 +42,7 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 	private Button leftBtn;
 	private Button rightBtn;
 	private ImageButton speakBtn;
+	
 	private ArrayList<HashMap<String, Object>> thisWordList;
 	private int currentLessonNo = 0;
 	private int currentWordNo = 0;
@@ -365,11 +362,17 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 			leftBtn.setEnabled(false);
 			rightBtn.setEnabled(false);
 
-			if (isCanUpdate) {
-				// 更新记忆曲线
-				Config.init().setRememberLine(currentLessonNo, "");
-				isCanUpdate = false;
-			}
+			new Thread() {
+				public void run() {
+					if (isCanUpdate) {
+						// 更新记忆曲线
+						Config.init().setRememberLine(currentLessonNo, "");
+						isCanUpdate = false;
+
+						Config.init().setReviewWordIndex(currentLessonNo, 0);// 清除本次记忆的单词位置
+					}
+				}
+			}.run();
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
 			
@@ -434,7 +437,7 @@ public class ReviewAnwserShow extends Activity implements OnClickListener {
 
 	@Override
 	protected void onStop() {
-		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
+		Config.init().setReviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
 		super.onStop();
 	}
 	

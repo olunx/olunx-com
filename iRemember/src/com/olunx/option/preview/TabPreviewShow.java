@@ -1,8 +1,3 @@
-/*
- *author:olunx
- *date:2009-10-14
- */
-
 package com.olunx.option.preview;
 
 import java.util.ArrayList;

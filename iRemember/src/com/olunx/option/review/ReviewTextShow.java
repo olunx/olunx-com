@@ -329,11 +329,17 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 		} else {
 			sureBtn.setEnabled(false);
 			
-			if (this.isCanUpdate) {
-				// 更新记忆曲线
-				Config.init().setRememberLine( this.currentLessonNo, "");
-				this.isCanUpdate = false;
-			}
+			new Thread() {
+				public void run() {
+					if (isCanUpdate) {
+						// 更新记忆曲线
+						Config.init().setRememberLine(currentLessonNo, "");
+						isCanUpdate = false;
+
+						Config.init().setReviewWordIndex(currentLessonNo, 0);// 清除本次记忆的单词位置
+					}
+				}
+			}.run();
 
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
 
@@ -396,7 +402,7 @@ public class ReviewTextShow extends Activity implements OnClickListener {
 	
 	@Override
 	protected void onStop() {
-		Config.init().setPreviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
+		Config.init().setReviewWordIndex(currentLessonNo, currentWordNo);//保存本次记忆的单词位置
 		super.onStop();
 	}
 

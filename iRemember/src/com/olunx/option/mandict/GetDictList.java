@@ -1,8 +1,3 @@
-/*
- *author:olunx
- *date:2009-10-13
- */
-
 package com.olunx.option.mandict;
 
 import java.io.File;

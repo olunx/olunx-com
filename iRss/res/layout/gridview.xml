@@ -16,10 +16,7 @@
 
 <LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="horizontal">
 
-<RadioGroup android:id="@+id/RadioGroup01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal">
 
-
-</RadioGroup>
 </LinearLayout>
 
 

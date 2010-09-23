@@ -9,64 +9,85 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import au.com.bytecode.opencsv.CSVReader;
 
 public class CsvHelper {
-	
+
 	public ArrayList<HashMap<String, Object>> getWords(String dictPath, String fileCharset, int index, int count) {
 		ArrayList<HashMap<String, Object>> words = new ArrayList<HashMap<String, Object>>();
-		
+
 		BufferedReader br;
 		FileInputStream fis = null;
 		InputStreamReader isr = null;
-		
+
 		try {
-			fis=new FileInputStream(dictPath);
+			fis = new FileInputStream(dictPath);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		try {
 			isr = new InputStreamReader(fis, fileCharset);
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		br = new BufferedReader(isr);
 
-//		Log.i("setLineNumber", String.valueOf(index));
-		int no = 1;
-		int lineNo = 1;
-		int firSep, secSep;
-		String line;
+		CSVReader csv = new CSVReader(br, ',', '"', index);
+		System.out.println("CSVReader index:" + index);
+		// Log.i("setLineNumber", String.valueOf(index));
+		// int no = 1;
+		// int lineNo = 1;
+		// int firSep, secSep;
+		// String line;
 		HashMap<String, Object> word = null;
-		
+		String[] array;
 		try {
-			while((line = br.readLine()) != null) {
-//				Log.i("getLineNumber", String.valueOf(lineNo));
-				if(lineNo < index) {
-					lineNo++;
+
+			for (int i = 0; i < count; i++) {
+				array = csv.readNext();
+				if(array == null) break;
+				if (array.length < 3) {
 					continue;
+				} else {
+					word = new HashMap<String, Object>();
+					word.put("单词", array[0]);
+					word.put("音标", array[1].replaceAll("\\[", "").replaceAll("\\]", ""));
+					word.put("解释", array[2].replaceAll("//", "\n"));
+					words.add(word);
 				}
-//				firSep = line.indexOf(",[");
-//				secSep = line.indexOf("],");
-				
-				
-				firSep = line.indexOf(",");
-				secSep = line.indexOf(",", firSep + 1);
-				
-				word = new HashMap<String, Object>();
-				word.put("单词", line.substring(0, firSep));
-				word.put("音标", line.substring(firSep + 1, secSep).replaceAll("\\[", "").replaceAll("\\]", ""));
-				word.put("解释", line.substring(secSep + 1).replaceAll("//", "\n"));
-				words.add(word);
-//				Log.i("count", String.valueOf(no));
-				if(++no > count) {
-					break;
-				}
+					
 			}
+
+			// while((line = br.readLine()) != null) {
+			// // Log.i("getLineNumber", String.valueOf(lineNo));
+			// if(lineNo < index) {
+			// lineNo++;
+			// continue;
+			// }
+			// firSep = line.indexOf(",[");
+			// secSep = line.indexOf("],");
+
+			//
+			// firSep = line.indexOf(",");
+			// secSep = line.indexOf(",", firSep + 1);
+
+			// word = new HashMap<String, Object>();
+			// word.put("单词", line.substring(0, firSep));
+			// word.put("音标", line.substring(firSep + 1,
+			// secSep).replaceAll("\\[", "").replaceAll("\\]", ""));
+			// word.put("解释", line.substring(secSep + 1).replaceAll("//",
+			// "\n"));
+			// words.add(word);
+			// Log.i("count", String.valueOf(no));
+			// if(++no > count) {
+			// break;
+			// }
+			// }
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				br.close();
 				isr.close();
@@ -75,7 +96,7 @@ public class CsvHelper {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return words;
 	}
 }
