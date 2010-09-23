@@ -1,0 +1,445 @@
+<object>
+	<list name="subscriptions">
+		<object>
+			<string name="id">feed/http://www.androidres.com/index.php/feed/</string>
+			<string name="title">Android Resource | 资源 资讯 教程</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">18CCDFA1</string>
+			<number name="firstitemmsec">1256067795678</number>
+			<string name="htmlUrl">http://www.androidres.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://android.hk.cn/?feed=rss2</string>
+			<string name="title">Android资讯网</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">0D948856</string>
+			<number name="firstitemmsec">1263974665295</number>
+			<string name="htmlUrl">http://android.hk.cn</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.chromi.org/feed</string>
+			<string name="title">Chrome迷</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">243BA38B</string>
+			<number name="firstitemmsec">1276442248406</number>
+			<string name="htmlUrl">http://www.chromi.org</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.cnblogs.com/clayman/rss</string>
+			<string name="title">Clayman's Graphics Corner</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">68FFC63A</string>
+			<number name="firstitemmsec">1270583271457</number>
+			<string name="htmlUrl">http://www.cnblogs.com/clayman/</string>
+		</object>
+		<object>
+			<string name="id">feed/http://feeds.geekpark.net/</string>
+			<string name="title">GeekPark 捕风捉影</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">9C12B391</string>
+			<number name="firstitemmsec">1278583178476</number>
+			<string name="htmlUrl">http://www.geekpark.net/</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.helloandroid.com/rss.xml</string>
+			<string name="title">Hello Android</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">852653C2</string>
+			<number name="firstitemmsec">1282571795753</number>
+			<string name="htmlUrl">http://www.helloandroid.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.ifanr.com/feed</string>
+			<string name="title">iFanr 爱范儿</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">E33CDB1C</string>
+			<number name="firstitemmsec">1258992721181</number>
+			<string name="htmlUrl">http://www.ifanr.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.imaemo.com/?feed=rss2</string>
+			<string name="title">iMaemo™</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">7928B52C</string>
+			<number name="firstitemmsec">1276418738423</number>
+			<string name="htmlUrl">http://www.imaemo.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.javaeye.com/news/rss</string>
+			<string name="title">JavaEye新闻频道</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">69675E01</string>
+			<number name="firstitemmsec">1278066430810</number>
+			<string name="htmlUrl">http://www.javaeye.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.javaeye.com/index/rss_index_topics</string>
+			<string name="title">JavaEye论坛最新讨论</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">2AFAAE3F</string>
+			<number name="firstitemmsec">1278819822204</number>
+			<string name="htmlUrl">http://www.javaeye.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.meegox.com/feed</string>
+			<string name="title">MeeGo中文站-米锋网</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">ACCC5B1C</string>
+			<number name="firstitemmsec">1278044207002</number>
+			<string name="htmlUrl">http://www.meegox.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.moandroid.com/?feed=rss2</string>
+			<string name="title">mo-Android</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">B4D38D6E</string>
+			<number name="firstitemmsec">1269408870912</number>
+			<string name="htmlUrl">http://www.moandroid.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.sophantasy.com/wordpress/feed/</string>
+			<string name="title">Phantasy Says So</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">14C3A016</string>
+			<number name="firstitemmsec">1272733720792</number>
+			<string name="htmlUrl">http://www.sophantasy.com/wordpress</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.williamhua.com/feed/</string>
+			<string name="title">William Hua的Blog</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">5117E07A</string>
+			<number name="firstitemmsec">1248803734891</number>
+			<string name="htmlUrl">http://www.williamhua.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://api.live.net/Users(-527258525974762729)/Main?$format=rss20</string>
+			<string name="title">一半是火焰一半是海水</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">5AD20ABB</string>
+			<number name="firstitemmsec">1275997120807</number>
+			<string name="htmlUrl">http://xy0811.spaces.live.com/</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.cnblogs.com/halzhang/rss</string>
+			<string name="title">博客园-努力吧，专注Android</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">C7F5D1DA</string>
+			<number name="firstitemmsec">1280974510925</number>
+			<string name="htmlUrl">http://www.cnblogs.com/halzhang/</string>
+		</object>
+		<object>
+			<string name="id">feed/http://feeds.kenengba.com/kenengbarss</string>
+			<string name="title">可能吧</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">FE54FD76</string>
+			<number name="firstitemmsec">1271611881826</number>
+			<string name="htmlUrl">http://www.kenengba.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://feed.appinn.com/</string>
+			<string name="title">小众软件</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">6BD65662</string>
+			<number name="firstitemmsec">1277398930923</number>
+			<string name="htmlUrl">http://www.appinn.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://lifesinger.org/blog/?feed=rss2</string>
+			<string name="title">岁月如歌</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">EE526D4E</string>
+			<number name="firstitemmsec">1268501734964</number>
+			<string name="htmlUrl">http://lifesinger.org/blog</string>
+		</object>
+		<object>
+			<string name="id">feed/http://blog.sina.com.cn/rss/lichi.xml</string>
+			<string name="title">想象力也是一种宇宙力量</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">3B666933</string>
+			<number name="firstitemmsec">1277602159609</number>
+			<string name="htmlUrl">http://blog.sina.com.cn/lichi</string>
+		</object>
+		<object>
+			<string name="id">feed/http://blog.sina.com.cn/rss/1198392970.xml</string>
+			<string name="title">易中天1001的BLOG</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">CE870081</string>
+			<number name="firstitemmsec">1274362983749</number>
+			<string name="htmlUrl">http://blog.sina.com.cn/yizhongtian</string>
+		</object>
+		<object>
+			<string name="id">feed/http://feed.williamlong.info/</string>
+			<string name="title">月光博客</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">7AEBD4F5</string>
+			<number name="firstitemmsec">1274244053096</number>
+			<string name="htmlUrl">http://www.williamlong.info/</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.androidin.com/feed/</string>
+			<string name="title">机锋网</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">AFF8DDB1</string>
+			<number name="firstitemmsec">1258970710254</number>
+			<string name="htmlUrl">http://geek.gfan.com</string>
+		</object>
+		<object>
+			<string name="id">feed/http://blog.sina.com.cn/rss/1197161814.xml</string>
+			<string name="title">李开复的博客</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">24C2131F</string>
+			<number name="firstitemmsec">1261378521343</number>
+			<string name="htmlUrl">http://blog.sina.com.cn/kaifulee</string>
+		</object>
+		<object>
+			<string name="id">feed/http://blog.sina.com.cn/rss/1219548027.xml</string>
+			<string name="title">柴静·观察</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">5ECB7E45</string>
+			<number name="firstitemmsec">1272781418173</number>
+			<string name="htmlUrl">http://blog.sina.com.cn/chjguancha</string>
+		</object>
+		<object>
+			<string name="id">feed/http://hi.baidu.com/nosidedeng/rss</string>
+			<string name="title">海底鲟</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">C6DC6FDF</string>
+			<number name="firstitemmsec">1277288570630</number>
+			<string name="htmlUrl">http://hi.baidu.com/nosidedeng</string>
+		</object>
+		<object>
+			<string name="id">feed/http://feed.iove.net/</string>
+			<string name="title">涂雅</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+				<object>
+					<string name="id">user/05631701788678678863/label/资讯</string>
+					<string name="label">资讯</string>
+				</object>
+			</list>
+			<string name="sortid">A749DF2C</string>
+			<number name="firstitemmsec">1277082600384</number>
+			<string name="htmlUrl">http://iove.net</string>
+		</object>
+		<object>
+			<string name="id">feed/http://blog.sina.com.cn/rss/1249424622.xml</string>
+			<string name="title">穿过记忆的河流</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">62DE70DD</string>
+			<number name="firstitemmsec">1276746410469</number>
+			<string name="htmlUrl">http://blog.sina.com.cn/danbin168</string>
+		</object>
+		<object>
+			<string name="id">feed/http://feed.feedsky.com/qiushi</string>
+			<string name="title">糗事百科</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">AD4F6C97</string>
+			<number name="firstitemmsec">1277227114364</number>
+			<string name="htmlUrl">http://www.qiushibaike.com/</string>
+		</object>
+		<object>
+			<string name="id">feed/http://www.kugou.me/feed.php</string>
+			<string name="title">蛋窝.</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">A62F8D22</string>
+			<number name="firstitemmsec">1265129738730</number>
+			<string name="htmlUrl">http://www.kugou.me/index.php</string>
+		</object>
+		<object>
+			<string name="id">feed/http://feed-android.google.org.cn/</string>
+			<string name="title">谷安</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/Android</string>
+					<string name="label">Android</string>
+				</object>
+			</list>
+			<string name="sortid">3D36BABE</string>
+			<number name="firstitemmsec">1273614502278</number>
+			<string name="htmlUrl">http://android.google.org.cn</string>
+		</object>
+		<object>
+			<string name="id">feed/http://blog.sina.com.cn/rss/1195031270.xml</string>
+			<string name="title">郑渊洁—皮皮鲁之父</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">7FA721D6</string>
+			<number name="firstitemmsec">1274456114086</number>
+			<string name="htmlUrl">http://blog.sina.com.cn/zhyj</string>
+		</object>
+		<object>
+			<string name="id">feed/http://blog.sina.com.cn/rss/twocold.xml</string>
+			<string name="title">韩寒</string>
+			<list name="categories">
+				<object>
+					<string name="id">user/05631701788678678863/label/博客</string>
+					<string name="label">博客</string>
+				</object>
+			</list>
+			<string name="sortid">8AAB4B9E</string>
+			<number name="firstitemmsec">1270587319744</number>
+			<string name="htmlUrl">http://blog.sina.com.cn/twocold</string>
+		</object>
+	</list>
+</object>
