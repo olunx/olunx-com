@@ -3,6 +3,7 @@ package com.olunx.irss;
 import java.util.ArrayList;
 
 import com.olunx.irss.activity.ArticleList;
+import com.olunx.irss.activity.MainSettings;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.CategoryHelper;
 import com.olunx.irss.db.FeedsHelper;
@@ -402,6 +403,9 @@ public class Main extends Activity {
 			break;
 		}
 		case 4: {
+			Intent i = new Intent();
+			i.setClass(this, MainSettings.class);
+			this.startActivity(i);
 			break;
 		}
 		case 5: {
@@ -457,9 +461,6 @@ public class Main extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		// if (helper != null) {
-		// helper.close();
-		// }
 		Process.killProcess(android.os.Process.myPid());
 	}
 
