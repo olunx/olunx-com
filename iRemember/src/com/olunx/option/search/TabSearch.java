@@ -39,13 +39,20 @@ public class TabSearch extends Activity {
 	
 	private Map<String, String> word;
 
-	SeekWord seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
+	SeekWord seek;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setTitle(getString(R.string.option_search_title));
 		this.setContentView(R.layout.search_word);
+		
+		if(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()).equalsIgnoreCase("null")) {
+			Toast.makeText(this, "你没有设置例句词典！(+﹏+) ", Toast.LENGTH_SHORT).show();
+			finish();
+			return;
+		}
+		seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
 
 		queryEt = (EditText) this.findViewById(R.id.EditText01);
 		queryEt.setText("");

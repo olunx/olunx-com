@@ -1,0 +1,175 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p>作者: <a href="http://www.cnblogs.com/halzhang/">HalZhang</a> 发表于
+2010-09-13 17:10 <a
+	href="http://www.cnblogs.com/halzhang/archive/2010/09/13/1825145.html">原文链接</a>
+阅读: 1172 评论: 2</p>
+<p>Android是google的产品，所以自然是少不了搜索。先看看Android一些应用中的搜索对话框。</p>
+<p><a
+	href="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/s1_2.png"><img
+	style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+	title="s1" border="0" alt="s1"
+	src="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/s1_thumb.png"
+	width="164" height="244"></a> 图1 Android中的全局搜索</p>
+<p><a
+	href="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/s2_2.png"><img
+	style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+	title="s2" border="0" alt="s2"
+	src="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/s2_thumb.png"
+	width="164" height="244"></a> 图2 联系人搜索</p>
+<p><a
+	href="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/s3_2.png"><img
+	style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px"
+	title="s3" border="0" alt="s3"
+	src="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/s3_thumb.png"
+	width="164" height="244"></a> 图3 音乐搜索</p>
+<p>以上都是通过按下实体键盘上的搜索按钮弹出的一个搜索对话框,当然搜索关键词提示是少不了的。如何实现呢？慢慢来！呵呵。</p>
+<p>一、配置搜索描述文件</p>
+<p>在res中的xml文件加创建sreachable.xml，内容如下：</p>
+<div>
+<div
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px">
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 1:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">searchable</span> <span style="color: #ff0000">xmlns:android</span><span
+	style="color: #0000ff">=&quot;http://schemas.android.com/apk/res/android&quot;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 2:</span> <span style="color: #ff0000">android:label</span><span
+	style="color: #0000ff">=&quot;@string/search_label&quot;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 3:</span> <span style="color: #ff0000">android:hint</span><span
+	style="color: #0000ff">=&quot;@string/search_hint&quot;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 4:</span> <span style="color: #ff0000">android:searchSettingsDescription</span><span
+	style="color: #0000ff">=&quot;@string/settings_description&quot;</span><span
+	style="color: #0000ff">&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 5:</span> <span style="color: #0000ff">&lt;/</span><span
+	style="color: #800000">searchable</span><span style="color: #0000ff">&gt;</span></pre>
+</div>
+</div>
+<p></p>
+<p>二、创建SearchableMusicActivity.java</p>
+<p>至少需要实现onCreate方法显示出来吧。</p>
+<p>三、配置AndroidManifest.xml</p>
+<div>
+<div
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px">
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 1:</span> <span style="color: #0000ff">&lt;?</span><span
+	style="color: #800000">xml</span> <span style="color: #ff0000">version</span><span
+	style="color: #0000ff">=&quot;1.0&quot;</span> <span
+	style="color: #ff0000">encoding</span><span style="color: #0000ff">=&quot;utf-8&quot;</span>?<span
+	style="color: #0000ff">&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 2:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">manifest</span> <span style="color: #ff0000">xmlns:android</span><span
+	style="color: #0000ff">=&quot;http://schemas.android.com/apk/res/android&quot;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 3:</span> <span style="color: #ff0000">package</span><span
+	style="color: #0000ff">=&quot;com.halzhang.android.search&quot;</span> <span
+	style="color: #ff0000">android:versionCode</span><span
+	style="color: #0000ff">=&quot;1&quot;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 4:</span> <span style="color: #ff0000">android:versionName</span><span
+	style="color: #0000ff">=&quot;1.0&quot;</span><span
+	style="color: #0000ff">&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 5:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">application</span> <span style="color: #ff0000">android:icon</span><span
+	style="color: #0000ff">=&quot;@drawable/icon&quot;</span> <span
+	style="color: #ff0000">android:label</span><span style="color: #0000ff">=&quot;@string/app_name&quot;</span><span
+	style="color: #0000ff">&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 6:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">activity</span> <span style="color: #ff0000">android:name</span><span
+	style="color: #0000ff">=&quot;.SearchableMusicActivity&quot;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 7:</span> <span style="color: #ff0000">android:label</span><span
+	style="color: #0000ff">=&quot;@string/app_name&quot;</span> <span
+	style="color: #ff0000">android:theme</span><span style="color: #0000ff">=&quot;@android:style/Theme.NoTitleBar&quot;</span><span
+	style="color: #0000ff">&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 8:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">intent-filter</span><span style="color: #0000ff">&gt;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 9:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">action</span> <span style="color: #ff0000">android:name</span><span
+	style="color: #0000ff">=&quot;android.intent.action.MAIN&quot;</span> <span
+	style="color: #0000ff">/&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 10:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">category</span> <span style="color: #ff0000">android:name</span><span
+	style="color: #0000ff">=&quot;android.intent.category.LAUNCHER&quot;</span> <span
+	style="color: #0000ff">/&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 11:</span> <span style="color: #0000ff">&lt;/</span><span
+	style="color: #800000">intent-filter</span><span style="color: #0000ff">&gt;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 12:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">intent-filter</span><span style="color: #0000ff">&gt;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 13:</span> <span style="color: #008000">&lt;!-- 配置action --&gt;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 14:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">action</span> <span style="color: #ff0000">android:name</span><span
+	style="color: #0000ff">=&quot;android.intent.action.SEARCH&quot;</span> <span
+	style="color: #0000ff">/&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 15:</span> <span style="color: #0000ff">&lt;/</span><span
+	style="color: #800000">intent-filter</span><span style="color: #0000ff">&gt;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 16:</span> <span style="color: #008000">&lt;!-- 指定搜索的配置文件 --&gt;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 17:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">meta-data</span> <span style="color: #ff0000">android:name</span><span
+	style="color: #0000ff">=&quot;android.app.searchable&quot;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 18:</span> <span style="color: #ff0000">android:resource</span><span
+	style="color: #0000ff">=&quot;@xml/searchable&quot;</span> <span
+	style="color: #0000ff">/&gt;</span></pre> <pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 19:</span> <span style="color: #0000ff">&lt;/</span><span
+	style="color: #800000">activity</span><span style="color: #0000ff">&gt;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 20:</span> <span style="color: #0000ff">&lt;</span><span
+	style="color: #800000">meta-data</span> <span style="color: #ff0000">android:name</span><span
+	style="color: #0000ff">=&quot;android.app.default_searchable&quot;</span></pre>
+<pre
+	style="border-bottom-style: none; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: consolas, &amp; amp; #39; Courier New&amp;amp; #39; , courier , monospace; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span
+	style="color: #606060"> 21:</span> <span style="color: #ff0000">android:value</span><span
+	style="color: #0000ff">=&quot;.SearchableMusicActivity&quot;</span> <span
+	style="color: #0000ff">/&gt;</span></pre></div>
+</div>
+<p>通过以上三步就能实现搜索对话框了。<a
+	href="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/device_2.png"><img
+	style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px"
+	title="device" border="0" alt="device"
+	src="http://images.cnblogs.com/cnblogs_com/halzhang/WindowsLiveWriter/AndroidAndroid_E1EB/device_thumb.png"
+	width="164" height="244"></a></p>
+<p>接下来会讲到搜索关键字提示，先到这里。</p>
+<p>-----------------EOF-------------------</p>
+<img src="http://www.cnblogs.com/halzhang/aggbug/1825145.html?type=1"
+	width="1" height="1" alt="">
+<p>评论: 2 <a
+	href="http://www.cnblogs.com/halzhang/archive/2010/09/13/1825145.html#pagedcomment">查看评论</a>
+<a
+	href="http://www.cnblogs.com/halzhang/archive/2010/09/13/1825145.html#commentform">发表评论</a></p>
+<p><a href="http://job.cnblogs.com/">程序员找工作，就在博客园</a></p>
+</body>
+</html>
