@@ -25,7 +25,7 @@ public class ArticleList extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.article_list);
 		listview = (ListView)this.findViewById(R.id.ListView01);
-
+		this.setTitle(this.getIntent().getStringExtra(FeedsHelper.c_title));
 		// createView();
 	}
 
@@ -43,8 +43,10 @@ public class ArticleList extends Activity {
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
 				SQLiteCursor cursor = (SQLiteCursor) arg0.getItemAtPosition(position);
+				String title = cursor.getString(cursor.getColumnIndex(ArticlesHelper.c_title));
 				String link = cursor.getString(cursor.getColumnIndex(ArticlesHelper.c_link));
 				Intent i = new Intent();
+				i.putExtra(ArticlesHelper.c_title, title);// 文章标题
 				i.putExtra(ArticlesHelper.c_link, link);// 文章链接
 				i.putExtra(FeedsHelper.c_charset, charset);// 内容编码
 				i.setClass(ArticleList.this, ArticleShow.class);

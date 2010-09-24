@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-<PreferenceCategory android:title="字体">
-<ListPreference android:key="font_size" android:title="字体大小"></ListPreference>
-
-<Preference android:key="font_color" android:title="字体颜色"></Preference>
-</PreferenceCategory>
-</PreferenceScreen>

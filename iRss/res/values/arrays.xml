@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="font_size">
+<item>14px</item>
+<item>16px</item>
+<item>18px</item>
+<item>20px</item>
+<item>22px</item>
+<item>24px</item>
+<item>26px</item>
+<item>28px</item>
+<item>30px</item>
+<item>32px</item>
+<item>34px</item>
+<item>36px</item>
+<item>38px</item>
+<item>40px</item>
+</string-array>
+<string-array name="font_color">
+<item>黑色</item>
+<item>灰色</item>
+<item>浅绿</item>
+<item>绿色</item>
+<item>红色</item>
+<item>白色</item>
+</string-array>
+<string-array name="font_color_value">
+<item>#000000</item>
+<item>#808080</item>
+<item>#90EE90</item>
+<item>#008000</item>
+<item>#FF0000</item>
+<item>#FFFFFF</item>
+</string-array>
+<string-array name="font_set_style">
+<item>白天模式</item>
+<item>夜间模式</item>
+<item>护眼模式</item>
+</string-array>
+</resources>

@@ -3,7 +3,8 @@ package com.olunx.irss;
 import java.util.ArrayList;
 
 import com.olunx.irss.activity.ArticleList;
-import com.olunx.irss.activity.MainSettings;
+import com.olunx.irss.activity.DisplaySettings;
+import com.olunx.irss.activity.Settings;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.CategoryHelper;
 import com.olunx.irss.db.FeedsHelper;
@@ -241,10 +242,12 @@ public class Main extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
+			String title = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_title));
 			String xmlUrl = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_xmlUrl));
 			String charset = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_charset));
 			Log.i(TAG, xmlUrl);
 			Intent i = new Intent();
+			i.putExtra(FeedsHelper.c_title, title);// Feed标题
 			i.putExtra(FeedsHelper.c_xmlUrl, xmlUrl);// Feed地址
 			i.putExtra(FeedsHelper.c_charset, charset);// 内容编码
 			i.setClass(Main.this, ArticleList.class);
@@ -404,7 +407,7 @@ public class Main extends Activity {
 		}
 		case 4: {
 			Intent i = new Intent();
-			i.setClass(this, MainSettings.class);
+			i.setClass(this, Settings.class);
 			this.startActivity(i);
 			break;
 		}

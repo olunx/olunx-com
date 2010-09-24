@@ -23,7 +23,7 @@ public class Config {
 	public static final String BACKUP_FILE_SDCARD_CONFIG = SDCARD_BACKUP_PATH + CONFIG_FILE;
 
 	private static Config config = null;
-	
+
 	public static Properties p;
 
 	public static Config init() {
@@ -76,10 +76,10 @@ public class Config {
 		}
 		return value;
 	}
+
 	/**
 	 * 保存用户数据
 	 * 
-	 * @param context
 	 * @param username
 	 * @param password
 	 */
@@ -106,4 +106,55 @@ public class Config {
 		return Boolean.parseBoolean(getCon("account_inputted", "false"));
 	}
 
+	/**
+	 * 文章字体大小
+	 * 
+	 * @param value
+	 */
+	public void setArticleFontSize(String value) {
+		this.setCon("article_font_size", value);
+	}
+
+	public String getArticleFontSize() {
+		return this.getCon("article_font_size", "14px");
+	}
+	
+	/**
+	 * 文章字体颜色
+	 * 
+	 * @param value
+	 */
+	public void setArticleFontColor(String value) {
+		this.setCon("article_font_color", value);
+	}
+
+	public String getArticleFontColor() {
+		return this.getCon("article_font_color", "#000000");
+	}
+	
+	/**
+	 * 文章背景颜色
+	 * 
+	 * @param value
+	 */
+	public void setArticleBgColor(String value) {
+		this.setCon("article_bg_color", value);
+	}
+
+	public String getArticleBgColor() {
+		return this.getCon("article_bg_color", "0");
+	}
+	
+	/**
+	 * 文章配色方案
+	 * 
+	 * @param value
+	 */
+	public void setSysFontStyle(String value) {
+		this.setCon("sys_font_style", value);
+	}
+
+	public String getSysFontStyle() {
+		return this.getCon("sys_font_style", "白天模式");
+	}
 }
