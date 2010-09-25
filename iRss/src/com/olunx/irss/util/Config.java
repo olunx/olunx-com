@@ -50,7 +50,7 @@ public class Config {
 	 * @param key
 	 * @param value
 	 */
-	public void setCon(String key, String value) {
+	synchronized public void setCon(String key, String value) {
 		p.setProperty(key, value);
 		// 保存配置文件
 		try {
@@ -84,9 +84,9 @@ public class Config {
 	 * @param password
 	 */
 	public void setAccount(String username, String password) {
-		this.setCon("uaername", username);
+		this.setCon("username", username);
 		this.setCon("password", password);
-		this.setCon("account_inputted", "true");
+		this.setAccountInputed("true");
 	}
 
 	public String getUsername() {
@@ -96,12 +96,16 @@ public class Config {
 	public String getPassword() {
 		return this.getCon("password", "");
 	}
-
+	
 	/**
 	 * 是否已经输入账号
 	 * 
 	 * @return
 	 */
+	public void setAccountInputed(String value) {
+		this.setCon("account_inputted", value);
+	}
+
 	public boolean isAccountInputted() {
 		return Boolean.parseBoolean(getCon("account_inputted", "false"));
 	}
@@ -142,7 +146,7 @@ public class Config {
 	}
 
 	public String getArticleBgColor() {
-		return this.getCon("article_bg_color", "0");
+		return this.getCon("article_bg_color", "#ffffff");
 	}
 	
 	/**

@@ -2,6 +2,6 @@
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
 <PreferenceCategory><CheckBoxPreference android:key="offline_update" android:title="离线阅读" android:summary="更新时将图片类的数据下载到SDCard上"></CheckBoxPreference>
-<ListPreference android:key="update_articles_count" android:title="更新文章数目"></ListPreference>
+<ListPreference android:key="update_articles_count" android:title="更新文章数目" android:entries="@array/article_count" android:entryValues="@array/article_count"></ListPreference>
 </PreferenceCategory>
 </PreferenceScreen>

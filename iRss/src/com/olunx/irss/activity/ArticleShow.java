@@ -9,12 +9,13 @@ import com.olunx.irss.util.Config;
 import com.olunx.irss.util.HtmlParser;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -32,18 +33,15 @@ public class ArticleShow extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// setContentView(R.layout.article_show);
-		// mWebView = (WebView) findViewById(R.id.WebView01);
 		mWebView = new WebView(this);
 		setContentView(mWebView);
 		// this.setTitle(this.getIntent().getStringExtra(ArticlesHelper.c_title));
-		mWebView.setBackgroundColor(Integer.parseInt(Config.init().getArticleBgColor()));
-		// setContentView(R.layout.article_show);
-		// createView();
+		mWebView.setBackgroundColor(Color.parseColor(Config.init().getArticleBgColor()));
 	}
 
+	/**
+	 * 处理文章数据
+	 */
 	private void getData() {
 
 		ArticlesHelper helper = new ArticlesHelper();
@@ -86,9 +84,13 @@ public class ArticleShow extends Activity {
 	@Override
 	protected void onResume() {
 		Log.i(TAG, "onResume()");
+		final ProgressDialog pd = new ProgressDialog(this);
+		pd.setMessage("正在加载文章数据...");
+		pd.show();
 		new Thread() {
 			public void run() {
 				getData();
+				pd.dismiss();
 			}
 		}.start();
 		super.onResume();
@@ -97,7 +99,7 @@ public class ArticleShow extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, 1, 1, "全屏").setIcon(android.R.drawable.ic_menu_mapmode);
-		menu.add(0, 2, 2, "反转屏幕").setIcon(android.R.drawable.ic_menu_set_as);
+		menu.add(0, 2, 2, "旋转屏幕").setIcon(android.R.drawable.ic_menu_set_as);
 		return super.onCreateOptionsMenu(menu);
 	}
 

@@ -16,25 +16,19 @@
 <item>38px</item>
 <item>40px</item>
 </string-array>
-<string-array name="font_color">
-<item>黑色</item>
-<item>灰色</item>
-<item>浅绿</item>
-<item>绿色</item>
-<item>红色</item>
-<item>白色</item>
-</string-array>
-<string-array name="font_color_value">
-<item>#000000</item>
-<item>#808080</item>
-<item>#90EE90</item>
-<item>#008000</item>
-<item>#FF0000</item>
-<item>#FFFFFF</item>
-</string-array>
-<string-array name="font_set_style">
+<string-array name="sys_font_style">
 <item>白天模式</item>
 <item>夜间模式</item>
 <item>护眼模式</item>
+</string-array>
+<string-array name="article_count">
+<item>5</item>
+<item>10</item>
+<item>15</item>
+<item>20</item>
+<item>25</item>
+<item>50</item>
+<item>75</item>
+<item>100</item>
 </string-array>
 </resources>

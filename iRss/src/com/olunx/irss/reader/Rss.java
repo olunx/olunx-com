@@ -47,9 +47,10 @@ public class Rss {
 		logined = false;
 		try {
 			logined = googleReader.login();
+			Log.i(TAG, "login success");
 		} catch (AuthenticationException e) {
-			// e.printStackTrace();
-			System.out.println("login faild");
+			Log.i(TAG, "login fail");
+			return false;
 		}
 		dataProvider = googleReader.getApi();
 		return logined;
@@ -194,7 +195,7 @@ public class Rss {
 
 			// Log.i(TAG, "feed content: " + content);
 			Log.i(TAG, "parse feed: " + feedUrl);
-			return parseFeed(content, feedXmlUrl);// 解析rss内容
+			return parseArticleXml(content, feedXmlUrl);// 解析rss内容
 		}
 
 		return null;
@@ -207,7 +208,7 @@ public class Rss {
 	 * @return
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private HashMap<String, Object> parseFeed(String source, String feedUrl) {
+	private HashMap<String, Object> parseArticleXml(String source, String feedUrl) {
 
 		HashMap<String, Object> singleFeed = new HashMap<String, Object>();
 		String feedCharset = null;
@@ -282,7 +283,6 @@ public class Rss {
 			description = entry.getDescription();
 			if (description != null) {
 				desc = description.getValue();
-				// Log.i(TAG, "desc: " + desc);
 			}
 			// 内容
 			content = new StringBuilder();
@@ -295,7 +295,6 @@ public class Rss {
 			// 处理content格式问题
 			parsedContent = Utils.init().parseTextToHtmlForWebview(feedCharset, title, content.toString(), desc);
 			article.put(ArticlesHelper.c_content, parsedContent);
-			Log.i(TAG, "content: " + parsedContent);
 
 			// 作者
 			author = entry.getAuthor();
@@ -303,6 +302,8 @@ public class Rss {
 				article.put(ArticlesHelper.c_author, author.trim());
 			}
 
+			article.put(ArticlesHelper.c_unread, "true");
+			article.put(ArticlesHelper.c_stared, "false");
 			articles[i] = article;
 			Log.i(TAG, "add article: " + i);
 		}

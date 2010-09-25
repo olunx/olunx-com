@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.FeedsHelper;
+import com.olunx.irss.util.Config;
 
 public class Update {
 
@@ -17,11 +18,16 @@ public class Update {
 
 	public Update() {
 		super();
+		String user = Config.init().getUsername();
+		String pwd = Config.init().getPassword();
+		Log.i(TAG, user);
+		Log.i(TAG, pwd);
 		if (rss == null) {
+			Log.i(TAG, "new rss");
 			rss = new Rss();
-			rss.login("olunxs@gmail.com", "646895472");
+			rss.login(user, pwd);
 		} else if (!rss.isLongin()) {
-			rss.login("olunxs@gmail.com", "646895472");
+			rss.login(user, pwd);
 		}
 	}
 
@@ -29,6 +35,7 @@ public class Update {
 	 * 更新Feed条目
 	 */
 	public void updateFeeds() {
+		Log.i(TAG, "update feeds start");
 
 		ArrayList<ContentValues> array = rss.downLoadAllFeeds();
 
@@ -53,8 +60,6 @@ public class Update {
 		helper.updateCategoryStatus();// 添加完Feed后，为Category表重新统计Feed条数。
 		helper.close();
 
-		// new ArticlesHelper().updateFeeds();
-		// updateAllArticles();
 	}
 
 	/**
@@ -117,6 +122,7 @@ public class Update {
 			feedXmlUrl = feeds.get(i);
 
 			data = rss.downLoadFeedContent(feedXmlUrl, null, 2);
+			if(data == null) continue;
 
 			// 更新Feed的编码
 			charset = (String) data.get(FeedsHelper.c_charset);
@@ -135,7 +141,7 @@ public class Update {
 				}
 
 			}
-
+			data = null;//清空此次数据
 		}
 
 		aHelper.updateFeedsStatus();// 添加完文章后，为Feed表重新统计文章数目。

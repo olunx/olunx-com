@@ -2,9 +2,13 @@
 <resources>
     <string name="app_name">iRss</string>
     
-    <!-- Account Input Dialog -->
-    <string name="tv_username">Username</string>
-    <string name="tv_password">Password</string>
-    <string name="et_username">Google Username</string>
-    <string name="et_password">Google Password</string>
+    <!-- Init Activity -->
+    <string name="welcome">欢迎使用iRss</string>
+    <string name="google_username">Google用户名</string>
+    <string name="google_password">Google密码</string>
+    <string name="hint_username">请输入用户名</string>
+    <string name="hint_password">请输入密码</string>
+    <string name="accout_intro">如果。。。</string>
+    <string name="btn_nogoogle">不使用Google</string>
+    <string name="btn_sure">确定</string>
 </resources>

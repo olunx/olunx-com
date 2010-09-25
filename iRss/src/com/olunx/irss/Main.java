@@ -3,13 +3,10 @@ package com.olunx.irss;
 import java.util.ArrayList;
 
 import com.olunx.irss.activity.ArticleList;
-import com.olunx.irss.activity.DisplaySettings;
 import com.olunx.irss.activity.Settings;
-import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.CategoryHelper;
 import com.olunx.irss.db.FeedsHelper;
 import com.olunx.irss.reader.Update;
-import com.olunx.irss.util.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,16 +20,12 @@ import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
@@ -61,15 +54,13 @@ public class Main extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gridview);
 
-		initConfig();// 软件配置初始化
-
 		// 初始化一次的对象
 		gridview = (GridView) findViewById(R.id.GridView01);
 		itemClickListener = new ItemClickListener();
 		itemLongClickListener = new ItemLongClickListener();
 		gridview.setOnItemClickListener(itemClickListener);
 		gridview.setOnItemLongClickListener(itemLongClickListener);
-
+		
 		init();// 初始化数据
 	}
 
@@ -330,58 +321,6 @@ public class Main extends Activity {
 		super.onPause();
 	}
 
-	/**
-	 * 初始化软件
-	 */
-	private void initConfig() {
-		final Config config = Config.init();
-
-		if (!config.isAccountInputted()) {
-			final View view = LayoutInflater.from(this).inflate(R.layout.account_input, null);
-
-			// 点击清空编辑框事件
-			final EditText username = (EditText) view.findViewById(R.id.EditText01);
-			username.setOnTouchListener(new OnTouchListener() {
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					username.setText("");
-					return false;
-				}
-			});
-			final EditText password = (EditText) view.findViewById(R.id.EditText02);
-			password.setOnTouchListener(new OnTouchListener() {
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					password.setText("");
-					return false;
-				}
-			});
-
-			// 输入对话框
-			AlertDialog.Builder ad = new AlertDialog.Builder(this);
-			ad.setIcon(android.R.drawable.ic_dialog_info);
-			ad.setTitle("请输入Google账户信息：");
-			ad.setView(view);
-			ad.setNegativeButton("取消", null);
-			ad.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-					// 保存账户信息
-					String user = username.getText().toString();
-					if (user != null) {
-						user = user.trim();
-					}
-					String pwd = password.getText().toString();
-					if (pwd != null) {
-						pwd = pwd.trim();
-					}
-					config.setAccount(user, pwd);
-				}
-			});
-			ad.show();
-
-		}
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(1, 1, 1, "添加").setIcon(android.R.drawable.ic_menu_add);
@@ -416,7 +355,7 @@ public class Main extends Activity {
 			currentCatTitle = null;//更新所有Feed的文章
 			new Thread() {
 				public void run() {
-					new Update().updateFeeds();
+					new Update().updateAllArticles();
 					System.out.println("finished!");
 					mHandler.sendEmptyMessage(MSG_REFRESH);
 				}
@@ -424,15 +363,6 @@ public class Main extends Activity {
 			break;
 		}
 		case 6: {
-			CategoryHelper cHelper = new CategoryHelper();
-			cHelper.dropTable();
-			cHelper.close();
-			FeedsHelper fHelper = new FeedsHelper();
-			fHelper.dropTable();
-			fHelper.close();
-			ArticlesHelper aHelper = new ArticlesHelper();
-			aHelper.dropTable();
-			aHelper.close();
 			Toast.makeText(this, "删除数据!", Toast.LENGTH_SHORT).show();
 			break;
 		}

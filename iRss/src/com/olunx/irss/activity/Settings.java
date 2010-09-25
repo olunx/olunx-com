@@ -28,9 +28,14 @@ public class Settings extends TabActivity {
 		tabHost.addTab(ts1);
 		
 		TabSpec ts2 = tabHost.newTabSpec("更新设置");
-		ts2.setIndicator("更新设置", getResources().getDrawable(R.drawable.common_config));
+		ts2.setIndicator("更新设置", getResources().getDrawable(R.drawable.common_update));
 		ts2.setContent(new Intent(this, UpdateSettings.class));
 		tabHost.addTab(ts2);
+		
+		TabSpec ts3 = tabHost.newTabSpec("软件设置");
+		ts3.setIndicator("软件设置", getResources().getDrawable(R.drawable.common_config));
+		ts3.setContent(new Intent(this, SoftwareSettings.class));
+		tabHost.addTab(ts3);
 		
 	}
 }

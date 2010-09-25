@@ -3,13 +3,14 @@
       package="com.olunx.irss"
       android:versionName="1.0" android:versionCode="010704">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".Main"
+        <activity android:name=".Init"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Main"></activity>
         <activity android:name=".activity.FeedList"></activity>
         <activity android:name=".activity.ArticleList"></activity>
         <activity android:name=".activity.ArticleShow"></activity>
@@ -17,6 +18,7 @@
         <activity android:name=".activity.Settings"></activity>
         <activity android:name=".activity.DisplaySettings"></activity>
         <activity android:name=".activity.UpdateSettings"></activity>
+        <activity android:name=".activity.SoftwareSettings"></activity>
         
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

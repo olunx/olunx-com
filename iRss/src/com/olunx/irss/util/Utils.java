@@ -271,18 +271,36 @@ public class Utils {
 		sb.append(title);
 		sb.append("</h3>");
 		sb.append(content);
-		if(desc != null) {
+		if (desc != null) {
 			sb.append(desc);
 		}
 		sb.append("</body></html>");
 
 		String result = sb.toString();
-//		try {
-//			result = URLEncoder.encode(result, "utf-8").replaceAll("\\+", " ").trim();
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
+		// try {
+		// result = URLEncoder.encode(result, "utf-8").replaceAll("\\+",
+		// " ").trim();
+		// } catch (UnsupportedEncodingException e) {
+		// e.printStackTrace();
+		// }
 
 		return result;
+	}
+
+	/**
+	 * 将系统的ARGB颜色转换为网页支持的RGB颜色
+	 * 
+	 * @param color
+	 * @return
+	 */
+	public String ArgbToHexRgb(int color) {
+		String hexColor = Integer.toHexString((color & 0xFFFFFF));
+		int length = hexColor.length();
+		if(length < 6) {
+			for(int i=0;i< 6 - length; i++) {
+				hexColor = "0" + hexColor;
+			}
+		}
+		return "#" + hexColor;
 	}
 }

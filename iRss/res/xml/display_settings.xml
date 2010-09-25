@@ -3,12 +3,11 @@
 	<ListPreference android:key="font_size" android:title="字体大小" android:entries="@array/font_size" android:entryValues="@array/font_size"
 		android:dialogTitle="请选择字体大小:" android:negativeButtonText="取消"></ListPreference>
 	<PreferenceCategory android:title="配色方案">
-		<ListPreference android:dialogTitle="前选择主题:" android:entries="@array/font_set_style" android:key="sys_font_style"
-			android:title="内置配色方案" android:negativeButtonText="取消" android:entryValues="@array/font_set_style"></ListPreference>
+		<ListPreference android:dialogTitle="前选择主题:" android:entries="@array/sys_font_style" android:key="sys_font_style"
+			android:title="内置配色方案" android:negativeButtonText="取消" android:entryValues="@array/sys_font_style"></ListPreference>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="自定义配色">
-		<ListPreference android:entryValues="@array/font_color_value" android:dialogTitle="请选择字体颜色:" android:entries="@array/font_color"
-			android:title="字体颜色" android:key="font_color" android:negativeButtonText="取消"></ListPreference>
+		<Preference android:title="字体颜色" android:key="font_color"></Preference>
 		<Preference android:title="背景颜色" android:key="bg_color"></Preference>
 	</PreferenceCategory>
 </PreferenceScreen>

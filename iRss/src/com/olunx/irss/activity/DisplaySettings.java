@@ -3,6 +3,7 @@ package com.olunx.irss.activity;
 import com.olunx.irss.R;
 import com.olunx.irss.activity.ColorPickerDialog.OnColorChangedListener;
 import com.olunx.irss.util.Config;
+import com.olunx.irss.util.Utils;
 
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -19,7 +20,7 @@ public class DisplaySettings extends PreferenceActivity {
 
 	private ListPreference fontSize;// 字体大小
 	private ListPreference sysFontStyle;// 系统内置样式
-	private ListPreference fontColor;// 字体颜色
+	private Preference fontColor;// 字体颜色
 	private Preference bgColor;// 背景颜色
 
 	@Override
@@ -35,12 +36,8 @@ public class DisplaySettings extends PreferenceActivity {
 		sysFontStyle.setOnPreferenceChangeListener(changeListener);
 		sysFontStyle.setValue(Config.init().getSysFontStyle());
 		
-		fontColor = (ListPreference)findPreference("font_color");
-		fontColor.setOnPreferenceChangeListener(changeListener);
-		fontColor.setValue(Config.init().getArticleFontColor());
-		
+		fontColor = findPreference("font_color");
 		bgColor = findPreference("bg_color");
-		bgColor.setOnPreferenceChangeListener(changeListener);
 
 		refresh();
 	}
@@ -49,8 +46,10 @@ public class DisplaySettings extends PreferenceActivity {
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 		Log.i(TAG, "preference click");
 		String key = preference.getKey();
-		if (key.equals("bg_color")) {
-			new ColorPickerDialog(DisplaySettings.this, bgColorChanged, Integer.parseInt(Config.init().getArticleBgColor())).show();
+		if (key.equals("font_color")) {
+			new ColorPickerDialog(DisplaySettings.this, fontColorChanged, Config.init().getArticleFontColor()).show();
+		}else if (key.equals("bg_color")) {
+			new ColorPickerDialog(DisplaySettings.this, bgColorChanged, Config.init().getArticleBgColor()).show();
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}
@@ -62,16 +61,25 @@ public class DisplaySettings extends PreferenceActivity {
 		fontSize.setSummary(Config.init().getArticleFontSize());
 		sysFontStyle.setSummary(Config.init().getSysFontStyle());
 		fontColor.setSummary(Html.fromHtml("<a><font color='" + Config.init().getArticleFontColor() + "'>字体颜色预览</font></a>"));
+		bgColor.setSummary(Html.fromHtml("<a><font color='" + Config.init().getArticleBgColor() + "'>背景颜色预览</font></a>"));
 	}
 
 	/**
 	 * 颜色改变，回调事件。
 	 */
+	OnColorChangedListener fontColorChanged = new OnColorChangedListener() {
+		public void colorChanged(int color) {
+			String hexColor = Utils.init().ArgbToHexRgb(color);
+			fontColor.setSummary(Html.fromHtml("<a><font color='" + hexColor + "'>字体颜色预览</font></a> "));
+			Config.init().setArticleFontColor(hexColor);
+		}
+	};
+	
 	OnColorChangedListener bgColorChanged = new OnColorChangedListener() {
 		public void colorChanged(int color) {
-			Log.i(TAG, "bg_color " + color);
-			String value = String.valueOf(color);
-			Config.init().setArticleBgColor(value);
+			String hexColor = Utils.init().ArgbToHexRgb(color);
+			bgColor.setSummary(Html.fromHtml("<a><font color='" + hexColor + "'>背景颜色预览</font></a> "));
+			Config.init().setArticleBgColor(hexColor);
 		}
 	};
 
@@ -89,19 +97,25 @@ public class DisplaySettings extends PreferenceActivity {
 				String style = String.valueOf(newValue);
 				sysFontStyle.setSummary(style);
 				sysFontStyle.setValue(style);
-				Config.init().setSysFontStyle(style);
+				
+				String font = "#000000";
+				String bg = "#ffffff";
 				if (style.equals("白天模式")) {
-
-				} else if (style.equals("夜晚模式")) {
-
+					font = "#000000";
+					bg = "#ffffff";
+				} else if (style.equals("夜间模式")) {
+					font = "#ffffff";
+					bg = "#000000";
 				} else if (style.equals("护眼模式")) {
-
+					font = "#000000";
+					bg = "#cce8cf";
 				}
-			}else if (key.equals("font_color")) {//字体颜色
-				String color = String.valueOf(newValue);
-				fontColor.setSummary(Html.fromHtml("<a><font color='" + color + "'>字体颜色预览</font></a>"));
-				fontColor.setValue(color);
-				Config.init().setArticleFontColor(color);
+				
+				fontColor.setSummary(Html.fromHtml("<a><font color='"+font+"'>字体颜色预览</font></a> "));
+				bgColor.setSummary(Html.fromHtml("<a><font color='"+bg+"'>背景颜色预览</font></a> "));
+				Config.init().setArticleFontColor(font);
+				Config.init().setArticleBgColor(bg);
+				Config.init().setSysFontStyle(style);
 			}
 			return false;
 		}

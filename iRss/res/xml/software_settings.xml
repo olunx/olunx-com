@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceCategory><Preference android:key="reset_config" android:summary="将软件恢复至初次安装" android:title="清空软件设置"></Preference>
+</PreferenceCategory>
+</PreferenceScreen>

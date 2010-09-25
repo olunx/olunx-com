@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<GridView android:id="@+id/GridView01" android:layout_height="fill_parent" android:layout_width="fill_parent" android:numColumns="auto_fit" android:horizontalSpacing="10dip" android:verticalSpacing="10dip" android:columnWidth="60dip" android:paddingTop="10dip" android:paddingBottom="10dip"></GridView>
-</LinearLayout>

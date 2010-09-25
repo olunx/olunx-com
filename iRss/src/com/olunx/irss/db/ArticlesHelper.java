@@ -129,7 +129,7 @@ public class ArticlesHelper implements IHelper {
 	 */
 	public Cursor getArticlesByFeedXmlUrl(String feedXmlUrl) {
 		return getDB().query(TABLE, new String[] { c_id, c_title, c_link, c_publishTime}, c_feedXmlUrl + "== ?", new String[] { feedXmlUrl }, null, null,
-				null);
+				c_publishTime);
 	}
 
 	/**

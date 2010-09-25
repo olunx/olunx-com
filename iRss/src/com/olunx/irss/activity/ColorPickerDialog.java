@@ -28,6 +28,11 @@ import android.widget.LinearLayout;
 
 public class ColorPickerDialog extends AlertDialog {
 
+	/**
+	 * 回调函数，改变颜色后的操作可在实现该接口的方法内完成。
+	 * 
+	 * @author olunx
+	 */
 	public interface OnColorChangedListener {
 		void colorChanged(int color);
 	}
@@ -35,7 +40,7 @@ public class ColorPickerDialog extends AlertDialog {
 	private Context context;
 	private ColorPickerView colorPickView;
 	private OnColorChangedListener mListener;
-	private int mInitialColor;//初始化颜色
+	private int mInitialColor;// 初始化颜色
 
 	private static class ColorPickerView extends View {
 		private Paint mPaint;
@@ -170,12 +175,6 @@ public class ColorPickerDialog extends AlertDialog {
 						invalidate();
 					}
 				} else if ((x >= -100 & x <= 100) && (y <= 130 && y >= 110)) // see
-				// if
-				// we're
-				// in
-				// the
-				// hsv
-				// slider
 				{
 					int a, r, g, b, c0, c1;
 					float p;
@@ -227,12 +226,32 @@ public class ColorPickerDialog extends AlertDialog {
 		}
 	}
 
+	/**
+	 * @param context
+	 * @param listener
+	 * @param initialColor
+	 */
 	public ColorPickerDialog(Context context, OnColorChangedListener listener, int initialColor) {
 		super(context);
 
 		this.context = context;
 		mListener = listener;
 		mInitialColor = initialColor;
+	}
+
+	/**
+	 * 第三个参数为：#RRGGBB 或者 #AARRGGBB
+	 * 
+	 * @param context
+	 * @param listener
+	 * @param hexColor
+	 */
+	public ColorPickerDialog(Context context, OnColorChangedListener listener, String hexColor) {
+		super(context);
+
+		this.context = context;
+		mListener = listener;
+		mInitialColor = Color.parseColor(hexColor);
 	}
 
 	@Override
@@ -242,7 +261,7 @@ public class ColorPickerDialog extends AlertDialog {
 				mListener.colorChanged(color);
 			}
 		};
-		
+
 		LinearLayout layout = new LinearLayout(context);
 		layout.setPadding(5, 5, 5, 5);
 		layout.setOrientation(LinearLayout.VERTICAL);
@@ -250,16 +269,17 @@ public class ColorPickerDialog extends AlertDialog {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		params.gravity = Gravity.CENTER;
-		
+
 		colorPickView = new ColorPickerView(context, colorChangedListener, mInitialColor);
 		colorPickView.setLayoutParams(params);
 		layout.addView(colorPickView);
 		setView(layout);
-		
+
 		setTitle("请选择颜色：");
 		setButton("确定", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				mListener.colorChanged(colorPickView.getColor());
 			}
 		});
 		setButton2("取消", new OnClickListener() {
@@ -270,10 +290,4 @@ public class ColorPickerDialog extends AlertDialog {
 		super.onCreate(savedInstanceState);
 	}
 
-	@Override
-	public void dismiss() {
-		mListener.colorChanged(colorPickView.getColor());
-		super.dismiss();
-	}
-	
 }

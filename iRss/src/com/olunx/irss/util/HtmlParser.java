@@ -2,7 +2,6 @@ package com.olunx.irss.util;
 
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
-import org.htmlparser.nodes.TagNode;
 import org.htmlparser.tags.BodyTag;
 import org.htmlparser.tags.Div;
 import org.htmlparser.tags.ImageTag;
@@ -50,14 +49,9 @@ public class HtmlParser {
 			} else if (node instanceof ParagraphTag) {// p
 				ParagraphTag p = (ParagraphTag) node;
 				p.setAttribute("style", "color:" + fontColor + ";font-size:" + fontSize);
-				System.out.println("process tag p");
 			} else if (node instanceof Div) {// div
 				Div div = (Div) node;
 				div.setAttribute("style", "color:" + fontColor + ";font-size:" + fontSize);
-			} else if (node instanceof TagNode) {// pre
-//				TagNode tag = (TagNode) node;
-//				if (tag.getAttribute("style") != null)
-//					tag.setAttribute("style", "none");
 			}
 
 			parseNodes(node.getChildren());// 处理子节点
