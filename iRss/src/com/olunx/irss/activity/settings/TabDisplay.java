@@ -1,6 +1,7 @@
-package com.olunx.irss.activity;
+package com.olunx.irss.activity.settings;
 
 import com.olunx.irss.R;
+import com.olunx.irss.activity.ColorPickerDialog;
 import com.olunx.irss.activity.ColorPickerDialog.OnColorChangedListener;
 import com.olunx.irss.util.Config;
 import com.olunx.irss.util.Utils;
@@ -14,7 +15,7 @@ import android.preference.PreferenceScreen;
 import android.text.Html;
 import android.util.Log;
 
-public class DisplaySettings extends PreferenceActivity {
+public class TabDisplay extends PreferenceActivity {
 
 	private final String TAG = "com.olunx.irss.activity.DisplaySettings";
 
@@ -47,9 +48,9 @@ public class DisplaySettings extends PreferenceActivity {
 		Log.i(TAG, "preference click");
 		String key = preference.getKey();
 		if (key.equals("font_color")) {
-			new ColorPickerDialog(DisplaySettings.this, fontColorChanged, Config.init().getArticleFontColor()).show();
+			new ColorPickerDialog(TabDisplay.this, fontColorChanged, Config.init().getArticleFontColor()).show();
 		}else if (key.equals("bg_color")) {
-			new ColorPickerDialog(DisplaySettings.this, bgColorChanged, Config.init().getArticleBgColor()).show();
+			new ColorPickerDialog(TabDisplay.this, bgColorChanged, Config.init().getArticleBgColor()).show();
 		}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}

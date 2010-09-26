@@ -1,4 +1,4 @@
-package com.olunx.irss.activity;
+package com.olunx.irss.activity.settings;
 
 import com.olunx.irss.R;
 import com.olunx.irss.util.Config;
@@ -9,7 +9,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 
-public class SoftwareSettings extends PreferenceActivity {
+public class TabSoftware extends PreferenceActivity {
 
 	private final String TAG = "com.olunx.irss.activity.SoftwareSettings";
 

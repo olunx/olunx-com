@@ -1,4 +1,4 @@
-package com.olunx.irss.activity;
+package com.olunx.irss.activity.settings;
 
 import com.olunx.irss.R;
 
@@ -9,7 +9,7 @@ import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.view.KeyEvent;
 
-public class UpdateSettings extends PreferenceActivity {
+public class TabUpdate extends PreferenceActivity {
 
 	private final String TAG = "com.olunx.irss.activity.UpdateSettings";
 
