@@ -92,6 +92,7 @@ public class ArticleShow extends Activity {
 			switch (msg.what) {
 			case LOAD_DATA: {
 				mScrollView.scrollTo(0, 0);
+				mWebView.clearView();
 				mWebView.setBackgroundColor(Color.parseColor(Config.init().getArticleBgColor()));
 				mWebView.loadData(currentContent, "text/html", currentCharset);
 				mButton.setEnabled(true);

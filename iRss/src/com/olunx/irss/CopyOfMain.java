@@ -1,7 +1,6 @@
 package com.olunx.irss;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import com.olunx.irss.activity.ArticleList;
 import com.olunx.irss.activity.help.Helps;
@@ -15,6 +14,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,18 +28,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class Main extends Activity {
+public class CopyOfMain extends Activity {
 
 	private final String TAG = "com.olunx.Main";
-	private ListView listview;
+	private Cursor cursor;// Feed Item每次检索结果
+	private GridView gridview;// Feed Item布局区域
 	private ItemClickListener itemClickListener;// Feed Item点击事件
 	private ItemLongClickListener itemLongClickListener;// Feed Item长按事件
 	private FeedsHelper helper;
@@ -46,22 +48,22 @@ public class Main extends Activity {
 	private ArrayList<String> allTitles;// 所有分类标题
 	private ToggleButton lastBtn;// 最后一次选中的按钮
 
-	private final int MSG_REFRESH_UI = 0;// 刷新UI
-	private final int ALERT_DISCONNECT = 1;// 网络连接不可用
-	private final int MSG_REFRESH_LISTVIEW = 2;// 刷新listview
+	private final int MSG_REFRESH = 0;// 刷新UI
+	private final int ALERT_DISCONNECT = 1;//网络连接不可用
 
+	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mian_view);
+//		setContentView(R.layout.gridview);
 
 		// 初始化一次的对象
-		listview = (ListView) findViewById(R.id.ListView01);
+//		gridview = (GridView) findViewById(R.id.GridView01);
 		itemClickListener = new ItemClickListener();
 		itemLongClickListener = new ItemLongClickListener();
-		listview.setOnItemClickListener(itemClickListener);
-		listview.setOnItemLongClickListener(itemLongClickListener);
-
+		gridview.setOnItemClickListener(itemClickListener);
+		gridview.setOnItemLongClickListener(itemLongClickListener);
+		
 		init();// 初始化数据
 	}
 
@@ -77,13 +79,53 @@ public class Main extends Activity {
 
 		// 设置当前目录
 		if (allTitles != null && allTitles.size() > 0) {
-			if (currentCatTitle == null)// 如果没有选中分类名，则表示更新所有分类。
+			if (currentCatTitle == null)//如果没有选中分类名，则表示更新所有分类。
 				currentCatTitle = allTitles.get(0);
 		} else {
 			return;
 		}
 
 		createBtn();// 初始化底部栏目
+	}
+
+	private Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_REFRESH: {
+//				init();
+				// 关闭当前cursor
+				if (cursor != null) {
+					cursor.close();
+				}
+				onResume();
+				Toast.makeText(CopyOfMain.this, "更新数据完成！o(∩_∩)o 哈哈", Toast.LENGTH_SHORT).show();
+				break;
+			}
+			case ALERT_DISCONNECT:{
+				AlertDialog.Builder adb = new AlertDialog.Builder(CopyOfMain.this);
+				adb.setTitle("提示");
+				adb.setMessage("网络连接不可用，请检查网络。");
+				adb.setPositiveButton("确定", null);
+				adb.show();
+			}
+			}
+		}
+	};
+
+	/**
+	 * 创建Feed Item
+	 * 
+	 * @param catTitle
+	 */
+	private void createFeedItem(String catTitle) {
+		this.setTitle("当前分类：" + catTitle);
+
+//		cursor = helper.getFeedsByCategory(catTitle);
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.gridview_item, cursor, new String[] { FeedsHelper.c_icon,
+				FeedsHelper.c_title, FeedsHelper.c_articleCount }, new int[] { R.id.ImageView01, R.id.TextView01, R.id.TextView02 });
+		gridview.setAdapter(adapter);
 	}
 
 	/**
@@ -117,77 +159,6 @@ public class Main extends Activity {
 	}
 
 	/**
-	 * 创建Feed Item
-	 * 
-	 * @param catTitle
-	 */
-	private void createListItem(final String catTitle) {
-		this.setTitle("当前分类：" + catTitle);
-
-		new Thread() {
-			@Override
-			public void run() {
-				ArrayList<Map<String, Object>> list = helper.getFeedsByCategory(catTitle);
-				SimpleAdapter adapter = new SimpleAdapter(Main.this, list, R.layout.listview_item, new String[] { FeedsHelper.c_icon,
-						FeedsHelper.c_title, FeedsHelper.c_text }, new int[] { R.id.ImageView01, R.id.TextView01, R.id.TextView02 });
-				Message msg = new Message();
-				msg.obj = adapter;
-				msg.what = MSG_REFRESH_LISTVIEW;
-				mHandler.sendMessage(msg);
-			}
-		}.start();
-	}
-
-	@Override
-	protected void onResume() {
-		if (helper == null || !helper.isOpen()) {
-			helper = new FeedsHelper();
-		}
-		if (currentCatTitle != null) {
-			createListItem(currentCatTitle);
-		}
-		Log.i(TAG, "onResume()");
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		// 关闭数据库
-		if (helper != null) {
-			helper.close();
-		}
-		Log.i(TAG, "onPause()");
-		super.onPause();
-	}
-
-	private Handler mHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case MSG_REFRESH_UI: {
-				onResume();
-				Toast.makeText(Main.this, "更新数据完成！o(∩_∩)o 哈哈", Toast.LENGTH_SHORT).show();
-				break;
-			}
-			case ALERT_DISCONNECT: {
-				AlertDialog.Builder adb = new AlertDialog.Builder(Main.this);
-				adb.setTitle("提示");
-				adb.setMessage("网络连接不可用，请检查网络。");
-				adb.setPositiveButton("确定", null);
-				adb.show();
-				break;
-			}
-			case MSG_REFRESH_LISTVIEW: {
-				listview.setAdapter((SimpleAdapter) msg.obj);
-				break;
-			}
-
-			}
-		}
-	};
-
-	/**
 	 * 按钮短按事件
 	 */
 	class BtnClickListener implements OnClickListener {
@@ -205,9 +176,13 @@ public class Main extends Activity {
 				}
 				lastBtn.setChecked(false);
 			}
+			// 关闭当前cursor
+			if (cursor != null) {
+				cursor.close();
+			}
 			lastBtn = btn;
 			currentCatTitle = btn.getText().toString();
-			createListItem(currentCatTitle);// 根据分类名创建Feed Item
+			createFeedItem(currentCatTitle);// 根据分类名创建Feed Item
 		}
 	}
 
@@ -223,7 +198,7 @@ public class Main extends Activity {
 			final String selectTitle = btn.getText().toString();
 			String titlePlus = "[" + selectTitle + "]";
 
-			final AlertDialog.Builder ad = new AlertDialog.Builder(Main.this);
+			final AlertDialog.Builder ad = new AlertDialog.Builder(CopyOfMain.this);
 			ad.setInverseBackgroundForced(true);// 翻转底色
 			ad.setIcon(android.R.drawable.ic_dialog_info);
 			ad.setTitle("请选择操作");
@@ -235,11 +210,11 @@ public class Main extends Activity {
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
 							case 0: {
-								Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
+								Toast.makeText(CopyOfMain.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
 								new Thread() {
 									public void run() {
 										new Update().updateArticlesByCat(selectTitle);
-										mHandler.sendEmptyMessage(MSG_REFRESH_UI);
+										mHandler.sendEmptyMessage(MSG_REFRESH);
 									}
 								}.start();
 								break;
@@ -261,42 +236,43 @@ public class Main extends Activity {
 	}
 
 	/**
-	 * ListView短按事件
+	 * GridView短按事件
 	 */
 	class ItemClickListener implements OnItemClickListener {
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Map<String, Object> map = (Map<String, Object>) parent.getItemAtPosition(position);
-			String title = (String) map.get(FeedsHelper.c_title);
-			String xmlUrl = (String) map.get(FeedsHelper.c_xmlUrl);
-			String charset = (String) map.get(FeedsHelper.c_charset);
+			SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
+			String title = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_title));
+			String xmlUrl = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_xmlUrl));
+			String charset = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_charset));
 			Log.i(TAG, xmlUrl);
 			Intent i = new Intent();
 			i.putExtra(FeedsHelper.c_title, title);// Feed标题
 			i.putExtra(FeedsHelper.c_xmlUrl, xmlUrl);// Feed地址
 			i.putExtra(FeedsHelper.c_charset, charset);// 内容编码
-			i.setClass(Main.this, ArticleList.class);
-			Main.this.startActivity(i);
+			i.setClass(CopyOfMain.this, ArticleList.class);
+			cursor.close();
+			CopyOfMain.this.startActivity(i);
 		}
 
 	}
 
 	/**
-	 * ListView长按事件
+	 * GridView长按事件
 	 * 
 	 */
 	class ItemLongClickListener implements OnItemLongClickListener {
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-			Map<String, Object> map = (Map<String, Object>) parent.getItemAtPosition(position);
-			final String selectXmlUrl = (String) map.get(FeedsHelper.c_xmlUrl);
+			SQLiteCursor cursor = (SQLiteCursor) parent.getItemAtPosition(position);
+			// final String selectTitle =
+			// cursor.getString(cursor.getColumnIndex(FeedsHelper.c_title));
+			final String selectXmlUrl = cursor.getString(cursor.getColumnIndex(FeedsHelper.c_xmlUrl));
 
-			final AlertDialog.Builder ad = new AlertDialog.Builder(Main.this);
+			final AlertDialog.Builder ad = new AlertDialog.Builder(CopyOfMain.this);
 			ad.setInverseBackgroundForced(true);// 翻转底色
 			ad.setIcon(android.R.drawable.ic_dialog_info);
 			ad.setTitle("请选择操作");
@@ -307,11 +283,11 @@ public class Main extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					switch (which) {
 					case 0: {
-						Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
+						Toast.makeText(CopyOfMain.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
 						new Thread() {
 							public void run() {
 								new Update().updateArticlesByfeed(selectXmlUrl);
-								mHandler.sendEmptyMessage(MSG_REFRESH_UI);
+								mHandler.sendEmptyMessage(MSG_REFRESH);
 							}
 						}.start();
 						break;
@@ -329,11 +305,37 @@ public class Main extends Activity {
 		}
 	}
 
+	@Override
+	protected void onResume() {
+		if (helper == null || !helper.isOpen()) {
+			helper = new FeedsHelper();
+		}
+		if (currentCatTitle != null) {
+			createFeedItem(currentCatTitle);
+		}
+		Log.i(TAG, "onResume()");
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		// 关闭数据库
+		if (helper != null) {
+			helper.close();
+		}
+		// 关闭cursor
+		if (cursor != null) {
+			cursor.close();
+		}
+		Log.i(TAG, "onPause()");
+		super.onPause();
+	}
+
 	private final int MENU_ADD = 10;
 	private final int MENU_SETTINGS = 13;
 	private final int MENU_UPDATE = 14;
 	private final int MENU_HELP = 15;
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(1, MENU_ADD, 1, "添加").setIcon(android.R.drawable.ic_menu_add);
@@ -347,8 +349,8 @@ public class Main extends Activity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_ADD: {
-			// Intent i = new Intent();
-			// this.startActivity(i);
+//			Intent i = new Intent();
+//			this.startActivity(i);
 			break;
 		}
 		case MENU_SETTINGS: {
@@ -359,17 +361,17 @@ public class Main extends Activity {
 		}
 		case MENU_UPDATE: {
 			Toast.makeText(this, "开始更新所有Feed...", Toast.LENGTH_SHORT).show();
-			currentCatTitle = null;// 更新所有Feed的文章
+			currentCatTitle = null;//更新所有Feed的文章
 			new Thread() {
 				public void run() {
-					if (!SysTools.isConnect(Main.this)) {
+					if(!SysTools.isConnect(CopyOfMain.this)) {
 						mHandler.sendEmptyMessage(ALERT_DISCONNECT);
 						return;
 					}
 					System.out.println("network connected!");
 					new Update().updateAllArticles();
 					System.out.println("finished!");
-					mHandler.sendEmptyMessage(MSG_REFRESH_UI);
+					mHandler.sendEmptyMessage(MSG_REFRESH);
 				}
 			}.start();
 			break;

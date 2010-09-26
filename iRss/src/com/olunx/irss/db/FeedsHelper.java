@@ -3,6 +3,8 @@ package com.olunx.irss.db;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.olunx.irss.util.Config;
 import com.olunx.irss.util.Utils;
@@ -167,9 +169,57 @@ public class FeedsHelper implements IHelper {
 	 * 
 	 * @return
 	 */
-	public Cursor getFeedsByCategory(String catTitle) {
-		return getDB().query(TABLE, new String[] { c_id, c_icon, c_title, c_articleCount, c_xmlUrl, c_charset }, c_catTitle + "== ?",
+//	public Cursor getFeedsByCategory(String catTitle) {
+//		return getDB().query(TABLE, new String[] { c_id, c_icon, c_title, c_articleCount, c_xmlUrl, c_charset }, c_catTitle + "== ?",
+//				new String[] { catTitle }, null, null, null);
+//	}
+	
+	/**
+	 * 获取指定Feed下的文章列表
+	 * 
+	 * @param feedXmlUrl
+	 * @return
+	 */
+	public ArrayList<Map<String, Object>> getFeedsByCategory(String catTitle) {
+		Cursor result = getDB().query(TABLE, new String[] { c_icon, c_title, c_articleCount, c_xmlUrl, c_charset, c_updateTime }, c_catTitle + "== ?",
 				new String[] { catTitle }, null, null, null);
+		
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		
+		Map<String, Object> map;
+		if (result != null) {
+			result.moveToFirst();
+			int iconIndex = result.getColumnIndex(c_icon);
+			int titleIndex = result.getColumnIndex(c_title);
+			int countIndex = result.getColumnIndex(c_articleCount);
+			int xmlurlIndex = result.getColumnIndex(c_xmlUrl);
+			int charsetIndex = result.getColumnIndex(c_charset);
+			int timeIndex = result.getColumnIndex(c_updateTime);
+			Utils utils = new Utils();
+			while (!result.isAfterLast()) {
+				map = new HashMap<String, Object>();
+				
+				map.put(c_icon, result.getString(iconIndex));
+				map.put(c_title, result.getString(titleIndex));
+				map.put(c_xmlUrl, result.getString(xmlurlIndex));
+				map.put(c_charset, result.getString(charsetIndex));
+				String articleCount = result.getString(countIndex);
+				if(articleCount == null) {
+					articleCount = "0";
+				}
+				String updateTime = utils.formatCstTimeToLocal(result.getString(timeIndex), "MM月dd日");
+				if(updateTime == null) {
+					updateTime = "从未";
+				}
+				String summary = "文章数: " + articleCount + "   更新: " + updateTime;
+				map.put(c_text, summary);
+				
+				list.add(map);
+				result.moveToNext();
+			}
+		}
+		result.close();
+		return list;
 	}
 
 	/**

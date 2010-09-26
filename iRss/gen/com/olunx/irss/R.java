@@ -32,39 +32,38 @@ public final class R {
     }
     public static final class id {
         public static final int Button01=0x7f070005;
-        public static final int Button02=0x7f070014;
-        public static final int EditText01=0x7f07000e;
-        public static final int EditText02=0x7f07000f;
-        public static final int GridView01=0x7f07000a;
-        public static final int HorizontalScrollView01=0x7f07000b;
+        public static final int Button02=0x7f070012;
+        public static final int EditText01=0x7f07000c;
+        public static final int EditText02=0x7f07000d;
+        public static final int HorizontalScrollView01=0x7f070014;
         public static final int ImageButton01=0x7f070006;
-        public static final int ImageView01=0x7f07000d;
-        public static final int ImageView02=0x7f070013;
+        public static final int ImageView01=0x7f07000a;
+        public static final int ImageView02=0x7f070011;
         public static final int LinearLayout01=0x7f070001;
         public static final int LinearLayout02=0x7f070002;
         public static final int LinearLayout03=0x7f070004;
-        public static final int LinearLayout04=0x7f07000c;
-        public static final int LinearLayout05=0x7f070011;
-        public static final int ListView01=0x7f070015;
+        public static final int LinearLayout04=0x7f07000b;
+        public static final int LinearLayout05=0x7f07000f;
+        public static final int ListView01=0x7f070013;
         public static final int RelativeLayout01=0x7f070007;
         public static final int ScrollView01=0x7f070000;
-        public static final int TabHost01=0x7f070016;
+        public static final int TabHost01=0x7f070015;
         public static final int TextView01=0x7f070008;
         public static final int TextView02=0x7f070009;
-        public static final int TextView03=0x7f070010;
-        public static final int TextView04=0x7f070012;
+        public static final int TextView03=0x7f07000e;
+        public static final int TextView04=0x7f070010;
         public static final int WebView01=0x7f070003;
     }
     public static final class layout {
         public static final int article_show=0x7f030000;
         public static final int feed_list_item=0x7f030001;
-        public static final int gridview=0x7f030002;
-        public static final int gridview_item=0x7f030003;
-        public static final int help_about=0x7f030004;
-        public static final int help_manual=0x7f030005;
-        public static final int init=0x7f030006;
-        public static final int listview=0x7f030007;
-        public static final int listview_item=0x7f030008;
+        public static final int gridview_item=0x7f030002;
+        public static final int help_about=0x7f030003;
+        public static final int help_manual=0x7f030004;
+        public static final int init=0x7f030005;
+        public static final int listview=0x7f030006;
+        public static final int listview_item=0x7f030007;
+        public static final int mian_view=0x7f030008;
         public static final int settings_tab_host=0x7f030009;
     }
     public static final class string {

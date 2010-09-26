@@ -155,7 +155,7 @@ public class ArticlesHelper implements IHelper {
 				
 				map.put(c_title, result.getString(titleIndex));
 				map.put(c_link, result.getString(linkIndex));
-				map.put(c_publishTime, utils.formatCstTimeToLocal(result.getString(timeIndex)));
+				map.put(c_publishTime, utils.formatCstTimeToLocal(result.getString(timeIndex), "MM月dd日 HH:mm"));
 				if(result.getString(unreadIndex).equals("true")) {
 					map.put(c_unread, R.drawable.article_unread);
 				}else {

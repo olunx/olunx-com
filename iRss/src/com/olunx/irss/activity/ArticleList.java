@@ -63,7 +63,6 @@ public class ArticleList extends Activity {
 
 			SimpleAdapter adapter = new SimpleAdapter(ArticleList.this, list, R.layout.listview_item, new String[] { ArticlesHelper.c_unread,
 					ArticlesHelper.c_title, ArticlesHelper.c_publishTime }, new int[] { R.id.ImageView01, R.id.TextView01, R.id.TextView02 });
-			
 			Message msg = new Message();
 			msg.what = REFRESH;
 			msg.obj = adapter;

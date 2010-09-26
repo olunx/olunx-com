@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout android:id="@+id/RelativeLayout01"
-	android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:padding="5dip" android:layout_height="55dip">
+	android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="55dip" android:padding="5dip">
 
 
-	<ImageView android:layout_marginRight="5dip" android:layout_centerVertical="true" android:id="@+id/ImageView01" android:layout_width="27px" android:layout_height="27px"></ImageView>
+	<ImageView android:layout_centerVertical="true" android:id="@+id/ImageView01" android:layout_width="27px" android:layout_height="27px" android:layout_marginRight="8dip"></ImageView>
 	
 	
 

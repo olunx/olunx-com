@@ -207,7 +207,7 @@ public class Rss {
 	 * @param source
 	 * @return
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	private HashMap<String, Object> parseArticleXml(String source, String feedUrl) {
 
 		HashMap<String, Object> singleFeed = new HashMap<String, Object>();

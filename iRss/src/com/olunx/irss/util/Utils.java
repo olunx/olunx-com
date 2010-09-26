@@ -66,11 +66,13 @@ public class Utils {
 	 * 格式化日期为本地习惯
 	 * 
 	 * @param time
+	 * @param format MM月dd日 HH:mm
 	 * @return
 	 */
-	public String formatCstTimeToLocal(String time) {
+	public String formatCstTimeToLocal(String time, String format) {
+		if(time == null || time.equals("")) return null; 
 		SimpleDateFormat source = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
-		SimpleDateFormat dest = new SimpleDateFormat("MM月dd日 HH:mm");
+		SimpleDateFormat dest = new SimpleDateFormat(format);
 		Date date = new Date();
 		try {
 			date = source.parse(time);
