@@ -56,6 +56,30 @@ public class Utils {
 		return sdf.format(date);
 	}
 
+	public String getCstTimeBeforeToday(int days) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - days);
+		return getCstTime(cal.getTime());
+	}
+
+	/**
+	 * 格式化日期为本地习惯
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public String formatCstTimeToLocal(String time) {
+		SimpleDateFormat source = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+		SimpleDateFormat dest = new SimpleDateFormat("MM月dd日 HH:mm");
+		Date date = new Date();
+		try {
+			date = source.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return dest.format(date);
+	}
+
 	/**
 	 * 将日期转换为时间戳
 	 * 
@@ -67,18 +91,9 @@ public class Utils {
 		Date ori = new Date();
 		Date date = new Date();
 		try {
-			// TimeZone tz = sdf.getTimeZone();
-			// System.out.println("Display name: " + tz.getDisplayName());
 			ori = sdf.parse("Thu Jan 01 00:00:00 CST 1970");
-			// Calendar c = sdf.getCalendar();
-			// tz = sdf.getTimeZone();
-			// System.out.println("Display name: " + tz.getDisplayName());
-			// System.out.println(c.getTime());
-			// System.out.println("ori: " + ori);
 
 			date = sdf.parse(dateStr);
-			// tz = sdf.getTimeZone();
-			// System.out.println("Display name: " + tz.getDisplayName());
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -296,8 +311,8 @@ public class Utils {
 	public String ArgbToHexRgb(int color) {
 		String hexColor = Integer.toHexString((color & 0xFFFFFF));
 		int length = hexColor.length();
-		if(length < 6) {
-			for(int i=0;i< 6 - length; i++) {
+		if (length < 6) {
+			for (int i = 0; i < 6 - length; i++) {
 				hexColor = "0" + hexColor;
 			}
 		}

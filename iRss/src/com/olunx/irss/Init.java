@@ -6,6 +6,7 @@ import com.olunx.irss.db.FeedsHelper;
 import com.olunx.irss.reader.Rss;
 import com.olunx.irss.reader.Update;
 import com.olunx.irss.util.Config;
+import com.olunx.irss.util.SysTools;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,11 +32,18 @@ public class Init extends Activity {
 
 	private final int ALERT_RIGHT = 0;
 	private final int ALERT_WRONG = 1;
+	private final int ALERT_DISCONNECT = 2;
 	private ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
+		String status = Environment.getExternalStorageState();
+		if (!status.equals(Environment.MEDIA_MOUNTED)) {
+			Toast.makeText(this, "没有内存卡，程序将自动退出。", Toast.LENGTH_LONG).show();
+			finish();
+		}
+		
 		if (Config.init().isAccountInputted()) {
 			 startMain();
 		}
@@ -43,12 +51,6 @@ public class Init extends Activity {
 		this.setContentView(R.layout.init);
 		super.onCreate(savedInstanceState);
 		
-		String status = Environment.getExternalStorageState();
-		if (!status.equals(Environment.MEDIA_MOUNTED)) {
-			Toast.makeText(this, "没有内存卡，程序将自动退出。", Toast.LENGTH_LONG).show();
-			finish();
-		}
-
 		final EditText usernameTv = (EditText) findViewById(R.id.EditText01);
 		final EditText pwdTv = (EditText) findViewById(R.id.EditText02);
 		Button sureBtn = (Button) findViewById(R.id.Button02);
@@ -72,16 +74,14 @@ public class Init extends Activity {
 						@Override
 						public void onDismiss(DialogInterface dialog) {
 							Log.i(TAG, "pd dismiss");
-							startMain();
 						}});
 					pd.setOnCancelListener(new OnCancelListener(){
 						@Override
 						public void onCancel(DialogInterface dialog) {
-							AlertDialog.Builder adb = new AlertDialog.Builder(Init.this);
-							adb.setMessage("登录失败，请检查用户名密码。");
-							adb.show();
-							Log.i(TAG, "pd cancel");							
+							Log.i(TAG, "pd cancel");
+							startMain();
 						}});
+					
 					new Thread(){
 						@Override
 						public void run() {
@@ -101,6 +101,10 @@ public class Init extends Activity {
 	 * @param pwd
 	 */
 	private void auth(String user, String pwd) {
+		if(!SysTools.isConnect(this)) {
+			mHandler.sendEmptyMessage(ALERT_DISCONNECT);
+			return;
+		}
 		if (new Rss().login(user, pwd)) {
 			Config.init().setAccount(user, pwd);
 			mHandler.sendEmptyMessage(ALERT_RIGHT);
@@ -115,7 +119,7 @@ public class Init extends Activity {
 			aHelper.dropTable();
 			aHelper.close();
 			new Update().updateFeeds();
-			pd.dismiss();
+			pd.cancel();
 		} else {
 			mHandler.sendEmptyMessage(ALERT_WRONG);
 		}
@@ -131,7 +135,6 @@ public class Init extends Activity {
 		this.finish();
 	}
 	
-	
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -140,8 +143,21 @@ public class Init extends Activity {
 				break;
 			}
 			case ALERT_WRONG: {
-				pd.cancel();
+				pd.dismiss();
+				AlertDialog.Builder adb = new AlertDialog.Builder(Init.this);
+				adb.setTitle("提示");
+				adb.setMessage("登录失败，请检查用户名密码。");
+				adb.setPositiveButton("确定", null);
+				adb.show();
 				break;
+			}
+			case ALERT_DISCONNECT:{
+				pd.dismiss();
+				AlertDialog.Builder adb = new AlertDialog.Builder(Init.this);
+				adb.setTitle("提示");
+				adb.setMessage("网络连接不可用，请检查网络。");
+				adb.setPositiveButton("确定", null);
+				adb.show();
 			}
 			}
 		};

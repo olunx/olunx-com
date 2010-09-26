@@ -11,4 +11,8 @@
     <string name="accout_intro">如果。。。</string>
     <string name="btn_nogoogle">不使用Google</string>
     <string name="btn_sure">确定</string>
+    
+    <!-- help -->
+    <string name="about_file_path">zh-cn/about.txt</string>
+	<string name="help_file_path">zh-cn/help.txt</string>
 </resources>

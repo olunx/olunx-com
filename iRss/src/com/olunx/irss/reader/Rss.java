@@ -175,19 +175,19 @@ public class Rss {
 	 * 根据时间获取文章数据，如果时间为空则返回指定条数的数据。
 	 * 
 	 * @param feedXmlUrl
-	 * @param fromDate
+	 * @param timeStamp
 	 */
-	public HashMap<String, Object> downLoadFeedContent(String feedXmlUrl, String fromDate, int articleCount) {
+	public HashMap<String, Object> downLoadFeedContent(String feedXmlUrl, String timeStamp, int articleCount) {
 
 		String feedUrl = "feed/" + feedXmlUrl;
 		String content = "";
 
 		if (dataProvider != null) {
 			try {
-				if (fromDate == null) {
+				if (timeStamp == null) {
 					content = dataProvider.getFeedItems(feedUrl, (articleCount <= 0 ? 5 : articleCount));
 				} else {
-					content = dataProvider.getFeedItemsFromDate(feedUrl, String.valueOf(Utils.init().getTimestamp(fromDate)));
+					content = dataProvider.getFeedItemsFromDate(feedUrl, timeStamp);
 				}
 			} catch (GoogleReaderException e) {
 				e.printStackTrace();

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.FeedsHelper;
 import com.olunx.irss.util.Config;
+import com.olunx.irss.util.Utils;
 
 public class Update {
 
@@ -121,7 +122,14 @@ public class Update {
 			// 获取数据
 			feedXmlUrl = feeds.get(i);
 
-			data = rss.downLoadFeedContent(feedXmlUrl, null, 2);
+			//如果Feed的更新时间为空，则取指定条数据。
+			String updateTime = fHelper.getFeedUpdateTime(feedXmlUrl);
+			String timeStamp = null;
+			if(updateTime != null) {
+				timeStamp = String.valueOf(Utils.init().getTimestamp(updateTime));
+			}
+			
+			data = rss.downLoadFeedContent(feedXmlUrl, timeStamp, 10);
 			if(data == null) continue;
 
 			// 更新Feed的编码

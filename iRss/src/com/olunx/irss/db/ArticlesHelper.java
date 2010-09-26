@@ -1,7 +1,11 @@
 package com.olunx.irss.db;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.olunx.irss.R;
 import com.olunx.irss.util.Config;
 import com.olunx.irss.util.Utils;
 
@@ -73,6 +77,10 @@ public class ArticlesHelper implements IHelper {
 		this.getDB().execSQL("drop table if exists " + TABLE + ";");
 	}
 
+	public boolean isOpen() {
+		return this.getDB().isOpen();
+	}
+
 	/**
 	 * 添加Article
 	 * 
@@ -82,17 +90,17 @@ public class ArticlesHelper implements IHelper {
 		getDB().insert(TABLE, null, values);
 	}
 
-//	/**
-//	 * 更新文章内容
-//	 * 
-//	 * @param link
-//	 * @param content
-//	 */
-//	public void updateArticleContent(String link, String content) {
-//		ContentValues row = new ContentValues();
-//		row.put(c_content, content);
-//		getDB().update(TABLE, row, c_link + "== ? ", new String[] { link });
-//	}
+	// /**
+	// * 更新文章内容
+	// *
+	// * @param link
+	// * @param content
+	// */
+	// public void updateArticleContent(String link, String content) {
+	// ContentValues row = new ContentValues();
+	// row.put(c_content, content);
+	// getDB().update(TABLE, row, c_link + "== ? ", new String[] { link });
+	// }
 
 	/**
 	 * 更新Feed的状态信息
@@ -122,14 +130,49 @@ public class ArticlesHelper implements IHelper {
 	}
 
 	/**
-	 * 获取分类下的文章列表
+	 * 获取指定Feed下的文章列表
 	 * 
-	 * @param articleTitle
+	 * @param feedXmlUrl
 	 * @return
 	 */
-	public Cursor getArticlesByFeedXmlUrl(String feedXmlUrl) {
-		return getDB().query(TABLE, new String[] { c_id, c_title, c_link, c_publishTime}, c_feedXmlUrl + "== ?", new String[] { feedXmlUrl }, null, null,
-				c_publishTime);
+	public ArrayList<Map<String, Object>> getArticlesByFeedXmlUrl(String feedXmlUrl) {
+		Cursor result = getDB().query(TABLE, new String[] { c_id, c_title, c_link, c_publishTime, c_unread, c_stared }, c_feedXmlUrl + "== ?",
+				new String[] { feedXmlUrl }, null, null, c_publishTime);
+		
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		
+		Map<String, Object> map;
+		if (result != null) {
+			result.moveToFirst();
+			int titleIndex = result.getColumnIndex(c_title);
+			int linkIndex = result.getColumnIndex(c_link);
+			int timeIndex = result.getColumnIndex(c_publishTime);
+			int unreadIndex = result.getColumnIndex(c_unread);
+			int staredIndex = result.getColumnIndex(c_stared);
+			Utils utils = new Utils();
+			while (!result.isAfterLast()) {
+				map = new HashMap<String, Object>();
+				
+				map.put(c_title, result.getString(titleIndex));
+				map.put(c_link, result.getString(linkIndex));
+				map.put(c_publishTime, utils.formatCstTimeToLocal(result.getString(timeIndex)));
+				if(result.getString(unreadIndex).equals("true")) {
+					map.put(c_unread, R.drawable.article_unread);
+				}else {
+					map.put(c_unread, R.drawable.article_read);
+				}
+				if(result.getString(staredIndex).equals("true")) {
+					map.put(c_stared, R.drawable.article_stared);
+				}else {
+					map.put(c_stared, R.drawable.article_unstar);
+				}
+				
+				list.add(map);
+				result.moveToNext();
+			}
+		}
+		result.close();
+		return list;
 	}
 
 	/**
@@ -140,8 +183,12 @@ public class ArticlesHelper implements IHelper {
 	 */
 	public String getArticleContentByLink(String link) {
 
-		String content= null;
-		
+		if (link == null) {
+			return null;
+		}
+
+		String content = null;
+
 		Cursor result = getDB().query(TABLE, new String[] { c_id, c_content }, c_link + "== ?", new String[] { link }, null, null, null);
 
 		if (result != null) {
@@ -154,9 +201,47 @@ public class ArticlesHelper implements IHelper {
 		}
 		result.close();
 
+		setArticleUnread(link, false);
+
 		return content;
 	}
-	
+
+	/**
+	 * 设置文章为已读或未读
+	 * 
+	 * @param link
+	 * @param value
+	 */
+	public void setArticleUnread(String link, Boolean value) {
+		ContentValues values = new ContentValues();
+		values.put(c_unread, String.valueOf(value));
+		getDB().update(TABLE, values, c_link + "== ?", new String[] { link });
+	}
+
+	/**
+	 * 获取一篇未读文章的链接
+	 * 
+	 * @param feedXmlUrl
+	 * @return
+	 */
+	public String getUnreadArticleLinkByFeedXmlUrl(String feedXmlUrl) {
+		String content = null;
+
+		Cursor result = getDB().query(true, TABLE, new String[] { c_id, c_link }, c_feedXmlUrl + "== ? and " + c_unread + "== 'true'",
+				new String[] { feedXmlUrl }, null, null, null, "1");
+		if (result != null) {
+			result.moveToFirst();
+			int linkIndex = result.getColumnIndex(c_link);
+			while (!result.isAfterLast()) {
+				content = result.getString(linkIndex);
+				result.moveToNext();
+			}
+		}
+		result.close();
+
+		return content;
+	}
+
 	/**
 	 * 判断文章是否存在
 	 * 

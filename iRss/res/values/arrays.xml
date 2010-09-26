@@ -21,14 +21,20 @@
 <item>夜间模式</item>
 <item>护眼模式</item>
 </string-array>
-<string-array name="article_count">
-<item>5</item>
-<item>10</item>
-<item>15</item>
-<item>20</item>
-<item>25</item>
-<item>50</item>
-<item>75</item>
-<item>100</item>
+<string-array name="store_article_time">
+<item>一个星期内</item>
+<item>两个星期内</item>
+<item>三个星期内</item>
+<item>一个月内</item>
+<item>两个月内</item>
+<item>三个月内</item>
+</string-array>
+<string-array name="store_article_time_value">
+<item>7</item>
+<item>14</item>
+<item>21</item>
+<item>30</item>
+<item>60</item>
+<item>90</item>
 </string-array>
 </resources>

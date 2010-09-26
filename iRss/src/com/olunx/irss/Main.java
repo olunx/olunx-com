@@ -3,10 +3,12 @@ package com.olunx.irss;
 import java.util.ArrayList;
 
 import com.olunx.irss.activity.ArticleList;
-import com.olunx.irss.activity.Settings;
+import com.olunx.irss.activity.help.Helps;
+import com.olunx.irss.activity.settings.Settings;
 import com.olunx.irss.db.CategoryHelper;
 import com.olunx.irss.db.FeedsHelper;
 import com.olunx.irss.reader.Update;
+import com.olunx.irss.util.SysTools;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,6 +49,7 @@ public class Main extends Activity {
 	private ToggleButton lastBtn;// 最后一次选中的按钮
 
 	private final int MSG_REFRESH = 0;// 刷新UI
+	private final int ALERT_DISCONNECT = 1;//网络连接不可用
 
 	/** Called when the activity is first created. */
 	@Override
@@ -91,7 +94,7 @@ public class Main extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MSG_REFRESH: {
-				init();
+//				init();
 				// 关闭当前cursor
 				if (cursor != null) {
 					cursor.close();
@@ -99,6 +102,13 @@ public class Main extends Activity {
 				onResume();
 				Toast.makeText(Main.this, "更新数据完成！o(∩_∩)o 哈哈", Toast.LENGTH_SHORT).show();
 				break;
+			}
+			case ALERT_DISCONNECT:{
+				AlertDialog.Builder adb = new AlertDialog.Builder(Main.this);
+				adb.setTitle("提示");
+				adb.setMessage("网络连接不可用，请检查网络。");
+				adb.setPositiveButton("确定", null);
+				adb.show();
 			}
 			}
 		}
@@ -321,40 +331,44 @@ public class Main extends Activity {
 		super.onPause();
 	}
 
+	private final int MENU_ADD = 10;
+	private final int MENU_SETTINGS = 13;
+	private final int MENU_UPDATE = 14;
+	private final int MENU_HELP = 15;
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(1, 1, 1, "添加").setIcon(android.R.drawable.ic_menu_add);
-		menu.add(1, 2, 2, "退出").setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-		menu.add(2, 3, 1, "搜索").setIcon(android.R.drawable.ic_menu_search);
-		menu.add(2, 4, 2, "设置").setIcon(android.R.drawable.ic_menu_preferences);
-		menu.add(3, 5, 1, "更新").setIcon(android.R.drawable.ic_menu_upload);
-		menu.add(3, 6, 2, "帮助").setIcon(android.R.drawable.ic_menu_help);
+		menu.add(1, MENU_ADD, 1, "添加").setIcon(android.R.drawable.ic_menu_add);
+		menu.add(1, MENU_SETTINGS, 2, "设置").setIcon(android.R.drawable.ic_menu_preferences);
+		menu.add(2, MENU_UPDATE, 1, "更新").setIcon(android.R.drawable.ic_menu_upload);
+		menu.add(2, MENU_HELP, 2, "帮助").setIcon(android.R.drawable.ic_menu_help);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
-		case 1: {
+		case MENU_ADD: {
+//			Intent i = new Intent();
+//			this.startActivity(i);
 			break;
 		}
-		case 2: {
-			break;
-		}
-		case 3: {
-			break;
-		}
-		case 4: {
+		case MENU_SETTINGS: {
 			Intent i = new Intent();
 			i.setClass(this, Settings.class);
 			this.startActivity(i);
 			break;
 		}
-		case 5: {
+		case MENU_UPDATE: {
 			Toast.makeText(this, "开始更新所有Feed...", Toast.LENGTH_SHORT).show();
 			currentCatTitle = null;//更新所有Feed的文章
 			new Thread() {
 				public void run() {
+					if(!SysTools.isConnect(Main.this)) {
+						mHandler.sendEmptyMessage(ALERT_DISCONNECT);
+						return;
+					}
+					System.out.println("network connected!");
 					new Update().updateAllArticles();
 					System.out.println("finished!");
 					mHandler.sendEmptyMessage(MSG_REFRESH);
@@ -362,8 +376,10 @@ public class Main extends Activity {
 			}.start();
 			break;
 		}
-		case 6: {
-			Toast.makeText(this, "删除数据!", Toast.LENGTH_SHORT).show();
+		case MENU_HELP: {
+			Intent i = new Intent();
+			i.setClass(this, Helps.class);
+			this.startActivity(i);
 			break;
 		}
 		}

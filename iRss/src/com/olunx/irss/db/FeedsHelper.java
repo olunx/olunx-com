@@ -237,6 +237,8 @@ public class FeedsHelper implements IHelper {
 			}
 		}
 		result.close();
+		
+		System.out.println("feed update time: " + str);
 
 		return str;
 	}

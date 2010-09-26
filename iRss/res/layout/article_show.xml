@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
 
-	<WebView android:text="@+id/WebView01" android:id="@+id/TextView01" android:layout_height="fill_parent" android:layout_width="fill_parent"></WebView>
+
+<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
+<WebView android:text="@+id/WebView01" android:id="@+id/WebView01" android:layout_height="wrap_content" android:layout_width="fill_parent"></WebView>
+
 </LinearLayout>
+
+
+
+
+<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="5dip" android:background="#ffffff">
+<Button android:id="@+id/Button01" android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight="0.8" android:text="下一篇文章"></Button>
+<ImageButton android:id="@+id/ImageButton01" android:layout_height="wrap_content" android:layout_width="wrap_content" android:paddingTop="10dip" android:src="@drawable/arrow_up"></ImageButton>
+</LinearLayout>
+
+</LinearLayout>
+
+
+</ScrollView>
