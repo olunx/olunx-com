@@ -4,7 +4,7 @@
 	android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="55dip" android:padding="5dip">
 
 
-	<ImageView android:layout_centerVertical="true" android:id="@+id/ImageView01" android:layout_width="27px" android:layout_height="27px" android:layout_marginRight="8dip"></ImageView>
+	<ImageView android:layout_centerVertical="true" android:id="@+id/ImageView01" android:layout_marginRight="8dip" android:layout_height="32px" android:layout_width="32px"></ImageView>
 	
 	
 

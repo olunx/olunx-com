@@ -13,6 +13,9 @@ import com.olunx.irss.util.SysTools;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,7 +40,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class Main extends Activity {
 
-	private final String TAG = "com.olunx.Main";
+	private final String TAG = "com.olunx.irss.Main";
 	private ListView listview;
 	private ItemClickListener itemClickListener;// Feed Item点击事件
 	private ItemLongClickListener itemLongClickListener;// Feed Item长按事件
@@ -46,10 +49,15 @@ public class Main extends Activity {
 	private ArrayList<String> allTitles;// 所有分类标题
 	private ToggleButton lastBtn;// 最后一次选中的按钮
 
-	private final int MSG_REFRESH_UI = 0;// 刷新UI
 	private final int ALERT_DISCONNECT = 1;// 网络连接不可用
 	private final int MSG_REFRESH_LISTVIEW = 2;// 刷新listview
+	private final int MSG_NOTIFY_UPDATED = 3; // 消息栏通知
 
+	private Notification notification;
+	private NotificationManager notificationManager;
+	private Intent intent;
+	private PendingIntent pendIntent;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +69,13 @@ public class Main extends Activity {
 		itemLongClickListener = new ItemLongClickListener();
 		listview.setOnItemClickListener(itemClickListener);
 		listview.setOnItemLongClickListener(itemLongClickListener);
+		
+		notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);// 获取系统服务（消息管理）
+		// 点击通知时转移内容
+		intent = new Intent(this, Main.class);
+		// 设置点击通知时显示内容的类
+		pendIntent = PendingIntent.getActivity(this, 0, intent, 0);
+		notification = new Notification();
 
 		init();// 初始化数据
 	}
@@ -128,7 +143,7 @@ public class Main extends Activity {
 			@Override
 			public void run() {
 				ArrayList<Map<String, Object>> list = helper.getFeedsByCategory(catTitle);
-				SimpleAdapter adapter = new SimpleAdapter(Main.this, list, R.layout.listview_item, new String[] { FeedsHelper.c_icon,
+				SimpleAdapter adapter = new SimpleAdapter(Main.this, list, R.layout.feed_list_item, new String[] { FeedsHelper.c_icon,
 						FeedsHelper.c_title, FeedsHelper.c_text }, new int[] { R.id.ImageView01, R.id.TextView01, R.id.TextView02 });
 				Message msg = new Message();
 				msg.obj = adapter;
@@ -165,28 +180,35 @@ public class Main extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MSG_REFRESH_UI: {
-				onResume();
-				Toast.makeText(Main.this, "更新数据完成！o(∩_∩)o 哈哈", Toast.LENGTH_SHORT).show();
-				break;
-			}
 			case ALERT_DISCONNECT: {
-				AlertDialog.Builder adb = new AlertDialog.Builder(Main.this);
-				adb.setTitle("提示");
-				adb.setMessage("网络连接不可用，请检查网络。");
-				adb.setPositiveButton("确定", null);
-				adb.show();
+				setNotification("网络连接失败，请检查网络是否可用。","网络连接不可用，更新失败。");
 				break;
 			}
 			case MSG_REFRESH_LISTVIEW: {
 				listview.setAdapter((SimpleAdapter) msg.obj);
 				break;
 			}
-
+			case MSG_NOTIFY_UPDATED: {
+				onResume();
+				setNotification("订阅更新完成了...o(∩_∩)o","订阅更新完成");
+				break;
+			}
 			}
 		}
 	};
 
+	/**
+	 * 消息栏通知
+	 */
+	private void setNotification(String tickerText, String infoText) {
+		notification.icon = R.drawable.logo_32;// 设置在状态栏显示的图标
+		notification.tickerText = tickerText;// 设置在状态栏显示的内容
+		notification.defaults = Notification.DEFAULT_SOUND;// 默认的声音
+		// 设置通知显示的参数
+		notification.setLatestEventInfo(Main.this, "iRss", infoText, pendIntent);
+		notificationManager.notify(0, notification);// 执行通知.
+	}
+	
 	/**
 	 * 按钮短按事件
 	 */
@@ -238,8 +260,12 @@ public class Main extends Activity {
 								Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
 								new Thread() {
 									public void run() {
+										if (!SysTools.isConnect(Main.this)) {
+											mHandler.sendEmptyMessage(ALERT_DISCONNECT);
+											return;
+										}
 										new Update().updateArticlesByCat(selectTitle);
-										mHandler.sendEmptyMessage(MSG_REFRESH_UI);
+										mHandler.sendEmptyMessage(MSG_NOTIFY_UPDATED);
 									}
 								}.start();
 								break;
@@ -310,8 +336,12 @@ public class Main extends Activity {
 						Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
 						new Thread() {
 							public void run() {
+								if (!SysTools.isConnect(Main.this)) {
+									mHandler.sendEmptyMessage(ALERT_DISCONNECT);
+									return;
+								}
 								new Update().updateArticlesByfeed(selectXmlUrl);
-								mHandler.sendEmptyMessage(MSG_REFRESH_UI);
+								mHandler.sendEmptyMessage(MSG_NOTIFY_UPDATED);
 							}
 						}.start();
 						break;
@@ -349,6 +379,7 @@ public class Main extends Activity {
 		case MENU_ADD: {
 			// Intent i = new Intent();
 			// this.startActivity(i);
+
 			break;
 		}
 		case MENU_SETTINGS: {
@@ -369,7 +400,7 @@ public class Main extends Activity {
 					System.out.println("network connected!");
 					new Update().updateAllArticles();
 					System.out.println("finished!");
-					mHandler.sendEmptyMessage(MSG_REFRESH_UI);
+					mHandler.sendEmptyMessage(MSG_NOTIFY_UPDATED);
 				}
 			}.start();
 			break;

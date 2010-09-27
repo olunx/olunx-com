@@ -6,6 +6,7 @@
     <string name="welcome">欢迎使用iRss</string>
     <string name="google_username">Google用户名</string>
     <string name="google_password">Google密码</string>
+    <string name="text_gmail">x@gmail.com</string>
     <string name="hint_username">请输入用户名</string>
     <string name="hint_password">请输入密码</string>
     <string name="accout_intro">如果。。。</string>

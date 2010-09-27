@@ -21,7 +21,6 @@ public class SysTools {
 		if (connectivity != null) {
 			// 获取网络信息
 			NetworkInfo info = connectivity.getActiveNetworkInfo();
-			info.isConnected();
 			if (info != null) {
 				// 判断当前网络是否已经连接
 				if (info.getState() == NetworkInfo.State.CONNECTED) {

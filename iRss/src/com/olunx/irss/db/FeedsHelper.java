@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.olunx.irss.R;
 import com.olunx.irss.util.Config;
 import com.olunx.irss.util.Utils;
 
@@ -182,7 +183,7 @@ public class FeedsHelper implements IHelper {
 	 */
 	public ArrayList<Map<String, Object>> getFeedsByCategory(String catTitle) {
 		Cursor result = getDB().query(TABLE, new String[] { c_icon, c_title, c_articleCount, c_xmlUrl, c_charset, c_updateTime }, c_catTitle + "== ?",
-				new String[] { catTitle }, null, null, null);
+				new String[] { catTitle }, null, null, c_updateTime + " desc");
 		
 		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
@@ -210,8 +211,11 @@ public class FeedsHelper implements IHelper {
 				String updateTime = utils.formatCstTimeToLocal(result.getString(timeIndex), "MM月dd日");
 				if(updateTime == null) {
 					updateTime = "从未";
+					map.put(c_icon, R.drawable.rss_never_update);
 				}
-				String summary = "文章数: " + articleCount + "   更新: " + updateTime;
+				
+				String summary = "文章: " + articleCount + "   更新: " + updateTime;
+				
 				map.put(c_text, summary);
 				
 				list.add(map);

@@ -558,6 +558,7 @@ public class SAXHandler extends DefaultHandler implements LexicalHandler, DeclHa
 				attribute = factory.attribute(attQName, atts.getValue(i), attType);
 			} else if (!attQName.equals(attLocalName)) {
 				String attPrefix = attQName.substring(0, attQName.indexOf(":"));
+//				String attPrefix = "";
 				Namespace attNs = Namespace.getNamespace(attPrefix, atts.getURI(i));
 
 				attribute = factory.attribute(attLocalName, atts.getValue(i), attType, attNs);

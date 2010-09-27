@@ -137,7 +137,7 @@ public class ArticlesHelper implements IHelper {
 	 */
 	public ArrayList<Map<String, Object>> getArticlesByFeedXmlUrl(String feedXmlUrl) {
 		Cursor result = getDB().query(TABLE, new String[] { c_id, c_title, c_link, c_publishTime, c_unread, c_stared }, c_feedXmlUrl + "== ?",
-				new String[] { feedXmlUrl }, null, null, c_publishTime);
+				new String[] { feedXmlUrl }, null, null, c_publishTime + " desc");
 		
 		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		

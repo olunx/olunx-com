@@ -2,6 +2,9 @@ package com.olunx.irss.reader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +13,7 @@ import java.util.List;
 import com.olunx.irss.R;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.FeedsHelper;
+import com.olunx.irss.util.Config;
 import com.olunx.irss.util.Utils;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -151,7 +155,7 @@ public class Rss {
 				feed.put(FeedsHelper.c_htmlUrl, o.getHtmlUrl());
 				feed.put(FeedsHelper.c_xmlUrl, o.getXmlUrl());
 				feed.put(FeedsHelper.c_catTitle, "未分类");
-				feed.put(FeedsHelper.c_icon, R.drawable.icon);
+				feed.put(FeedsHelper.c_icon, R.drawable.rss_recent_update);
 			} else {
 				for (Outline c : o.getChilds()) {
 					feed = new ContentValues();
@@ -160,7 +164,7 @@ public class Rss {
 					feed.put(FeedsHelper.c_htmlUrl, c.getHtmlUrl());
 					feed.put(FeedsHelper.c_xmlUrl, c.getXmlUrl());
 					feed.put(FeedsHelper.c_catTitle, o.getTitle());
-					feed.put(FeedsHelper.c_icon, R.drawable.icon);
+					feed.put(FeedsHelper.c_icon, R.drawable.rss_recent_update);
 					array.add(feed);
 				}
 			}
@@ -193,7 +197,16 @@ public class Rss {
 				e.printStackTrace();
 			}
 
-			// Log.i(TAG, "feed content: " + content);
+			
+//			try {
+//				content = URLEncoder.encode(content, "utf-8").replaceAll("\\+", " ").trim();
+//				content = URLDecoder.decode(content, "utf-8");
+//			} catch (UnsupportedEncodingException e) {
+//				e.printStackTrace();
+//			}
+			
+			Utils.init().copyFile(content, Config.SDCARD_PATH + "feed.xml");
+			Log.i(TAG, "feed content: " + content);
 			Log.i(TAG, "parse feed: " + feedUrl);
 			return parseArticleXml(content, feedXmlUrl);// 解析rss内容
 		}

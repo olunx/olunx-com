@@ -79,7 +79,7 @@ public class CategoryHelper implements IHelper {
 		row = new ContentValues();
 		row.put(c_title, catTitle);
 		row.put(c_feedCount, feedCount);
-		row.put(c_icon, R.drawable.icon);
+		row.put(c_icon, R.drawable.cat_icon);
 		getDB().insert(TABLE, null, row);
 	}
 
