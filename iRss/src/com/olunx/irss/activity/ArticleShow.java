@@ -40,10 +40,10 @@ public class ArticleShow extends Activity {
 	private final String TAG = "com.olunx.activity.ArticleShow";
 
 	private String currentFeedXmlUrl;
-	private String currentLink;
+	private String currentArticleId;
 	private String currentCharset;
 	private String currentContent;
-	private String nextLink;
+	private String nextArticleId;
 
 	private final int LOAD_DATA = 0;
 	private final int MENU_FULLSCREEN = 10;
@@ -72,8 +72,8 @@ public class ArticleShow extends Activity {
 			public void onClick(View v) {
 				Log.i(TAG, "click");
 				mButton.setEnabled(false);
-				if (nextLink != null) {
-					currentLink = nextLink;
+				if (nextArticleId != null) {
+					currentArticleId = nextArticleId;
 					setWebViewContent();
 				} else {
 					Toast.makeText(ArticleShow.this, "你已经阅读完该订阅的所有文章了。", Toast.LENGTH_LONG).show();
@@ -83,7 +83,7 @@ public class ArticleShow extends Activity {
 		});
 
 		currentFeedXmlUrl = getIntent().getStringExtra(FeedsHelper.c_xmlUrl);
-		currentLink = getIntent().getStringExtra(ArticlesHelper.c_link);
+		currentArticleId = getIntent().getStringExtra(ArticlesHelper.c_id);
 		currentCharset = getIntent().getStringExtra(FeedsHelper.c_charset);
 	}
 
@@ -109,7 +109,8 @@ public class ArticleShow extends Activity {
 			public void run() {
 				ArticlesHelper helper = new ArticlesHelper();
 
-				currentContent = helper.getArticleContentByLink(currentLink);
+				currentContent = helper.getArticleContentById(currentArticleId);
+				Log.i(TAG, currentContent);
 				// 处理页面样式
 				HtmlParser parser = new HtmlParser(Config.init().getArticleFontColor(), Config.init().getArticleFontSize());
 				currentContent = parser.parseHtml(currentContent);
@@ -123,7 +124,7 @@ public class ArticleShow extends Activity {
 				pd.dismiss();
 
 				// 预读下一篇未读的文章
-				nextLink = helper.getUnreadArticleLinkByFeedXmlUrl(currentFeedXmlUrl);// 文章链接
+				nextArticleId = helper.getUnreadArticleIdByFeedXmlUrl(currentFeedXmlUrl);// 文章链接
 				helper.close();
 			}
 		}.start();

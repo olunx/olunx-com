@@ -1,21 +1,12 @@
 
 package be.lechtitseb.google.reader.api.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import be.lechtitseb.google.reader.api.model.authentication.AuthenticationManager;
 import be.lechtitseb.google.reader.api.model.authentication.GoogleCredentials;
 import be.lechtitseb.google.reader.api.model.exception.AuthenticationException;
 import be.lechtitseb.google.reader.api.model.exception.GoogleReaderException;
 import be.lechtitseb.google.reader.api.model.feed.FeedDescriptor;
 import be.lechtitseb.google.reader.api.model.feed.ItemDescriptor;
-import be.lechtitseb.google.reader.api.model.feed.Label;
-import be.lechtitseb.google.reader.api.model.format.OutputFormat;
-import be.lechtitseb.google.reader.api.model.item.Item;
-import be.lechtitseb.google.reader.api.model.preference.UserPreferences;
-import be.lechtitseb.google.reader.api.model.user.UserInformation;
-import be.lechtitseb.google.reader.api.util.GoogleReaderUtil;
 
 //FIXME the methods javadoc are all copy/pasted from those in GoogleReaderDataProvider, I don't know how to fix this (and if it needs to or not)
 //the problem is that I don't think I can use an interface (return types are different)
@@ -87,68 +78,6 @@ public final class GoogleReader implements
 		api.setCredentials(credentials);
 	}
 	
-	/**
-	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
-	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public List<Item> search(String searchTerm) throws GoogleReaderException{
-		return search(searchTerm,null,null);
-	}
-	
-	/**
-	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
-	 * @param numberOfElements How many items to retrieve
-	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public List<Item> search(String searchTerm, Integer numberOfElements) throws GoogleReaderException{
-		return search(searchTerm,null,numberOfElements);
-	}
-	
-	/**
-	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
-	 * @param feedDescriptor The feed in which to look for the search term
-	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public List<Item> search(String searchTerm, FeedDescriptor feedDescriptor) throws GoogleReaderException{
-		return search(searchTerm,feedDescriptor,null);
-	}
-	
-	/**
-	 * Search for a term in your subscriptions
-	 * @param searchTerm The term to search for
-	 * @param feedDescriptor The feed in which to look for the search term
-	 * @param numberOfElements How many items to retrieve
-	 * @return The list of found items
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public List<Item> search(String searchTerm, FeedDescriptor feedDescriptor, Integer numberOfElements) throws GoogleReaderException{
-		List<Item> returnValue = new ArrayList<Item>();
-
-		String searchResults = api.search(searchTerm,feedDescriptor, numberOfElements, OutputFormat.JSON);
-		List<String> resultsIds =
-				GoogleReaderUtil.getItemIdsFromJson(searchResults);
-		for (String result : resultsIds) {
-			String itemContent = api.getItem(result);
-			returnValue.add(GoogleReaderUtil.getItemFromJson(itemContent));
-		}
-		return returnValue;
-	}
-
-	/**
-	 * Get your current labels (tags)
-	 * @return The list of labels
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public List<Label> getLabels() throws GoogleReaderException{
-		String labelsContent = api.getLabels(OutputFormat.JSON);
-		return GoogleReaderUtil.getLabelsFromJSON(labelsContent);
-	}
 	
 	/**
 	 * Export your subscription list to OPML
@@ -159,34 +88,6 @@ public final class GoogleReader implements
 		return api.exportSubscriptionsToOPML();
 	}
 	
-	/**
-	 * Get the user preferences
-	 * @return The user preferences
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public UserPreferences getUserPreferences() throws GoogleReaderException{
-		String raw = api.getUserPreferences();
-		return GoogleReaderUtil.getUserPreferencesFromJson(raw);
-	}
-	
-	/**
-	 * Get the user information
-	 * @return The user information
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public UserInformation getUserInformation() throws GoogleReaderException{
-		String raw = api.getUserInformation();
-		return GoogleReaderUtil.getUserInformationFromJson(raw);
-	}
-	
-	/**
-	 * Get an unread item (also marks it as READ!)
-	 * @return The next unread item (HTML page!)
-	 * @throws GoogleReaderException If the user is not authenticated
-	 */
-	public String getNextUnreadItem() throws GoogleReaderException{
-		return api.getNextUnreadItem(this.getUserPreferences().getShuffleToken());
-	}
 	
 	/**
 	 * Get an unread item (also marks it as READ!)

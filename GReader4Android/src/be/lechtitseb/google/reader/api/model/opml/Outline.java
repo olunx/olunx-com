@@ -1,8 +1,5 @@
 package be.lechtitseb.google.reader.api.model.opml;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Outline Item for Subsription Menu
  * 
@@ -15,11 +12,15 @@ public class Outline {
 	private String text;
 	private String xmlUrl;
 	private String htmlUrl;
+	private String category;
 
-	private List<Outline> childs = new ArrayList<Outline>();
 
-	public List<Outline> getChilds() {
-		return this.childs;
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getTitle() {

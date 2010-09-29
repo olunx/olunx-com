@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+    <head>
+        <title>Google 阅读器中 olunx 的订阅</title>
+    </head>
+    <body>
+        <outline title="资讯" text="资讯">
+            <outline text="Chrome迷" title="Chrome迷" type="rss"
+                xmlUrl="http://www.chromi.org/feed" htmlUrl="http://www.chromi.org"/>
+            <outline text="GeekPark 捕风捉影" title="GeekPark 捕风捉影"
+                type="rss" xmlUrl="http://feeds.geekpark.net/" htmlUrl="http://www.geekpark.net/"/>
+            <outline text="iMaemo™" title="iMaemo™" type="rss"
+                xmlUrl="http://www.imaemo.com/?feed=rss2" htmlUrl="http://www.imaemo.com"/>
+            <outline text="JavaEye新闻频道" title="JavaEye新闻频道" type="rss"
+                xmlUrl="http://www.javaeye.com/news/rss" htmlUrl="http://www.javaeye.com"/>
+            <outline text="JavaEye论坛最新讨论" title="JavaEye论坛最新讨论"
+                type="rss"
+                xmlUrl="http://www.javaeye.com/index/rss_index_topics" htmlUrl="http://www.javaeye.com"/>
+            <outline text="MeeGo中文站-米锋网" title="MeeGo中文站-米锋网" type="rss"
+                xmlUrl="http://www.meegox.com/feed" htmlUrl="http://www.meegox.com"/>
+            <outline text="小众软件" title="小众软件" type="rss"
+                xmlUrl="http://feed.appinn.com/" htmlUrl="http://www.appinn.com"/>
+            <outline text="想象力也是一种宇宙力量" title="想象力也是一种宇宙力量" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/lichi.xml" htmlUrl="http://blog.sina.com.cn/lichi"/>
+            <outline text="涂雅" title="涂雅" type="rss"
+                xmlUrl="http://feed.iove.net/" htmlUrl="http://iove.net"/>
+        </outline>
+        <outline text="Android 中文论坛 - Android 软件下载"
+            title="Android 中文论坛 - Android 软件下载" type="rss"
+            xmlUrl="http://www.androidin.net/bbs/rss.php?fid=62&amp;auth=0" htmlUrl="http://bbs.gfan.com/forumdisplay.php?fid=62"/>
+        <outline title="Android" text="Android">
+            <outline text="Android Resource | 资源 资讯 教程"
+                title="Android Resource | 资源 资讯 教程" type="rss"
+                xmlUrl="http://www.androidres.com/index.php/feed/" htmlUrl="http://www.androidres.com"/>
+            <outline text="Android资讯网" title="Android资讯网" type="rss"
+                xmlUrl="http://android.hk.cn/?feed=rss2" htmlUrl="http://android.hk.cn"/>
+            <outline text="Hello Android" title="Hello Android"
+                type="rss" xmlUrl="http://www.helloandroid.com/rss.xml" htmlUrl="http://www.helloandroid.com"/>
+            <outline text="mo-Android" title="mo-Android" type="rss"
+                xmlUrl="http://www.moandroid.com/?feed=rss2" htmlUrl="http://www.moandroid.com"/>
+            <outline text="William Hua的Blog" title="William Hua的Blog"
+                type="rss" xmlUrl="http://www.williamhua.com/feed/" htmlUrl="http://www.williamhua.com"/>
+            <outline text="一半是火焰一半是海水" title="一半是火焰一半是海水" type="rss"
+                xmlUrl="http://api.live.net/Users(-527258525974762729)/Main?$format=rss20" htmlUrl="http://xy0811.spaces.live.com/"/>
+            <outline text="博客园-努力吧，专注Android" title="博客园-努力吧，专注Android"
+                type="rss" xmlUrl="http://www.cnblogs.com/halzhang/rss" htmlUrl="http://www.cnblogs.com/halzhang/"/>
+            <outline text="机锋网" title="机锋网" type="rss"
+                xmlUrl="http://www.androidin.com/feed/" htmlUrl="http://geek.gfan.com"/>
+            <outline text="海底鲟" title="海底鲟" type="rss"
+                xmlUrl="http://hi.baidu.com/nosidedeng/rss" htmlUrl="http://hi.baidu.com/nosidedeng"/>
+            <outline text="蛋窝." title="蛋窝." type="rss"
+                xmlUrl="http://www.kugou.me/feed.php" htmlUrl="http://www.kugou.me/index.php"/>
+            <outline text="谷安" title="谷安" type="rss"
+                xmlUrl="http://feed-android.google.org.cn/" htmlUrl="http://android.google.org.cn"/>
+        </outline>
+        <outline title="博客" text="博客">
+            <outline text="Clayman's Graphics Corner"
+                title="Clayman's Graphics Corner" type="rss"
+                xmlUrl="http://www.cnblogs.com/clayman/rss" htmlUrl="http://www.cnblogs.com/clayman/"/>
+            <outline text="iFanr 爱范儿" title="iFanr 爱范儿" type="rss"
+                xmlUrl="http://www.ifanr.com/feed" htmlUrl="http://www.ifanr.com"/>
+            <outline text="Phantasy Says So" title="Phantasy Says So"
+                type="rss"
+                xmlUrl="http://www.sophantasy.com/wordpress/feed/" htmlUrl="http://www.sophantasy.com/wordpress"/>
+            <outline text="可能吧" title="可能吧" type="rss"
+                xmlUrl="http://feeds.kenengba.com/kenengbarss" htmlUrl="http://www.kenengba.com"/>
+            <outline text="岁月如歌" title="岁月如歌" type="rss"
+                xmlUrl="http://lifesinger.org/blog/?feed=rss2" htmlUrl="http://lifesinger.org/blog"/>
+            <outline text="想象力也是一种宇宙力量" title="想象力也是一种宇宙力量" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/lichi.xml" htmlUrl="http://blog.sina.com.cn/lichi"/>
+            <outline text="易中天1001的BLOG" title="易中天1001的BLOG" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/1198392970.xml" htmlUrl="http://blog.sina.com.cn/yizhongtian"/>
+            <outline text="月光博客" title="月光博客" type="rss"
+                xmlUrl="http://feed.williamlong.info/" htmlUrl="http://www.williamlong.info/"/>
+            <outline text="李开复的博客" title="李开复的博客" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/1197161814.xml" htmlUrl="http://blog.sina.com.cn/kaifulee"/>
+            <outline text="柴静·观察" title="柴静·观察" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/1219548027.xml" htmlUrl="http://blog.sina.com.cn/chjguancha"/>
+            <outline text="涂雅" title="涂雅" type="rss"
+                xmlUrl="http://feed.iove.net/" htmlUrl="http://iove.net"/>
+            <outline text="穿过记忆的河流" title="穿过记忆的河流" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/1249424622.xml" htmlUrl="http://blog.sina.com.cn/danbin168"/>
+            <outline text="糗事百科" title="糗事百科" type="rss"
+                xmlUrl="http://feed.feedsky.com/qiushi" htmlUrl="http://www.qiushibaike.com/"/>
+            <outline text="蛋窝." title="蛋窝." type="rss"
+                xmlUrl="http://www.kugou.me/feed.php" htmlUrl="http://www.kugou.me/index.php"/>
+            <outline text="郑渊洁—皮皮鲁之父" title="郑渊洁—皮皮鲁之父" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/1195031270.xml" htmlUrl="http://blog.sina.com.cn/zhyj"/>
+            <outline text="韩寒" title="韩寒" type="rss"
+                xmlUrl="http://blog.sina.com.cn/rss/twocold.xml" htmlUrl="http://blog.sina.com.cn/twocold"/>
+        </outline>
+    </body>
+</opml>

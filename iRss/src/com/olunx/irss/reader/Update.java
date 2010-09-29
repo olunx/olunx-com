@@ -1,7 +1,6 @@
 package com.olunx.irss.reader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.content.ContentValues;
 import android.util.Log;
@@ -105,15 +104,10 @@ public class Update {
 		FeedsHelper fHelper = new FeedsHelper();
 		ArticlesHelper aHelper = new ArticlesHelper();
 		// helper.getRecords(catTitle);
-		String articleTitle = null;
-		ContentValues[] articles = null;
-		ContentValues article = null;
-
+		
 		int length = feeds.size();
 		Log.i(TAG, "update feed number " + length);
 
-		HashMap<String, Object> data = null;
-		String charset;
 		String feedXmlUrl = null;
 		for (int i = 0; i < length; i++) {
 
@@ -129,27 +123,18 @@ public class Update {
 				timeStamp = String.valueOf(Utils.init().getTimestamp(updateTime));
 			}
 			
-			data = rss.downLoadFeedContent(feedXmlUrl, timeStamp, 10);
-			if(data == null) continue;
-
-			// 更新Feed的编码
-			charset = (String) data.get(FeedsHelper.c_charset);
-			fHelper.updateFeedCharset(feedXmlUrl, charset);
+			ArrayList<ContentValues> articles = rss.downLoadFeedContent(feedXmlUrl, timeStamp, 10);
+			if(articles == null) continue;
 
 			// 更新文章
-			articles = (ContentValues[]) data.get(FeedsHelper.c_articles);
-			for (int j = 0; j < articles.length; j++) {
-				article = articles[j];
-
-				articleTitle = (String) article.get(ArticlesHelper.c_title);
-
+			for (ContentValues article : articles) {
+				String articleTitle = (String) article.get(ArticlesHelper.c_title);
 				// 如果文章不存在则添加
 				if (!aHelper.isExistsArticle(articleTitle)) {
 					aHelper.addRecord(article);
 				}
-
 			}
-			data = null;//清空此次数据
+			
 		}
 
 		aHelper.updateFeedsStatus();// 添加完文章后，为Feed表重新统计文章数目。

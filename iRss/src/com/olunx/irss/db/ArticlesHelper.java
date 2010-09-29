@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class ArticlesHelper implements IHelper {
 
-	private final String c_id = "_id";
+	public final static String c_id = "_id";
 	public final static String c_title = "title";
 	public final static String c_desc = "desc";
 	public final static String c_content = "content";
@@ -144,6 +144,7 @@ public class ArticlesHelper implements IHelper {
 		Map<String, Object> map;
 		if (result != null) {
 			result.moveToFirst();
+			int idIndex = result.getColumnIndex(c_id);
 			int titleIndex = result.getColumnIndex(c_title);
 			int linkIndex = result.getColumnIndex(c_link);
 			int timeIndex = result.getColumnIndex(c_publishTime);
@@ -152,7 +153,7 @@ public class ArticlesHelper implements IHelper {
 			Utils utils = new Utils();
 			while (!result.isAfterLast()) {
 				map = new HashMap<String, Object>();
-				
+				map.put(c_id, result.getString(idIndex));
 				map.put(c_title, result.getString(titleIndex));
 				map.put(c_link, result.getString(linkIndex));
 				map.put(c_publishTime, utils.formatCstTimeToLocal(result.getString(timeIndex), "MM月dd日 HH:mm"));
@@ -181,15 +182,15 @@ public class ArticlesHelper implements IHelper {
 	 * @param link
 	 * @return
 	 */
-	public String getArticleContentByLink(String link) {
+	public String getArticleContentById(String id) {
 
-		if (link == null) {
+		if (id == null) {
 			return null;
 		}
 
 		String content = null;
 
-		Cursor result = getDB().query(TABLE, new String[] { c_id, c_content }, c_link + "== ?", new String[] { link }, null, null, null);
+		Cursor result = getDB().query(TABLE, new String[] { c_id, c_content }, c_id + "== ?", new String[] { id }, null, null, null);
 
 		if (result != null) {
 			result.moveToFirst();
@@ -201,7 +202,7 @@ public class ArticlesHelper implements IHelper {
 		}
 		result.close();
 
-		setArticleUnread(link, false);
+		setArticleUnread(id, false);
 
 		return content;
 	}
@@ -212,28 +213,28 @@ public class ArticlesHelper implements IHelper {
 	 * @param link
 	 * @param value
 	 */
-	public void setArticleUnread(String link, Boolean value) {
+	public void setArticleUnread(String id, Boolean value) {
 		ContentValues values = new ContentValues();
 		values.put(c_unread, String.valueOf(value));
-		getDB().update(TABLE, values, c_link + "== ?", new String[] { link });
+		getDB().update(TABLE, values, c_id + "== ?", new String[] { id });
 	}
 
 	/**
-	 * 获取一篇未读文章的链接
+	 * 获取一篇未读文章的id
 	 * 
 	 * @param feedXmlUrl
 	 * @return
 	 */
-	public String getUnreadArticleLinkByFeedXmlUrl(String feedXmlUrl) {
+	public String getUnreadArticleIdByFeedXmlUrl(String feedXmlUrl) {
 		String content = null;
 
-		Cursor result = getDB().query(true, TABLE, new String[] { c_id, c_link }, c_feedXmlUrl + "== ? and " + c_unread + "== 'true'",
+		Cursor result = getDB().query(true, TABLE, new String[] { c_id }, c_feedXmlUrl + "== ? and " + c_unread + "== 'true'",
 				new String[] { feedXmlUrl }, null, null, null, "1");
 		if (result != null) {
 			result.moveToFirst();
-			int linkIndex = result.getColumnIndex(c_link);
+			int idIndex = result.getColumnIndex(c_id);
 			while (!result.isAfterLast()) {
-				content = result.getString(linkIndex);
+				content = result.getString(idIndex);
 				result.moveToNext();
 			}
 		}

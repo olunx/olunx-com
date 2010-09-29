@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,6 +25,7 @@ public class ArticleList extends Activity {
 	private ListView listview;
 	private String xmlUrl;
 	private String charset;
+	private final String TAG = "com.olunx.irss.activity.ArticleList";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +40,11 @@ public class ArticleList extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
 				Map<String, Object> map = (Map<String, Object>) arg0.getItemAtPosition(position);
 				String title = (String) map.get(ArticlesHelper.c_title);
-				String link = (String) map.get(ArticlesHelper.c_link);
+				String id = (String) map.get(ArticlesHelper.c_id);
 				Intent i = new Intent();
 				i.putExtra(ArticlesHelper.c_title, title);// 文章标题
-				i.putExtra(ArticlesHelper.c_link, link);// 文章链接
+				i.putExtra(ArticlesHelper.c_id, id);// 文章链接
+				Log.i(TAG, id);
 				i.putExtra(FeedsHelper.c_charset, charset);// 内容编码
 				i.putExtra(FeedsHelper.c_xmlUrl, xmlUrl);// Feed链接
 				i.setClass(ArticleList.this, ArticleShow.class);
