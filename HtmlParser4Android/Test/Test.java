@@ -133,8 +133,6 @@ public class Test {
 				TagNode tag = (TagNode) node;
 				if (tag.getAttribute("style") != null)
 					tag.setAttribute("style", "none");
-				// System.out.println(node.getClass() +
-				// "=======================" + node.getText());
 			}
 
 			parseNodes(node.getChildren());// 处理子节点
@@ -144,10 +142,43 @@ public class Test {
 		return nodes;
 	}
 
+	public NodeList parseXmlNodes(NodeList list) {
+		if (list == null)
+			return null;
+
+		NodeList nodes = new NodeList();
+		Node node = null;
+		SimpleNodeIterator iterator = list.elements();
+
+		while (iterator.hasMoreNodes()) {
+			node = iterator.nextNode();
+			if (node == null)
+				break;
+			// 处理各种包含样式的节点
+			if (node instanceof ImageTag) {// img
+			} else if (node instanceof ParagraphTag) {// p
+				ParagraphTag p = (ParagraphTag) node;
+			} else if (node instanceof Div) {// div
+				Div div = (Div) node;
+			} else if (node instanceof Span) {// span
+				Span span = (Span) node;
+			} else if (node instanceof TagNode) {// pre
+				TagNode tag = (TagNode) node;
+				System.out.println(tag.getTagName());
+			}
+
+			parseNodes(node.getChildren());// 处理子节点
+			nodes.add(node);
+		}
+
+		return nodes;
+	}
+	
 	public void parse() throws ParserException {
 		Parser parser = new Parser();
-		parser.setURL("html/feed.html");
+		parser.setURL("html/feed.xml");
 		NodeList list = parser.parse(null);
-		System.out.println(parseNodes(list).toHtml());
+		parseXmlNodes(list);
+//		System.out.println(parseNodes(list).toHtml());
 	}
 }

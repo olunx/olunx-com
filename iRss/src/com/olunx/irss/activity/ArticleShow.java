@@ -110,7 +110,7 @@ public class ArticleShow extends Activity {
 				ArticlesHelper helper = new ArticlesHelper();
 
 				currentContent = helper.getArticleContentById(currentArticleId);
-				Log.i(TAG, currentContent);
+				
 				// 处理页面样式
 				HtmlParser parser = new HtmlParser(Config.init().getArticleFontColor(), Config.init().getArticleFontSize());
 				currentContent = parser.parseHtml(currentContent);

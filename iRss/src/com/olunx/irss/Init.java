@@ -3,7 +3,7 @@ package com.olunx.irss;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.CategoryHelper;
 import com.olunx.irss.db.FeedsHelper;
-import com.olunx.irss.reader.Rss;
+import com.olunx.irss.reader.Google;
 import com.olunx.irss.reader.Update;
 import com.olunx.irss.util.Config;
 import com.olunx.irss.util.SysTools;
@@ -105,7 +105,7 @@ public class Init extends Activity {
 			mHandler.sendEmptyMessage(ALERT_DISCONNECT);
 			return;
 		}
-		if (new Rss().login(user, pwd)) {
+		if (new Google().login(user, pwd)) {
 			Config.init().setAccount(user, pwd);
 			mHandler.sendEmptyMessage(ALERT_RIGHT);
 			Log.i(TAG, "download feed start");
@@ -118,7 +118,7 @@ public class Init extends Activity {
 			ArticlesHelper aHelper = new ArticlesHelper();
 			aHelper.dropTable();
 			aHelper.close();
-			new Update().updateFeeds();
+			new Update().getFeedsFromGoogle();
 			pd.cancel();
 		} else {
 			mHandler.sendEmptyMessage(ALERT_WRONG);

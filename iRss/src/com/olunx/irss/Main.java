@@ -203,7 +203,6 @@ public class Main extends Activity {
 	private void setNotification(String tickerText, String infoText) {
 		notification.icon = R.drawable.logo_32;// 设置在状态栏显示的图标
 		notification.tickerText = tickerText;// 设置在状态栏显示的内容
-		notification.defaults = Notification.DEFAULT_SOUND;// 默认的声音
 		// 设置通知显示的参数
 		notification.setLatestEventInfo(Main.this, "iRss", infoText, pendIntent);
 		notificationManager.notify(0, notification);// 执行通知.
@@ -379,7 +378,6 @@ public class Main extends Activity {
 		case MENU_ADD: {
 			// Intent i = new Intent();
 			// this.startActivity(i);
-
 			break;
 		}
 		case MENU_SETTINGS: {
@@ -399,7 +397,6 @@ public class Main extends Activity {
 					}
 					System.out.println("network connected!");
 					new Update().updateAllArticles();
-					System.out.println("finished!");
 					mHandler.sendEmptyMessage(MSG_NOTIFY_UPDATED);
 				}
 			}.start();

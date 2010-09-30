@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="E:/Develop/Java_WorkSpace/android/olunx-com/lib/htmlparser.jar"/>
-	<classpathentry kind="lib" path="E:/Develop/Java_WorkSpace/android/olunx-com/lib/greader.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GReader4Android"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

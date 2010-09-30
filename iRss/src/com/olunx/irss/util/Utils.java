@@ -321,7 +321,6 @@ public class Utils {
 	 * @return
 	 */
 	public String parseTextToHtmlForWebview(String charset, String title, String content, String desc) {
-		System.out.println("parseTextToHtmlForWebview()");
 		StringBuffer sb = new StringBuffer();
 		sb.append("<html><head><meta http-equiv='content-type' content='text/html; charset=");
 		sb.append(charset);
@@ -334,15 +333,7 @@ public class Utils {
 		}
 		sb.append("</body></html>");
 
-		String result = sb.toString();
-		// try {
-		// result = URLEncoder.encode(result, "utf-8").replaceAll("\\+",
-		// " ").trim();
-		// } catch (UnsupportedEncodingException e) {
-		// e.printStackTrace();
-		// }
-
-		return result;
+		return sb.toString();
 	}
 
 	/**

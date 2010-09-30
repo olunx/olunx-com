@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.olunx.irss.R;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.FeedsHelper;
 import com.olunx.irss.util.Config;
@@ -14,54 +15,83 @@ public class Update {
 
 	private final String TAG = "com.olunx.reader.Update";
 
-	private Rss rss;
+	private Google google;
 
 	public Update() {
 		super();
 		String user = Config.init().getUsername();
 		String pwd = Config.init().getPassword();
-		Log.i(TAG, user);
-		Log.i(TAG, pwd);
-		if (rss == null) {
-			Log.i(TAG, "new rss");
-			rss = new Rss();
-			rss.login(user, pwd);
-		} else if (!rss.isLongin()) {
-			rss.login(user, pwd);
+		if (google == null) {
+			google = new Google();
+			google.login(user, pwd);
 		}
 	}
 
 	/**
 	 * 更新Feed条目
 	 */
-	public void updateFeeds() {
+	public void getFeedsFromGoogle() {
 		Log.i(TAG, "update feeds start");
 
-		ArrayList<ContentValues> array = rss.downLoadAllFeeds();
+		ArrayList<ContentValues> array = google.downLoadAllFeeds();
 
 		// 如果没有数据，则返回。
 		if (array == null)
 			return;
 
 		FeedsHelper helper = new FeedsHelper();
-
 		int len = array.size();
-		System.out.println("feed count" + len);
-		ContentValues mValues;
+		Log.i(TAG, String.valueOf(len));
 		for (int i = 0; i < len; i++) {
-			mValues = array.get(i);
-			System.out.println("object:" + i + "  " + mValues.toString());
+			ContentValues mValues = array.get(i);
 			if (helper.isExistsFeed(mValues.get(FeedsHelper.c_xmlUrl).toString())) {
 				helper.updateRecord(mValues);
 			} else {
 				helper.addRecord(mValues);
 			}
 		}
-		helper.updateCategoryStatus();// 添加完Feed后，为Category表重新统计Feed条数。
+		helper.updateCategoryStatus();// 为Category表重新统计Feed条数。
 		helper.close();
 
 	}
 
+	/**
+	 * 添加一条Feed
+	 * 
+	 * @param feedXmlUrl
+	 * @param title
+	 * @param category
+	 */
+	public void addFeed(String feedXmlUrl, String title, String category) {
+		ContentValues feed = new ContentValues();
+		feed.put(FeedsHelper.c_title, title);
+		feed.put(FeedsHelper.c_text, "");
+		feed.put(FeedsHelper.c_htmlUrl, "");
+		feed.put(FeedsHelper.c_xmlUrl, feedXmlUrl);
+		feed.put(FeedsHelper.c_catTitle, category);
+		feed.put(FeedsHelper.c_charset, "utf-8");
+		feed.put(FeedsHelper.c_icon, R.drawable.rss_recent_update);
+		
+		FeedsHelper helper = new FeedsHelper();
+		helper.addRecord(feed);
+		helper.updateCategoryStatus();// 为Category表重新统计Feed条数。
+		helper.close();
+		
+		google.addFeed(feedXmlUrl, title, category);
+	}
+	
+	/**
+	 * 删除一条feed
+	 * @param feedXmlUrl
+	 */
+	public void deleteFeed(String feedXmlUrl){
+		FeedsHelper helper = new FeedsHelper();
+		helper.deleteRecord(feedXmlUrl);
+		helper.updateCategoryStatus();// 为Category表重新统计Feed条数。
+		helper.close();
+		
+		google.deleteFeed(feedXmlUrl);
+	}
 	/**
 	 *更新所有Feed 
 	 */
@@ -123,7 +153,7 @@ public class Update {
 				timeStamp = String.valueOf(Utils.init().getTimestamp(updateTime));
 			}
 			
-			ArrayList<ContentValues> articles = rss.downLoadFeedContent(feedXmlUrl, timeStamp, 10);
+			ArrayList<ContentValues> articles = google.downLoadFeedContent(feedXmlUrl, timeStamp, 10);
 			if(articles == null) continue;
 
 			// 更新文章

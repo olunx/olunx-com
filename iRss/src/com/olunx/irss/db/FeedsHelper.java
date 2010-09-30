@@ -326,8 +326,8 @@ public class FeedsHelper implements IHelper {
 	 * 
 	 * @param feedTitle
 	 */
-	public void deleteRecord(String feedTitle) {
-		String sql = "delete from " + TABLE + " where " + c_title + " == '" + feedTitle + "'";
+	public void deleteRecord(String feedXmlUrl) {
+		String sql = "delete from " + TABLE + " where " + c_xmlUrl + " == '" + feedXmlUrl + "'";
 		this.getDB().execSQL(sql);
 	}
 

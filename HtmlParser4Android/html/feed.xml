@@ -1,0 +1,308 @@
+<?xml version="1.0"?><feed xmlns:idx="urn:atom-extension:indexing" xmlns:media="http://search.yahoo.com/mrss/" xmlns:gr="http://www.google.com/schemas/reader/atom/" xmlns="http://www.w3.org/2005/Atom" idx:index="no" gr:dir="ltr"><!--
+Content-type: Preventing XSRF in IE.
+
+--><generator uri="http://www.google.com/reader">Google Reader</generator><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title>Android Resource | 资源 资讯 教程</title><subtitle type="html">Discuss developing Android applications using the Android framework and Collect android resource</subtitle><gr:continuation>CNXmifWMxp0C</gr:continuation><link rel="self" href="https://www.google.com/reader/atom/feed/http://www.androidres.com/index.php/feed/?n=10"/><link rel="alternate" href="http://www.androidres.com" type="text/html"/><updated>2010-01-13T01:05:43Z</updated><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1263344743522"><id gr:original-id="http://www.androidres.com/?p=717">tag:google.com,2005:reader/item/8f0b62c631296a36</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Daily Cakes"/><category term="Android Bluetooth"/><category term="Android Live Folders"/><category term="Android QuickContactsBadge"/><category term="Text-To-Speech"/><title type="html">Android官方开发网站扩充资源模块</title><published>2010-01-12T09:52:26Z</published><updated>2010-01-12T09:52:26Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2010/01/12/new-resources-and-sample-code-on-android-developers/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:center"&gt;&lt;img style="border:3px solid #e6e6e6" title="Adding new Resources in Android developers" src="http://www.androidres.com/wp-content/uploads/2010/01/resource.jpg" alt="" width="524" height="286"&gt;&lt;/p&gt;
+&lt;p&gt;对于较细心的朋友而言，应该会注意到&lt;a title="Android SDK官方网站" href="http://developer.android.com/index.html"&gt;Android SDK官方网站&lt;/a&gt;新增了一个“&lt;a title="Resource" href="http://developer.android.com/resources/index.html"&gt;Resource&lt;/a&gt;”分类。其目的为了更加集中式的介绍某些有价值的资源，最大程度的方便开发者更快速的获取帮助。其中一部分内容原本零散分布在其它板块，目前被统一整合到Resource分类中，例如：&lt;a href="http://developer.android.com/resources/tutorials/hello-world.html"&gt;tutorials&lt;/a&gt;, &lt;a href="http://developer.android.com/resources/samples/index.html"&gt;sample code&lt;/a&gt;, 和&lt;a href="http://developer.android.com/resources/faq/index.html"&gt;FAQs&lt;/a&gt;。另外也从Android官方博客中精挑一些比较重要的内容放在&lt;a href="http://developer.android.com/resources/articles/index.html"&gt;technical articles&lt;/a&gt;子类中，其中大部分内容可以在&lt;a title="AR" href="http://www.androidres.com/"&gt;AR&lt;/a&gt;中找到较详细的中文版本。&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div&gt;
+&lt;div&gt;
+&lt;div&gt;除了在Sample Code子类中保留原有的一些实例之外，又&lt;a href="http://www.androidres.com/index.php/2010/01/12/new-resources-and-sample-code-on-android-developers/"&gt;添加&lt;/a&gt;了一批新内容。Sample Code对于初学者深入了解Android平台开发非常有益，可以非常直观的了解不同功能模块的开发方法和技巧，避免对于某些功能模块仅处于术语上的认知，而无法灵活的将学到的技术应用在自己的实际项目中。&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;下面详细列举一些最新的Samples内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a href="http://developer.android.com/resources/samples/MultiResolution/index.html"&gt;Multiple Resolutions&lt;/a&gt; &lt;/strong&gt;: 包括两方面的内容，1）阐述如何巧妙的根据多种屏幕显示标准来匹配特定的资源目录。2）针对不同Android SDK版本的用户优化应用程序。&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a href="http://developer.android.com/resources/samples/Wiktionary/index.html"&gt;Wiktionary&lt;/a&gt; and &lt;a href="http://developer.android.com/resources/samples/WiktionarySimple/index.html"&gt;WiktionarySimple&lt;/a&gt;&lt;/strong&gt;: 介绍如何创建一个可交互的Home screen widget。&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a href="http://developer.android.com/resources/samples/ContactManager/index.html"&gt;Contact Manager&lt;/a&gt;&lt;/strong&gt;:介绍如何使用ContactsContract接口获取和维护用户的多个账户和Contact providers。&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a href="http://developer.android.com/resources/samples/BluetoothChat/index.html"&gt;Bluetooth Chat&lt;/a&gt;&lt;/strong&gt;:这个例子是对蓝牙功能的扩展，实现基于蓝牙的实时数据传输（包括聊天功能），其中涉及到扫描附近可用设备、初始化设备间蓝牙链接和传送实时数据。&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a href="http://developer.android.com/resources/samples/NotePad/index.html"&gt;NotePad&lt;/a&gt; (now with Live Folders)&lt;/strong&gt;:这个例子包含了与Live Folders相关的技术。&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a title="API Demoe" href="http://developer.android.com/resources/samples/ApiDemos/index.html"&gt;API Demoe&lt;/a&gt;&amp;gt;&lt;a title="APP" href="http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/index.html"&gt;APP&lt;/a&gt;&amp;gt;Activity&amp;gt;&lt;a title="QuickContactsDemo" href="http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/QuickContactsDemo.html"&gt;QuickContactsDemo&lt;/a&gt;&lt;/strong&gt;: 介绍关于&lt;span style="font-family:Courier New"&gt;android.widget.QuickContactsBadge&lt;/span&gt;类的使用方法（&lt;strong&gt;Android 2.0中新添加的类&lt;/strong&gt;）。&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a title="API Demoe" href="http://developer.android.com/resources/samples/ApiDemos/index.html"&gt;API Demoe&lt;/a&gt;&amp;gt;&lt;a title="APP" href="http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/index.html"&gt;APP&lt;/a&gt;&amp;gt;Activity&amp;gt;&lt;a title="QuickContactsDemo" href="http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/WallpaperActivity.html"&gt;SetWallpaper&lt;/a&gt;&lt;/strong&gt;: 介绍如何应用Android.app.WallpaperManager类使用户可以更换系统Wallpaper。&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;strong&gt;&lt;a title="API Demoe" href="http://developer.android.com/resources/samples/ApiDemos/index.html"&gt;API Demoe&lt;/a&gt;&amp;gt;&lt;a title="APP" href="http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/index.html"&gt;APP&lt;/a&gt;&amp;gt;Activity&amp;gt;&lt;a title="QuickContactsDemo" href="http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/TextToSpeechActivity.html"&gt;Text-To-Speech&lt;/a&gt;&lt;/strong&gt;: 介绍应用Text-To-Speech技术添加软件的语音阅读功能。&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>EGGer</name></author><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1262844780272"><id gr:original-id="http://www.androidres.com/?p=712">tag:google.com,2005:reader/item/3a01c8f7b74bdaf6</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Daily Cakes"/><category term="Android Versions"/><category term="Device Dashboard"/><title type="html">部署Android软件兼容性的参考信息</title><published>2010-01-07T05:30:33Z</published><updated>2010-01-07T05:30:33Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2010/01/07/%e9%83%a8%e7%bd%b2android%e8%bd%af%e4%bb%b6%e5%85%bc%e5%ae%b9%e6%80%a7%e7%9a%84%e5%8f%82%e8%80%83%e4%bf%a1%e6%81%af/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:center"&gt;&lt;img style="border:3px solid #e6e6e6" title="2010" src="http://www.androidres.com/wp-content/uploads/2010/01/2010.jpg" alt="" width="530" height="382"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;先道一声新年快乐！希望各位同学继续保持高昂的斗志，迎接新一年的挑战！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;作为开发者经常需要权衡如何让待产中的软件更好的兼容市面上各种版本的Android系统手机，从而可以获得更多的用户保有量。然而当面对如此庞大的用户群体时，凸显一个不可忽视的问题：究竟是应该一如既往的关注于当前最新版本？还是充分考虑兼容性从而更好的支持各种版本的用户呢？面对这样的问题，我们将在下面给出一点参考意见。&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;在这里介绍一个最新发布的参照资源，它可以非常客观的帮助开发者权衡上面所阐述的问题：&lt;/p&gt;
+&lt;p style="text-align:center"&gt;&lt;img title="Platform Versions Dashboard" src="http://www.androidres.com/wp-content/uploads/2010/01/dashboard.jpg" alt="" width="452" height="486"&gt;&lt;/p&gt;
+&lt;p&gt;接下来从开发者的视角更加详细的解读图表所包含的意义：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;完全不需要考虑兼容Android平台最初的两个版本1.0 和 1.1。&lt;/li&gt;
+&lt;li&gt;Android 1.5依然在活跃手机用户中占有一定比例，建议开发者考虑对这部分用户的兼容性。&lt;/li&gt;
+&lt;li&gt;从Android 1.6开始，涌现出规格不相同的一些硬件设备（突出表现为屏幕尺寸），这对兼容性产生了一定的影响。开发者需要充分考虑软件适用于多种规格的硬件标准，发布之前要做好充分的测试。&lt;/li&gt;
+&lt;li&gt;两周之前刚刚发布了Android SDK 2.0 （09年底所有预置这个版本的设备将全面升级为Android 2.0.1）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总的来看，占有比例较大的前三者分别是2.0.1/1.6/1.5。由于每次的更新都将带来革命性的改变，所以新版本将会快速的得到广泛的应用。Android开发小组将会经常性的更新类似一些统计数据，从而更好的帮助开发者提升产品价值。&lt;/p&gt;</content><author><name>EGGer</name></author><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1260601162537"><id gr:original-id="http://www.androidres.com/?p=709">tag:google.com,2005:reader/item/78d91d1caa885d6a</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Resource"/><category term="Tutorial"/><category term="GUI"/><category term="Layout"/><category term="layoutopt"/><title type="html">关于layoutopt的介绍和使用方法</title><published>2009-12-12T06:16:14Z</published><updated>2009-12-12T06:16:14Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/12/12/use-layoutopt-to-optimize-xml-layout/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:center"&gt;&lt;img style="border:3px solid #e6e6e6" title="layout optimization" src="http://www.androidres.com/wp-content/uploads/2009/12/layout_optimization.jpg" alt="layout optimization" width="530" height="262"&gt;&lt;/p&gt;
+&lt;h2&gt;介绍&lt;/h2&gt;
+&lt;p&gt;对于一款获得&lt;a title="用户青睐" href="http://www.androidres.com/index.php/2009/12/05/10-user-experience-tips-for-successful-android-apps/"&gt;用户青睐&lt;/a&gt;的 手机软件，单从实现层面上来分析大体包括两个重要的因素：缜密的逻辑运算和人性化的GUI设计。自由开发者普遍存在身兼数职的情况，除了编写程序以外，还 需兼顾GUI设计。编写程序完全需要依靠过硬的功底，一些简单的优化工具并不能对整体逻辑运算产生较大的帮助，这也决定了自由开发者的背景大部分是程序员 出身。在编写GUI方面由于Android平台的GUI系统采用了XML layout模式，遵循固定的排列规则关联界面元素。对于欠缺GUI编写经验的程序员，依然可以简单的实现比较复杂的操作界面。出于功能上的需求XML Layout会变得越来越臃肿，这使得优化过程变得非常困难，例如：&lt;a title="容器类型" href="http://developer.android.com/guide/topics/ui/layout-objects.html"&gt;容器类型&lt;/a&gt;的转换会影响到所有相关联的子元素、反复调整Views元素而导致某些混乱的问题等，由于以上的问题有时可能不会影响到界面的正常使用，非常容易导致忽略了一些影响执行效率的缺陷。为此Android开发小组在&lt;a title="SDK Tools Revision 3" href="http://d.android.com/sdk/tools-notes.html"&gt;SDK Tools Revision 3&lt;/a&gt;中提供了&lt;a title="Layout Optimization" href="http://d.android.com/guide/developing/tools/layoutopt.html"&gt;Layout Optimization&lt;/a&gt;工具，简称：Layoutopt。由于XML Layout具有严格的定义规则，所以这个工具可以自动帮助开发者发现一些较常规的缺陷。目前还没有将其整合到Eclipse的开发环境中，暂时需要通过Command line来执行(运行-&amp;gt;cmd)。&lt;/p&gt;
+&lt;h2&gt;使用方法&lt;/h2&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;span style="color:#008000"&gt;layoutopt &amp;lt;list of xml files or directories&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;span style="color:#888888"&gt;note: 有两种参数形式：第一种，可以将xml文件的full path做为参数，如果有多个xml文件，需要用空格将其分隔开。第二种，直接提供多个xml文件所在folder路径。&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;span style="font-family:Courier New"&gt;例子：&lt;/span&gt;&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;span style="color:#008000"&gt;$ layoutopt res/layout-land&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style="color:#008000"&gt;$ layoutopt res/layout/main.xml res/layout-land/main.xml&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;</content><author><name>EGGer</name></author><gr:likingUser>01537033227376633438</gr:likingUser><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1260006736327"><id gr:original-id="http://www.androidres.com/?p=706">tag:google.com,2005:reader/item/cea7bd1acb33bf72</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Essay"/><category term="Good Sales"/><category term="Optimize Apps"/><category term="Tips"/><category term="User Experience"/><title type="html">唠点与“细节”相关的事儿</title><published>2009-12-05T09:12:51Z</published><updated>2009-12-05T09:12:51Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/12/05/10-user-experience-tips-for-successful-android-apps/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p&gt;&lt;img title="sell-your-apps-in-serious-volume" src="http://www.androidres.com/wp-content/uploads/2009/12/sell-your-apps-in-serious-volume.jpg" alt="sell-your-apps-in-serious-volume" width="530" height="222"&gt;&lt;/p&gt;
+&lt;p&gt;曾经的ADC01举办之初，像我这样的老百姓对这项技术还处于无知状态。但凭借对Iphone的了解以及革命性的App Store，以至于当得知Android和它所肩负使命时，身体里流淌的血液便开始加速，筐唧筐唧往脑子里灌。如今ADC第二春已经落下帷幕，再一次对那 些构思巧妙的设计发出赞叹，大部分的成功作品都更加贴近生活，以至于平时我们不太注意的小细节，经过一番整理便可以成为手机上革命性的创新。“&lt;strong&gt;天下难事必做于易，天下大事必做于细&lt;/strong&gt;” （什么？你第一次听说啊？那请您拜读一下《沃尔玛不败之谜》）。&lt;/p&gt;
+&lt;p&gt;从AndroidTapp.com看到一篇关于&lt;a title="提高Android软件开发质量的总结" href="http://www.androidtapp.com/10-user-experience-tips-for-successful-android-apps/"&gt;提高Android软件开发质量的总结&lt;/a&gt;，完全立足于用户的视角创建更加人性化的应用软件。AR对这篇文章的某些相关联的观点加以合并，增加和扩展了某些较重要的内容。如果你有更好的建议，希望可以通过提交Comments的方式与大家共享！&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;尊重用户对当前软件的绝对控制权&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;大部分人都有过被“流氓”软件骚扰的经历，其主要特点体现在如下几个特征：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在用户不知情的前提下强制安装。&lt;/li&gt;
+&lt;li&gt;无法轻易移除&lt;/li&gt;
+&lt;li&gt;盗取用户资料&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;尽管Android平台有着严密的安全体系，但依然无法避免某些新形势的恶意行为。之所以将这条法则放在第一个位置，完全是为了呼吁开发者善待用户对手机应 用市场的信任，同时更要齐心合力维护赖以生存的生命之泉。让用户轻松体验软件带来便利和快乐的同时，更需要确保他们具备自由选择的权利。当软件正常运行或 者正处于任务的处理状态时，允许随时便捷的终止、退出或者登出当前应用程序的操作。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;善待用户的可存储资源（SD Card &amp;amp; Internal Memory）&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;很多开发者常常出于便捷的考虑，直接将大量临时性或者一些初始化数据存储于手机的内置存储单元。这对于某些配置较低的手机，简直是一场灾难。建议在 存储数据之前先检测当前SD-Card的可用性。如果出现没有SD-Card或者其存储区域已满时，则可以考虑利用网络存储资源（受限于当前网络连接状 态）。如果处于“墙内”或者无法获得网络服务，那么不得不考虑依赖于内置的存储单元，但是需要尽可能优化数据量，确保资源的有效利用。&lt;/p&gt;
+&lt;p&gt;在软件设置菜单中预置清除数据功能，允许用户手动清除缓存或者移除所有与当前程序相关联的数据，&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;自定义更新周期&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;在软件设置菜单中增加修改更新周期的功能，允许&lt;a href="http://www.androidres.com/index.php/2009/12/05/10-user-experience-tips-for-successful-android-apps/"&gt;用户&lt;/a&gt;根据当前需要选择恰当的周期。如果周期设置较短，不但影响到系统性能的表现力，而且会缩短电力的续航时 间。对于开发者而言，需要严格控制版本号，针对一批修改做统一更新，而不要频繁的更新某些局部细微改动（出现致命缺陷的情况除外）。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;完整的功能描述和详实的更新日志&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;建议具备一定条件的开发者可以考虑为不同的应用软件或游戏创建独立的网站（或者将多个软件存放在同一个网站的不同页面中维护和管理）。这 样有助于用户可以第一时间了解应用程序的完整介绍，包括可能修改用户手机设置的明确说明（是否增加后台进程等…）。另外每次版本更新的详细信息需要保 持与软件更新同步：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;修复了什么缺陷？&lt;/li&gt;
+&lt;li&gt;当前版本添加了哪些新功能？&lt;/li&gt;
+&lt;li&gt;下一版本可能会实现哪些值得期待的功能？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这样做的好处不需要过多介绍。难道你不希望了解当前手机软件的更新都做了哪些修改吗？另外，作为一个实时的反馈平台，可以及时的了解到当前用户遇到的疑问和收集非常有价值的建设性意见。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;搭建漂亮的门面&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;赏心悦目的操作界面总是可以第一时间俘获用户的心。从恰当合理的色彩搭配到摆放和组织界面元素，其任何环节都直接影响产品的质量。大街上花枝招展的个性人 类，绝对可以毫不留情的吸引住你的眼球，但你真的有勇气和他对视吗？摆放错位的汽车堵在胡同里，你是否有强烈的正义感涌上心头呢？没错，视觉会对人的情绪 产生非常深远的影响。当无法通过视觉测试的食物，估计很难送到嘴里（饥饿状态除外）。对于要求苛刻的用户而言，其很难忍受手机主菜单中存在破坏和谐气氛的 Icons。所以对于呕心沥血之作，在保证后台可以高效运作的前提下，非常有必要装备一整套体面的行头。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;清晰流畅的操作流程&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;如果将应用软件的内容比作为整个系统的功能器官，那么导航系统可以看做为大脑，它的意义在于“思考”如何调配当前系统资源。堵塞或者混乱的大脑无法高效的 提供准确内容，一旦内容无法被用到，其存在的意义等价于零。在设计软件功能导航时，可以考虑遵循大众普遍习惯的操作方式，确保某些常用功能的摆放位置和顺 序（千万不要在这里体现另类的&lt;a href="http://www.androidres.com/index.php/2009/12/05/10-user-experience-tips-for-successful-android-apps/"&gt;个性&lt;/a&gt;，否则会酿成惨剧）。然而这样也并不是最稳妥的办法，针对不同情况需要考虑复杂的地域差异。巧妙的根据功能性分类，并使 用具有组织和约束功能的Views元素加以区分等。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;基于缺乏耐心的用户为考量来设计和优化&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;凡事如果以最坏的情况来考虑，必定可以再市场的角逐中获得更多人的青睐。根据此前一些抽样数据的统计，手机软件的群体中有相当一部分人对事物缺乏耐心，尤 其是面对狭小屏幕所反映出的压抑情绪会加大对某些设计蹩脚的应用程序的厌烦感。针对硬件条件的限制，尽管暂时很难直接给用户带来与桌面应用程序痛快淋漓的 体验，但至少可以对某些软件做出操作流程上的优化，已达到简便和更加容易使用。由于具体的要求存在多样性，所以无法客观的给出统一的量化标准，但作为开发 者需要时刻提醒自己对这个问题的关注。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;避免处于&lt;a title="BP" href="http://developer.android.com/guide/topics/fundamentals.html"&gt;BP&lt;/a&gt;状态的Activities依然频繁占用系统资源&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;a title="Background processes" href="http://developer.android.com/guide/topics/fundamentals.html"&gt;Background processes&lt;/a&gt;被官方直接定义为：&lt;a title="onStop()" href="http://developer.android.com/reference/android/app/Activity.html#onStop%28%29"&gt;onStop()&lt;/a&gt;方 法已经被调用、并对当前用户处于不可见状态的Activities。开发者根据应用程序的需求慎重考量是否一定有必要保证处于BP状态的 Activities仍然需要处理各种数据，以至于频繁占用过多的网络和计算资源。手机用户普遍非常在意系统的执行效率，有时宁愿放弃某些功能以保证当前 系统的可持续高效的处理任何请求。&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;需要将用户服务的因素绑定在完整的技术支持体系中&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;自由&lt;a href="http://www.androidres.com/index.php/2009/12/05/10-user-experience-tips-for-successful-android-apps/"&gt;开发者&lt;/a&gt;在Android Market从事商业行为时，往往都非常看重为用户提供完善的技术支持，以期待得到比较好的口碑和保证软件销量持续增长。但是这里所提到的另外一种用户服 务不同于技术支持，它更倾向于是Android Market应该提供的一种用户保障体系。然而目前Google在这方面缺乏完整的解决方法，不得不由开发者面对诸如信用卡付款或者已经付款却无法正常下 载软件等问题。如果开发者可以承担起这样的职责，用户会将某种程度的感激转嫁为对产品的信任和支持，转而提供良好的口碑效应。相反，如果忽视这样问题的存 在，由于用户选择你的产品而发生的问题无法得到解决，那么会直接将问题转化成对产品和开发者的不信任。此前有人手机应用软件经济模式总结了一种比较简单的 成功法则：（好主意+ 有利抢占市场的时机 = 完美的销量） 这的确是可以第一时间赢得用户青睐的方法。但是如果想建立稳定的销售增长曲线，那么还需要结合以上论述的内容，为用户处理一系列与产品相关的问题。&lt;/p&gt;</content><author><name>EGGer</name></author><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1259472578042"><id gr:original-id="http://www.androidres.com/?p=697">tag:google.com,2005:reader/item/b8e0db31e6f8c334</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Resource"/><category term="Tutorial"/><category term="Intent"/><title type="html">利用Intents实现软件的开放接口</title><published>2009-11-29T04:53:14Z</published><updated>2009-11-29T04:53:14Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/11/29/integrating-application-with-intents/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:center"&gt;&lt;img title="Integrating application with intents" src="http://www.androidres.com/wp-content/uploads/2009/11/intents.jpg" alt="Integrating application with intents" width="530" height="303"&gt;&lt;/p&gt;
+&lt;p style="text-align:left"&gt;今年九月份的统计数据显示，目前在&lt;a href="http://www.android.com/market/"&gt;Android Market&lt;/a&gt;中已经有超过10K的Softwares和Games提供给Android手机用户下载。一些曾经在IPhone APP Store创下辉煌战绩的Applications已经开始集体移植到这个拥有巨大潜力的平台。官方第二届&lt;a title="Android Development Challenge" href="http://www.androidres.com/index.php/2009/08/26/adc2-submission-opening/"&gt;Android Development Challenge&lt;/a&gt;（简称:&lt;a title="ADC2" href="http://www.androidres.com/index.php/2009/08/26/adc2-submission-opening/"&gt;ADC2&lt;/a&gt;）已经进入到了最后评审阶段，据称这次拥有大量惊奇创新的应用软件，AR会针对排名靠前的一些软件和游戏提供比较详细的技术剖析，希望大家保持&lt;a title="关注" href="http://feeds2.feedburner.com/AndroidResource"&gt;关注&lt;/a&gt;。今天要说的内容与创新无关，主要是讲解如何将现有功能互补的软件通过&lt;a title="Intents" href="http://developer.android.com/reference/android/content/Intent.html"&gt;Intents&lt;/a&gt;无 缝整合，使其最大限度的提高用户体验（不同的软件之间相互协调，不但可以达到优势互补的目的，而且通过相互间的合作可以在某个领域创造出相对完整的应用体 验）。&lt;span&gt;&lt;/span&gt;手机用户尤其厌烦手动输入大量信息（奥巴马曾对外界声称自己不使用&lt;a href="http://www.twitter.com"&gt;Twitter&lt;/a&gt;的理由是不想忍受用手机输入信息的痛苦感受），所以这样的整合可以 促成多方软件协同工作的“共赢”局面。而在这其中起到绝对关键性的技术因素是利用了Android平台最独特和最优雅的“&lt;a title="Intents" href="http://developer.android.com/reference/android/content/Intent.html"&gt;Intent&lt;/a&gt;机 制”，平凡的岗位创造出不平凡的“成就”。为此，大家需要多多留意那些看似微小的事物，往往越是简单的东西越容易改变这个世界。下面引述一个例子来形象展现这项应用所带来的好处：正在使用WHERE和GoodFood的用户可以基于当前数据直接快速利用OpenTable程序完成订餐服务，整个过程避免对 某些已经存在信息的重复调用。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;名词解释：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a title="OpenTable" href="http://blog.opentable.com/2009/opentable-for-android-now-available/"&gt;OpenTable&lt;/a&gt;（用户可以指定特定的区域，搜索符合用餐时间和用餐人数的餐馆，并将其标注在地图上）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a title="uLocate" href="http://www.where.com/"&gt;Where&lt;/a&gt;（基于精确地理位置的本地化信息检索工具，例如：哪里的汽油最便宜，路况信息和距离最近的咖啡店等等）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a title="uLocate" href="http://www.ulocate.com/"&gt;uLocate&lt;/a&gt; （与Where出自同一个公司，同样也是利用地理位置信息，提供一个完整的沟通服务平台）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;发挥Intent整合优势的准备工作&lt;/h2&gt;
+&lt;p style="text-align:left"&gt;首先第一个步骤是需要设计使用的&lt;a title="Intents" href="http://developer.android.com/reference/android/content/Intent.html"&gt;Intent&lt;/a&gt;接口（或者API）。例如：OpenTable开放了可供使用的公共RESERVE &lt;a title="Intents" href="http://developer.android.com/reference/android/content/Intent.html"&gt;Intent&lt;/a&gt; ，利用特定的参数通过URI传递给处理预约申请的Activities（包括地点、时间和人数等基本要求）下面是一个简单的例子：&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;startActivity(new Intent("com.opentable.action.RESERVE",
+Uri.parse("reserve://opentable.com/2947?partySize=3")));&lt;/pre&gt;
+&lt;p style="text-align:left"&gt;我们的目的是创建一个可供其他开发者容易理解和应用简单的开放接口，而这完全取决于如何定义Action和Uri的样式。那么问题来了：什么样才算得上是比较理想的开放接口呢？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li style="text-align:left"&gt;首先考虑如何定义合适的Action。如果应用程序仅仅是在常规状态下被调用，一般比较好的方法是直接采用&lt;a href="http://www.androidres.com/index.php/2009/11/29/integrating-application-with-intents/"&gt;系统&lt;/a&gt;提供的标准。针对有特殊要求的应用，则需要采 用自定义的Action，从而更加准确的提供局部应用支持（局部应用的含义：Application包括多个Activities，通常仅仅是一个或者一 小部分Activities通过开放的接口被外部的其它应用程序调用）。自定义Action需要符合Android平台的命名规 范：&amp;lt;package-name&amp;gt;.action.&amp;lt;action-name&amp;gt;。因为考虑到Action完全是String格 式，所以需要特别强调Namespace的重要性。（在本文提供的例子中将Action定义 为：”com.opentable.action.RESERVE”）&lt;/li&gt;
+&lt;li style="text-align:left"&gt;其次考虑外部接口程序根据特定的需求初始化数据。Android平台提供了&lt;a href="http://developer.android.com/reference/android/os/Bundle.html"&gt;Bundle&lt;/a&gt;（mapping：通过&lt;a href="http://www.androidres.com/index.php/2009/11/29/integrating-application-with-intents/"&gt;String&lt;/a&gt;索引相匹配的数据）用于传递简单或者复杂的数据。在本文的例子中采用了另外一种较灵活的方式，将参数直接捆绑在Uri中（”&lt;span style="font-family:Courier New"&gt;reserve://opentable.com/2947?partySize=3&lt;/span&gt;“）。应用”reserve://”字头的目的是为了匹配我们所定义的Action（&lt;span style="font-family:Courier New"&gt;android:scheme&lt;/span&gt;），”opentable.com”可以理解为作用域（&lt;span style="font-family:Courier New"&gt;android:host&lt;/span&gt;），前两者将用来在&lt;a href="http://developer.android.com/guide/topics/manifest/manifest-intro.html"&gt;AndroidManifest.xml&lt;/a&gt;中声明&amp;lt;data /&amp;gt; （&lt;span style="font-family:Courier New"&gt;&amp;lt;data android:scheme=”reserve” android:host=”opentable.com”/&amp;gt;&lt;/span&gt;）。最后2947和partySize分别代表了餐馆ID和限定用餐人数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Exposing 在系统中注册Intents&lt;/h2&gt;
+&lt;p style="text-align:left"&gt;前面已经创建了Intent的内容。当条件满足时，系统将负责启动匹配Intent的应用程序(例子中所指：OpenTable)。为了让系统认识这位 “新朋友”(Intent)，需要在&amp;lt;Intent-filter&amp;gt;标签中根据Intent的内容修改&amp;lt;action&amp;gt; 和&amp;lt;category&amp;gt;的属性，并根据Uri的描述创建一个&amp;lt;data&amp;gt;新标签：（以上设置都被包含在&lt;a href="http://developer.android.com/guide/topics/manifest/manifest-intro.html"&gt;AndroidManifest.xml&lt;/a&gt;中）&lt;/p&gt;
+&lt;pre lang="xml"&gt;
+
+...
+
+
+
+
+
+...
+
+&lt;/pre&gt;
+&lt;p style="text-align:left"&gt;&lt;span style="font-family:Courier New"&gt;如果程序中包含有多个开放的接口，那么可以根据上面的方法对每个Activity中的&lt;a title="intent-filter" href="http://developer.android.com/guide/topics/manifest/intent-filter-element.html"&gt;intent-filter&lt;/a&gt;根据需要修改成可以容易被外部直接&lt;a href="http://www.androidres.com/index.php/2009/11/29/integrating-application-with-intents/"&gt;调用&lt;/a&gt;的开放接口。在本文的例子中仅仅是修改了负责&lt;/span&gt;Reservation的Activity&lt;span style="font-family:Courier New"&gt;。Category设置成&lt;/span&gt;&lt;a href="http://developer.android.com/reference/android/content/Intent.html#CATEGORY_DEFAULT"&gt;DEFAULT&lt;/a&gt;&lt;span style="font-family:Courier New"&gt;的 目的是为了保证当前Application可以直接被使用，而不会出现供用户选择启动程序的对话框，然而前提条件是保证这个Action在当前系统中的唯 一性，避免出现相同的Action同样以”DEFAULT”属性出现在不同的Activities中。&amp;lt;data&amp;gt;标签没有直接列出Uri中 提供的参数名称，在下面的小节中将讲解从Uri中解析参数值的方法。同时对于某些隐性的设置，有必要通过文档的方式让其它开发者能清楚的了解参数传递的标准。&lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;Processing 处理调用请求&lt;/h2&gt;
+&lt;p&gt;下面是OpenTable中负责处理Servation的Activity解析Intent中的参数和做出回应的主要部分：&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+    final Uri uri;
+    final int restaurantId;
+    try {
+        uri = getIntent().getData();
+        restaurantId = Integer.parseInt( uri.getPathSegments().get(0));
+    } catch(Exception e) {
+        // Restaurant ID is required
+        Log.e(e);
+        startActivity( FindTable.start(FindTablePublic.this));
+        finish();
+        return;
+    }
+    final String partySize = uri.getQueryParameter("partySize");
+    ...
+}&lt;/pre&gt;
+&lt;p style="text-align:left"&gt;&lt;span style="font-family:Courier New"&gt;定义两个final的成员变量（&lt;a title="final" href="http://www.codeguru.com/java/tij/tij0071.shtml"&gt;final&lt;/a&gt;：表明变量仅可以被赋值一次）“uir”和“restaurantId”，分别用于存储Uri字符串和餐馆ID。&lt;br&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li style="text-align:left"&gt;&lt;span style="font-family:Courier New"&gt;getIntent().&lt;a title="getData" href="http://developer.android.com/reference/android/content/Intent.html#getData%28%29"&gt;getData&lt;/a&gt;()可以返回当前Intent中包含的Uri。&lt;/span&gt;&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;span style="font-family:Courier New"&gt;&lt;a title="getPathSegments" href="http://developer.android.com/reference/android/net/Uri.html#getPathSegments%28%29"&gt;getPathSegments&lt;/a&gt;().get(int index)可以返回索引&amp;lt;index&amp;gt;代表的参数值。&lt;/span&gt;&lt;/li&gt;
+&lt;li style="text-align:left"&gt;&lt;span style="font-family:Courier New"&gt;&lt;a title="getQueryParameter(String Key)" href="http://developer.android.com/reference/android/net/Uri.html#getQueryParameter%28java.lang.String%29"&gt;getQueryParameter(String Key)&lt;/a&gt;d 这是另外一种获取参数值的方法，适合于Key=Value（例子中：&lt;/span&gt;&lt;span style="font-family:Courier New"&gt;partySize=3&lt;/span&gt;&lt;span style="font-family:Courier New"&gt;）。&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p style="text-align:left"&gt;尽管没有包括完整的代码，但是基本上阐述了如何实现接口的方法。但仅仅实现了基本功能还是远远不够的，一个&lt;a title="健壮的" href="http://nob.cs.ucdavis.edu/bishop/secprog/robust.html"&gt;健壮的&lt;/a&gt;应 用程序需要考虑非常多的复杂情况。利用Intent机制完成某些功能调用的系统，需要特别强调参数的合法性以及如何有效的应对错误信息等。例如：当解析的 Restaurant ID出现问题时，需要提供用户另外一种可以手动输入的方法。 由此需要特别注意：满足常规功能仅是整个开发周期的一部分，另外还需要投入更多的时间处理异常情况。&lt;/p&gt;
+&lt;h2&gt;优雅的处理一些特殊情况&lt;/h2&gt;
+&lt;p style="text-align:left"&gt;以下是几种可预见的特殊情况：如何处理客户端没有安装OpenTable？如何处理传递了无效的Restaurant ID？&lt;/p&gt;
+&lt;table style="height:75px" border="1" cellspacing="0" cellpadding="3" width="503"&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;&lt;br&gt;
+&lt;/span&gt;&lt;/td&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;&lt;strong&gt;Restaurant ID known&lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;&lt;strong&gt;Restaurant ID unknown&lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;&lt;strong&gt;User has OpenTable&lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;Call OpenTable Intent&lt;/span&gt;&lt;/td&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;Don’t show reserve button&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;&lt;strong&gt;User doesn’t have OpenTable&lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;Call Market Intent&lt;/span&gt;&lt;/td&gt;
+&lt;td style="text-align:left" width="33%"&gt;&lt;span style="font-size:xx-small"&gt;Don’t show reserve button&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p style="text-align:left"&gt;下面的代码提供了处理当前上面特殊情况的方法：1)如果当前传递的Restaurant ID无效，那么Opentable按钮将设为不可用状态。2）如果当前客户端没有安装Opentable，那么将Intent切换为Market，并自动转为Opentable下载界面。&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;// setup the Intent to call OpenTable
+Uri reserveUri = Uri.parse(String.format( &amp;quot;reserve://opentable.com/%s?refId=5449&amp;quot;,
+opentableId));
+Intent opentableIntent = new Intent(&amp;quot;com.opentable.action.RESERVE&amp;quot;, reserveUri);
+
+// setup the Intent to deep link into Android Market
+Uri marketUri = Uri.parse(&amp;quot;market://search?q=pname:com.opentable&amp;quot;);
+Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(marketUri);
+
+opentableButton.setVisibility(opentableId &amp;gt; 0 ? View.VISIBLE : View.GONE);
+opentableButton.setOnClickListener(new Button.OnClickListener() {
+    public void onClick(View v) {
+        PackageManager pm = getPackageManager();
+        startActivity(pm.queryIntentActivities(opentableIntent, 0).size() == 0 ? opentableIntent : marketIntent);
+   }
+});
+}&lt;/pre&gt;
+&lt;p style="text-align:center"&gt;&lt;img style="border:3px solid #e6e6e6" title="goodFood" src="http://www.androidres.com/wp-content/uploads/2009/11/cdpg6jh8_207x8wg5ch_b.png" alt="cdpg6jh8_207x8wg5ch_b" width="320" height="480"&gt;&lt;/p&gt;
+&lt;p style="text-align:center"&gt;&lt;img style="border:3px solid #e6e6e6" title="openTable" src="http://www.androidres.com/wp-content/uploads/2009/11/cdpg6jh8_21cgpsdqcz_b.png" alt="openTable" width="320" height="480"&gt;&lt;/p&gt;
+&lt;h2&gt;公布当前Application开放接口的应用标准&lt;/h2&gt;
+&lt;p style="text-align:left"&gt;到目前与技术相关的内容已经完成。还剩下最后一步，同时也是最重要的环节。必须让其他开发者了解开放接口的使用方法，否则前面的努力都将变得毫无价值。其中最简单的方式是将使用文档发布在网站上供其他开发者查阅，而且建议文档中带有较全面的实例。&lt;/p&gt;
+&lt;p style="text-align:left"&gt;&lt;a href="http://feedproxy.google.com/~r/blogspot/hsDu/~3/6U7Eycxrq7o/integrating-application-with-intents.html"&gt;访问官方博客原文&lt;/a&gt;&lt;/p&gt;</content><author><name>EGGer</name></author><gr:likingUser>01537033227376633438</gr:likingUser><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1258232303393"><id gr:original-id="http://www.androidres.com/?p=690">tag:google.com,2005:reader/item/a7b5b3b447b886a0</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Essay"/><category term="Concurrency"/><category term="Garbage Collection"/><category term="GO Programming language"/><category term="Parallel Computing"/><title type="html">Google创造 “GO” 文明</title><published>2009-11-14T20:46:51Z</published><updated>2009-11-14T20:46:51Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/11/15/google-go-programming-language/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:center"&gt;&lt;img style="border:3px solid #e6e6e6" title="Google Go Programming language" src="http://www.androidres.com/wp-content/uploads/2009/11/tiangongkaiwu.jpg" alt="Google Go Programming language" width="530" height="248"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;“如果想成就一个辉煌的’文明’，首先需要创造一种强大和健壮的语言”&lt;/strong&gt;&lt;/p&gt;
+&lt;p style="text-align:left"&gt;创造出一种更加高效的方法来诠释整个物质世界，&lt;a href="http://googleblog.blogspot.com/"&gt;Google&lt;/a&gt;帝国迈出了最重要的一步。人类发展过程中总是要经历大大小小不同的变革，计算机世界更是如此，而且其变革的速度远远快过于其它任何发展中的事物。暂时无法量化这种新的编程语言会对整个行业带来的变化，但至少有一点可以肯定，”&lt;a href="http://en.wikipedia.org/wiki/Go_%28programming_language%29"&gt;Go&lt;/a&gt;” 的特性将加速整个计算机工业的发展进程。或许可以让我们这一代人将更多的梦想变为现实。&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style="text-align:left"&gt;高度关注Google产品的人会感悟到其简单的哲学理念 “&lt;a href="http://www.androidres.com/index.php/2009/04/04/beyond-life-hacks-reusable-solutions-to-common-productivity-problems/"&gt;Efficiency&lt;/a&gt;” ，正是秉持这样的精神，才使得我们完全可以在毫秒间搜遍整个人类文明、体验前所未有的电子邮件服务 “Gmail”或者革命性的沟通工具 “&lt;a href="http://www.androidres.com/index.php/2009/06/03/google-wave/"&gt;Google Wave&lt;/a&gt;” &lt;a href="http://www.google.com/intl/en/options/"&gt;等等&lt;/a&gt;…&lt;/p&gt;
+&lt;p style="text-align:left"&gt;为了符合日益高效的生活节奏，Google在2009年11月份正式对外宣布 带给这个世界另外一个惊喜 – “&lt;strong&gt;Go&lt;/strong&gt;“。 其主要的特点是将动态语言（例如：Python）的高效开发特性与编译语言（例如：C/C++）的安全特点相结合，同时还支持当前比较热门的技术 &lt;a title="Garbage collection (computer science)" href="http://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29"&gt;garbage collected&lt;/a&gt;和&lt;a href="http://www.google.com/url?sa=t&amp;amp;source=web&amp;amp;ct=res&amp;amp;cd=1&amp;amp;ved=0CAgQFjAA&amp;amp;url=http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FConcurrent_computing&amp;amp;rct=j&amp;amp;q=concurrent++programming+language&amp;amp;ei=Ytz8Sqa8KIrk6gO_kdzmCg&amp;amp;usg=AFQjCNGxQh2O1K1wGIAz-bfvRcaRyTSCGA&amp;amp;sig2=qAl2DN5n-hFc4lfFSXDuZA"&gt;concurrent &lt;/a&gt;，Google的同事们在当前的条件下正努力的创造一款近乎完美的语言。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;HighLight:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高效的静态类型编译语言 + 轻松灵活编程的动态语言&lt;/li&gt;
+&lt;li&gt;类型安全（Type Safe）+ 内存安全（Memory Safe）&lt;/li&gt;
+&lt;li&gt;较好的支持并行和线程间通讯&lt;/li&gt;
+&lt;li&gt;高效和无延迟的Garbage Collection&lt;/li&gt;
+&lt;li&gt;较高的编译速度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;span style="color:#7d7d7d"&gt;与此同时还存在一个同名的&lt;a href="http://en.wikipedia.org/wiki/Go%21_%28programming_language%29"&gt;GO programming languag&lt;/a&gt;的，从维基百科中了解到其最早的记录时间是2003年，由两个人共同创建&lt;a title="Francis McCabe (page does not exist)" href="http://en.wikipedia.org/w/index.php?title=Francis_McCabe&amp;amp;action=edit&amp;amp;redlink=1"&gt;Francis McCabe&lt;/a&gt;, &lt;a title="Keith Clark" href="http://en.wikipedia.org/wiki/Keith_Clark"&gt;Keith Clark&lt;/a&gt;。今天暂且不去讨论这两个同名语言的争议话题（其维基百科的页面已经发出删除通知，特将以下截图作为一个纪念，目前这两个同名的语言其在Wikipedia的链接仅仅是相差一个”!”符号。）&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img title="go - Francis McCabe - Keith Clark" src="http://www.androidres.com/wp-content/uploads/2009/11/go.jpg" alt="go - Francis McCabe - Keith Clark" width="477" height="504"&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p style="text-align:left"&gt;&lt;a href="http://en.wikipedia.org/wiki/Go_%28programming_language%29"&gt;Go&lt;/a&gt;语言本质上属于C家族的分支，很大程度上仍然保留着C的特点。Google开发小组对声明语法（Declaration Syntax）上作出了较大的改进，其目的是为了实现更高效的语义分析和摒弃利用符号表（Symbol Table）解析的模式。从而更加容易开发辅助工具，例如：Debuggers、dependency analyzers（从属分析）和自动文档提取器等… ，鉴于这个原因对于C或其它分支在实现上相对难度较大。刚刚接触Go的开发者即便是有过C语言的开发经验，但依然有必要对Go的语法重新做一次完整的了解。&lt;/p&gt;
+&lt;p style="text-align:left"&gt;一直以来，系统编程语言较少提供对诸如：垃圾回收（&lt;a title="Garbage collection (computer science)" href="http://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29"&gt;Garbage Collection&lt;/a&gt;）和并行计算（&lt;a href="http://en.wikipedia.org/wiki/Parallel_computation"&gt;Parallel computing&lt;/a&gt;）的支持。&lt;/p&gt;
+&lt;p style="text-align:left"&gt;&lt;a title="Garbage collection (computer science)" href="http://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29"&gt;Garbage Collection&lt;/a&gt;是一种不需要人为干预的动态内存管理机制，其可以自动清除应用程序遗留在内存中的废弃资源（有一篇详细介绍&lt;a href="http://www.google.cn/search?hl=zh-CN&amp;amp;newwindow=1&amp;amp;q=%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E8%B6%A3%E5%8F%B2&amp;amp;btnG=Google+%E6%90%9C%E7%B4%A2&amp;amp;aq=f&amp;amp;oq="&gt;Garbage Collection历史&lt;/a&gt;的文章发表于 2004年第二期的《CSDN开发高手》，通过它可以简单了解Garbage Collection发展的历史）。尽管这项技术在最近一段时间内有了长足的进步，但是依然有非常多的程序员青睐于手动执行 Free 和 Delete 命令。因为他们担心这项技术会增加系统的负担，这就好比当初放弃高级语言，而执着于直接编写机器语言的虔诚教徒。Go包含了Garbage Collection技术，但&lt;a href="http://www.androidres.com/index.php/2009/11/13/google-go-a-new-programming-language"&gt;Google&lt;/a&gt;并没有正面阐明其所采用的技术可以消减人们对于应用它所产生的负面影响，个人感觉它的秘而不宣似乎说明了Google并不完全满意当前的GC处理技术，以后将帮助大家密切留意这方面的动向。&lt;/p&gt;
+&lt;p style="text-align:left"&gt;&lt;a href="http://en.wikipedia.org/wiki/Parallel_computation"&gt;Parallel computing&lt;/a&gt;是现阶段热度较高的应用技术，开发基于多核心运行环境的应用程序。目前多核心对于家用PC已经是个非常普遍的现象（&lt;a href="http://www.tilera.com/"&gt;Tilera&lt;/a&gt;最近刚刚&lt;a href="http://www.technewsworld.com/story/68473.html"&gt;宣布&lt;/a&gt;包含100个核心的Cpu）。从Go语言的这个特性上可以反映出Google对这一领域的探索的兴趣。&lt;/p&gt;
+&lt;p style="text-align:left"&gt;引用同事的一句评论“&lt;strong&gt;Google真的非常清楚我们的需求&lt;/strong&gt; ”。目前Go语言仅仅处于测试阶段，Google非常鼓励喜欢尝试新事物的开发者可以亲自体验这种新语言所带来的编程乐趣。到此已不再需要过的正面修饰，有空的时候适当的摆弄摆弄吧。下面使一些代码片段，可以让大家快速了解其真正面貌：&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;package main
+
+import (
+	&amp;quot;os&amp;quot;;
+	&amp;quot;flag&amp;quot;; // command line option parser
+)
+
+var omitNewline = flag.Bool(&amp;quot;n&amp;quot;, false, &amp;quot;don&amp;#39;t print final newline&amp;quot;)
+
+const (
+	Space = &amp;quot; &amp;quot;;
+	Newline = &amp;quot;\n&amp;quot;;
+)
+
+func main()  {
+	flag.Parse(); // Scans the arg list and sets up flags
+	var s string = &amp;quot;&amp;quot;;
+	for i := 0; i &amp;lt; flag.NArg(); i++ {
+         if i &amp;gt; 0 {
+			s += Space
+		}
+		s += flag.Arg(i)
+	}
+	if !*omitNewline {
+		s += Newline
+	}
+	os.Stdout.WriteString(s);
+}&lt;/pre&gt;</content><author><name>EGGer</name></author><gr:likingUser>01537033227376633438</gr:likingUser><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1257654123001"><id gr:original-id="http://www.androidres.com/?p=689">tag:google.com,2005:reader/item/a53f3c70aa06a8e2</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Resource"/><category term="Tips"/><category term="Button"/><category term="Click"/><category term="Listener"/><title type="html">添加Click Listener的简便方法</title><published>2009-11-08T03:48:10Z</published><updated>2009-11-08T03:48:10Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/11/08/easier-click-listeners/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:left"&gt;对于任何一个开发者而言，常常需要为Views元素添加各种 “&lt;a href="http://developer.android.com/reference/android/view/View.OnClickListener.html"&gt;Listener&lt;/a&gt;”，响应用户的各种交互信息。下面的代码对于一般的开发者而言再熟悉不过了，是一种最原始的添加&lt;a href="http://developer.android.com/reference/android/view/View.OnClickListener.html"&gt;Click listener&lt;/a&gt;的方法：&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;findViewById(R.id.myButton).setOnClickListener(new View.OnClickListener() {
+    public void onClick(View v) {
+    // Do stuff
+    }
+});&lt;/pre&gt;
+&lt;p style="text-align:left"&gt;下面这个方法较前一种稍微简单了一些，允许多个Buttons共享一个&lt;a href="http://developer.android.com/reference/android/view/View.OnClickListener.html"&gt;Listener&lt;/a&gt;。通过&lt;a href="http://www.androidres.com/index.php/2009/11/08/easier-click-listeners/"&gt;Switch&lt;/a&gt;控制对不同Button Click事件的响应方法：&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;View.OnClickListener handler = View.OnClickListener() {
+    public void onClick(View v) {
+        switch (v.getId()) {
+           case R.id.myButton: // doStuff
+           break;
+           case R.id.myOtherButton: // doStuff
+           break;
+        }
+    }
+}&lt;/pre&gt;
+&lt;p&gt;最后依然需要在程序中调用setOnClickListener()方法为所有的&lt;a href="http://developer.android.com/reference/android/widget/Button.html"&gt;Buttons&lt;/a&gt;添加公共Listener:&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;findViewById(R.id.myButton).setOnClickListener(handler);
+findViewById(R.id.myOtherButton).setOnClickListener(handler);&lt;/pre&gt;
+&lt;p style="text-align:left"&gt;Android开发小组对上边的方法又做了进一步的改善，从Android 1.6开始将允许开发者直接将Click listener捆绑XML layout中的Views元素。在程序中定义的Listener方法需要带有一个View类型的参数。下面提供了完整的例子来说明：&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;class MyActivity extends Activity {
+    public void myClickHandler(View target) {
+    // Do stuff
+    }
+}&lt;/pre&gt;
+&lt;p style="text-align:left"&gt;在XML Layout中将已经声明的Listener函数名赋给Button的onClick属性：&lt;/p&gt;
+&lt;pre lang="xml"&gt;
+
+&lt;/pre&gt;
+&lt;p&gt;英文原文： &lt;a href="http://android-developers.blogspot.com/2009/10/ui-framework-changes-in-android-16.html"&gt;Android Blog&lt;/a&gt;&lt;/p&gt;</content><author><name>EGGer</name></author><gr:likingUser>01537033227376633438</gr:likingUser><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1257016422483"><id gr:original-id="http://www.androidres.com/?p=685">tag:google.com,2005:reader/item/1be2b2361882df78</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Documentation"/><category term="Resource"/><category term="UI Framework"/><category term="Bugs"/><category term="RelativeLayout"/><title type="html">RelativeLayout的缺陷得到修复</title><published>2009-10-31T18:18:43Z</published><updated>2009-10-31T18:18:43Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/11/01/more-flexible-more-robust-relativelayout/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:left"&gt;Android UI toolkit提供了多个Layout类，其中RelativeLayout的强大功能可以满足大多数情况下的需求，同时可以有效的组织和管理程序中包含 的Views。然而，由于存在一些缺陷限制，导致初学者经常会遇到某些奇怪的问题而影响正常的应用。基于这样的问题，Android开发小组重构了 RelativeLayout类。不仅仅除掉了一些零零散散的Bugs，最主要的是修复了一个比较严重的缺陷：Views必须以特定的顺序声明，否则无法 依据属性设置正确显示。下面根据一个具体的例子来了解实际情况：&lt;/p&gt;
+&lt;pre lang="xml"&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;/pre&gt;
+&lt;p style="text-align:left"&gt;代码中的RelateiveLayout包含有两个TextView和一个ImageView。从参 数设置来分析ImageView处在TextViews的左边，而两个TextViews则应该是靠左垂直排列。然而，以上的配置却无法在Android 1.5中得到正确的解析，结果如下所示：&lt;/p&gt;
+&lt;p style="text-align:center"&gt;&lt;img title="relativelayout 01" src="http://www.androidres.com/wp-content/uploads/2009/11/relativelayout_01.jpg" alt="relativelayout 01" width="320" height="152"&gt;&lt;/p&gt;
+&lt;p style="text-align:left"&gt;问题最主要的原因是由于RelativeLayout处理Views关联是从当前向前查找已经解析的Views，而忽略后边的Views。例如，上个例子 中“band”的位置与“track”相关联，然而“track”是在“band”之后声明。在Android 1.5中，由于RelativeLayout存在缺陷，使得它无法处理这样的问题。值得庆幸的是目前已经修复了这个问题，依然是上边的代码，在 Android 1.6中完全按照正确的逻辑显示Views的位置：&lt;/p&gt;
+&lt;p style="text-align:center"&gt;&lt;img title="relativelayout 02" src="http://www.androidres.com/wp-content/uploads/2009/11/relativelayout_02.jpg" alt="relativelayout 02" width="320" height="152"&gt;&lt;/p&gt;
+&lt;p style="text-align:left"&gt;为了帮助Android小组开发更加健壮的程序，&lt;a title="提交" href="http://b.android.com/"&gt;提交&lt;/a&gt;你发现的缺陷或者Bugs。&lt;/p&gt;</content><author><name>EGGer</name></author><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1256147296140"><id gr:original-id="http://www.androidres.com/?p=680">tag:google.com,2005:reader/item/dff495fe44441220</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Resource"/><category term="Tips"/><category term="Wifi"/><category term="WifiManager"/><title type="html">给程序添加一个控制WIFI的Switcher</title><published>2009-10-21T17:10:11Z</published><updated>2009-10-21T17:10:11Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/10/22/add-a-wifi-switcher-into-your-application/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p&gt;&lt;strong&gt;什么是WIFI？&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;strong&gt;&lt;img title="Wifi-android" src="http://www.androidres.com/wp-content/uploads/2009/10/Wifi_logo-150x67.gif" alt="Wifi-android" width="150" height="67"&gt;Wi-Fi&lt;/strong&gt;（发音为 &lt;span title="在国际音标（IPA）中的读音"&gt;/’waɪfaɪ/&lt;/span&gt;）是一個無線網路通信技術的品牌，由Wi-Fi聯盟（Wi-Fi Alliance）所持有，使用在经验证的基于&lt;a title="IEEE 802.11" href="http://zh.wikipedia.org/wiki/IEEE_802.11"&gt;IEEE 802.11&lt;/a&gt;标准的产品上，目的是改善基於IEEE 802.11標準的無線網路產品之間的互通性(&lt;a title="IEEE 802.11" href="http://zh.wikipedia.org/wiki/Wi-Fi"&gt;查看完整内容:维基百科&lt;/a&gt;)。&lt;/p&gt;
+&lt;p&gt;現時一般人會把Wi-Fi及&lt;a title="IEEE 802.11" href="http://zh.wikipedia.org/wiki/IEEE_802.11"&gt;IEEE 802.11&lt;/a&gt;混為一談。甚至把Wi-Fi等同于無線&lt;a title="互聯網" href="http://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%AF%E7%B6%B2"&gt;互聯網&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;Wi-Fi聯盟成立于&lt;a title="1999年" href="http://zh.wikipedia.org/wiki/1999%E5%B9%B4"&gt;1999年&lt;/a&gt;，當時的名稱叫做Wireless Ethernet Compatibility Alliance (WECA)。在&lt;a title="2002年" href="http://zh.wikipedia.org/wiki/2002%E5%B9%B4"&gt;2002年&lt;/a&gt;10月，正式改名為Wi-Fi Alliance&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;作为手机平台应用最广泛的一种无限网络协议（中国受限），其在地球上的覆盖面积达到了惊人的程度（结论凭主观判断，目前还没有确切的数据来源）。此前有文章讨论“&lt;a href="http://www.androidres.com/index.php/2009/09/03/detect-current-network-resource-in-android/"&gt;如何检测当前区域内可用的网络资源？&lt;/a&gt;” ，下面将围绕网络应用的话题介绍与WIFI应用开发的一些方法。&lt;/p&gt;
+&lt;p&gt;首先，需要在Manifest中添加如下permissions：&lt;/p&gt;
+&lt;pre lang="xml"&gt;
+
+
+
+
+
+
+
+&lt;/pre&gt;
+&lt;p&gt;其次，在调用的函数中声明一个&lt;a href="http://www.androidres.com/index.php/2009/10/22/add-a-wifi-switcher-into-your-application/"&gt;WIFIManager&lt;/a&gt;实体：&lt;/p&gt;
+&lt;pre style="text-align:left"&gt;private WifiManager wifiManager;
+...
+@Override
+public void onCreate...
+       wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);&lt;/pre&gt;
+&lt;p&gt;然后通过WIFIManager所提供的方法处理各种与WIFI相关的应用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检测当前网络信号质量：&lt;span style="color:#008000"&gt;static                          int&lt;/span&gt; &lt;a href="http://developer.android.com/reference/android/net/wifi/WifiManager.html#calculateSignalLevel%28int,%20int%29"&gt;calculateSignalLevel&lt;/a&gt;(int rssi, int numLevels)&lt;/li&gt;
+&lt;li&gt;得到当前WIFI的Enabled状态：&lt;span style="color:#008000"&gt;boolean&lt;/span&gt; &lt;a href="http://developer.android.com/reference/android/net/wifi/WifiManager.html#isWifiEnabled%28%29"&gt;isWifiEnabled&lt;/a&gt;()&lt;/li&gt;
+&lt;li&gt;启动/中止WIFI服务：&lt;span style="color:#008000"&gt;boolean&lt;/span&gt; &lt;a href="http://developer.android.com/reference/android/net/wifi/WifiManager.html#setWifiEnabled%28boolean%29"&gt;setWifiEnabled&lt;/a&gt;(boolean enabled)&lt;/li&gt;
+&lt;li&gt;断开当前连接：&lt;span style="color:#008000"&gt;boolean &lt;/span&gt;&lt;span&gt;&lt;a href="http://developer.android.com/reference/android/net/wifi/WifiManager.html#disconnect%28%29"&gt;disconnect&lt;/a&gt;&lt;/span&gt;()&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;查看更多有关&lt;a href="http://developer.android.com/reference/android/net/wifi/WifiManager.html"&gt;调用方法&lt;/a&gt;的介绍。&lt;/p&gt;
+&lt;p&gt;[Via &lt;a href="http://almondmendoza.com/2009/10/17/turn-off-turn-on-wifi-in-android-using-code-tutorial/"&gt;Almond Mendoza&lt;/a&gt;]&lt;/p&gt;</content><author><name>EGGer</name></author><gr:likingUser>01537033227376633438</gr:likingUser><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry><entry gr:is-read-state-locked="true" gr:crawl-timestamp-msec="1256067795678"><id gr:original-id="http://www.androidres.com/?p=677">tag:google.com,2005:reader/item/d01308bb6fadf900</id><category term="user/05631701788678678863/label/Android" scheme="http://www.google.com/reader/" label="Android"/><category term="user/05631701788678678863/state/com.google/reading-list" scheme="http://www.google.com/reader/" label="reading-list"/><category term="user/05631701788678678863/state/com.google/read" scheme="http://www.google.com/reader/" label="read"/><category term="Essay"/><category term="add-ons"/><category term="FireFox"/><title type="html">Mozilla FireFox for Android孕育中</title><published>2009-10-20T18:51:37Z</published><updated>2009-10-20T18:51:37Z</updated><link rel="alternate" href="http://www.androidres.com/index.php/2009/10/21/mozilla-firefox-is-coming-to-android/" type="text/html"/><content xml:base="http://www.androidres.com/" type="html">&lt;p style="text-align:center"&gt;&lt;img title="Mozilla FireFox for Android" src="http://www.androidres.com/wp-content/uploads/2009/10/firefoxAndroid.jpg" alt="Mozilla FireFox for Android" width="530" height="242"&gt;&lt;/p&gt;
+&lt;p&gt;适用于Android平台的FireFox经官方证实已经在孕育中，目前还无法获取准确的发布时间。本人完全是FireFox的拥护者（主观立场并不代表其是当今最好的浏览器，至少用着比较方便），同时也提倡大家利用Firefox浏览&lt;a href="http://www.androidres.com/index.php/2009/10/21/mozilla-firefox-is-coming-to-android/"&gt;AR&lt;/a&gt;（此前在IE中的显示问题已经解决）。通过某媒体对Mozilla CEO John Lilly 和 VP Jay Sullivan的采访，获得了与FireFox for Android进展相关的重要信息。最初由于Android基于Java作为开发核心的技术特点，Mozilla并没有过早的涉及到这个平台的扩展。&lt;span&gt;&lt;/span&gt;直到&lt;a href="http://developer.android.com/sdk/ndk/1.5_r1/index.html#overview"&gt;Android NDK&lt;/a&gt;的来临，这似乎让“便秘”中的Mozilla可以开始针对Android平台顺畅的“排泄”了。John Lilly在这个话题的基础上更进一步的解释：当初无法开展Android平台扩展的原因，由于硬件平台的限制，无法让智能手机平台的浏览器完全套用桌面电脑的技术，毕竟一些主流的Web应用技术无法保证可以在所有智能手机平台得到支持。&lt;/p&gt;
+&lt;p&gt;Android平台本身已经有了默认的浏览器，FireFox的优势在于可以革命性的实现手机浏览器支持扩展功能（&lt;a href="http://www.google.com/url?sa=t&amp;amp;source=web&amp;amp;ct=res&amp;amp;cd=1&amp;amp;ved=0CAwQFjAA&amp;amp;url=https%3A%2F%2Faddons.mozilla.org%2F&amp;amp;rct=j&amp;amp;q=firefox+add+ons&amp;amp;ei=DgjeSs6DCo2PkQWR_8ES&amp;amp;usg=AFQjCNGoTdPVJJYDmaDkKoFSpuasv6HVCg&amp;amp;sig2=kk7C7Rpr4gmqxZbazG4J9g"&gt;add-ons&lt;/a&gt;），相信大部分人都将被这样的诱惑所吸引。&lt;/p&gt;
+&lt;p&gt;让我们一同静静的等待FireFox真正来临的那一天。&lt;/p&gt;
+&lt;p&gt;[via &lt;a href="http://gigaom.com/2009/10/19/on-mobile-phones-firefoxs-big-bet-is-nokia-android/"&gt;GigaOm&lt;/a&gt;]&lt;/p&gt;</content><author><name>EGGer</name></author><gr:likingUser>01537033227376633438</gr:likingUser><source gr:stream-id="feed/http://www.androidres.com/index.php/feed/"><id>tag:google.com,2005:reader/feed/http://www.androidres.com/index.php/feed/</id><title type="html">Android Resource | 资源 资讯 教程</title><link rel="alternate" href="http://www.androidres.com" type="text/html"/></source></entry></feed>
