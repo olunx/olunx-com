@@ -29,11 +29,17 @@ public final class R {
         public static final int common_update=0x7f020009;
         public static final int help_about=0x7f02000a;
         public static final int help_manual=0x7f02000b;
-        public static final int logo_24=0x7f02000c;
-        public static final int logo_32=0x7f02000d;
-        public static final int logo_48=0x7f02000e;
-        public static final int rss_never_update=0x7f02000f;
-        public static final int rss_recent_update=0x7f020010;
+        public static final int ic_menu_add=0x7f02000c;
+        public static final int ic_menu_always_landscape_portrait=0x7f02000d;
+        public static final int ic_menu_chat_dashboard=0x7f02000e;
+        public static final int ic_menu_help=0x7f02000f;
+        public static final int ic_menu_preferences=0x7f020010;
+        public static final int ic_menu_refresh=0x7f020011;
+        public static final int logo_24=0x7f020012;
+        public static final int logo_32=0x7f020013;
+        public static final int logo_48=0x7f020014;
+        public static final int rss_never_update=0x7f020015;
+        public static final int rss_recent_update=0x7f020016;
     }
     public static final class id {
         public static final int Button01=0x7f070005;

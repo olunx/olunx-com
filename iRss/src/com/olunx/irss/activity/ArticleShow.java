@@ -144,9 +144,9 @@ public class ArticleShow extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(1, MENU_SETTINGS, 1, "设置").setIcon(android.R.drawable.ic_menu_preferences);
-		menu.add(2, MENU_FULLSCREEN, 1, "全屏").setIcon(android.R.drawable.ic_menu_mapmode);
-		menu.add(3, MENU_SWITCHSCREEN, 1, "旋转屏幕").setIcon(android.R.drawable.ic_menu_set_as);
+		menu.add(1, MENU_SETTINGS, 1, "设置").setIcon(R.drawable.ic_menu_preferences);
+		menu.add(2, MENU_FULLSCREEN, 1, "全屏").setIcon(R.drawable.ic_menu_chat_dashboard);
+		menu.add(3, MENU_SWITCHSCREEN, 1, "旋转屏幕").setIcon(R.drawable.ic_menu_always_landscape_portrait);
 		return super.onCreateOptionsMenu(menu);
 	}
 

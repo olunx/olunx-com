@@ -18,7 +18,7 @@ import android.util.Log;
 
 public class FeedsHelper implements IHelper {
 
-	private final String c_id = "_id";
+	public final static String c_id = "_id";
 	public final static String c_title = "title";
 	public final static String c_text = "text";
 	public final static String c_icon = "icon";
@@ -102,8 +102,9 @@ public class FeedsHelper implements IHelper {
 	 * @param object
 	 */
 	public void updateRecord(ContentValues object) {
-		String where = (String) object.get(c_xmlUrl);
-		getDB().update(TABLE, object, c_xmlUrl + "== ? ", new String[] { where });
+		String xmlUrl = (String) object.get(c_xmlUrl);
+		String catTitle = (String) object.get(c_catTitle);
+		getDB().update(TABLE, object, c_xmlUrl + "== ? and " + c_catTitle + "== ?", new String[] { xmlUrl, catTitle });
 	}
 
 	/**
@@ -144,7 +145,8 @@ public class FeedsHelper implements IHelper {
 		int countColumn = result.getColumnIndex("count");
 
 		CategoryHelper helper = new CategoryHelper();
-
+		helper.dropTable();
+		
 		String title = null;
 		String count = null;
 		if (result != null) {
@@ -152,11 +154,7 @@ public class FeedsHelper implements IHelper {
 			while (!result.isAfterLast()) {
 				title = result.getString(titleColumn);
 				count = result.getString(countColumn);
-				if (helper.isExistsCat(title)) {
-					helper.updateFeedCount(title, count);
-				} else {
-					helper.addRecord(title, count);
-				}
+				helper.addRecord(title, count);
 
 				result.moveToNext();
 			}
@@ -303,9 +301,9 @@ public class FeedsHelper implements IHelper {
 	 * @param feedXmlUrl
 	 * @return
 	 */
-	public boolean isExistsFeed(String feedXmlUrl) {
+	public boolean isExistsFeed(String feedXmlUrl, String category) {
 		String str = null;
-		Cursor result = getDB().query(TABLE, new String[] { c_xmlUrl }, c_xmlUrl + "== ?", new String[] { feedXmlUrl }, null, null, null);
+		Cursor result = getDB().query(TABLE, new String[] { c_xmlUrl }, c_xmlUrl + "== ? and " + c_catTitle + "== ?", new String[] { feedXmlUrl, category }, null, null, null);
 		if (result != null) {
 			result.moveToFirst();
 			int index = result.getColumnIndex(c_xmlUrl);

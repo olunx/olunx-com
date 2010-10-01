@@ -83,7 +83,8 @@ public class GoogleReaderUtil {
 
 		ArrayList<Outline> outlinesList = new ArrayList<Outline>();
 
-		for (int i = 0; i < outline.getLength(); i++) {
+		int outlineLength = outline.getLength();
+		for (int i = 0; i < outlineLength; i++) {
 			Node node = outline.item(i);// 获取每一个body
 
 			Node parent = node.getParentNode();// 获取父亲节点

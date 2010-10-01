@@ -67,8 +67,6 @@ public class CategoryHelper implements IHelper {
 		this.getDB().execSQL("drop table if exists " + TABLE + ";");
 	}
 
-	private ContentValues row = null;
-
 	/**
 	 * 添加记录
 	 * 
@@ -76,34 +74,13 @@ public class CategoryHelper implements IHelper {
 	 * @param feedCount
 	 */
 	public void addRecord(String catTitle, String feedCount) {
-		row = new ContentValues();
+		ContentValues row = new ContentValues();
 		row.put(c_title, catTitle);
 		row.put(c_feedCount, feedCount);
 		row.put(c_icon, R.drawable.cat_icon);
 		getDB().insert(TABLE, null, row);
 	}
 
-	/**
-	 * 更新Feed数目
-	 * 
-	 * @param catTitle
-	 * @param feedCount
-	 */
-	public void updateFeedCount(String catTitle, String feedCount) {
-		row = new ContentValues();
-		row.put(c_feedCount, feedCount);
-		Log.i(TAG, "update feed count:" + catTitle);
-		getDB().update(TABLE, row, c_title + "== ? ", new String[] { catTitle });
-	}
-
-	/**
-	 * 获取所有数据
-	 * 
-	 * @return
-	 */
-	public Cursor getAllRecords() {
-		return getDB().query(TABLE, new String[] { c_id, c_title, c_icon, c_feedCount }, null, null, null, null, null);
-	}
 
 	/**
 	 * 获取所有数据
@@ -133,30 +110,6 @@ public class CategoryHelper implements IHelper {
 	public void deleteRecord(String catTitle) {
 		String sql = "delete from " + TABLE + " where " + c_title + " == '" + catTitle + "'";
 		this.getDB().execSQL(sql);
-	}
-
-	/**
-	 * 判断目录是否存在
-	 * 
-	 * @param catTitle
-	 * @return
-	 */
-	public boolean isExistsCat(String catTitle) {
-		String str = null;
-		Cursor result = getDB().query(TABLE, new String[] { c_title }, c_title + "== ?", new String[] { catTitle }, null, null, null);
-		if (result != null) {
-			result.moveToFirst();
-			int index = result.getColumnIndex(c_title);
-			while (!result.isAfterLast()) {
-				str = result.getString(index);
-				result.moveToNext();
-			}
-		}
-		result.close();
-		if (str == null || str == "" || str.equals("")) {
-			return false;
-		}
-		return true;
 	}
 
 }

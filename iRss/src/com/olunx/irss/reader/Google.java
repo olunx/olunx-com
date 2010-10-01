@@ -90,6 +90,7 @@ public class Google {
 	public void addFeed(String feedXmlUrl, String title, String category) {
 		if (dataProvider != null) {
 			try {
+				Log.i(TAG, "add feed");
 				dataProvider.editSubscriptionLabel(feedXmlUrl, title, category, true);
 			} catch (GoogleReaderException e) {
 				e.printStackTrace();
@@ -104,6 +105,7 @@ public class Google {
 	 */
 	public void deleteFeed(String feedXmlUrl) {
 		if (dataProvider != null) {
+			Log.i(TAG, "delete feed");
 			try {
 				dataProvider.removeSubscription(feedXmlUrl);
 			} catch (GoogleReaderException e) {
@@ -158,8 +160,9 @@ public class Google {
 		List<Outline> outlines = GoogleReaderUtil.parseOPMLSubscriptions(xmlContent);
 
 		for (Outline o : outlines) {
-
+//			System.out.println(o.getCategory());
 			ContentValues feed = new ContentValues();
+			feed.put(FeedsHelper.c_id, System.currentTimeMillis());
 			feed.put(FeedsHelper.c_title, o.getTitle());
 			feed.put(FeedsHelper.c_text, o.getText());
 			feed.put(FeedsHelper.c_htmlUrl, o.getHtmlUrl());
@@ -191,7 +194,7 @@ public class Google {
 			article.put(ArticlesHelper.c_id, System.currentTimeMillis());
 			article.put(ArticlesHelper.c_title, item.getTitle());
 			article.put(ArticlesHelper.c_link, item.getUrl());
-			article.put(ArticlesHelper.c_content, Utils.init().parseTextToHtmlForWebview("utf-8", item.getTitle(), item.getContent(),
+			article.put(ArticlesHelper.c_content, Utils.init().parseTextToHtmlForWebview("utf-8", item.getTitle(),item.getUrl(), item.getContent(),
 					item.getContentTextDirection()));
 			article.put(ArticlesHelper.c_desc, item.getContentTextDirection());
 			article.put(ArticlesHelper.c_publishTime, String.valueOf(item.getPublishedOn()));

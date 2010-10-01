@@ -320,13 +320,15 @@ public class Utils {
 	 * @param article
 	 * @return
 	 */
-	public String parseTextToHtmlForWebview(String charset, String title, String content, String desc) {
+	public String parseTextToHtmlForWebview(String charset, String title, String link, String content, String desc) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<html><head><meta http-equiv='content-type' content='text/html; charset=");
 		sb.append(charset);
-		sb.append("' /></head><body><h3>");
+		sb.append("' /></head><body><h3><a href='");
+		sb.append(link);
+		sb.append("'>");
 		sb.append(title);
-		sb.append("</h3>");
+		sb.append("</a></h3>");
 		sb.append(content);
 		if (desc != null) {
 			sb.append(desc);

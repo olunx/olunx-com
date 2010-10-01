@@ -40,15 +40,11 @@ public class Update {
 			return;
 
 		FeedsHelper helper = new FeedsHelper();
-		int len = array.size();
-		Log.i(TAG, String.valueOf(len));
-		for (int i = 0; i < len; i++) {
-			ContentValues mValues = array.get(i);
-			if (helper.isExistsFeed(mValues.get(FeedsHelper.c_xmlUrl).toString())) {
-				helper.updateRecord(mValues);
-			} else {
-				helper.addRecord(mValues);
-			}
+		helper.dropTable();
+		helper.createTable();
+		Log.i(TAG, String.valueOf(array.size()));
+		for (ContentValues mValues : array) {
+			helper.addRecord(mValues);
 		}
 		helper.updateCategoryStatus();// 为Category表重新统计Feed条数。
 		helper.close();
@@ -73,7 +69,11 @@ public class Update {
 		feed.put(FeedsHelper.c_icon, R.drawable.rss_recent_update);
 		
 		FeedsHelper helper = new FeedsHelper();
-		helper.addRecord(feed);
+		if (helper.isExistsFeed(feedXmlUrl, category)) {
+			helper.updateRecord(feed);
+		} else {
+			helper.addRecord(feed);
+		}
 		helper.updateCategoryStatus();// 为Category表重新统计Feed条数。
 		helper.close();
 		

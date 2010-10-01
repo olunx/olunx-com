@@ -96,7 +96,7 @@ public class Config {
 	public String getPassword() {
 		return this.getCon("password", "");
 	}
-	
+
 	/**
 	 * 是否已经输入账号
 	 * 
@@ -120,9 +120,9 @@ public class Config {
 	}
 
 	public String getArticleFontSize() {
-		return this.getCon("article_font_size", "14px");
+		return this.getCon("article_font_size", "18px");
 	}
-	
+
 	/**
 	 * 文章字体颜色
 	 * 
@@ -135,7 +135,7 @@ public class Config {
 	public String getArticleFontColor() {
 		return this.getCon("article_font_color", "#000000");
 	}
-	
+
 	/**
 	 * 文章背景颜色
 	 * 
@@ -148,7 +148,7 @@ public class Config {
 	public String getArticleBgColor() {
 		return this.getCon("article_bg_color", "#ffffff");
 	}
-	
+
 	/**
 	 * 文章配色方案
 	 * 
@@ -160,5 +160,31 @@ public class Config {
 
 	public String getSysFontStyle() {
 		return this.getCon("sys_font_style", "白天模式");
+	}
+
+	/**
+	 * 设置是否为离线阅读
+	 * 
+	 * @param value
+	 */
+	public void setOffLineReadMode(boolean value) {
+		this.setCon("off_line_read_mode", String.valueOf(value));
+	}
+
+	public boolean isOffLineReadMode() {
+		return Boolean.valueOf(getCon("off_line_read_mode", "false"));
+	}
+
+	/**
+	 * 设置文章保存时间
+	 * 
+	 * @param days
+	 */
+	public void setArticleDataStoreTime(String days) {
+		this.setCon("article_data_store_time", days);
+	}
+
+	public String getArticleDataStoreTime() {
+		return this.getCon("article_data_store_time", "7");
 	}
 }

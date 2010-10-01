@@ -139,7 +139,7 @@ public class Init extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case ALERT_RIGHT: {
-				pd.setMessage("登录成功,正在获取Feed数据...");
+				pd.setMessage("登录成功,正在获取[订阅]数据...");
 				break;
 			}
 			case ALERT_WRONG: {

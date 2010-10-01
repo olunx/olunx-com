@@ -52,12 +52,13 @@ public class Main extends Activity {
 	private final int ALERT_DISCONNECT = 1;// 网络连接不可用
 	private final int MSG_REFRESH_LISTVIEW = 2;// 刷新listview
 	private final int MSG_NOTIFY_UPDATED = 3; // 消息栏通知
+	private final int MSG_DELTE_FEED = 4; //删除一条订阅源
 
 	private Notification notification;
 	private NotificationManager notificationManager;
 	private Intent intent;
 	private PendingIntent pendIntent;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,7 +70,7 @@ public class Main extends Activity {
 		itemLongClickListener = new ItemLongClickListener();
 		listview.setOnItemClickListener(itemClickListener);
 		listview.setOnItemLongClickListener(itemLongClickListener);
-		
+
 		notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);// 获取系统服务（消息管理）
 		// 点击通知时转移内容
 		intent = new Intent(this, Main.class);
@@ -181,7 +182,7 @@ public class Main extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case ALERT_DISCONNECT: {
-				setNotification("网络连接失败，请检查网络是否可用。","网络连接不可用，更新失败。");
+				setNotification("网络连接失败，请检查网络是否可用。", "网络连接不可用，更新失败。");
 				break;
 			}
 			case MSG_REFRESH_LISTVIEW: {
@@ -189,8 +190,14 @@ public class Main extends Activity {
 				break;
 			}
 			case MSG_NOTIFY_UPDATED: {
+				init();
 				onResume();
-				setNotification("订阅更新完成了...o(∩_∩)o","订阅更新完成");
+				setNotification("订阅更新完成了...o(∩_∩)o", "订阅更新完成");
+				break;
+			}case MSG_DELTE_FEED:{
+				init();
+				onResume();
+				Toast.makeText(Main.this, "成功删除一条订阅！", Toast.LENGTH_LONG).show();
 				break;
 			}
 			}
@@ -207,7 +214,7 @@ public class Main extends Activity {
 		notification.setLatestEventInfo(Main.this, "iRss", infoText, pendIntent);
 		notificationManager.notify(0, notification);// 执行通知.
 	}
-	
+
 	/**
 	 * 按钮短按事件
 	 */
@@ -250,34 +257,27 @@ public class Main extends Activity {
 			ad.setTitle("请选择操作");
 			ad.setCancelable(false);
 			ad.setNegativeButton("取消", null);
-			ad.setItems(new String[] { "更新该分类所有Feed", "修改分类名称" + titlePlus, "删除当前分类" + titlePlus },
-					new android.content.DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							switch (which) {
-							case 0: {
-								Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
-								new Thread() {
-									public void run() {
-										if (!SysTools.isConnect(Main.this)) {
-											mHandler.sendEmptyMessage(ALERT_DISCONNECT);
-											return;
-										}
-										new Update().updateArticlesByCat(selectTitle);
-										mHandler.sendEmptyMessage(MSG_NOTIFY_UPDATED);
-									}
-								}.start();
-								break;
+			ad.setItems(new String[] { "更新" + titlePlus + "分类所有订阅" }, new android.content.DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case 0: {
+						Toast.makeText(Main.this, "开始更新文章数据...", Toast.LENGTH_SHORT).show();
+						new Thread() {
+							public void run() {
+								if (!SysTools.isConnect(Main.this)) {
+									mHandler.sendEmptyMessage(ALERT_DISCONNECT);
+									return;
+								}
+								new Update().updateArticlesByCat(selectTitle);
+								mHandler.sendEmptyMessage(MSG_NOTIFY_UPDATED);
 							}
-							case 1: {
-								break;
-							}
-							case 2: {
-								break;
-							}
-							}
-						}
-					});
+						}.start();
+						break;
+					}
+					}
+				}
+			});
 			ad.show();
 
 			return false;
@@ -327,7 +327,7 @@ public class Main extends Activity {
 			ad.setTitle("请选择操作");
 			ad.setCancelable(false);
 			ad.setNegativeButton("取消", null);
-			ad.setItems(new String[] { "更新当前Feed", "修改Feed名称", "删除这条Feed" }, new android.content.DialogInterface.OnClickListener() {
+			ad.setItems(new String[] { "更新这条[订阅]", "删除这条[订阅]" }, new android.content.DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					switch (which) {
@@ -346,9 +346,19 @@ public class Main extends Activity {
 						break;
 					}
 					case 1:
+					{
+						new Thread() {
+							public void run() {
+								if (!SysTools.isConnect(Main.this)) {
+									mHandler.sendEmptyMessage(ALERT_DISCONNECT);
+									return;
+								}
+								new Update().deleteFeed(selectXmlUrl);
+								mHandler.sendEmptyMessage(MSG_DELTE_FEED);
+							}
+						}.start();
 						break;
-					case 2:
-						break;
+					}
 					}
 				}
 			});
@@ -365,10 +375,10 @@ public class Main extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(1, MENU_ADD, 1, "添加").setIcon(android.R.drawable.ic_menu_add);
-		menu.add(1, MENU_SETTINGS, 2, "设置").setIcon(android.R.drawable.ic_menu_preferences);
-		menu.add(2, MENU_UPDATE, 1, "更新").setIcon(android.R.drawable.ic_menu_upload);
-		menu.add(2, MENU_HELP, 2, "帮助").setIcon(android.R.drawable.ic_menu_help);
+		menu.add(1, MENU_ADD, 1, "添加").setIcon(R.drawable.ic_menu_add);
+		menu.add(1, MENU_SETTINGS, 2, "设置").setIcon(R.drawable.ic_menu_preferences);
+		menu.add(2, MENU_UPDATE, 1, "更新").setIcon(R.drawable.ic_menu_refresh);
+		menu.add(2, MENU_HELP, 2, "帮助").setIcon(R.drawable.ic_menu_help);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -387,7 +397,7 @@ public class Main extends Activity {
 			break;
 		}
 		case MENU_UPDATE: {
-			Toast.makeText(this, "开始更新所有Feed...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "开始更新所有[订阅]...", Toast.LENGTH_SHORT).show();
 			currentCatTitle = null;// 更新所有Feed的文章
 			new Thread() {
 				public void run() {
@@ -396,7 +406,9 @@ public class Main extends Activity {
 						return;
 					}
 					System.out.println("network connected!");
-					new Update().updateAllArticles();
+					Update update = new Update();
+					update.getFeedsFromGoogle();
+					update.updateAllArticles();
 					mHandler.sendEmptyMessage(MSG_NOTIFY_UPDATED);
 				}
 			}.start();

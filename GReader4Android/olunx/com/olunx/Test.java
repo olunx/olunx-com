@@ -43,25 +43,7 @@ public class Test {
 
 		// System.out.println(dataProvider.exportSubscriptionsToOPML());
 
-		// File file = new File("res/opml.xml");
-		//		
-		// FileInputStream fis = null;
-		// try {
-		// fis = new FileInputStream(file);
-		// } catch (FileNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		//		
-		// ArrayList<Outline> outlines =
-		// GoogleReaderUtil.parseOPMLSubscriptions(fis);
-		// for(Outline o : outlines) {
-		// System.out.println(o.getTitle());
-		// System.out.println(o.getXmlUrl());
-		// System.out.println(o.getCategory());
-		// }
-
-		File file = new File("res/1285813603808_feed.xml");
+		File file = new File("res/opml.xml");
 
 		FileInputStream fis = null;
 		try {
@@ -71,14 +53,32 @@ public class Test {
 			e.printStackTrace();
 		}
 
-		ArrayList<Item> items = GoogleReaderUtil.parseFeedContent(new InputSource(fis));
-		for (Item i : items) {
-			System.out.println(i.getTitle());
-			System.out.println(i.getUrl());
-			System.out.println(i.getPublishedOn());
-			System.out.println(i.getContent());
-			System.out.println(i.getContentTextDirection());
+		ArrayList<Outline> outlines = GoogleReaderUtil.parseOPMLSubscriptions(fis);
+		for (Outline o : outlines) {
+			System.out.println(o.getTitle());
+			System.out.println(o.getXmlUrl());
+			System.out.println(o.getCategory());
 		}
+
+		// File file = new File("res/1285813603808_feed.xml");
+		//
+		// FileInputStream fis = null;
+		// try {
+		// fis = new FileInputStream(file);
+		// } catch (FileNotFoundException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		//
+		// ArrayList<Item> items = GoogleReaderUtil.parseFeedContent(new
+		// InputSource(fis));
+		// for (Item i : items) {
+		// System.out.println(i.getTitle());
+		// System.out.println(i.getUrl());
+		// System.out.println(i.getPublishedOn());
+		// System.out.println(i.getContent());
+		// System.out.println(i.getContentTextDirection());
+		// }
 	}
 
 }

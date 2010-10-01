@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
-<PreferenceCategory><CheckBoxPreference android:key="offline_update" android:title="离线阅读" android:summary="更新时将图片类的数据下载到SDCard上"></CheckBoxPreference>
-<ListPreference android:key="store_article_time" android:entries="@array/store_article_time" android:entryValues="@array/store_article_time_value" android:negativeButtonText="取消" android:title="保存历史文章" android:dialogTitle="请选择" android:summary="你想保存什么时间内的文章？"></ListPreference>
-</PreferenceCategory>
+<PreferenceCategory android:title="离线阅读"><CheckBoxPreference android:title="离线阅读" android:summary="更新时将图片类的数据下载到SDCard上" android:key="offline_read"></CheckBoxPreference>
+
+
+<Preference android:key="download_offline_data" android:title="下载离线数据" android:summary="下载已更新的文章的图片数据" android:dependency="offline_read"></Preference>
+</PreferenceCategory><PreferenceCategory android:title="数据存储"><ListPreference android:key="store_article_time" android:entries="@array/store_article_time" android:entryValues="@array/store_article_time_value" android:negativeButtonText="取消" android:title="保存历史文章" android:dialogTitle="请选择" android:summary="你想保存什么时间内的文章？"></ListPreference></PreferenceCategory>
 </PreferenceScreen>
