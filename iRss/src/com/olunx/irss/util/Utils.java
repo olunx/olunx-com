@@ -56,6 +56,38 @@ public class Utils {
 		return sdf.format(date);
 	}
 
+	public Date parseCstStrToDate(String date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+		try {
+			return sdf.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * 判断时间是否在今天
+	 * 
+	 * @param updateTime
+	 * @return
+	 */
+	public boolean isTimeInToday(String updateTime) {
+		Date today = new Date();
+		today.getDay();
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US).parse(updateTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		if (today.getMonth() == date.getMonth() && today.getDay() == date.getDay()) {
+			return true;
+		}
+		return false;
+	}
+
 	public String getCstTimeBeforeToday(int days) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - days);

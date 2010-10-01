@@ -68,6 +68,13 @@ public class CategoryHelper implements IHelper {
 	}
 
 	/**
+	 * 删除所有数据
+	 */
+	public void deleteAll() {
+		this.getDB().execSQL("delete from " + TABLE + ";");
+	}
+	
+	/**
 	 * 添加记录
 	 * 
 	 * @param catTitle

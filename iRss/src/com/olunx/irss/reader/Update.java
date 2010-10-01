@@ -40,11 +40,12 @@ public class Update {
 			return;
 
 		FeedsHelper helper = new FeedsHelper();
-		helper.dropTable();
-		helper.createTable();
+//		helper.deleteAll();
 		Log.i(TAG, String.valueOf(array.size()));
 		for (ContentValues mValues : array) {
-			helper.addRecord(mValues);
+			if (!helper.isExistsFeed(mValues.get(FeedsHelper.c_xmlUrl).toString(), mValues.get(FeedsHelper.c_catTitle).toString())) {
+				helper.addRecord(mValues);
+			}
 		}
 		helper.updateCategoryStatus();// 为Category表重新统计Feed条数。
 		helper.close();
@@ -149,7 +150,12 @@ public class Update {
 			//如果Feed的更新时间为空，则取指定条数据。
 			String updateTime = fHelper.getFeedUpdateTime(feedXmlUrl);
 			String timeStamp = null;
+			
 			if(updateTime != null) {
+				//如果今天更新过了，则跳过更新。
+				if(Utils.init().isTimeInToday(updateTime)) {
+					continue;
+				}
 				timeStamp = String.valueOf(Utils.init().getTimestamp(updateTime));
 			}
 			

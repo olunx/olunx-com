@@ -64,14 +64,13 @@ public class FeedsHelper implements IHelper {
 			sqlite.close();
 		}
 	}
-	
+
 	public boolean isOpen() {
 		if (sqlite != null) {
 			return sqlite.isOpen();
 		}
 		return false;
 	}
-	
 
 	@Override
 	public void createTable() {
@@ -85,6 +84,13 @@ public class FeedsHelper implements IHelper {
 	@Override
 	public void dropTable() {
 		this.getDB().execSQL("drop table if exists " + TABLE + ";");
+	}
+
+	/**
+	 * 删除所有数据
+	 */
+	public void deleteAll() {
+		this.getDB().execSQL("delete from " + TABLE + ";");
 	}
 
 	/**
@@ -145,8 +151,8 @@ public class FeedsHelper implements IHelper {
 		int countColumn = result.getColumnIndex("count");
 
 		CategoryHelper helper = new CategoryHelper();
-		helper.dropTable();
-		
+		helper.deleteAll();
+
 		String title = null;
 		String count = null;
 		if (result != null) {
@@ -159,6 +165,7 @@ public class FeedsHelper implements IHelper {
 				result.moveToNext();
 			}
 		}
+		
 		result.close();
 		helper.close();
 	}
@@ -168,11 +175,12 @@ public class FeedsHelper implements IHelper {
 	 * 
 	 * @return
 	 */
-//	public Cursor getFeedsByCategory(String catTitle) {
-//		return getDB().query(TABLE, new String[] { c_id, c_icon, c_title, c_articleCount, c_xmlUrl, c_charset }, c_catTitle + "== ?",
-//				new String[] { catTitle }, null, null, null);
-//	}
-	
+	// public Cursor getFeedsByCategory(String catTitle) {
+	// return getDB().query(TABLE, new String[] { c_id, c_icon, c_title,
+	// c_articleCount, c_xmlUrl, c_charset }, c_catTitle + "== ?",
+	// new String[] { catTitle }, null, null, null);
+	// }
+
 	/**
 	 * 获取指定Feed下的文章列表
 	 * 
@@ -180,11 +188,11 @@ public class FeedsHelper implements IHelper {
 	 * @return
 	 */
 	public ArrayList<Map<String, Object>> getFeedsByCategory(String catTitle) {
-		Cursor result = getDB().query(TABLE, new String[] { c_icon, c_title, c_articleCount, c_xmlUrl, c_charset, c_updateTime }, c_catTitle + "== ?",
-				new String[] { catTitle }, null, null, c_updateTime + " desc");
-		
+		Cursor result = getDB().query(TABLE, new String[] { c_icon, c_title, c_articleCount, c_xmlUrl, c_charset, c_updateTime },
+				c_catTitle + "== ?", new String[] { catTitle }, null, null, c_updateTime + " desc");
+
 		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		
+
 		Map<String, Object> map;
 		if (result != null) {
 			result.moveToFirst();
@@ -197,25 +205,25 @@ public class FeedsHelper implements IHelper {
 			Utils utils = new Utils();
 			while (!result.isAfterLast()) {
 				map = new HashMap<String, Object>();
-				
+
 				map.put(c_icon, result.getString(iconIndex));
 				map.put(c_title, result.getString(titleIndex));
 				map.put(c_xmlUrl, result.getString(xmlurlIndex));
 				map.put(c_charset, result.getString(charsetIndex));
 				String articleCount = result.getString(countIndex);
-				if(articleCount == null) {
+				if (articleCount == null) {
 					articleCount = "0";
 				}
 				String updateTime = utils.formatCstTimeToLocal(result.getString(timeIndex), "MM月dd日");
-				if(updateTime == null) {
+				if (updateTime == null) {
 					updateTime = "从未";
 					map.put(c_icon, R.drawable.rss_never_update);
 				}
-				
+
 				String summary = "文章: " + articleCount + "   更新: " + updateTime;
-				
+
 				map.put(c_text, summary);
-				
+
 				list.add(map);
 				result.moveToNext();
 			}
@@ -289,7 +297,7 @@ public class FeedsHelper implements IHelper {
 			}
 		}
 		result.close();
-		
+
 		System.out.println("feed update time: " + str);
 
 		return str;
@@ -303,7 +311,8 @@ public class FeedsHelper implements IHelper {
 	 */
 	public boolean isExistsFeed(String feedXmlUrl, String category) {
 		String str = null;
-		Cursor result = getDB().query(TABLE, new String[] { c_xmlUrl }, c_xmlUrl + "== ? and " + c_catTitle + "== ?", new String[] { feedXmlUrl, category }, null, null, null);
+		Cursor result = getDB().query(TABLE, new String[] { c_xmlUrl }, c_xmlUrl + "== ? and " + c_catTitle + "== ?",
+				new String[] { feedXmlUrl, category }, null, null, null);
 		if (result != null) {
 			result.moveToFirst();
 			int index = result.getColumnIndex(c_xmlUrl);
