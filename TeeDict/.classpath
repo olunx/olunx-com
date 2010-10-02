@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="jAddDictToJar"/>
+	<classpathentry kind="src" path="jChardet"/>
+	<classpathentry kind="src" path="jDictExtraDicts"/>
+	<classpathentry kind="src" path="jDictLib"/>
+	<classpathentry kind="src" path="jDictOnlineDict"/>
+	<classpathentry kind="src" path="jDictSeFactory"/>
+	<classpathentry kind="src" path="jFileBase"/>
+	<classpathentry kind="src" path="jListFile"/>
+	<classpathentry kind="src" path="jPDB"/>
+	<classpathentry kind="src" path="jSeFile"/>
+	<classpathentry kind="src" path="jStarDict"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/jdic.jar"/>
+	<classpathentry kind="lib" path="lib/jnlp.jar"/>
+	<classpathentry kind="lib" path="lib/jspeex0.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/screentextj.jar"/>
+	<classpathentry kind="lib" path="lib/swing-layout-1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

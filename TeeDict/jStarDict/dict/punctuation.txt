@@ -1,0 +1,26 @@
+!	exclamation or  exclamation mark
+"	double quotation marks	
+#	hash	
+$	dollar symbol
+&	ampersand
+'	single quotation marks or apostrophe
+()	left / right parentheses
+*	asterisk or multiplied by
++	plus
+,	comma
+-	hyphen or	 minus or dash	
+.	period or dot
+...	ellipsis
+/	virgule (forward slash)
+:	colon
+;	semicolon
+<>	left / right angle bracket
+=	equal to
+?	question mark
+@	at
+[]	left / right square bracket
+\	reversed virgule (backward slash)
+_	underline
+`	grave accent
+{}	left / right brace
+~	swung dash or tilde
