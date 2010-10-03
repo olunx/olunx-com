@@ -3,10 +3,14 @@ package com.olunx.irss.reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.math.RandomUtils;
+
 import com.olunx.GoogleReaderUtil;
 import com.olunx.irss.R;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.FeedsHelper;
+import com.olunx.irss.util.Config;
+import com.olunx.irss.util.SysTools;
 import com.olunx.irss.util.Utils;
 
 import android.content.ContentValues;
@@ -162,7 +166,7 @@ public class Google {
 		for (Outline o : outlines) {
 //			System.out.println(o.getCategory());
 			ContentValues feed = new ContentValues();
-			feed.put(FeedsHelper.c_id, System.currentTimeMillis());
+			feed.put(FeedsHelper.c_id, System.currentTimeMillis() + RandomUtils.nextInt(2010));
 			feed.put(FeedsHelper.c_title, o.getTitle());
 			feed.put(FeedsHelper.c_text, o.getText());
 			feed.put(FeedsHelper.c_htmlUrl, o.getHtmlUrl());
@@ -188,10 +192,11 @@ public class Google {
 		ArrayList<ContentValues> articles = new ArrayList<ContentValues>();
 
 		ArrayList<Item> items = GoogleReaderUtil.parseFeedContent(source);
+		boolean isOfflineReadMode = Config.init().isOffLineReadMode();
 
 		for (Item item : items) {
 			ContentValues article = new ContentValues();
-			article.put(ArticlesHelper.c_id, System.currentTimeMillis());
+			article.put(ArticlesHelper.c_id, System.currentTimeMillis() + RandomUtils.nextInt(2010));
 			article.put(ArticlesHelper.c_title, item.getTitle());
 			article.put(ArticlesHelper.c_link, item.getUrl());
 			article.put(ArticlesHelper.c_content, Utils.init().parseTextToHtmlForWebview("utf-8", item.getTitle(),item.getUrl(), item.getContent(),
@@ -202,6 +207,13 @@ public class Google {
 			article.put(ArticlesHelper.c_stared, "false");
 			article.put(ArticlesHelper.c_feedXmlUrl, feedUrl);
 			articles.add(article);
+			
+			//提取文章中的图片
+			SysTools.storeImageUrlToDatabase(String.valueOf(article.get(ArticlesHelper.c_id)), (String)article.get(ArticlesHelper.c_content));
+			if(isOfflineReadMode) {
+				//开始下载图片
+				SysTools.downloadImagesToStorage(String.valueOf(article.get(ArticlesHelper.c_id)));
+			}
 		}
 
 		return articles;

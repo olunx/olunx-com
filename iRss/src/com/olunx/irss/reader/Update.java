@@ -43,7 +43,7 @@ public class Update {
 //		helper.deleteAll();
 		Log.i(TAG, String.valueOf(array.size()));
 		for (ContentValues mValues : array) {
-			if (!helper.isExistsFeed(mValues.get(FeedsHelper.c_xmlUrl).toString(), mValues.get(FeedsHelper.c_catTitle).toString())) {
+			if (!helper.isExistsFeed((String)mValues.get(FeedsHelper.c_xmlUrl), (String)mValues.get(FeedsHelper.c_catTitle))) {
 				helper.addRecord(mValues);
 			}
 		}

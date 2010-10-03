@@ -122,7 +122,7 @@ public class CSVReader {
     * @throws IOException
     *             if bad things happen during the read
     */
-   @SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings("unchecked")
 public Vector readAll() throws IOException {
 
    	Vector allElements = new Vector();
@@ -179,7 +179,7 @@ public Vector readAll() throws IOException {
     * @return the comma-tokenized list of elements, or null if nextLine is null
     * @throws IOException if bad things happen during the read
     */
-   @SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings("unchecked")
 private String[] parseLine(String nextLine) throws IOException {
 
        if (nextLine == null) {

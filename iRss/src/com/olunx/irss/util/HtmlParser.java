@@ -1,5 +1,8 @@
 package com.olunx.irss.util;
 
+import java.io.File;
+import java.util.Map;
+
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.tags.BodyTag;
@@ -10,10 +13,17 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.htmlparser.util.SimpleNodeIterator;
 
+import android.util.Log;
+
+import com.olunx.irss.db.ImagesHelper;
+
 public class HtmlParser {
 
 	private String fontColor;
 	private String fontSize;
+	private boolean isOfflineReadMode = false;
+	private Map<String, String> imageMap;
+	private final String TAG = "com.olunx.irss.util.HtmlParser";
 	
 	public HtmlParser(String fontColor, String fontSize){
 		this.fontColor = fontColor;
@@ -44,8 +54,20 @@ public class HtmlParser {
 				BodyTag body = (BodyTag) node;
 				body.setAttribute("style", "color:" + fontColor + ";font-size:" + fontSize);
 			} else if (node instanceof ImageTag) {// img
-//				ImageTag img = (ImageTag) node;
-//				img.setImageURL("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+				if(isOfflineReadMode) {
+					Log.i(TAG, "replace offline image");
+					ImageTag img = (ImageTag) node;
+					String localUrl = imageMap.get(img.getImageURL());
+					if(localUrl != null && !localUrl.equals("")){
+//						localUrl = "file://" + localUrl;
+						localUrl = localUrl.substring(localUrl.lastIndexOf(File.separator) + 1, localUrl.length());
+						Log.i(TAG, localUrl);
+						img.setImageURL(localUrl);
+						Log.i(TAG, img.toHtml());
+					}
+					
+				}
+				
 			} else if (node instanceof ParagraphTag) {// p
 				ParagraphTag p = (ParagraphTag) node;
 				p.setAttribute("style", "color:" + fontColor + ";font-size:" + fontSize);
@@ -64,7 +86,7 @@ public class HtmlParser {
 	/**
 	 * @throws ParserException
 	 */
-	public String parseHtml(String html){
+	public String parseHtml(String articleId, String html){
 		System.out.println("process html");
 		NodeList list = null;
 		try {
@@ -75,7 +97,13 @@ public class HtmlParser {
 		} catch (ParserException e) {
 			e.printStackTrace();
 		}
-		
+		isOfflineReadMode = Config.init().isOffLineReadMode();
+		if(isOfflineReadMode) {
+			ImagesHelper helper = new ImagesHelper();
+			imageMap = helper.getImagesMapByArticleId(articleId);
+			helper.close();
+		}
 		return parseNodes(list).toHtml();
 	}
+	
 }

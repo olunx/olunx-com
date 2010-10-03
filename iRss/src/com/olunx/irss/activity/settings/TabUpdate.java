@@ -2,6 +2,7 @@ package com.olunx.irss.activity.settings;
 
 import com.olunx.irss.R;
 import com.olunx.irss.util.Config;
+import com.olunx.irss.util.SysTools;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -42,6 +43,7 @@ public class TabUpdate extends PreferenceActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Log.i(TAG, String.valueOf(true));
+				SysTools.downloadImagesToStorage(null);
 			}
 		});
 

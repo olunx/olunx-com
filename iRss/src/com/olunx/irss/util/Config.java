@@ -13,6 +13,7 @@ public class Config {
 
 	public static final String SDCARD_PATH = "/sdcard/irss/";
 	private static final String SDCARD_BACKUP_PATH = "/sdcard/irss/backup/";
+	public static final String SDCARD_IMAGES_PATH = "/sdcard/irss/images/";
 
 	public static final String DATABASE_FILE = "data.db";
 	public static final String FILE_SDCARD_DATABASE = SDCARD_PATH + DATABASE_FILE;

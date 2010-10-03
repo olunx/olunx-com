@@ -3,6 +3,7 @@ package com.olunx.irss;
 import com.olunx.irss.db.ArticlesHelper;
 import com.olunx.irss.db.CategoryHelper;
 import com.olunx.irss.db.FeedsHelper;
+import com.olunx.irss.db.ImagesHelper;
 import com.olunx.irss.reader.Google;
 import com.olunx.irss.reader.Update;
 import com.olunx.irss.util.Config;
@@ -19,7 +20,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -118,6 +121,9 @@ public class Init extends Activity {
 			ArticlesHelper aHelper = new ArticlesHelper();
 			aHelper.dropTable();
 			aHelper.close();
+			ImagesHelper iHelper = new ImagesHelper();
+			iHelper.dropTable();
+			iHelper.close();
 			new Update().getFeedsFromGoogle();
 			pd.cancel();
 		} else {
@@ -162,4 +168,16 @@ public class Init extends Activity {
 			}
 		};
 	};
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			finish();
+			Process.killProcess(android.os.Process.myPid());
+			return true;
+		} else {
+			return super.onKeyDown(keyCode, event);
+		}
+	}
+	
 }

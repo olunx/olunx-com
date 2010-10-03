@@ -31,7 +31,6 @@ public class FeedsHelper implements IHelper {
 	public final static String c_charset = "charset";
 	public final static String c_rssType = "rss_type";
 	public final static String c_articleCount = "article_count";
-	public final static String c_articles = "articles";
 
 	private static String TABLE = "t_feeds";
 	private final String TAG = "com.olunx.db.FeedsHelper";
@@ -78,7 +77,7 @@ public class FeedsHelper implements IHelper {
 				"create table if not exists " + TABLE + "(" + c_id + " int primary key," + c_title + " text," + c_text + " text," + c_icon
 						+ " text," + c_sortId + " int," + c_catTitle + " text," + c_xmlUrl + " text," + c_htmlUrl + " text,"
 						+ c_googleFeedId + " text," + c_updateTime + " text," + c_charset + " text," + c_rssType + " text,"
-						+ c_articleCount + " int," + c_articles + " text);");
+						+ c_articleCount + " int);");
 	}
 
 	@Override

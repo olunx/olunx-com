@@ -94,16 +94,23 @@ public class ArticleShow extends Activity {
 				mScrollView.scrollTo(0, 0);
 				mWebView.clearView();
 				mWebView.setBackgroundColor(Color.parseColor(Config.init().getArticleBgColor()));
-				mWebView.loadData(currentContent, "text/html", currentCharset);
+				if(Config.init().isOffLineReadMode()) {
+					mWebView.loadDataWithBaseURL("file://" + Config.SDCARD_IMAGES_PATH, currentContent, "text/html", currentCharset, "");
+				}else {
+					mWebView.loadData(currentContent, "text/html", currentCharset);
+				}
 				mButton.setEnabled(true);
+				pd.dismiss();
 			}
 			}
 		}
 	};
 
+	private ProgressDialog pd;
 	private void setWebViewContent() {
-		final ProgressDialog pd = new ProgressDialog(this);
+		pd = new ProgressDialog(this);
 		pd.setMessage("正在加载文章数据...");
+		pd.setCancelable(false);
 		pd.show();
 		new Thread() {
 			public void run() {
@@ -113,15 +120,18 @@ public class ArticleShow extends Activity {
 				
 				// 处理页面样式
 				HtmlParser parser = new HtmlParser(Config.init().getArticleFontColor(), Config.init().getArticleFontSize());
-				currentContent = parser.parseHtml(currentContent);
-				try {
-					currentContent = URLEncoder.encode(currentContent, "utf-8").replaceAll("\\+", " ").trim();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
+				currentContent = parser.parseHtml(currentArticleId, currentContent);
+				
+				//如果不是loadDataWithBaseURL这种方式加载数据，则需要编码。
+				if(!Config.init().isOffLineReadMode()) {
+					try {
+						currentContent = URLEncoder.encode(currentContent, "utf-8").replaceAll("\\+", " ").trim();
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 				}
 
 				mHandler.sendEmptyMessage(LOAD_DATA);
-				pd.dismiss();
 
 				// 预读下一篇未读的文章
 				nextArticleId = helper.getUnreadArticleIdByFeedXmlUrl(currentFeedXmlUrl);// 文章链接
