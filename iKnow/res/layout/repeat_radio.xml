@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#000">
+	<LinearLayout android:id="@+id/LinearLayout03" android:orientation="vertical" android:layout_width="fill_parent"
+		android:isScrollContainer="true" android:layout_height="0dip" android:layout_weight="840">
+		<TextView android:text="@+id/TextView01" android:id="@+id/TextView01" android:layout_width="fill_parent" android:gravity="center"
+			android:textColor="#fff" android:layout_height="wrap_content" android:textSize="30dip" android:padding="5dip"></TextView>
+		<TextView android:text="@+id/TextView02" android:id="@+id/TextView02" android:layout_width="fill_parent" android:gravity="center"
+			android:textColor="#fff666" android:layout_height="wrap_content" android:textSize="20dip" android:padding="5dip"></TextView>
+		<ScrollView android:id="@+id/ScrollView02" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			<TextView android:id="@+id/TextView03" android:layout_height="wrap_content" android:layout_width="fill_parent"
+				android:textColor="#fff" android:textSize="20dip" android:text="@+id/TextView03" android:padding="5dip"></TextView>
+		</ScrollView>
+		<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="wrap_content" android:padding="5dip">
+
+			<RadioGroup android:id="@+id/RadioGroup01" android:layout_width="fill_parent" android:layout_height="fill_parent">
+				<RadioButton android:id="@+id/RadioButton01" android:layout_height="wrap_content" android:layout_width="fill_parent"></RadioButton>
+				<RadioButton android:id="@+id/RadioButton02" android:layout_height="wrap_content" android:layout_width="fill_parent"></RadioButton>
+				<RadioButton android:id="@+id/RadioButton03" android:layout_height="wrap_content" android:layout_width="fill_parent"></RadioButton>
+				<RadioButton android:id="@+id/RadioButton04" android:layout_height="wrap_content" android:layout_width="fill_parent"></RadioButton>
+			</RadioGroup>
+		</ScrollView>
+	</LinearLayout>
+
+
+
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" style="@android:style/ButtonBar" android:gravity="center_vertical" android:orientation="horizontal" android:background="#999" android:layout_height="0dip" android:layout_weight="120">
+		<ImageButton android:id="@+id/ImageButton01" android:layout_height="fill_parent" android:layout_width="wrap_content"></ImageButton>
+		<Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_height="fill_parent" android:layout_width="0dip"
+			android:layout_weight="1"></Button>
+	</LinearLayout>
+
+</LinearLayout>

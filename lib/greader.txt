@@ -1,0 +1,5 @@
+Greader是一款开源的读取Google Reader信息的Java项目，我在android上使用它，仅仅是根据android特性将其移植过来。
+
+HtmlParser是我根据android平台重新编译的版本。
+
+Greader移植版本和HtmlParser的修改编译源码托管在：http://code.google.com/p/olunx-com/

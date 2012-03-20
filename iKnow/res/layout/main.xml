@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:id="@+id/linearLayout1" android:background="#000">
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="140" android:id="@+id/header" android:orientation="vertical">
+            <LinearLayout android:id="@+id/linearLayout4" android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="61">
+                <LinearLayout android:layout_width="0dip" android:layout_weight="436" android:id="@+id/linearLayout2" android:layout_height="fill_parent"></LinearLayout>
+                <LinearLayout android:layout_width="0dip" android:layout_weight="204" android:id="@+id/linearLayout3" android:layout_height="fill_parent">
+                    <ImageView android:layout_width="fill_parent" android:id="@+id/imageView1" android:layout_height="fill_parent" android:background="@drawable/logo"></ImageView>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/linearLayout7" android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="79"></LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="820" android:id="@+id/body">
+            <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="40" android:id="@+id/left"></LinearLayout>
+            <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:orientation="vertical" android:layout_weight="480" android:id="@+id/center">
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="220" android:id="@+id/row1">
+                    <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout11" android:layout_width="0dip" android:layout_weight="220">
+                        <ImageButton android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/btn_study" android:id="@+id/btn_study"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="20" android:id="@+id/space11">
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout13" android:layout_width="0dip" android:layout_weight="220">
+                        <ImageButton android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="@drawable/btn_repeat" android:id="@+id/btn_repeat"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="20" android:id="@+id/space12"></LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_height="0dip" android:layout_weight="20" android:layout_width="fill_parent" android:id="@+id/sep1"></LinearLayout>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="220" android:id="@+id/row2">
+                    <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout16" android:layout_width="0dip" android:layout_weight="220">
+                        <ImageButton android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/btn_search" android:id="@+id/btn_search"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="20" android:id="@+id/space21"></LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout18" android:layout_width="0dip" android:layout_weight="220">
+                        <ImageButton android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/btn_day" android:id="@+id/btn_day"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="20" android:id="@+id/space22"></LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="20" android:id="@+id/sep2"></LinearLayout>
+                <LinearLayout android:id="@+id/row3" android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="220">
+                    <LinearLayout android:id="@+id/linearLayout6" android:layout_width="0dip" android:layout_weight="220" android:layout_height="fill_parent">
+                        <ImageButton android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/btn_status" android:id="@+id/btn_status"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dip" android:layout_weight="20" android:layout_height="fill_parent" android:id="@+id/space31"></LinearLayout>
+                    <LinearLayout android:id="@+id/linearLayout8" android:layout_width="0dip" android:layout_weight="220" android:layout_height="fill_parent">
+                        <ImageButton android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/btn_help" android:id="@+id/btn_help"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="20" android:id="@+id/space32"></LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_height="0dip" android:layout_weight="20" android:layout_width="fill_parent" android:id="@+id/sep3"></LinearLayout>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="60" android:id="@+id/row4">
+                    <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout5" android:layout_width="0dip" android:layout_weight="460">
+                        <ImageButton android:background="@drawable/btn_more" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/btn_more"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="20" android:id="@+id/space41"></LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_height="fill_parent" android:layout_width="0dip" android:layout_weight="120" android:id="@+id/right" android:orientation="horizontal">
+                <LinearLayout android:id="@+id/linearLayout9" android:layout_width="0dip" android:layout_weight="69" android:layout_height="fill_parent" android:orientation="vertical">
+                    <LinearLayout android:id="@+id/linearLayout12" android:layout_height="0dip" android:layout_width="fill_parent" android:layout_weight="69">
+                        <ImageButton android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="@drawable/btn_arrow_right" android:id="@+id/btn_others"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/linearLayout14" android:layout_height="0dip" android:layout_width="fill_parent" android:layout_weight="751"></LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout10" android:layout_width="0dip" android:layout_weight="51"></LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="0dip" android:layout_weight="40" android:id="@+id/footer"></LinearLayout>
+    </LinearLayout>

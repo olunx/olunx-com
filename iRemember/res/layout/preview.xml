@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<LinearLayout android:id="@+id/LinearLayout01"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical">
-		<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="0sp" android:orientation="vertical" android:isScrollContainer="true"><TextView android:id="@+id/TextView01" android:layout_width="fill_parent" android:gravity="center" android:textColor="#fff" android:layout_height="wrap_content" android:minHeight="55dip" android:textSize="30dip" android:text="@+id/TextView01"></TextView><TextView android:id="@+id/TextView02" android:layout_width="fill_parent" android:gravity="center" android:textColor="#fff666" android:layout_height="wrap_content" android:textSize="20dip" android:minHeight="35dip" android:text="@+id/TextView02"></TextView><ScrollView android:id="@+id/ScrollView02" android:layout_width="fill_parent" android:layout_height="fill_parent"><LinearLayout android:id="@+id/LinearLayout04" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"><TextView android:id="@+id/TextView03" android:layout_width="fill_parent" android:padding="10sp" android:textColor="#fff" android:layout_height="wrap_content" android:text="@+id/TextView03" android:textSize="20dip"></TextView><TextView android:id="@+id/TextView04" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingBottom="5dip" android:paddingLeft="10dip" android:paddingRight="10dip" android:paddingTop="5dip" android:textSize="18dip" android:text="@+id/TextView04"></TextView></LinearLayout>
-			
-		
-</ScrollView></LinearLayout>
-		
-		
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" style="@android:style/ButtonBar" android:layout_width="fill_parent" android:orientation="horizontal" android:background="#999">
-			<Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="0dip" android:gravity="center" android:layout_gravity="center_horizontal"></Button>
-			<ImageButton android:id="@+id/ImageButton01" android:layout_height="wrap_content" android:adjustViewBounds="true" android:layout_gravity="center" android:src="@drawable/volume" android:layout_width="50px"></ImageButton>
-			<Button android:text="@+id/Button02" android:id="@+id/Button02" android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight="1" android:gravity="center" android:layout_gravity="center_horizontal"></Button>
-		</LinearLayout>
-		
-	
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical">
+	<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_weight="1"
+		android:layout_height="0sp" android:orientation="vertical" android:isScrollContainer="true">
+		<TextView android:id="@+id/TextView01" android:layout_width="fill_parent" android:gravity="center" android:textColor="#fff"
+			android:layout_height="wrap_content" android:minHeight="55dip" android:textSize="30dip" android:text="@+id/TextView01"></TextView>
+		<TextView android:id="@+id/TextView02" android:layout_width="fill_parent" android:gravity="center" android:textColor="#fff666"
+			android:layout_height="wrap_content" android:textSize="20dip" android:minHeight="35dip" android:text="@+id/TextView02"></TextView>
+		<ScrollView android:id="@+id/ScrollView02" android:layout_width="fill_parent" android:layout_height="fill_parent">
+			<LinearLayout android:id="@+id/LinearLayout04" android:orientation="vertical" android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+				<TextView android:id="@+id/TextView03" android:layout_width="fill_parent" android:padding="10sp" android:textColor="#fff"
+					android:layout_height="wrap_content" android:text="@+id/TextView03" android:textSize="20dip"></TextView>
+				<TextView android:id="@+id/TextView04" android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:paddingBottom="5dip" android:paddingLeft="10dip" android:paddingRight="10dip" android:paddingTop="5dip" android:textSize="18dip"
+					android:text="@+id/TextView04"></TextView>
+			</LinearLayout>
+
+
+		</ScrollView>
+	</LinearLayout>
+
+
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" style="@android:style/ButtonBar"
+		android:layout_width="fill_parent" android:orientation="horizontal" android:background="#999">
+		<Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_weight="1" android:layout_height="wrap_content"
+			android:layout_width="0dip" android:gravity="center" android:layout_gravity="center_horizontal"></Button>
+		<ImageButton android:id="@+id/ImageButton01" android:adjustViewBounds="true" android:layout_gravity="center" android:src="@drawable/volume"
+			android:layout_height="fill_parent" android:layout_width="50dip"></ImageButton>
+		<Button android:text="@+id/Button02" android:id="@+id/Button02" android:layout_height="wrap_content" android:layout_width="0dip"
+			android:layout_weight="1" android:gravity="center" android:layout_gravity="center_horizontal"></Button>
+	</LinearLayout>
+
+
 </LinearLayout>

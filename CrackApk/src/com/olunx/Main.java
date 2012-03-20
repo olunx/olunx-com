@@ -187,7 +187,7 @@ public class Main {
 					public void run() {
 						converDexBtn.setEnabled(false);
 						statusLabel.setText("正在反编译dex文件，请稍等...");
-						pxb.android.dex2jar.v3.Main.main(new String[] { dexFilePath });
+//						pxb.android.dex2jar.v3.Main.main(new String[] { dexFilePath });
 						statusLabel.setText("反编译成功！已在dex所在目录生成jar文件。文件名[classes.dex.dex2jar.jar]");
 						converDexBtn.setEnabled(true);
 					}

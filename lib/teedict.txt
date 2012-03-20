@@ -1,0 +1,3 @@
+TeeDict是一款开源的使用StarDict词库的Java项目，我在android上使用它，仅仅是根据android特性将其移植过来。
+
+TeeDict移植版本的源码托管在：http://code.google.com/p/olunx-com/

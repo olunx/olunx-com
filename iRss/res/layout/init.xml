@@ -25,7 +25,7 @@
 	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" style="@android:style/ButtonBar"
 		android:layout_width="fill_parent" android:orientation="horizontal" android:background="#999">
 		<Button android:id="@+id/Button01" android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal" android:gravity="center" android:layout_width="0dip" android:layout_weight="0.5" android:text="@string/btn_nogoogle"></Button>
+			android:layout_gravity="center_horizontal" android:gravity="center" android:layout_width="0dip" android:layout_weight="0.5" android:text="@string/btn_nogoogle" android:enabled="false"></Button>
 	<ImageView android:id="@+id/ImageView02" android:layout_width="wrap_content" android:layout_height="fill_parent" android:minWidth="60dip" android:maxHeight="100dip"></ImageView><Button android:id="@+id/Button02" android:layout_height="wrap_content" android:layout_width="0dip" android:layout_weight="0.5" android:text="@string/btn_sure"></Button>
 
 </LinearLayout>
